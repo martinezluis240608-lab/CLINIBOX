@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panel del doctor · CLINIBOX</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,500;0,600;1,500&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/css/style.css">
+</head>
+<body>
+
+<div class="app">
+  <!-- ===================== BARRA LATERAL ===================== -->
+  <nav class="barra-lateral">
+    <div class="marca">
+      <div class="marca-icono"></div>
+      <div class="marca-texto">CLINIBOX</div>
+    </div>
+
+    <div class="nav-seccion">Panel</div>
+    <div class="nav-lateral">
+      <a href="dashboard.html" class="activo"><span class="icono">🗓</span> Agenda del día</a>
+      <a href="#historial-seccion"><span class="icono">📖</span> Historial de pacientes</a>
+      <a href="#" onclick="abrirModal('modal-nuevo-historial'); return false;"><span class="icono">＋</span> Nuevo historial</a>
+    </div>
+
+    <div class="nav-seccion">Cuenta</div>
+    <div class="nav-lateral">
+      <a href="#" onclick="abrirModal('modal-config'); return false;"><span class="icono">⚙</span> Configuración</a>
+      <a href="../auth/login.html"><span class="icono">⏻</span> Cerrar sesión</a>
+    </div>
+
+    <div class="barra-lateral-pie">
+      <div class="tarjeta-usuario">
+        <div class="avatar">IO</div>
+        <div>
+          <div class="nombre">Dr. Ismael Ochoa</div>
+          <div class="rol">Cardiología</div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===================== CONTENIDO ===================== -->
+  <div class="contenido">
+    <header class="barra-superior">
+      <div>
+        <h2 style="margin-bottom:2px;">Agenda del día</h2>
+        <div class="fecha-hoy">Jueves, 3 de septiembre de 2026</div>
+      </div>
+      <div class="acciones-superior">
+        <button class="icono-boton" title="Notificaciones">🔔</button>
+        <button class="icono-boton" title="Configuración" onclick="abrirModal('modal-config')">⚙</button>
+        <div class="avatar">IO</div>
+      </div>
+    </header>
+
+    <div class="zona">
+
+      <!-- Estadísticas -->
+      <section class="rejilla-stats">
+        <div class="stat"><div class="num">8</div><div class="etiqueta">Citas de hoy</div></div>
+        <div class="stat dorado"><div class="num">3</div><div class="etiqueta">Pendientes de confirmar</div></div>
+        <div class="stat ok"><div class="num">142</div><div class="etiqueta">Pacientes atendidos (año)</div></div>
+        <div class="stat alerta"><div class="num">1</div><div class="etiqueta">Cancelaciones hoy</div></div>
+      </section>
+
+      <div class="rejilla-dos">
+        <!-- Columna: agenda con filtro por día -->
+        <section class="tarjeta">
+          <div class="tarjeta-titulo">
+            <h3>Citas programadas</h3>
+            <div class="filtros-dia">
+              <button class="activo" data-filtro="todos">Todos</button>
+              <button data-filtro="lunes">Lun</button>
+              <button data-filtro="martes">Mar</button>
+              <button data-filtro="miercoles">Mié</button>
+              <button data-filtro="jueves">Jue</button>
+              <button data-filtro="viernes">Vie</button>
+            </div>
+          </div>
+
+          <div class="lista-citas">
+            <div class="cita-item" data-dia="jueves">
+              <div class="cita-hora">09:00<span>AM</span></div>
+              <div class="cita-info">
+                <strong>Renata Solís</strong>
+                <span>Control de presión arterial · Primera vez</span>
+              </div>
+              <span class="insignia insignia-confirmada">Confirmada</span>
+            </div>
+
+            <div class="cita-item" data-dia="jueves">
+              <div class="cita-hora">10:30<span>AM</span></div>
+              <div class="cita-info">
+                <strong>Mauricio Landa</strong>
+                <span>Seguimiento post-consulta</span>
+              </div>
+              <span class="insignia insignia-confirmada">Confirmada</span>
+            </div>
+
+            <div class="cita-item" data-dia="jueves">
+              <div class="cita-hora">12:00<span>PM</span></div>
+              <div class="cita-info">
+                <strong>Fernanda Cobos</strong>
+                <span>Dolor en el pecho · Urgente</span>
+              </div>
+              <span class="insignia insignia-pendiente">Pendiente</span>
+            </div>
+
+            <div class="cita-item" data-dia="viernes">
+              <div class="cita-hora">09:30<span>AM</span></div>
+              <div class="cita-info">
+                <strong>Julián Prieto</strong>
+                <span>Chequeo anual</span>
+              </div>
+              <span class="insignia insignia-confirmada">Confirmada</span>
+            </div>
+
+            <div class="cita-item" data-dia="viernes">
+              <div class="cita-hora">11:15<span>AM</span></div>
+              <div class="cita-info">
+                <strong>Ana Belén Ruiz</strong>
+                <span>Resultados de laboratorio</span>
+              </div>
+              <span class="insignia insignia-cancelada">Cancelada</span>
+            </div>
+
+            <div class="cita-item" data-dia="lunes">
+              <div class="cita-hora">08:30<span>AM</span></div>
+              <div class="cita-info">
+                <strong>Gabriel Nuño</strong>
+                <span>Consulta de rutina</span>
+              </div>
+              <span class="insignia insignia-pendiente">Pendiente</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Columna: acceso rápido -->
+        <section class="tarjeta">
+          <h3>Acciones rápidas</h3>
+          <p>Crea el expediente de un paciente que acabas de atender.</p>
+          <button class="btn btn-acento btn-ancho" onclick="abrirModal('modal-nuevo-historial')">＋ Crear historial de paciente</button>
+          <div style="height:18px;"></div>
+          <h3>Tu horario esta semana</h3>
+          <div class="rejilla-horarios">
+            <div class="franja"><div class="dia">Lun–Vie</div><div class="hora">08:00–14:00</div></div>
+            <div class="franja"><div class="dia">Martes</div><div class="hora">16:00–19:00</div></div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Historial de pacientes atendidos -->
+      <section class="tarjeta" id="historial-seccion" style="margin-top:22px;">
+        <div class="tarjeta-titulo">
+          <h3>Historial de pacientes atendidos</h3>
+          <div class="buscador">
+            <span>🔍</span>
+            <input type="text" placeholder="Buscar paciente...">
+          </div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Paciente</th><th>Última consulta</th><th>Diagnóstico</th><th>Estado</th><th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div class="paciente-celda"><div class="avatar">RS</div> Renata Solís</div>
+              </td>
+              <td>28 ago 2026</td>
+              <td>Hipertensión leve</td>
+              <td><span class="insignia insignia-activo">Activo</span></td>
+              <td class="fila-acciones"><button class="btn btn-linea btn-pequeno">Ver expediente</button></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="paciente-celda"><div class="avatar">ML</div> Mauricio Landa</div>
+              </td>
+              <td>20 ago 2026</td>
+              <td>Post-operatorio, evolución favorable</td>
+              <td><span class="insignia insignia-activo">Activo</span></td>
+              <td class="fila-acciones"><button class="btn btn-linea btn-pequeno">Ver expediente</button></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="paciente-celda"><div class="avatar">JP</div> Julián Prieto</div>
+              </td>
+              <td>2 ago 2026</td>
+              <td>Chequeo general sin hallazgos</td>
+              <td><span class="insignia insignia-inactivo">Sin seguimiento</span></td>
+              <td class="fila-acciones"><button class="btn btn-linea btn-pequeno">Ver expediente</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+    </div>
+  </div>
+</div>
+
+<!-- ===================== MODAL: nuevo historial ===================== -->
+<div class="fondo-modal oculto" id="modal-nuevo-historial">
+  <div class="modal">
+    <div class="modal-cabecera">
+      <h3>Crear historial de paciente</h3>
+      <button class="cerrar-modal" onclick="cerrarModal('modal-nuevo-historial')">✕</button>
+    </div>
+    <form onsubmit="return false;">
+      <div class="campo">
+        <label for="paciente-hist">Paciente</label>
+        <select id="paciente-hist">
+          <option>Renata Solís</option>
+          <option>Mauricio Landa</option>
+          <option>Fernanda Cobos</option>
+          <option>Otro (nuevo paciente)</option>
+        </select>
+      </div>
+      <div class="campo">
+        <label for="diagnostico">Diagnóstico</label>
+        <input type="text" id="diagnostico" placeholder="Ej. Hipertensión arterial leve">
+      </div>
+      <div class="campo">
+        <label for="tratamiento">Tratamiento indicado</label>
+        <input type="text" id="tratamiento" placeholder="Ej. Losartán 50mg cada 24h">
+      </div>
+      <div class="campo">
+        <label for="notas-hist">Notas de la consulta</label>
+        <textarea id="notas-hist" placeholder="Observaciones, signos vitales, próxima revisión..."></textarea>
+      </div>
+      <div style="display:flex; gap:10px; margin-top:6px;">
+        <button type="button" class="btn btn-linea" style="flex:1;" onclick="cerrarModal('modal-nuevo-historial')">Cancelar</button>
+        <button type="button" class="btn btn-primario" style="flex:1;" onclick="cerrarModal('modal-nuevo-historial')">Guardar historial</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ===================== MODAL: configuración de cuenta ===================== -->
+<div class="fondo-modal oculto" id="modal-config">
+  <div class="modal" style="max-width:520px;">
+    <div class="modal-cabecera">
+      <h3>Configuración de mi cuenta</h3>
+      <button class="cerrar-modal" onclick="cerrarModal('modal-config')">✕</button>
+    </div>
+
+    <div class="pestanas" data-tab-group data-tab-panels="#panel-config-doctor">
+      <button class="activa" data-tab="generales">Datos generales</button>
+      <button data-tab="horario">Horario de atención</button>
+      <button data-tab="seguridad">Seguridad</button>
+    </div>
+
+    <div id="panel-config-doctor">
+      <div data-tab-panel="generales">
+        <div class="campo-fila">
+          <div class="campo"><label>Nombre</label><input type="text" value="Ismael"></div>
+          <div class="campo"><label>Apellido</label><input type="text" value="Ochoa"></div>
+        </div>
+        <div class="campo"><label>Especialidad</label><input type="text" value="Cardiología"></div>
+        <div class="campo-fila">
+          <div class="campo"><label>Correo electrónico</label><input type="email" value="ismael.ochoa@vitalis.mx"></div>
+          <div class="campo"><label>Teléfono</label><input type="tel" value="228 555 0180"></div>
+        </div>
+        <button type="button" class="btn btn-primario btn-ancho">Guardar cambios</button>
+      </div>
+
+      <div data-tab-panel="horario" class="oculto">
+        <p>Define los bloques en los que estarás disponible para tus pacientes.</p>
+        <div class="rejilla-horarios">
+          <div class="franja seleccionada"><div class="dia">Lunes</div><div class="hora">08–14h</div></div>
+          <div class="franja seleccionada"><div class="dia">Martes</div><div class="hora">08–14h</div></div>
+          <div class="franja seleccionada"><div class="dia">Miércoles</div><div class="hora">08–14h</div></div>
+          <div class="franja seleccionada"><div class="dia">Jueves</div><div class="hora">08–14h</div></div>
+          <div class="franja seleccionada"><div class="dia">Viernes</div><div class="hora">08–14h</div></div>
+          <div class="franja"><div class="dia">Sábado</div><div class="hora">Descanso</div></div>
+        </div>
+        <div style="height:14px;"></div>
+        <button type="button" class="btn btn-primario btn-ancho">Guardar horario</button>
+      </div>
+
+      <div data-tab-panel="seguridad" class="oculto">
+        <div class="campo"><label>Contraseña actual</label><input type="password" placeholder="••••••••"></div>
+        <div class="campo"><label>Nueva contraseña</label><input type="password" placeholder="••••••••"></div>
+        <button type="button" class="btn btn-primario btn-ancho">Actualizar contraseña</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="../../assets/js/app.js"></script>
+</body>
+</html>
