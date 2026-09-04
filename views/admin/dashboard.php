@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cleany Box - Administración</title>
+    <link rel="stylesheet" href="/CLINIBOX/public/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .admin-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--surface-color);
+            padding: 1.5rem;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            background-color: var(--primary-light);
+            color: var(--primary-color);
+        }
+
+        .stat-info h4 {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-info .num {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        td {
+            font-size: 0.95rem;
+            color: var(--text-main);
+        }
+
+        .user-cell {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-cell img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+        }
+
+        .action-btns {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-color);
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: var(--text-muted);
+        }
+
+        .btn-icon:hover {
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .btn-icon.delete:hover {
+            color: #ef4444;
+            border-color: #ef4444;
+        }
+    </style>
+</head>
+<body>
+
+<div class="dashboard-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <i class="fa-solid fa-heart-pulse"></i> Cleany Box
+        </div>
+        
+        <nav class="sidebar-nav">
+            <a href="#" class="nav-item active"><i class="fa-solid fa-chart-pie"></i> Panel General</a>
+            <a href="#" class="nav-item"><i class="fa-solid fa-users"></i> Gestión de Pacientes</a>
+            <a href="#" class="nav-item"><i class="fa-solid fa-user-doctor"></i> Gestión de Médicos</a>
+            <a href="#" class="nav-item"><i class="fa-solid fa-calendar-check"></i> Todas las Citas</a>
+            <a href="#" class="nav-item"><i class="fa-solid fa-building"></i> Departamentos</a>
+            <br>
+            <a href="#" class="nav-item"><i class="fa-regular fa-user"></i> Mi perfil</a>
+            <a href="#" class="nav-item"><i class="fa-solid fa-gear"></i> Configuración</a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <header class="topbar">
+            <div class="welcome-section">
+                <h1>Panel de Administración ⚙️</h1>
+                <p>Gestiona los usuarios y recursos de la clínica.</p>
+            </div>
+            
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span class="badge" style="background-color: #f1f5f9; color: var(--text-muted); padding: 0.5rem 1rem;">Admin</span>
+                <span style="font-weight: 500; margin-left: 0.5rem;">Admin Principal</span>
+            </div>
+        </header>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fa-solid fa-users"></i></div>
+                <div class="stat-info">
+                    <h4>Pacientes Totales</h4>
+                    <div class="num">1,245</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background-color: #e0f2fe; color: #0284c7;"><i class="fa-solid fa-user-doctor"></i></div>
+                <div class="stat-info">
+                    <h4>Médicos Activos</h4>
+                    <div class="num">32</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background-color: #fce7f3; color: #be185d;"><i class="fa-solid fa-calendar-check"></i></div>
+                <div class="stat-info">
+                    <h4>Citas Hoy</h4>
+                    <div class="num">84</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="admin-grid">
+            <!-- Gestión de Médicos -->
+            <div class="card">
+                <div class="table-header">
+                    <h3 style="font-size: 1.1rem;">Personal Médico</h3>
+                    <button class="btn btn-primary" onclick="alert('Abriendo modal para agregar médico')">
+                        <i class="fa-solid fa-plus" style="margin-right: 5px;"></i> Nuevo Médico
+                    </button>
+                </div>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Médico</th>
+                            <th>Especialidad</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="user-cell">
+                                    <img src="https://i.pravatar.cc/150?img=11" alt="Doc">
+                                    <div>
+                                        <div style="font-weight: 500;">Dr. Andrés López</div>
+                                        <div style="font-size: 0.8rem; color: var(--text-muted);">alopez@cleanybox.com</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>Consulta General</td>
+                            <td><span class="badge badge-success">Activo</span></td>
+                            <td>
+                                <div class="action-btns">
+                                    <button class="btn-icon"><i class="fa-solid fa-pen"></i></button>
+                                    <button class="btn-icon delete" onclick="confirm('¿Eliminar médico?')"><i class="fa-solid fa-trash"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="user-cell">
+                                    <img src="https://i.pravatar.cc/150?img=32" alt="Doc">
+                                    <div>
+                                        <div style="font-weight: 500;">Dra. Alejandra Pérez</div>
+                                        <div style="font-size: 0.8rem; color: var(--text-muted);">aperez@cleanybox.com</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>Dermatología</td>
+                            <td><span class="badge badge-success">Activo</span></td>
+                            <td>
+                                <div class="action-btns">
+                                    <button class="btn-icon"><i class="fa-solid fa-pen"></i></button>
+                                    <button class="btn-icon delete"><i class="fa-solid fa-trash"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Gestión de Pacientes -->
+            <div class="card">
+                <div class="table-header">
+                    <h3 style="font-size: 1.1rem;">Pacientes Registrados</h3>
+                    <button class="btn btn-primary" onclick="alert('Abriendo modal para agregar paciente')">
+                        <i class="fa-solid fa-plus" style="margin-right: 5px;"></i> Nuevo Paciente
+                    </button>
+                </div>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Paciente</th>
+                            <th>Última Visita</th>
+                            <th>Contacto</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="user-cell">
+                                    <img src="https://i.pravatar.cc/150?img=5" alt="Paciente">
+                                    <div>
+                                        <div style="font-weight: 500;">María Fernanda López</div>
+                                        <div style="font-size: 0.8rem; color: var(--text-muted);">ID: PT-10023</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>20 Feb, 2024</td>
+                            <td>555-0192</td>
+                            <td>
+                                <div class="action-btns">
+                                    <button class="btn-icon"><i class="fa-solid fa-pen"></i></button>
+                                    <button class="btn-icon delete"><i class="fa-solid fa-trash"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="user-cell">
+                                    <img src="https://i.pravatar.cc/150?img=12" alt="Paciente">
+                                    <div>
+                                        <div style="font-weight: 500;">Carlos Martínez</div>
+                                        <div style="font-size: 0.8rem; color: var(--text-muted);">ID: PT-10024</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>Hoy</td>
+                            <td>555-0345</td>
+                            <td>
+                                <div class="action-btns">
+                                    <button class="btn-icon"><i class="fa-solid fa-pen"></i></button>
+                                    <button class="btn-icon delete"><i class="fa-solid fa-trash"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+</div>
+
+</body>
+</html>

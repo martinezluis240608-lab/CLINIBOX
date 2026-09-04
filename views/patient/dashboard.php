@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cleany Box - Dashboard Paciente</title>
+    <link rel="stylesheet" href="/CLINIBOX/public/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .welcome-section h1 {
+            font-size: 1.5rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .welcome-section p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .action-banner {
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .user-profile-top {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .notification-icon {
+            position: relative;
+            color: var(--text-muted);
+            font-size: 1.25rem;
+            cursor: pointer;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: #ef4444;
+            color: white;
+            font-size: 0.6rem;
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-weight: bold;
+        }
+
+        .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+            background-color: var(--primary-light);
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        /* Next Appointment Card */
+        .next-apt-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+
+        .apt-date-box {
+            text-align: center;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 0.5rem;
+            min-width: 80px;
+        }
+        
+        .apt-date-box .day-name { font-size: 0.75rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; }
+        .apt-date-box .day-num { font-size: 1.5rem; font-weight: 700; color: var(--text-main); }
+        .apt-date-box .month { font-size: 0.85rem; font-weight: 500; color: var(--primary-color); }
+
+        .apt-details {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .apt-info h4 { font-size: 1rem; margin-bottom: 0.25rem; }
+        .apt-info .doctor { font-weight: 500; color: var(--text-main); font-size: 0.95rem; }
+        .apt-info .location { color: var(--text-muted); font-size: 0.85rem; }
+
+        .card-actions { display: flex; gap: 1rem; }
+        .card-actions .btn { flex: 1; }
+
+        /* Quick Actions Grid */
+        .quick-actions-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .action-card {
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: var(--surface-color);
+        }
+        
+        .action-card:hover {
+            border-color: var(--primary-color);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .action-icon {
+            width: 48px; height: 48px;
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 1rem auto;
+            font-size: 1.5rem;
+        }
+        
+        .icon-green { background-color: #e0f2f1; color: #00897b; }
+        .icon-purple { background-color: #f3e5f5; color: #8e24aa; }
+        .icon-yellow { background-color: #fff8e1; color: #fbc02d; }
+        .icon-blue { background-color: #e3f2fd; color: #1e88e5; }
+
+        /* Upcoming List */
+        .list-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;}
+        
+        .apt-list-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .apt-list-item:last-child { border-bottom: none; }
+        
+        .apt-list-info { flex: 1; }
+        .apt-list-info .time { font-weight: 600; font-size: 0.9rem; }
+        .apt-list-info .type { font-size: 0.9rem; color: var(--text-main); }
+        .apt-list-info .doc { font-size: 0.85rem; color: var(--text-muted); }
+
+        /* Health Summary */
+        .health-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .health-icon {
+            color: var(--text-muted);
+            width: 20px;
+            text-align: center;
+            margin-top: 3px;
+        }
+        
+        .health-info h5 { font-size: 0.85rem; color: var(--text-muted); font-weight: 500; }
+        .health-info p { font-size: 0.95rem; font-weight: 500; color: var(--text-main); }
+
+        .support-box {
+            background-color: var(--primary-light);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            text-align: center;
+            margin: 2rem var(--space-6) 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="dashboard-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <i class="fa-solid fa-heart-pulse"></i> Cleany Box
+        </div>
+        
+        <nav class="sidebar-nav">
+            <a href="#" class="nav-item active"><i class="fa-solid fa-house"></i> Inicio</a>
+            <a href="#" class="nav-item"><i class="fa-regular fa-calendar"></i> Mis citas</a>
+            <a href="#" class="nav-item"><i class="fa-solid fa-file-medical"></i> Mi historial</a>
+            <a href="#" class="nav-item"><i class="fa-solid fa-prescription-bottle-medical"></i> Recetas médicas</a>
+            <a href="#" class="nav-item">
+                <i class="fa-solid fa-flask"></i> Resultados 
+                <span class="badge" style="background-color: #E0F2F1; color: var(--primary-color); margin-left: auto;">Nuevo</span>
+            </a>
+            <a href="#" class="nav-item"><i class="fa-regular fa-message"></i> Mensajes</a>
+            <a href="#" class="nav-item"><i class="fa-regular fa-folder-open"></i> Mis documentos</a>
+            <br>
+            <a href="#" class="nav-item"><i class="fa-regular fa-user"></i> Mi perfil</a>
+            <a href="#" class="nav-item"><i class="fa-solid fa-gear"></i> Configuración</a>
+        </nav>
+
+        <div class="support-box">
+            <div style="font-size: 1.5rem; color: var(--primary-color); margin-bottom: 0.5rem;"><i class="fa-solid fa-headset"></i></div>
+            <h4 style="font-size: 0.9rem; margin-bottom: 0.25rem;">¿Necesitas ayuda?</h4>
+            <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 1rem;">Estamos para apoyarte</p>
+            <button class="btn btn-primary" style="width: 100%; padding: 0.5rem; font-size: 0.85rem;">Contactar soporte</button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Topbar -->
+        <header class="topbar">
+            <div class="welcome-section">
+                <h1>¡Hola, María Fernanda! 👋</h1>
+                <p>Nos alegra verte de nuevo. Tu salud es nuestra prioridad.</p>
+            </div>
+            
+            <div class="user-profile-top">
+                <div class="action-banner">
+                    <div>
+                        <div style="font-weight: 600; font-size: 0.9rem;">¿Necesitas agendar una cita?</div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">Encuentra el especialista que necesitas</div>
+                    </div>
+                    <button class="btn btn-primary" style="padding: 0.5rem 1rem;" onclick="openModal('modalAgendarCita')"><i class="fa-regular fa-calendar-plus" style="margin-right: 5px;"></i> Agendar cita</button>
+                </div>
+                
+                <div class="notification-icon">
+                    <i class="fa-regular fa-bell"></i>
+                    <div class="notification-badge">2</div>
+                </div>
+                
+                <div style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                    <img src="https://i.pravatar.cc/150?img=5" alt="User" class="avatar">
+                    <span style="font-weight: 500; font-size: 0.9rem;">María Fernanda López <i class="fa-solid fa-chevron-down" style="font-size: 0.75rem; color: var(--text-muted);"></i></span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Dashboard Grid -->
+        <div class="dashboard-grid">
+            
+            <!-- Tu próxima cita -->
+            <div class="card">
+                <div class="next-apt-header">
+                    <h3 style="font-size: 1.1rem;">Tu próxima cita</h3>
+                    <span class="badge badge-success">Confirmada</span>
+                </div>
+                
+                <div class="apt-details">
+                    <div class="apt-date-box">
+                        <div class="day-name">JUEVES</div>
+                        <div class="day-num">23</div>
+                        <div class="month">MAY</div>
+                    </div>
+                    
+                    <div class="apt-info">
+                        <div style="font-weight: 600; margin-bottom: 0.25rem;">10:00 AM</div>
+                        <div style="margin-bottom: 0.25rem;">Consulta general</div>
+                        <div class="doctor">Dr. Andrés López</div>
+                        <div class="location">Clínica Central - Consultorio 3</div>
+                    </div>
+                </div>
+                
+                <div class="card-actions">
+                    <button class="btn btn-outline" style="color: var(--primary-color); border-color: var(--primary-color);">Ver detalles</button>
+                    <button class="btn btn-outline">Reagendar</button>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="quick-actions-grid">
+                <div class="action-card" onclick="openModal('modalAgendarCita')">
+                    <div class="action-icon icon-green"><i class="fa-regular fa-calendar-check"></i></div>
+                    <div style="font-weight: 600; font-size: 0.9rem;">Agendar cita</div>
+                    <div style="font-size: 0.75rem; color: var(--text-muted);">Reservar nueva cita</div>
+                </div>
+                <div class="action-card">
+                    <div class="action-icon icon-purple"><i class="fa-regular fa-comments"></i></div>
+                    <div style="font-weight: 600; font-size: 0.9rem;">Consultas en línea</div>
+                    <div style="font-size: 0.75rem; color: var(--text-muted);">Habla con tu médico</div>
+                </div>
+                <div class="action-card">
+                    <div class="action-icon icon-yellow"><i class="fa-solid fa-file-waveform"></i></div>
+                    <div style="font-weight: 600; font-size: 0.9rem;">Ver resultados</div>
+                    <div style="font-size: 0.75rem; color: var(--text-muted);">Laboratorios y estudios</div>
+                </div>
+                <div class="action-card">
+                    <div class="action-icon icon-blue"><i class="fa-solid fa-pills"></i></div>
+                    <div style="font-weight: 600; font-size: 0.9rem;">Recetas</div>
+                    <div style="font-size: 0.75rem; color: var(--text-muted);">Ver tus recetas</div>
+                </div>
+            </div>
+
+            <!-- Mis próximas citas List -->
+            <div class="card">
+                <div class="list-header">
+                    <h3 style="font-size: 1.1rem;">Mis próximas citas</h3>
+                    <a href="#" style="font-size: 0.85rem; font-weight: 500;">Ver todas</a>
+                </div>
+                
+                <!-- Item 1 -->
+                <div class="apt-list-item">
+                    <div class="apt-date-box" style="padding: 0.25rem; min-width: 50px;">
+                        <div class="day-name" style="font-size: 0.65rem;">JUE</div>
+                        <div class="day-num" style="font-size: 1.1rem;">23</div>
+                        <div class="month" style="font-size: 0.7rem;">MAY</div>
+                    </div>
+                    <div class="apt-list-info">
+                        <div class="time">10:00 AM</div>
+                        <div class="type">Consulta general</div>
+                        <div class="doc">Dr. Andrés López</div>
+                    </div>
+                    <span class="badge badge-success" style="background: none;">Confirmada <i class="fa-solid fa-chevron-right" style="margin-left: 5px;"></i></span>
+                </div>
+                
+                <!-- Item 2 -->
+                <div class="apt-list-item">
+                    <div class="apt-date-box" style="padding: 0.25rem; min-width: 50px;">
+                        <div class="day-name" style="font-size: 0.65rem;">MAR</div>
+                        <div class="day-num" style="font-size: 1.1rem;">04</div>
+                        <div class="month" style="font-size: 0.7rem;">JUN</div>
+                    </div>
+                    <div class="apt-list-info">
+                        <div class="time">09:30 AM</div>
+                        <div class="type">Dermatología</div>
+                        <div class="doc">Dra. Alejandra Pérez</div>
+                    </div>
+                    <span class="badge badge-warning" style="background: none;">Pendiente <i class="fa-solid fa-chevron-right" style="margin-left: 5px;"></i></span>
+                </div>
+                
+                <div style="text-align: center; margin-top: 1.5rem;">
+                    <a href="#" style="font-size: 0.9rem; font-weight: 500;">Ver todas mis citas <i class="fa-solid fa-arrow-right" style="font-size: 0.8rem;"></i></a>
+                </div>
+            </div>
+
+            <!-- Resumen de tu salud -->
+            <div class="card">
+                <div class="list-header">
+                    <h3 style="font-size: 1.1rem;">Resumen de tu salud</h3>
+                    <a href="#" style="font-size: 0.85rem; font-weight: 500;">Ver historial completo</a>
+                </div>
+                
+                <div class="health-item">
+                    <div class="health-icon"><i class="fa-solid fa-allergies" style="color: #ef4444;"></i></div>
+                    <div class="health-info">
+                        <h5>Alergias</h5>
+                        <p>Ninguna conocida</p>
+                    </div>
+                </div>
+                
+                <div class="health-item">
+                    <div class="health-icon"><i class="fa-solid fa-droplet" style="color: #ef4444;"></i></div>
+                    <div class="health-info">
+                        <h5>Grupo sanguíneo</h5>
+                        <p>O+</p>
+                    </div>
+                </div>
+                
+                <div class="health-item">
+                    <div class="health-icon"><i class="fa-regular fa-clipboard" style="color: var(--primary-color);"></i></div>
+                    <div class="health-info">
+                        <h5>Último examen general</h5>
+                        <p>20 de febrero, 2024</p>
+                    </div>
+                </div>
+                
+                <div style="display: flex; gap: 2rem;">
+                    <div class="health-item">
+                        <div class="health-icon"><i class="fa-solid fa-weight-scale"></i></div>
+                        <div class="health-info">
+                            <h5>Peso</h5>
+                            <p>58 kg</p>
+                        </div>
+                    </div>
+                    <div class="health-item">
+                        <div class="health-icon"><i class="fa-solid fa-ruler-vertical"></i></div>
+                        <div class="health-info">
+                            <h5>Estatura</h5>
+                            <p>1.63 m</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 1rem; padding: 1rem; background-color: var(--bg-color); border-radius: var(--radius-md); display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <div style="font-weight: 600; font-size: 0.9rem;">Mantener tus datos actualizados</div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">Nos ayuda a brindarte una mejor atención.</div>
+                    </div>
+                    <button class="btn btn-outline" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;" onclick="window.location.href='/CLINIBOX/public/profile'">Actualizar datos</button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+</div>
+
+<!-- Modal Agendar Cita -->
+<div class="modal-overlay" id="modalAgendarCita">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Agendar Nueva Cita</h3>
+            <button class="modal-close" onclick="closeModal('modalAgendarCita')"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <form onsubmit="event.preventDefault(); showToast('Cita agendada exitosamente'); closeModal('modalAgendarCita');">
+            <div class="form-group">
+                <label class="form-label">Especialidad</label>
+                <select class="form-control" required>
+                    <option value="">Seleccione una especialidad</option>
+                    <option>Consulta General</option>
+                    <option>Dermatología</option>
+                    <option>Nutrición</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Médico</label>
+                <select class="form-control" required>
+                    <option value="">Seleccione un médico</option>
+                    <option>Dr. Andrés López</option>
+                    <option>Dra. Alejandra Pérez</option>
+                </select>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div class="form-group">
+                    <label class="form-label">Fecha</label>
+                    <input type="date" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Hora</label>
+                    <input type="time" class="form-control" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Motivo de la consulta (Opcional)</label>
+                <textarea class="form-control" rows="3" placeholder="Describa brevemente sus síntomas..."></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline" onclick="closeModal('modalAgendarCita')">Cancelar</button>
+                <button type="submit" class="btn btn-primary">Confirmar Cita</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Toast Notification Component -->
+<div class="toast-notification" id="globalToast">
+    <div class="toast-icon"><i class="fa-solid fa-circle-check"></i></div>
+    <div class="toast-text" id="toastMessage">Operación exitosa</div>
+</div>
+
+<script>
+    // Link Sidebar Profile
+    document.querySelectorAll('.nav-item').forEach(item => {
+        if(item.innerText.includes('Mi perfil')) {
+            item.href = '/CLINIBOX/public/profile';
+        }
+    });
+
+    function openModal(modalId) {
+        document.getElementById(modalId).classList.add('active');
+    }
+
+    function closeModal(modalId) {
+        document.getElementById(modalId).classList.remove('active');
+    }
+
+    function showToast(message) {
+        const toast = document.getElementById('globalToast');
+        document.getElementById('toastMessage').innerText = message;
+        toast.classList.add('show');
+        
+        setTimeout(() => {
+            toast.classList.remove('show');
+        }, 3000);
+    }
+</script>
+
+</body>
+</html>
