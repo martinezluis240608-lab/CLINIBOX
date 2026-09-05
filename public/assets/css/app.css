@@ -1,0 +1,12 @@
+:root { --primary: #0c7c72; --ink: #17302d; --bg: #f3f7f6; --border: #dce8e5; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.5 system-ui, sans-serif; }
+.container { width: min(100% - 2rem, 960px); margin: 3rem auto; }
+.auth-card { width: min(100%, 430px); margin: 8vh auto; padding: 2rem; background: #fff; border: 1px solid var(--border); border-radius: 16px; box-shadow: 0 12px 32px #17302d14; }
+h1 { margin-top: 0; }
+label, input, button { display: block; width: 100%; }
+label { margin-top: 1rem; font-weight: 600; }
+input { margin-top: .35rem; padding: .75rem; border: 1px solid var(--border); border-radius: 8px; }
+button { margin-top: 1.5rem; padding: .8rem 1rem; border: 0; border-radius: 8px; background: var(--primary); color: #fff; cursor: pointer; font-weight: 700; }
+a { color: var(--primary); font-weight: 600; }
+nav { display: flex; flex-wrap: wrap; gap: .5rem 1rem; padding: 1rem; background: #fff; border: 1px solid var(--border); border-radius: 10px; }
