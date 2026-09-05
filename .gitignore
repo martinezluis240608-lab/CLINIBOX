@@ -1,3 +1,0 @@
-/config/database.local.php
-/storage/logs/*
-!/storage/logs/.gitkeep

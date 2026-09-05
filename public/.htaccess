@@ -1,7 +1,0 @@
-Options -Indexes
-RewriteEngine On
-
-# Las rutas que no son archivos físicos se envían al front controller.
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^ index.php [QSA,L]
