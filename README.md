@@ -1,31 +1,58 @@
 # CliniBox
 
-Aplicación clínica en PHP con arquitectura MVC para XAMPP.
+Aplicacion clinica en PHP con arquitectura MVC para XAMPP.
+
+## Como abrirlo
+
+1. Inicia Apache y MySQL desde el panel de XAMPP.
+2. Importa `database/schema.sql` desde phpMyAdmin.
+3. Revisa las credenciales en `app/config/app.php`.
+4. Abre `http://localhost/CLINIBOX/CLINIBOX/`.
+
+Tambien puedes entrar directo a:
+
+```text
+http://localhost/CLINIBOX/CLINIBOX/public/
+```
+
+El proyecto redirige a `public/`, que es el punto de entrada del MVC. Apache necesita tener habilitado `mod_rewrite` para que funcionen rutas como `/login` o `/dashboard`; `public/.htaccess` ya contiene la regla necesaria.
 
 ## Estructura
 
-- `public/`: único directorio expuesto por Apache; contiene `index.php` y recursos estáticos.
-- `app/Controllers/`: recibe cada ruta y coordina la petición.
-- `app/Models/`: acceso a datos y reglas de cada entidad.
-- `app/Views/`: HTML/PHP, separado de la lógica.
-- `app/Core/`: router, controlador base, autenticación y conexión PDO.
-- `database/schema.sql`: esquema inicial MySQL.
+```text
+app/
+  config/         Configuracion general y conexion PDO
+  controllers/    Controladores por modulo y rol
+  core/           Router, controlador base, autoload y helpers
+  models/         Modelos para tablas principales
+  views/          Vistas HTML separadas por modulo
+database/
+  schema.sql      Tablas iniciales para MySQL
+public/
+  assets/         CSS y JavaScript publico
+  index.php       Front controller
+routes/
+  web.php         Rutas de la aplicacion
+```
 
-## Inicio con XAMPP
+## Roles y modulos
 
-1. Inicia Apache y MySQL desde el panel de XAMPP.
-2. Importa `database/schema.sql` con phpMyAdmin.
-3. Revisa las credenciales de `app/Config/database.php`.
-4. Abre `http://localhost/CLINIBOX/public/`.
+- Medico: pacientes, consultas, recetas, expedientes clinicos, agenda, consultas virtuales y perfil.
+- Paciente: consultas, bitacora de medicamentos, mensajes con su medico, recetas y perfil.
+- Administrador: acceso general a usuarios, roles y modulos del sistema.
 
-Apache necesita tener habilitado `mod_rewrite` para que las rutas funcionen. El archivo `public/.htaccess` ya contiene la regla necesaria.
+## Base de datos
 
-## Roles y módulos
+El archivo `database/schema.sql` crea la base `clinibox` y las tablas iniciales:
 
-| Rol | Módulos iniciales |
-| --- | --- |
-| Médico | Pacientes, agenda, consultas, recetas, expedientes, mensajería y perfil. |
-| Paciente | Consultas, bitácora de medicamentos, recetas, mensajería y perfil. |
-| Administrador | Acceso transversal para administrar la operación. |
+- `usuarios`
+- `medicos`
+- `pacientes`
+- `consultas`
+- `recetas`
+- `expedientes_clinicos`
+- `agenda_medica`
+- `mensajes`
+- `bitacora_medicamentos`
 
-Los controladores ya protegen las rutas por rol. El siguiente paso es completar el inicio de sesión contra la tabla `users` y crear las operaciones CRUD de cada módulo.
+La pantalla de login todavia usa datos de demostracion para navegar por roles. El siguiente paso natural es conectar `AuthController` con la tabla `usuarios` y crear los CRUD reales de cada modulo.
