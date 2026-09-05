@@ -417,7 +417,7 @@
     <div class="modal-content">
         <div class="modal-header">
             <h3>Agendar Nueva Cita</h3>
-            <button class="modal-close" onclick="closeModal('modalAgendarCita')"><i class="fa-solid fa-xmark"></i></button>
+            <button type="button" class="modal-close" aria-label="Cerrar modal" onclick="closeModal('modalAgendarCita')"><i class="fa-solid fa-xmark"></i></button>
         </div>
         <form onsubmit="event.preventDefault(); showToast('Cita agendada exitosamente'); closeModal('modalAgendarCita');">
             <div class="form-group">

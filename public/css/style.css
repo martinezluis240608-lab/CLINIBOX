@@ -1,0 +1,324 @@
+/* =========================================================
+   CLINIBOX — Hoja de estilos BASE (public/css/style.css)
+   Define las variables y componentes compartidos que usan
+   login.html, dashboard.html (médico/admin) y profile.html.
+   Los <style> internos de cada página SOLO ajustan detalles
+   propios de esa pantalla; esta hoja es la base común.
+   ========================================================= */
+
+/* ---------- 1. Variables de marca ---------- */
+:root{
+  /* Color primario: turquesa clínico (coherente con el login) */
+  --primary-color:  #0e9488;
+  --primary-hover:  #0b756c;
+  --primary-light:  #e1f4f1;
+
+  /* Color secundario: cálido, para acentos puntuales (activo, iconos de marca) */
+  --secondary-color: #f0975a;
+  --secondary-light: #fdece0;
+
+  /* Superficies y fondo */
+  --surface-color:  #ffffff;
+  --bg-color:       #f4f7f7;
+  --border-color:   #e3e9e8;
+
+  /* Texto */
+  --text-main:  #1e2b2a;
+  --text-muted: #6b7876;
+
+  /* Estados */
+  --success-color: #17a06d;
+  --success-bg:    #e3f6ec;
+  --warning-color: #c07a12;
+  --warning-bg:    #fbeed9;
+  --danger-color:  #ef4444;
+  --danger-bg:     #fee2e2;
+
+  /* Bordes y sombras */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 18px;
+  --shadow-sm: 0 1px 3px rgba(16, 40, 37, .06);
+  --shadow-md: 0 8px 24px rgba(16, 40, 37, .10);
+}
+
+/* ---------- 2. Reset y base ---------- */
+*, *::before, *::after{ box-sizing: border-box; }
+html, body{ height: 100%; }
+body{
+  margin: 0;
+  font-family: "Segoe UI", Roboto, -apple-system, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  font-size: 15px;
+  line-height: 1.5;
+}
+h1, h2, h3, h4{ margin: 0 0 .4rem; color: var(--text-main); font-weight: 700; }
+p{ margin: 0 0 .5rem; }
+a{ color: var(--primary-color); text-decoration: none; }
+a:hover{ color: var(--primary-hover); }
+img{ max-width: 100%; }
+
+/* ---------- 3. Botones ---------- */
+.btn{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .4rem;
+  padding: .65rem 1.25rem;
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  font-size: .9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .15s ease, border-color .15s ease, transform .1s ease;
+}
+.btn:active{ transform: translateY(1px); }
+
+.btn-primary{ background: var(--primary-color); color: #fff; }
+.btn-primary:hover{ background: var(--primary-hover); }
+
+.btn-outline{
+  background: var(--surface-color);
+  border-color: var(--border-color);
+  color: var(--text-main);
+}
+.btn-outline:hover{ border-color: var(--primary-color); color: var(--primary-color); }
+
+.btn-danger{ background: var(--danger-color); color: #fff; }
+.btn-danger:hover{ background: #dc2626; }
+
+/* ---------- 4. Formularios ---------- */
+.form-group{ margin-bottom: 1.1rem; }
+.form-label{
+  display: block;
+  font-size: .82rem;
+  font-weight: 600;
+  color: var(--text-main);
+  margin-bottom: .4rem;
+}
+.form-control{
+  width: 100%;
+  padding: .7rem .9rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background: var(--surface-color);
+  font-family: inherit;
+  font-size: .9rem;
+  color: var(--text-main);
+  transition: border-color .15s ease;
+}
+.form-control:focus{
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px var(--primary-light);
+}
+.form-control.is-invalid{ border-color: var(--danger-color); }
+.form-control[readonly]{ color: var(--text-muted); cursor: not-allowed; }
+
+/* ---------- 5. Tarjetas ---------- */
+.card{
+  background: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+}
+
+/* ---------- 6. Insignias (badges) ---------- */
+.badge{
+  display: inline-flex;
+  align-items: center;
+  gap: .3rem;
+  padding: .3rem .7rem;
+  border-radius: 999px;
+  font-size: .75rem;
+  font-weight: 600;
+  background: var(--bg-color);
+  color: var(--text-muted);
+}
+.badge-success{ background: var(--success-bg); color: var(--success-color); }
+.badge-warning{ background: var(--warning-bg); color: var(--warning-color); }
+.badge-danger{  background: var(--danger-bg);  color: var(--danger-color); }
+
+/* ---------- 7. Layout general del panel (dashboard-layout) ---------- */
+.dashboard-layout{
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  min-height: 100vh;
+}
+
+/* Barra lateral */
+.sidebar{
+  background: linear-gradient(180deg, #0c3f3a 0%, #0a2e2b 100%);
+  color: #d7ece8;
+  padding: 1.5rem 1rem;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+.sidebar-logo{
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #fff;
+  padding: .5rem .6rem 1.5rem;
+}
+.sidebar-logo i{ color: var(--secondary-color); }
+
+.sidebar-nav{ display: flex; flex-direction: column; gap: .25rem; }
+.sidebar-nav .nav-item{
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  padding: .7rem .8rem;
+  border-radius: var(--radius-md);
+  color: #b9d3ce;
+  font-size: .88rem;
+  font-weight: 500;
+}
+.sidebar-nav .nav-item i{ width: 18px; text-align: center; opacity: .9; }
+.sidebar-nav .nav-item:hover{ background: rgba(255,255,255,.06); color: #fff; }
+.sidebar-nav .nav-item.active{ background: var(--secondary-color); color: #fff; }
+.sidebar-nav hr,
+.sidebar-nav br{ margin: .6rem 0; border-color: rgba(255,255,255,.1); display: block; }
+
+/* Contenido principal */
+.main-content{ padding: 2rem 2.5rem; min-width: 0; }
+
+.topbar{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding-bottom: 1.5rem;
+  margin-bottom: .5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+.welcome-section h1{ font-size: 1.5rem; margin-bottom: .2rem; }
+.welcome-section p{ color: var(--text-muted); margin: 0; }
+
+/* ---------- 8. Modal genérico (usado por "Agendar cita") ---------- */
+.modal-overlay{
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 30, 28, .45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .15s ease;
+  z-index: 100;
+}
+.modal-overlay.active{ opacity: 1; pointer-events: auto; }
+
+.modal-content{
+  background: var(--surface-color);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem;
+  width: 100%;
+  max-width: 460px;
+  max-height: 88vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow-md);
+  transform: translateY(8px);
+  transition: transform .15s ease;
+}
+.modal-overlay.active .modal-content{ transform: translateY(0); }
+
+.modal-header{
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+}
+.modal-close{
+  border: none;
+  background: transparent;
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  line-height: 1;
+}
+.modal-close:hover{ color: var(--text-main); }
+.modal-footer{
+  display: flex;
+  gap: .75rem;
+  margin-top: 1.25rem;
+}
+.modal-footer .btn{ flex: 1; }
+
+/* ---------- 9. Notificación tipo toast ---------- */
+.toast-notification{
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  background: var(--text-main);
+  color: #fff;
+  padding: .85rem 1.25rem;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  font-size: .88rem;
+  transform: translateY(12px);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform .2s ease, opacity .2s ease;
+  z-index: 200;
+}
+.toast-notification.show{ transform: translateY(0); opacity: 1; }
+.toast-icon{ color: var(--success-color); font-size: 1.05rem; }
+
+/* ---------- 10. Responsive ---------- */
+@media (max-width: 900px){
+  .dashboard-layout{ grid-template-columns: 1fr; }
+  .sidebar{
+    display: block;
+    position: static;
+    height: auto;
+    overflow: visible;
+    padding: .75rem 1rem;
+  }
+  .sidebar-logo{ padding: .25rem .5rem .7rem; }
+  .sidebar-nav{ flex-direction: row; overflow-x: auto; padding-bottom: .2rem; scrollbar-width: thin; }
+  .sidebar-nav .nav-item{ white-space: nowrap; flex: 0 0 auto; }
+  .sidebar-nav hr, .sidebar-nav br{ display: none; }
+  .main-content{ padding: 1.25rem; }
+  .topbar{ padding-bottom: 1rem; }
+  .dashboard-grid, .doctor-grid{ grid-template-columns: 1fr; }
+  .stats-grid{ grid-template-columns: 1fr; gap: 1rem; }
+  .action-banner{ align-items: flex-start; gap: 1rem; }
+  .profile-header{ align-items: flex-start; gap: 1rem; }
+  .profile-avatar{ width: 88px; height: 88px; }
+  .form-grid{ grid-template-columns: 1fr; gap: 0; }
+  .full-width{ grid-column: auto; }
+}
+
+/* Accesibilidad y adaptación para pantallas compactas. */
+button, input, select, textarea{ font: inherit; }
+:focus-visible{ outline: 3px solid rgba(14, 148, 136, .35); outline-offset: 2px; }
+.table-responsive{ width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.table-responsive table{ min-width: 620px; }
+
+@media (max-width: 600px){
+  body{ font-size: 14px; }
+  .main-content{ padding: 1rem; }
+  .card{ padding: 1.15rem; border-radius: var(--radius-md); }
+  .topbar, .header-content, .action-banner, .profile-header{ flex-direction: column; }
+  .topbar{ align-items: flex-start; }
+  .user-profile-top{ width: 100%; justify-content: space-between; }
+  .action-banner .btn{ width: 100%; }
+  .login-main{ padding: 1.25rem; }
+  .login-container{ margin-top: 1.5rem; }
+  .role-tab{ padding: .65rem .35rem; font-size: .78rem; gap: .3rem; }
+  .modal-content{ padding: 1.25rem; }
+  .modal-footer{ flex-direction: column-reverse; }
+}
