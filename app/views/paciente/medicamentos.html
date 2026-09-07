@@ -1,1 +1,43 @@
-<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Medicamentos | CliniBox</title><link rel="stylesheet" href="/clinibox/CLINIBOX/public/assets/css/app.css"><script src="/clinibox/CLINIBOX/public/assets/js/app.js" defer></script></head><body><main class="main-content"><section class="section-header"><p class="eyebrow">Paciente</p><h2>Bitácora de medicamentos</h2></section><div class="table-wrapper"><table><thead><tr><th>Medicamento</th><th>Horario</th><th>Tomado</th><th>Notas</th></tr></thead><tbody><tr><td>Paracetamol</td><td>08:00</td><td><span class="pill">Sí</span></td><td>Después de alimentos</td></tr></tbody></table></div></main></body></html>
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bitácora de medicamentos | CliniBox</title>
+<link rel="stylesheet" href="../../../public/assets/css/app.css">
+</head>
+<body>
+<div class="app-shell">
+    <nav class="sidebar">
+        <div class="brand">
+            <div class="brand-mark">C</div>
+            <div><strong>CliniBox</strong><small>Panel paciente</small></div>
+        </div>
+        <div class="nav-list">
+            <a href="consultas.html">Consultas</a>
+            <a href="medicamentos.html" class="active">Medicamentos</a>
+            <a href="mensajes.html">Mensajes</a>
+            <a href="recetas.html">Recetas</a>
+            <a href="perfil.html">Perfil</a>
+            <a href="../dashboard/index.html">Volver al panel</a>
+        </div>
+    </nav>
+    <main class="main-content">
+        <section class="section-header">
+            <p class="eyebrow">Módulo paciente</p>
+            <h2>Bitácora de medicamentos</h2>
+            <p>Control diario de medicamentos indicados en consulta.</p>
+        </section>
+        <div class="table-wrapper">
+            <table>
+                <thead><tr><th>Medicamento</th><th>Horario</th><th>Tomado</th><th>Notas</th></tr></thead>
+                <tbody>
+                    <tr><td>Losartán 50mg</td><td>08:00 AM</td><td><span class="pill">Sí</span></td><td>Tomar con alimentos</td></tr>
+                    <tr><td>Losartán 50mg</td><td>08:00 PM</td><td><span class="pill">Pendiente</span></td><td>-</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+</div>
+</body>
+</html>

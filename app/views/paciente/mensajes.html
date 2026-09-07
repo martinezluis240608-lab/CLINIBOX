@@ -1,1 +1,48 @@
-<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Mensajes | CliniBox</title><link rel="stylesheet" href="/clinibox/CLINIBOX/public/assets/css/app.css"><script src="/clinibox/CLINIBOX/public/assets/js/app.js" defer></script></head><body><main class="main-content"><section class="section-header"><p class="eyebrow">Paciente</p><h2>Consulta rápida</h2></section><div class="chat-window"><div class="chat-bubble"><strong>Dra. Sofía Ramírez</strong><p>¿Cómo te has sentido con el tratamiento?</p></div><div class="chat-bubble mine"><strong>Tú</strong><p>Me siento mejor, gracias.</p></div></div><form class="chat-form" onsubmit="event.preventDefault(); alert('Mensaje enviado');"><input aria-label="Mensaje" placeholder="Escribe tu mensaje"><button class="button" type="submit">Enviar</button></form></main></body></html>
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Consulta rápida | CliniBox</title>
+<link rel="stylesheet" href="../../../public/assets/css/app.css">
+</head>
+<body>
+<div class="app-shell">
+    <nav class="sidebar">
+        <div class="brand">
+            <div class="brand-mark">C</div>
+            <div><strong>CliniBox</strong><small>Panel paciente</small></div>
+        </div>
+        <div class="nav-list">
+            <a href="consultas.html">Consultas</a>
+            <a href="medicamentos.html">Medicamentos</a>
+            <a href="mensajes.html" class="active">Mensajes</a>
+            <a href="recetas.html">Recetas</a>
+            <a href="perfil.html">Perfil</a>
+            <a href="../dashboard/index.html">Volver al panel</a>
+        </div>
+    </nav>
+    <main class="main-content">
+        <section class="section-header">
+            <p class="eyebrow">Módulo paciente</p>
+            <h2>Consulta rápida</h2>
+            <p>Conversación de ejemplo con el médico asignado.</p>
+        </section>
+        <div class="chat-window">
+            <article class="chat-bubble">
+                <span>Dra. Sofía Ramírez - 09:12 AM</span>
+                <p>Buenos días Carlos, ¿cómo te has sentido con el nuevo tratamiento?</p>
+            </article>
+            <article class="chat-bubble mine">
+                <span>Paciente - 09:15 AM</span>
+                <p>Buenos días doctora, mejor, ya casi no tengo molestias.</p>
+            </article>
+            <form class="chat-form">
+                <input type="text" placeholder="Escribe un mensaje" aria-label="Mensaje">
+                <button class="button" type="button">Enviar</button>
+            </form>
+        </div>
+    </main>
+</div>
+</body>
+</html>

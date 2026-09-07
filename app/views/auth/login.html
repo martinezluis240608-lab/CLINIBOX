@@ -1,44 +1,32 @@
 <!doctype html>
 <html lang="es">
-    <head>
-        <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-        <title>Ingresar | CliniBox</title>
-        <link rel="stylesheet" href="/clinibox/CLINIBOX/public/assets/css/app.css">
-        <script src="/clinibox/CLINIBOX/public/assets/js/app.js" defer></script>
-    </head>
-    <body>
-        <main class="main-content">
-            <section class="auth-card">
-                <div>
-                    <p class="eyebrow">Acceso de demostración</p>
-                    <h2>Elige un rol para entrar</h2>
-                    <p>Selecciona el área de CliniBox que quieres utilizar.</p>
-                </div>
-                <form class="role-form" method="post" action="/clinibox/CLINIBOX/app/views/auth/login.html">
-                    <label class="role-option">
-                        <input type="radio" name="role" value="medico" required>
-                        <span>
-                            <strong>Médico</strong>
-                            <small>Gestión clínica completa.</small>
-                        </span>
-                    </label>
-                    <label class="role-option">
-                        <input type="radio" name="role" value="paciente">
-                        <span>
-                            <strong>Paciente</strong>
-                            <small>Consultas, recetas y medicamentos.</small>
-                        </span>
-                    </label>
-                    <label class="role-option">
-                        <input type="radio" name="role" value="admin">
-                        <span>
-                            <strong>Administrador</strong>
-                            <small>Acceso total al sistema.</small>
-                        </span>
-                    </label>
-                    <button class="button" type="submit">Ingresar</button>
-                </form>
-            </section>
-        </main>
-    </body>
-    </html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Iniciar sesión | CliniBox</title>
+<link rel="stylesheet" href="../../../public/assets/css/app.css">
+</head>
+<body>
+<main class="main-content">
+<section class="auth-card">
+    <div>
+        <p class="eyebrow">Acceso de demostración</p>
+        <h2>Elige un rol para entrar</h2>
+        <p>Accede al área de CliniBox que corresponde a tu perfil.</p>
+    </div>
+
+    <div class="role-form">
+        <a class="role-option" href="../medico/pacientes.html">
+            <span><strong>Médico</strong><small>Gestión clínica completa.</small></span>
+        </a>
+        <a class="role-option" href="../paciente/consultas.html">
+            <span><strong>Paciente</strong><small>Consultas, recetas y medicamentos.</small></span>
+        </a>
+        <a class="role-option" href="../admin/index.html">
+            <span><strong>Administrador</strong><small>Acceso total al sistema.</small></span>
+        </a>
+    </div>
+</section>
+</main>
+</body>
+</html>
