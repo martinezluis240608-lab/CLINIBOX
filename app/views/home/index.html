@@ -1,29 +1,73 @@
 <!doctype html>
 <html lang="es">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width,initial-scale=1">
-        <title>CliniBox</title>
-        <link rel="stylesheet" href="../../../public/assets/css/app.css">
-        <script src="../../../public/assets/js/app.js" defer></script>
-    </head>
-    <body>
-        <main class="main-content">
-            <section class="hero">
-                <div class="hero-copy">
-                    <p class="eyebrow">Sistema clínico</p>
-                    <h2>CliniBox</h2>
-                    <p>Gestiona pacientes, consultas, recetas, expedientes y atención por mensaje.</p>
-                    <div class="actions">
-                        <a class="button" href="../dashboard/index.html">Ingresar</a>
-                    </div>
-                </div>
-                <div class="hero-panel">
-                    <span class="status-dot"></span>
-                    <h3>Atención organizada</h3>
-                    <p>Todo lo necesario para la clínica en un solo lugar.</p>
-                </div>
-            </section>
-        </main>
-    </body>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="description" content="CliniBox, atención médica cercana, organizada y humana.">
+    <title>CliniBox | Atención médica que te acompaña</title>
+    <!-- La primera ruta funciona con XAMPP; la segunda permite previsualizar este HTML directamente desde el editor. -->
+    <link rel="stylesheet" href="assets/css/app.css">
+    <link rel="stylesheet" href="../../../public/assets/css/app.css">
+    <script src="assets/js/app.js" defer></script>
+</head>
+<body class="public-page">
+    <header class="welcome-hero" id="inicio">
+        <div class="welcome-overlay" aria-hidden="true"></div>
+        <nav class="welcome-nav" aria-label="Navegación principal">
+            <a class="welcome-brand" href="#inicio" aria-label="CliniBox, inicio">
+                <span class="welcome-brand-mark">+</span>
+                <span><strong>CliniBox</strong><small>Centro médico</small></span>
+            </a>
+            <a class="button button-light" href="login">Ingresar al sistema</a>
+        </nav>
+
+        <div class="welcome-hero-content">
+            <p class="eyebrow welcome-eyebrow">Cuidado médico con propósito</p>
+            <h1>Tu salud merece una atención que te acompañe.</h1>
+            <p class="welcome-lead">En CliniBox conectamos personas, profesionales y tecnología para que cada consulta se sienta clara, cercana y bien cuidada.</p>
+            <div class="actions welcome-actions">
+                <a class="button button-light button-large" href="login">Ingresar al sistema <span aria-hidden="true">→</span></a>
+                <a class="welcome-text-link" href="#conocenos">Conoce nuestra clínica <span aria-hidden="true">↓</span></a>
+            </div>
+        </div>
+
+        <aside class="welcome-quick-card" aria-label="Resumen de atención">
+            <div class="quick-card-top"><span class="quick-card-status"><i></i> Atención disponible</span><span class="quick-card-plus">+</span></div>
+            <p class="eyebrow">Tu siguiente paso</p>
+            <h2>Agenda y consulta desde un solo lugar.</h2>
+            <div class="quick-card-row"><span class="quick-card-avatar">DR</span><span><strong>Equipo CliniBox</strong><small>Especialistas listos para acompañarte</small></span></div>
+            <a href="login" class="quick-card-link">Ver mi espacio <span aria-hidden="true">→</span></a>
+        </aside>
+
+        <div class="welcome-contact-bar" aria-label="Información de contacto">
+            <div class="welcome-contact-item"><span class="welcome-contact-icon" aria-hidden="true">T</span><span><small>Agenda tu cita</small><strong>+52 55 0000 0000</strong></span></div>
+            <div class="welcome-contact-item"><span class="welcome-contact-icon" aria-hidden="true">H</span><span><small>Horario de atención</small><strong>Lun - Vie · 08:00 - 20:00</strong></span></div>
+            <div class="welcome-contact-item"><span class="welcome-contact-icon" aria-hidden="true">U</span><span><small>Estamos en</small><strong>Ciudad de México, México</strong></span></div>
+        </div>
+    </header>
+
+    <main id="conocenos">
+        <section class="welcome-section welcome-intro">
+            <div class="welcome-section-heading"><p class="eyebrow">Conócenos</p><h2>Una clínica pensada alrededor de ti</h2></div>
+            <div class="welcome-intro-copy"><p>CliniBox es un espacio para recibir orientación médica confiable y dar seguimiento a tu salud en cada etapa. Unimos atención profesional, expedientes organizados y comunicación sencilla en una sola experiencia.</p><a class="inline-link" href="login">Acceder a mi espacio <span aria-hidden="true">→</span></a></div>
+        </section>
+
+        <section class="welcome-section welcome-cards" aria-label="Misión y visión">
+            <article class="welcome-info-card"><span class="welcome-card-number" aria-hidden="true">01</span><div><p class="eyebrow">Nuestra misión</p><h3>Cuidar con claridad y empatía</h3><p>Ofrecer atención médica accesible, humana y organizada, con información clara para que cada persona tome mejores decisiones sobre su salud.</p></div></article>
+            <article class="welcome-info-card welcome-info-card-accent"><span class="welcome-card-number" aria-hidden="true">02</span><div><p class="eyebrow">Nuestra visión</p><h3>Una salud más conectada</h3><p>Construir una experiencia clínica moderna donde la tecnología acerque a pacientes y profesionales sin perder el trato personal.</p></div></article>
+        </section>
+
+        <section class="welcome-section welcome-details" aria-label="Servicios y especialidades">
+            <div class="welcome-detail-block"><p class="eyebrow">Lo que hacemos</p><h2>Servicios para acompañarte mejor</h2><div class="service-grid"><article><span class="service-mark">01</span><strong>Consulta general</strong><small>Seguimiento cercano</small></article><article><span class="service-mark">02</span><strong>Consulta virtual</strong><small>Comunicación sencilla</small></article><article><span class="service-mark">03</span><strong>Expediente clínico</strong><small>Información organizada</small></article><article><span class="service-mark">04</span><strong>Recetas y medicamentos</strong><small>Control de tratamiento</small></article></div></div>
+            <div class="welcome-detail-block"><p class="eyebrow">Atención integral</p><h2>Especialidades que te escuchan</h2><div class="specialty-grid"><span><i>MF</i>Medicina familiar</span><span><i>MI</i>Medicina interna</span><span><i>CA</i>Cardiología</span><span><i>NC</i>Nutrición clínica</span></div></div>
+        </section>
+
+        <section class="welcome-section welcome-location" aria-label="Ubicación y contacto">
+            <div><p class="eyebrow">Visítanos</p><h2>Estamos cerca cuando nos necesitas</h2><p>Av. Salud 125, Col. Del Valle, Ciudad de México, México.</p><div class="welcome-location-meta"><span><strong>Correo</strong> contacto@clinibox.test</span><span><strong>Horario</strong> Lunes a viernes, 08:00 a 20:00</span></div></div>
+            <div class="welcome-map-placeholder" role="img" aria-label="Ubicación de CliniBox en Ciudad de México"><span>CliniBox</span><small>Ciudad de México</small><i aria-hidden="true"></i></div>
+        </section>
+    </main>
+
+    <footer class="welcome-footer"><a class="welcome-brand" href="#inicio"><span class="welcome-brand-mark">+</span><span><strong>CliniBox</strong><small>Centro médico</small></span></a><p>Atención médica organizada, humana y cercana.</p><a class="button" href="login">Ingresar al sistema</a></footer>
+</body>
 </html>
