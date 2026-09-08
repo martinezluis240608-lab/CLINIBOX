@@ -1,32 +1,500 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Iniciar sesión | CliniBox</title>
-<link rel="stylesheet" href="../../../public/assets/css/app.css">
-</head>
-<body>
-<main class="main-content">
-<section class="auth-card">
-    <div>
-        <p class="eyebrow">Acceso de demostración</p>
-        <h2>Elige un rol para entrar</h2>
-        <p>Accede al área de CliniBox que corresponde a tu perfil.</p>
-    </div>
 
-    <div class="role-form">
-        <a class="role-option" href="../medico/pacientes.html">
-            <span><strong>Médico</strong><small>Gestión clínica completa.</small></span>
-        </a>
-        <a class="role-option" href="../paciente/consultas.html">
-            <span><strong>Paciente</strong><small>Consultas, recetas y medicamentos.</small></span>
-        </a>
-        <a class="role-option" href="../admin/index.html">
-            <span><strong>Administrador</strong><small>Acceso total al sistema.</small></span>
-        </a>
-    </div>
-</section>
-</main>
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Iniciar sesión | CliniBox</title>
+
+    <link
+        rel="stylesheet"
+        href="../../../public/assets/css/login.css"
+    >
+
+</head>
+
+<body>
+
+    <main class="login-page">
+
+        <!-- =====================================
+             PANEL IZQUIERDO
+        ====================================== -->
+
+        <section class="login-cover">
+
+            <!-- Imagen -->
+
+            <div class="cover-image"></div>
+
+            <!-- Capa de color -->
+
+            <div class="cover-overlay"></div>
+
+
+            <div class="cover-content">
+
+                <!-- LOGO -->
+
+                <header class="brand">
+
+                    <div class="brand-icon">
+
+                        <span class="heart-left">♥</span>
+                        <span class="heart-right">♥</span>
+
+                    </div>
+
+                    <div class="brand-name">
+                        Clini<span>Box</span>
+                    </div>
+
+                </header>
+
+
+                <!-- TEXTO PRINCIPAL -->
+
+                <div class="cover-text">
+
+                    <h1>
+                        Tu <span>salud</span>,<br>
+                        en <span>buenas</span> manos.
+                    </h1>
+
+                    <p>
+                        Gestiona consultas, historiales
+                        y citas de forma rápida,
+                        segura y confiable.
+                    </p>
+
+                </div>
+
+
+                <!-- BENEFICIOS -->
+
+                <div class="benefits">
+
+                    <article class="benefit">
+
+                        <div class="benefit-icon">
+                            ✓
+                        </div>
+
+                        <h3>
+                            Citas rápidas
+                        </h3>
+
+                        <p>
+                            Agenda y administra
+                            tus consultas.
+                        </p>
+
+                    </article>
+
+
+                    <article class="benefit">
+
+                        <div class="benefit-icon">
+                            ✓
+                        </div>
+
+                        <h3>
+                            Información segura
+                        </h3>
+
+                        <p>
+                            Protegemos tus datos
+                            con altos estándares.
+                        </p>
+
+                    </article>
+
+
+                    <article class="benefit">
+
+                        <div class="benefit-icon">
+                            ♥
+                        </div>
+
+                        <h3>
+                            Atención integral
+                        </h3>
+
+                        <p>
+                            Todo tu historial clínico
+                            en un solo lugar.
+                        </p>
+
+                    </article>
+
+                </div>
+
+
+                <!-- FRASE -->
+
+                <div class="quote">
+
+                    <span class="quote-mark">
+                        “
+                    </span>
+
+                    <p>
+                        La tecnología al servicio
+                        de tu bienestar.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================
+             PANEL DERECHO
+        ====================================== -->
+
+        <section class="login-panel">
+
+            <div class="login-box">
+
+
+                <!-- OPCIONES SUPERIORES -->
+
+                <div class="top-actions">
+
+                    <button
+                        type="button"
+                        class="icon-button"
+                        id="themeButton"
+                        title="Cambiar tema"
+                    >
+                        ☾
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="language-button"
+                    >
+                        Español
+                        <span>⌄</span>
+                    </button>
+
+                </div>
+
+
+                <!-- ENCABEZADO -->
+
+                <div class="login-header">
+
+                    <h2>
+                        Inicia sesión
+                    </h2>
+
+                    <p>
+                        Bienvenido de nuevo a
+                        <strong>CliniBox</strong>
+                    </p>
+
+                </div>
+
+
+                <!-- SELECCIÓN DE ROL -->
+
+                <div class="role-selector">
+
+                    <button
+                        type="button"
+                        class="role-button active"
+                        data-role="paciente"
+                    >
+
+                        <span class="role-icon">
+                            ♙
+                        </span>
+
+                        <span>
+                            Paciente
+                        </span>
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="role-button"
+                        data-role="medico"
+                    >
+
+                        <span class="role-icon">
+                            ♧
+                        </span>
+
+                        <span>
+                            Médico
+                        </span>
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="role-button"
+                        data-role="administrador"
+                    >
+
+                        <span class="role-icon">
+                            ▣
+                        </span>
+
+                        <span>
+                            Administrativo
+                        </span>
+
+                    </button>
+
+                </div>
+
+
+                <!-- FORMULARIO -->
+
+                <form
+                    class="login-form"
+                    id="loginForm"
+                >
+
+                    <!-- ROL -->
+
+                    <input
+                        type="hidden"
+                        id="rol"
+                        name="rol"
+                        value="paciente"
+                    >
+
+
+                    <!-- CORREO -->
+
+                    <div class="form-group">
+
+                        <label for="correo">
+                            Correo electrónico
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <span class="input-icon">
+                                ✉
+                            </span>
+
+                            <input
+                                type="email"
+                                id="correo"
+                                name="correo"
+                                placeholder="ejemplo@correo.com"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- CONTRASEÑA -->
+
+                    <div class="form-group">
+
+                        <label for="password">
+                            Contraseña
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <span class="input-icon">
+                                ▣
+                            </span>
+
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                placeholder="••••••••"
+                                required
+                            >
+
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                id="passwordToggle"
+                            >
+                                ◉
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- OPCIONES -->
+
+                    <div class="form-options">
+
+                        <label class="remember">
+
+                            <input
+                                type="checkbox"
+                                name="recordarme"
+                            >
+
+                            <span>
+                                Recordarme
+                            </span>
+
+                        </label>
+
+
+                        <a
+                            href="#"
+                            class="forgot-password"
+                        >
+                            ¿Olvidaste tu contraseña?
+                        </a>
+
+                    </div>
+
+
+                    <!-- MENSAJE -->
+
+                    <div
+                        id="loginMessage"
+                        class="login-message"
+                    ></div>
+
+
+                    <!-- BOTÓN -->
+
+                    <button
+                        type="submit"
+                        class="login-button"
+                    >
+
+                        <span>
+                            Iniciar sesión
+                        </span>
+
+                        <span class="arrow">
+                            →
+                        </span>
+
+                    </button>
+
+                </form>
+
+
+                <!-- DIVISOR -->
+
+                <div class="divider">
+
+                    <span></span>
+
+                    <p>
+                        O continúa con
+                    </p>
+
+                    <span></span>
+
+                </div>
+
+
+                <!-- REDES -->
+
+                <div class="social-login">
+
+                    <button
+                        type="button"
+                        class="social-button"
+                    >
+                        <span class="google">
+                            G
+                        </span>
+
+                        Google
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="social-button"
+                    >
+                        <span class="microsoft">
+                            ■
+                        </span>
+
+                        Microsoft
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="social-button"
+                    >
+                        <span class="apple">
+                            ●
+                        </span>
+
+                        Apple
+                    </button>
+
+                </div>
+
+
+                <!-- REGISTRO -->
+
+                <div class="register">
+
+                    <span>
+                        ¿No tienes cuenta?
+                    </span>
+
+                    <a href="#">
+                        Crear cuenta
+                    </a>
+
+                </div>
+
+
+                <!-- SEGURIDAD -->
+
+                <div class="security">
+
+                    <span>
+                        ◇
+                    </span>
+
+                    Sistema seguro y protegido
+
+                    <b>•</b>
+
+                    Tus datos están cifrados
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script src="../../../public/assets/js/login.js"></script>
+
 </body>
+
 </html>

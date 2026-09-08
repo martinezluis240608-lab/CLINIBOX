@@ -2,17 +2,17 @@
     --bg: #f5f7fb;
     --surface: #ffffff;
     --surface-soft: #eef6f6;
-    --text: #16212f;
+    --text: #5ba1fd;
     --muted: #667085;
     --line: #d9e1ea;
-    --primary: #0f766e;
-    --primary-dark: #115e59;
+    --primary: #44bffc;
+    --primary-dark: #5bece2;
     --accent: #2563eb;
     --warning: #d97706;
     --danger: #dc2626;
-    --sidebar: #13293d;
+    --sidebar: #76bafb;
     --radius: 8px;
-    --shadow: 0 18px 45px rgba(22, 33, 47, 0.08);
+    --shadow: 0 18px 45px rgba(0, 255, 251, 0.08);
 }
 
 * {

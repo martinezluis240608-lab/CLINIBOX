@@ -1,4 +1,4 @@
 <?php
 
-header('Location: app/views/home/index.html');
+header('Location: app/views/public/home.html');
 exit;
