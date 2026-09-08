@@ -28,6 +28,11 @@ document.addEventListener("DOMContentLoaded", function () {
             roleInput.value =
                 button.dataset.role;
 
+            // En el acceso demo el rol funciona como entrada rápida al panel.
+            if (button.dataset.quickLogin === "true") {
+                loginForm.requestSubmit();
+            }
+
         });
 
     });
@@ -99,50 +104,18 @@ document.addEventListener("DOMContentLoaded", function () {
     loginForm.addEventListener(
         "submit",
         function (event) {
-
-            event.preventDefault();
-
-
-            const correo =
-                document.getElementById("correo").value.trim();
-
-            const passwordValue =
-                document.getElementById("password").value.trim();
-
             const rol =
                 document.getElementById("rol").value;
 
-
-            if (
-                correo === "" ||
-                passwordValue === ""
-            ) {
-
-                loginMessage.textContent =
-                    "Completa todos los campos.";
-
+            if (!rol) {
+                event.preventDefault();
+                loginMessage.textContent = "Selecciona un rol para continuar.";
                 loginMessage.classList.add("show");
-
                 return;
             }
 
-
+            // El navegador envía el formulario al controlador PHP.
             loginMessage.classList.remove("show");
-
-
-            console.log("Correo:", correo);
-
-            console.log("Rol:", rol);
-
-            /*
-                AQUÍ POSTERIORMENTE CONECTAREMOS
-                EL LOGIN CON PHP Y MYSQL.
-            */
-
-            alert(
-                "Interfaz funcionando.\n\n" +
-                "Rol seleccionado: " + rol
-            );
 
         }
     );

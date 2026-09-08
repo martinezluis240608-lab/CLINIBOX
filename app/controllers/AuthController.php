@@ -17,7 +17,8 @@ class AuthController extends Controller
 
     public function attempt(): void
     {
-        $role = $_POST['role'] ?? '';
+        $role = $_POST['role'] ?? $_POST['rol'] ?? '';
+        $role = $role === 'administrador' ? 'admin' : $role;
         $validRoles = ['medico', 'paciente', 'admin'];
 
         if (!in_array($role, $validRoles, true)) {
@@ -43,6 +44,7 @@ class AuthController extends Controller
             ],
         ];
 
+        session_regenerate_id(true);
         $_SESSION['user'] = $users[$role];
         $this->redirect('/dashboard');
     }

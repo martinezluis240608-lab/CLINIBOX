@@ -12,10 +12,7 @@
 
     <title>Iniciar sesión | CliniBox</title>
 
-    <link
-        rel="stylesheet"
-        href="../../../public/assets/css/login.css"
-    >
+    <link rel="stylesheet" href="assets/css/login.css">
 
 </head>
 
@@ -214,6 +211,7 @@
                         type="button"
                         class="role-button active"
                         data-role="paciente"
+                        data-quick-login="true"
                     >
 
                         <span class="role-icon">
@@ -231,6 +229,7 @@
                         type="button"
                         class="role-button"
                         data-role="medico"
+                        data-quick-login="true"
                     >
 
                         <span class="role-icon">
@@ -247,7 +246,8 @@
                     <button
                         type="button"
                         class="role-button"
-                        data-role="administrador"
+                        data-role="admin"
+                        data-quick-login="true"
                     >
 
                         <span class="role-icon">
@@ -268,6 +268,8 @@
                 <form
                     class="login-form"
                     id="loginForm"
+                    action="login"
+                    method="post"
                 >
 
                     <!-- ROL -->
@@ -275,7 +277,7 @@
                     <input
                         type="hidden"
                         id="rol"
-                        name="rol"
+                        name="role"
                         value="paciente"
                     >
 
@@ -296,8 +298,8 @@
 
                             <input
                                 type="email"
-                                id="correo"
-                                name="correo"
+                        id="correo"
+                        name="email"
                                 placeholder="ejemplo@correo.com"
                                 required
                             >
@@ -324,7 +326,7 @@
                             <input
                                 type="password"
                                 id="password"
-                                name="password"
+                        name="password"
                                 placeholder="••••••••"
                                 required
                             >
@@ -493,7 +495,7 @@
     </main>
 
 
-    <script src="../../../public/assets/js/login.js"></script>
+    <script src="assets/js/login.js?v=2"></script>
 
 </body>
 
