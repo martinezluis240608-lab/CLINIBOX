@@ -1,38 +1,1019 @@
 <!doctype html>
 <html lang="es">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Mi perfil | CliniBox</title>
-<link rel="stylesheet" href="../assets/css/app.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Mi perfil | CliniBox</title>
+  <link rel="stylesheet" href="../assets/css/app.css">
+  <link rel="stylesheet" href="../assets/css/patient-dashboard.css">
 </head>
-<body>
-<div class="app-shell">
-    <nav class="sidebar">
-        <div class="brand">
-            <div class="brand-mark">C</div>
-            <div><strong>CliniBox</strong><small>Panel paciente</small></div>
+<body class="patient-dashboard-page">
+
+<div class="app-shell patient-shell">
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       SIDEBAR
+  ═══════════════════════════════════════════════════════════════ -->
+  <nav class="patient-sidebar" id="patientSidebar">
+
+    <!-- Brand -->
+    <a class="patient-brand" href="../../" aria-label="Inicio CliniBox">
+      <span>+</span>
+      <strong>CliniBox<small>Mi espacio de salud</small></strong>
+    </a>
+
+    <!-- Patient info -->
+    <div class="sidebar-patient-info">
+      <div class="sp-avatar">
+        <span id="sb-initials">CM</span>
+        <div class="sp-online-dot"></div>
+      </div>
+      <div>
+        <span class="sp-name" id="sb-name">Carlos Mendoza</span>
+        <span class="sp-role">Paciente</span>
+      </div>
+    </div>
+
+    <!-- Nav -->
+    <div class="nav-section-title">Principal</div>
+    <div class="nav-list">
+      <a href="#" data-section="inicio" onclick="showSection('inicio',this)">
+        <span class="ni-icon">🏠</span> Inicio
+      </a>
+      <a href="#" class="active" data-section="perfil" onclick="showSection('perfil',this)">
+        <span class="ni-icon">👤</span> Mi perfil
+      </a>
+      <a href="#" data-section="citas" onclick="showSection('citas',this)">
+        <span class="ni-icon">📅</span> Mis citas
+        <span class="nav-badge">2</span>
+      </a>
+      <a href="#" data-section="medicos" onclick="showSection('medicos',this)">
+        <span class="ni-icon">👨‍⚕️</span> Mis médicos
+      </a>
+    </div>
+
+    <div class="nav-section-title">Farmacia</div>
+    <div class="nav-list">
+      <a href="#" data-section="recetas" onclick="showSection('recetas',this)">
+        <span class="ni-icon">📋</span> Mis recetas
+        <span class="nav-badge">3</span>
+      </a>
+      <a href="#" data-section="mifarmacia" onclick="showSection('mifarmacia',this)">
+        <span class="ni-icon">💊</span> Mi farmacia
+      </a>
+      <a href="#" data-section="medicamentos" onclick="showSection('medicamentos',this)">
+        <span class="ni-icon">🛒</span> Medicamentos
+      </a>
+      <a href="#" data-section="pedidos" onclick="showSection('pedidos',this)">
+        <span class="ni-icon">📦</span> Mis pedidos
+        <span class="nav-badge" id="badge-pedidos">1</span>
+      </a>
+    </div>
+
+    <div class="nav-section-title">Historial</div>
+    <div class="nav-list">
+      <a href="#" data-section="historial" onclick="showSection('historial',this)">
+        <span class="ni-icon">📑</span> Historial médico
+      </a>
+      <a href="#" data-section="notificaciones" onclick="showSection('notificaciones',this)">
+        <span class="ni-icon">🔔</span> Notificaciones
+        <span class="nav-badge" id="badge-notif">4</span>
+      </a>
+      <a href="#" data-section="pagos" onclick="showSection('pagos',this)">
+        <span class="ni-icon">💳</span> Pagos
+      </a>
+    </div>
+
+    <div class="patient-logout">
+      <form action="../../logout" method="post">
+        <button type="submit">
+          <span>🚪</span> Cerrar sesión
+        </button>
+      </form>
+    </div>
+  </nav>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       MAIN CONTENT
+  ═══════════════════════════════════════════════════════════════ -->
+  <main class="patient-main">
+
+    <!-- Top bar -->
+    <header class="patient-topbar">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <button class="btn-sm" id="menuToggle" onclick="toggleSidebar()" aria-label="Menú"
+                style="display:none;">☰</button>
+        <span class="topbar-section-title" id="topbar-title">👤 Mi Perfil</span>
+      </div>
+      <div class="patient-top-actions">
+        <button class="notification-button" aria-label="Notificaciones"
+                onclick="showSection('notificaciones',null)">
+          🔔<span id="notif-count">4</span>
+        </button>
+        <a class="patient-avatar" href="#" onclick="showSection('perfil',null)">CM</a>
+      </div>
+    </header>
+
+    <!-- ══════════════════════════════════════════════════════════
+         SECCIÓN: INICIO
+    ══════════════════════════════════════════════════════════ -->
+    <section class="patient-panel-section" id="section-inicio">
+
+      <!-- Welcome band -->
+      <div class="patient-welcome-band" style="margin-top:20px;">
+        <div>
+          <p class="patient-status">Todo en orden</p>
+          <h2>Hola, <span id="welcome-name">Carlos</span> 👋</h2>
+          <p>Tu salud, más cerca. Aquí encontrarás todo lo que necesitas.</p>
         </div>
-        <div class="nav-list">
-            <a href="consultas">Consultas</a>
-            <a href="medicamentos">Medicamentos</a>
-            <a href="mensajes">Mensajes</a>
-            <a href="recetas">Recetas</a>
-            <a href="perfil" class="active">Perfil</a>
-            <a href="../dashboard/">Volver al panel</a>
+        <a class="patient-primary-action" href="#" onclick="showSection('citas',null)">
+          Ver mis citas →
+        </a>
+      </div>
+
+      <!-- Stats -->
+      <div class="patient-stats">
+        <article>
+          <div class="patient-stat-icon">📅</div>
+          <div>
+            <small>Próxima cita</small>
+            <strong>15 SEP</strong>
+            <p>10:30 · Dr. Mendoza</p>
+          </div>
+        </article>
+        <article>
+          <div class="patient-stat-icon">📋</div>
+          <div>
+            <small>Recetas activas</small>
+            <strong>02</strong>
+            <p>Tratamientos vigentes</p>
+          </div>
+        </article>
+        <article>
+          <div class="patient-stat-icon">💊</div>
+          <div>
+            <small>Medicamentos hoy</small>
+            <strong>03</strong>
+            <p>1 pendiente de tomar</p>
+          </div>
+        </article>
+      </div>
+
+      <!-- Content grid -->
+      <div class="patient-content-grid">
+
+        <!-- Próxima cita -->
+        <article class="patient-panel patient-appointment">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Próxima cita</p>
+              <h2>Consulta General</h2>
+            </div>
+            <span class="status-pill green">Confirmada</span>
+          </div>
+          <div class="appointment-details">
+            <div class="doctor-avatar">CM</div>
+            <div>
+              <strong>Dr. Carlos Mendoza</strong>
+              <p>Medicina General</p>
+            </div>
+            <time>
+              <strong>15 SEP</strong>
+              <span>10:30 AM</span>
+            </time>
+          </div>
+          <div class="panel-actions">
+            <a href="#" onclick="showSection('citas',null)">Ver detalles</a>
+            <a href="#" onclick="showSection('medicos',null)">Ver médico</a>
+          </div>
+        </article>
+
+        <!-- Tratamiento activo -->
+        <article class="patient-panel patient-prescription">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Tratamiento activo</p>
+              <h2>Omeprazol 20mg</h2>
+            </div>
+            <span class="medicine-dot"></span>
+          </div>
+          <p>1 cápsula al día (en ayunas) · 14 días</p>
+          <div class="medicine-progress">
+            <span style="width:57%"></span>
+          </div>
+          <div class="medicine-meta">
+            <span>Inicio 01 SEP</span>
+            <strong>6 días restantes</strong>
+          </div>
+          <a class="panel-link" href="#" onclick="showSection('recetas',null)">
+            Ver mis recetas <span>→</span>
+          </a>
+        </article>
+      </div>
+
+      <!-- Access modules -->
+      <section class="patient-module-section">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">Acceso rápido</p>
+            <h2>¿Qué necesitas hoy?</h2>
+          </div>
         </div>
-    </nav>
-    <main class="main-content">
-        <section class="section-header">
-            <p class="eyebrow">Módulo paciente</p>
-            <h2>Mi perfil</h2>
-        </section>
-        <div class="profile-grid">
-            <article class="profile-field"><span>Nombre</span><strong>Carlos Mendoza</strong></article>
-            <article class="profile-field"><span>Correo</span><strong>carlos@ejemplo.com</strong></article>
-            <article class="profile-field"><span>Teléfono</span><strong>5555-0101</strong></article>
+        <div class="patient-module-grid">
+          <a href="#" onclick="showSection('citas',null)">
+            <span class="num">01</span>
+            <strong>Mis citas</strong>
+            <small>Agenda y consultas</small>
+          </a>
+          <a href="#" onclick="showSection('recetas',null)">
+            <span class="num">02</span>
+            <strong>Mis recetas</strong>
+            <small>Indicaciones médicas</small>
+          </a>
+          <a href="#" onclick="showSection('mifarmacia',null)">
+            <span class="num">03</span>
+            <strong>Mi farmacia</strong>
+            <small>Medicamentos y pedidos</small>
+          </a>
+          <a href="#" onclick="showSection('historial',null)">
+            <span class="num">04</span>
+            <strong>Historial</strong>
+            <small>Consultas anteriores</small>
+          </a>
+          <a href="#" onclick="showSection('medicos',null)">
+            <span class="num">05</span>
+            <strong>Mis médicos</strong>
+            <small>Especialistas</small>
+          </a>
+          <a href="#" onclick="showSection('pagos',null)">
+            <span class="num">06</span>
+            <strong>Pagos</strong>
+            <small>Transacciones</small>
+          </a>
         </div>
-    </main>
+      </section>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+         SECCIÓN: PERFIL
+    ══════════════════════════════════════════════════════════ -->
+    <section class="patient-panel-section active" id="section-perfil">
+      <div class="section-topbar">
+        <h2>👤 Mi Perfil</h2>
+        <button class="btn-primary" onclick="alert('Modo edición próximamente')">✏️ Editar perfil</button>
+      </div>
+      <div class="profile-grid">
+        <div class="profile-card-main">
+          <div class="pcm-avatar">CM</div>
+          <div>
+            <div class="pcm-name">Carlos Mendoza</div>
+            <span class="pcm-role">Paciente · CliniBox</span>
+            <div class="pcm-stats">
+              <div class="pcm-stat"><strong>42</strong><span>Años</span></div>
+              <div class="pcm-stat"><strong>O+</strong><span>Tipo de sangre</span></div>
+              <div class="pcm-stat"><strong>5</strong><span>Citas este año</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="profile-details-grid">
+          <div class="pd-item"><label>📧 Correo</label><span>paciente@clinibox.test</span></div>
+          <div class="pd-item"><label>📱 Teléfono</label><span>+52 55 1111 1111</span></div>
+          <div class="pd-item"><label>📍 Dirección</label><span>Dirección pendiente de actualizar</span></div>
+          <div class="pd-item"><label>🎂 Nacimiento</label><span>12 de Marzo, 1984</span></div>
+          <div class="pd-item"><label>🩸 Tipo de sangre</label><span>O Positivo</span></div>
+          <div class="pd-item"><label>⚠️ Alergias</label><span>Sin alergias registradas</span></div>
+          <div class="pd-item"><label>💊 Medicamentos actuales</label><span>Omeprazol 20mg, Loratadina 10mg</span></div>
+          <div class="pd-item"><label>🏥 Médico principal</label><span>Dr. Carlos Mendoza</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+         SECCIÓN: CITAS
+    ══════════════════════════════════════════════════════════ -->
+    <section class="patient-panel-section" id="section-citas">
+      <div class="section-topbar">
+        <h2>📅 Mis Citas</h2>
+        <button class="btn-primary" onclick="alert('Agendar cita – próximamente')">+ Agendar cita</button>
+      </div>
+
+      <p class="subsection-title">Próximas citas</p>
+      <div class="appointments-grid">
+        <div class="appointment-card upcoming">
+          <div class="ac-date"><div class="ac-day">15</div><div class="ac-month">SEP</div></div>
+          <div class="ac-info">
+            <strong>Consulta General</strong>
+            <span>👨‍⚕️ Dr. Carlos Mendoza</span>
+            <span>🕐 10:30 AM · Consultorio 3</span>
+          </div>
+          <div class="ac-actions">
+            <span class="status-pill green">Confirmada</span>
+            <button class="btn-sm">Ver detalles</button>
+          </div>
+        </div>
+        <div class="appointment-card upcoming">
+          <div class="ac-date"><div class="ac-day">22</div><div class="ac-month">SEP</div></div>
+          <div class="ac-info">
+            <strong>Control de Presión</strong>
+            <span>👩‍⚕️ Dra. Ana Torres</span>
+            <span>🕐 4:00 PM · Consultorio 1</span>
+          </div>
+          <div class="ac-actions">
+            <span class="status-pill yellow">Pendiente</span>
+            <button class="btn-sm">Confirmar</button>
+          </div>
+        </div>
+      </div>
+
+      <p class="subsection-title">Citas anteriores</p>
+      <div class="appointments-list">
+        <div class="al-item">
+          <span class="al-date">01/09/2026</span>
+          <span>Consulta General – Dr. Mendoza</span>
+          <span class="status-pill gray" style="margin-left:auto">Completada</span>
+        </div>
+        <div class="al-item">
+          <span class="al-date">15/08/2026</span>
+          <span>Análisis de Laboratorio – Dr. Ruiz</span>
+          <span class="status-pill gray" style="margin-left:auto">Completada</span>
+        </div>
+        <div class="al-item">
+          <span class="al-date">02/07/2026</span>
+          <span>Dermatología – Dra. Sánchez</span>
+          <span class="status-pill gray" style="margin-left:auto">Completada</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+         SECCIÓN: MÉDICOS
+    ══════════════════════════════════════════════════════════ -->
+    <section class="patient-panel-section" id="section-medicos">
+      <div class="section-topbar">
+        <h2>👨‍⚕️ Mis Médicos</h2>
+        <button class="btn-primary">🔍 Buscar médico</button>
+      </div>
+      <div class="doctors-grid">
+        <div class="doctor-card">
+          <div class="dc-avatar">CM</div>
+          <div class="dc-info">
+            <strong>Dr. Carlos Mendoza</strong>
+            <span>Médico General</span>
+            <div class="dc-rating">⭐⭐⭐⭐⭐</div>
+          </div>
+          <div class="dc-actions">
+            <span class="status-pill green">Tu médico principal</span>
+            <button class="btn-sm" onclick="showSection('citas',null)">Agendar cita</button>
+          </div>
+        </div>
+        <div class="doctor-card">
+          <div class="dc-avatar" style="background:linear-gradient(135deg,#f43f5e,#ec4899)">AT</div>
+          <div class="dc-info">
+            <strong>Dra. Ana Torres</strong>
+            <span>Cardióloga</span>
+            <div class="dc-rating">⭐⭐⭐⭐⭐</div>
+          </div>
+          <div class="dc-actions">
+            <span class="status-pill blue">Especialista</span>
+            <button class="btn-sm">Agendar cita</button>
+          </div>
+        </div>
+        <div class="doctor-card">
+          <div class="dc-avatar" style="background:linear-gradient(135deg,#8b5cf6,#a78bfa)">JR</div>
+          <div class="dc-info">
+            <strong>Dr. Jorge Ruiz</strong>
+            <span>Laboratorista</span>
+            <div class="dc-rating">⭐⭐⭐⭐</div>
+          </div>
+          <div class="dc-actions">
+            <span class="status-pill blue">Especialista</span>
+            <button class="btn-sm">Agendar cita</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+         SECCIÓN: RECETAS
+    ══════════════════════════════════════════════════════════ -->
+    <section class="patient-panel-section" id="section-recetas">
+      <div class="section-topbar"><h2>📋 Mis Recetas</h2></div>
+      <div class="prescriptions-list">
+
+        <!-- Receta 1 – Activa -->
+        <div class="prescription-card active-rx" id="rx-1">
+          <div class="prc-header">
+            <span class="prc-status active">✅ Activa</span>
+            <span class="prc-date">📅 Emitida: 01/09/2026</span>
+            <span class="prc-doctor">👨‍⚕️ Dr. Carlos Mendoza</span>
+          </div>
+          <div class="prc-meds">
+            <div class="prc-med">
+              <div class="prc-med-icon">💊</div>
+              <div>
+                <div class="prc-med-name">Paracetamol</div>
+                <div class="pmi-details">
+                  <span>💊 Dosis: 500mg</span>
+                  <span>📦 Cantidad: 30 tabletas</span>
+                  <span>⏰ Frecuencia: Cada 8 horas</span>
+                  <span>📅 Duración: 10 días</span>
+                  <span>📝 No exceder 4g/día. Tomar con alimentos.</span>
+                </div>
+              </div>
+            </div>
+            <div class="prc-med">
+              <div class="prc-med-icon">💊</div>
+              <div>
+                <div class="prc-med-name">Omeprazol</div>
+                <div class="pmi-details">
+                  <span>💊 Dosis: 20mg</span>
+                  <span>📦 Cantidad: 14 cápsulas</span>
+                  <span>⏰ Frecuencia: 1 vez al día (ayunas)</span>
+                  <span>📅 Duración: 14 días</span>
+                  <span>📝 Tomar 30 min antes del desayuno.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="prc-footer">
+            <button class="btn-comprar" onclick="comprarReceta('rx-1','01/09/2026')">
+              🛒 Comprar medicamentos
+            </button>
+            <button class="btn-sm">🖨️ Imprimir</button>
+          </div>
+        </div>
+
+        <!-- Receta 2 – Vigente -->
+        <div class="prescription-card" id="rx-2">
+          <div class="prc-header">
+            <span class="prc-status vigente">⏳ Vigente</span>
+            <span class="prc-date">📅 Emitida: 15/08/2026</span>
+            <span class="prc-doctor">👩‍⚕️ Dra. Ana Torres</span>
+          </div>
+          <div class="prc-meds">
+            <div class="prc-med">
+              <div class="prc-med-icon">💊</div>
+              <div>
+                <div class="prc-med-name">Enalapril</div>
+                <div class="pmi-details">
+                  <span>💊 Dosis: 10mg</span>
+                  <span>📦 Cantidad: 30 tabletas</span>
+                  <span>⏰ Frecuencia: 1 vez al día</span>
+                  <span>📅 Duración: 30 días</span>
+                  <span>📝 Control de presión arterial. No suspender sin consultar.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="prc-footer">
+            <button class="btn-comprar" onclick="comprarReceta('rx-2','15/08/2026')">
+              🛒 Comprar medicamentos
+            </button>
+            <button class="btn-sm">🖨️ Imprimir</button>
+          </div>
+        </div>
+
+        <!-- Receta 3 – Vencida -->
+        <div class="prescription-card expired-rx" id="rx-3">
+          <div class="prc-header">
+            <span class="prc-status expired">❌ Vencida</span>
+            <span class="prc-date">📅 Emitida: 02/07/2026</span>
+            <span class="prc-doctor">👨‍⚕️ Dr. Jorge Ruiz</span>
+          </div>
+          <div class="prc-meds">
+            <div class="prc-med">
+              <div class="prc-med-icon">💊</div>
+              <div>
+                <div class="prc-med-name">Amoxicilina</div>
+                <div class="pmi-details">
+                  <span>💊 Dosis: 500mg</span>
+                  <span>📦 Cantidad: 21 cápsulas</span>
+                  <span>⏰ Frecuencia: Cada 8 horas</span>
+                  <span>📅 Duración: 7 días</span>
+                  <span>📝 Completar tratamiento aunque mejore.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="prc-footer">
+            <button class="btn-sm" disabled>Receta vencida</button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+         SECCIÓN: MI FARMACIA
+    ══════════════════════════════════════════════════════════ -->
+    <section class="patient-panel-section" id="section-mifarmacia">
+      <div class="section-topbar"><h2>💊 Mi Farmacia</h2></div>
+
+      <!-- Mini farmacia scene -->
+      <div class="mini-farmacia">
+        <div class="mf-shelves">
+          <span>💊</span><span>🧴</span><span>💊</span><span>💉</span><span>💊</span><span>🧴</span>
+        </div>
+        <div style="text-align:center;margin-top:20px;">
+          <div style="font-size:11px;color:#9fc1c0;">Módulo de medicamentos y recetas activo</div>
+        </div>
+      </div>
+
+      <div class="farmacia-options">
+        <div class="fo-card" onclick="showSection('medicamentos',null)">
+          <div class="foc-icon">🛒</div>
+          <strong>Comprar medicamentos</strong>
+          <span>Catálogo completo disponible</span>
+        </div>
+        <div class="fo-card" onclick="showSection('recetas',null)">
+          <div class="foc-icon">📋</div>
+          <strong>Mis recetas</strong>
+          <span>3 recetas disponibles</span>
+        </div>
+        <div class="fo-card" onclick="showSection('pedidos',null)">
+          <div class="foc-icon">📦</div>
+          <strong>Mis pedidos</strong>
+          <span>1 pedido en camino</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+         SECCIÓN: MEDICAMENTOS
+    ══════════════════════════════════════════════════════════ -->
+    <section class="patient-panel-section" id="section-medicamentos">
+      <div class="section-topbar">
+        <h2>🛒 Medicamentos Disponibles</h2>
+        <div class="search-input">
+          <span>🔍</span>
+          <input type="text" placeholder="Buscar medicamentos..."
+                 id="med-search" oninput="filterMeds(this.value)">
+        </div>
+      </div>
+
+      <!-- Recipe filter banner -->
+      <div class="med-filter-banner" id="med-filter-banner" style="display:none;">
+        <span class="mfb-icon">📋</span>
+        <div>Mostrando medicamentos de tu receta del
+          <strong id="mfb-date"></strong>
+        </div>
+        <button class="mfb-clear" onclick="showAllMeds()" title="Quitar filtro">✕ Ver todos</button>
+      </div>
+
+      <div class="medications-grid" id="meds-grid">
+        <!-- Populated by JS -->
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+         SECCIÓN: PEDIDOS
+    ══════════════════════════════════════════════════════════ -->
+    <section class="patient-panel-section" id="section-pedidos">
+      <div class="section-topbar"><h2>📦 Mis Pedidos</h2></div>
+      <div class="orders-list">
+
+        <div class="order-card oc-active">
+          <div class="oc-header">
+            <div class="oc-id">Pedido #CB-2026-0041</div>
+            <span class="status-pill blue">🚚 En camino</span>
+          </div>
+          <div class="oc-body">
+            <div class="oc-items">
+              <span>💊 Paracetamol 500mg × 30</span>
+              <span>💊 Omeprazol 20mg × 14</span>
+            </div>
+            <div class="oc-track">
+              <span class="track-step done">✅ Realizado</span>
+              <div class="track-line done"></div>
+              <span class="track-step done">✅ Preparación</span>
+              <div class="track-line done"></div>
+              <span class="track-step active">🚚 En camino</span>
+              <div class="track-line"></div>
+              <span class="track-step">📦 Entregado</span>
+            </div>
+          </div>
+          <div class="oc-footer">
+            <span>Estimado: Hoy 3:00 – 5:00 PM</span>
+            <span style="font-weight:700;color:var(--navy)">$320.00</span>
+          </div>
+        </div>
+
+        <div class="order-card">
+          <div class="oc-header">
+            <div class="oc-id">Pedido #CB-2026-0038</div>
+            <span class="status-pill gray">✅ Entregado</span>
+          </div>
+          <div class="oc-body">
+            <div class="oc-items"><span>💊 Enalapril 10mg × 30</span></div>
+          </div>
+          <div class="oc-footer">
+            <span>Entregado: 20/08/2026</span>
+            <span style="font-weight:700;color:var(--navy)">$180.00</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+         SECCIÓN: HISTORIAL
+    ══════════════════════════════════════════════════════════ -->
+    <section class="patient-panel-section" id="section-historial">
+      <div class="section-topbar">
+        <h2>📑 Historial Médico</h2>
+        <button class="btn-primary">📥 Descargar PDF</button>
+      </div>
+      <div class="mh-timeline">
+        <div class="mh-item">
+          <div class="mh-dot blue"></div>
+          <div class="mh-content">
+            <div class="mh-date">01 SEP 2026</div>
+            <strong>Consulta General</strong>
+            <p>Diagnóstico: Gastritis leve. Tratamiento con Omeprazol 20mg y dieta blanda por 14 días.</p>
+            <span class="mh-doctor">👨‍⚕️ Dr. Carlos Mendoza</span>
+          </div>
+        </div>
+        <div class="mh-item">
+          <div class="mh-dot green"></div>
+          <div class="mh-content">
+            <div class="mh-date">15 AGO 2026</div>
+            <strong>Control Cardiológico</strong>
+            <p>Presión arterial 130/85. Se ajusta dosis de Enalapril a 10mg diario. Control en 30 días.</p>
+            <span class="mh-doctor">👩‍⚕️ Dra. Ana Torres</span>
+          </div>
+        </div>
+        <div class="mh-item">
+          <div class="mh-dot purple"></div>
+          <div class="mh-content">
+            <div class="mh-date">02 JUL 2026</div>
+            <strong>Análisis de Laboratorio</strong>
+            <p>Biometría hemática normal. Glucosa en ayunas: 92 mg/dL. Colesterol total: 180 mg/dL.</p>
+            <span class="mh-doctor">👨‍⚕️ Dr. Jorge Ruiz</span>
+          </div>
+        </div>
+        <div class="mh-item">
+          <div class="mh-dot teal"></div>
+          <div class="mh-content">
+            <div class="mh-date">12 MAY 2026</div>
+            <strong>Dermatología</strong>
+            <p>Consulta por dermatitis de contacto. Tratamiento tópico con betametasona 0.05% por 7 días.</p>
+            <span class="mh-doctor">👩‍⚕️ Dra. Laura Sánchez</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+         SECCIÓN: NOTIFICACIONES
+    ══════════════════════════════════════════════════════════ -->
+    <section class="patient-panel-section" id="section-notificaciones">
+      <div class="section-topbar">
+        <h2>🔔 Notificaciones</h2>
+        <button class="btn-sm" onclick="markAllRead()">✓ Marcar todas como leídas</button>
+      </div>
+      <div class="notif-list" id="notif-list">
+        <div class="notif-item unread" id="notif-1">
+          <div class="ni-indicator blue"></div>
+          <div class="ni-body">
+            <strong>Cita confirmada</strong>
+            <p>Tu cita con el Dr. Carlos Mendoza el 15 de Septiembre a las 10:30 AM ha sido confirmada.</p>
+            <span class="ni-time">Hace 2 horas</span>
+          </div>
+          <button class="ni-read-btn" onclick="readNotif('notif-1')" title="Marcar como leída">✓</button>
+        </div>
+        <div class="notif-item unread" id="notif-2">
+          <div class="ni-indicator green"></div>
+          <div class="ni-body">
+            <strong>Nueva receta disponible</strong>
+            <p>El Dr. Carlos Mendoza ha generado una nueva receta para ti. Revísala en "Mis Recetas".</p>
+            <span class="ni-time">Hace 3 horas</span>
+          </div>
+          <button class="ni-read-btn" onclick="readNotif('notif-2')" title="Marcar como leída">✓</button>
+        </div>
+        <div class="notif-item unread" id="notif-3">
+          <div class="ni-indicator orange"></div>
+          <div class="ni-body">
+            <strong>Pedido en camino</strong>
+            <p>Tu pedido #CB-2026-0041 está en camino. Estimado: hoy entre 3:00 - 5:00 PM.</p>
+            <span class="ni-time">Hace 1 día</span>
+          </div>
+          <button class="ni-read-btn" onclick="readNotif('notif-3')" title="Marcar como leída">✓</button>
+        </div>
+        <div class="notif-item unread" id="notif-4">
+          <div class="ni-indicator purple"></div>
+          <div class="ni-body">
+            <strong>Recordatorio de medicamento</strong>
+            <p>Recuerda tomar tu Omeprazol 20mg esta mañana antes del desayuno.</p>
+            <span class="ni-time">Hace 1 día</span>
+          </div>
+          <button class="ni-read-btn" onclick="readNotif('notif-4')" title="Marcar como leída">✓</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+         SECCIÓN: PAGOS
+    ══════════════════════════════════════════════════════════ -->
+    <section class="patient-panel-section" id="section-pagos">
+      <div class="section-topbar">
+        <h2>💳 Pagos</h2>
+        <button class="btn-primary">+ Agregar método de pago</button>
+      </div>
+      <div class="payments-summary">
+        <div class="psc blue">
+          <div class="psc-label">Total gastado este mes</div>
+          <div class="psc-amount">$1,250.00</div>
+        </div>
+        <div class="psc green">
+          <div class="psc-label">Consultas</div>
+          <div class="psc-amount">$750.00</div>
+        </div>
+        <div class="psc purple">
+          <div class="psc-label">Medicamentos</div>
+          <div class="psc-amount">$500.00</div>
+        </div>
+      </div>
+      <p class="subsection-title">Historial de transacciones</p>
+      <div class="payments-table">
+        <div class="pt-row header">
+          <span>Fecha</span>
+          <span>Descripción</span>
+          <span>Método</span>
+          <span>Monto</span>
+        </div>
+        <div class="pt-row">
+          <span>08/09/2026</span>
+          <span>Medicamentos – Pedido #41</span>
+          <span>💳 Visa ****4521</span>
+          <span class="pt-amount">-$320.00</span>
+        </div>
+        <div class="pt-row">
+          <span>01/09/2026</span>
+          <span>Consulta General</span>
+          <span>💳 Visa ****4521</span>
+          <span class="pt-amount">-$350.00</span>
+        </div>
+        <div class="pt-row">
+          <span>20/08/2026</span>
+          <span>Medicamentos – Pedido #38</span>
+          <span>💳 Visa ****4521</span>
+          <span class="pt-amount">-$180.00</span>
+        </div>
+        <div class="pt-row">
+          <span>15/08/2026</span>
+          <span>Consulta Cardiológica</span>
+          <span>💳 Visa ****4521</span>
+          <span class="pt-amount">-$400.00</span>
+        </div>
+      </div>
+    </section>
+
+  </main>
 </div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     MODAL: FARMACIA VIRTUAL (comprar receta)
+═══════════════════════════════════════════════════════════════ -->
+<div id="modal-farmacia" style="
+  display:none;position:fixed;inset:0;z-index:300;
+  background:rgba(10,20,30,.7);backdrop-filter:blur(8px);
+  place-items:center;
+" onclick="if(event.target===this)closeFarmaciaModal()">
+  <div style="
+    width:min(640px,calc(100%-32px));max-height:calc(100vh-32px);
+    overflow-y:auto;padding:28px;
+    background:#fff;border-radius:16px;
+    box-shadow:0 32px 80px rgba(0,0,0,.3);
+  ">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+      <h3 style="font-size:18px;color:#0e2d3d;">💊 Farmacia Virtual – Tu Receta</h3>
+      <button onclick="closeFarmaciaModal()" style="background:none;border:none;font-size:20px;cursor:pointer;color:#8aa5b0;">✕</button>
+    </div>
+    <div id="modal-meds-body"></div>
+    <div style="margin-top:20px;display:flex;gap:10px;">
+      <button class="btn-comprar" style="flex:1;" onclick="alert('Pedido agregado al carrito ✅')">
+        ✅ Confirmar pedido
+      </button>
+      <button class="btn-sm" onclick="closeFarmaciaModal()">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast notification -->
+<div id="toast" style="
+  position:fixed;bottom:24px;right:24px;z-index:500;
+  padding:12px 20px;border-radius:10px;
+  background:#0e2d3d;color:#fff;font-size:13px;font-weight:600;
+  box-shadow:0 8px 24px rgba(0,0,0,.3);
+  transform:translateY(100px);opacity:0;
+  transition:transform .3s,opacity .3s;
+  pointer-events:none;
+"></div>
+
+<script>
+/* ================================================================
+   Patient Dashboard JS
+   ================================================================ */
+
+/* ── Medication catalog ─────────────────────────────────────────── */
+const MED_CATALOG = [
+  { id:'m1',  name:'Paracetamol',    dose:'500mg',  cat:'Analgésico',    icon:'💊', price:45,  stock:true,  rx:false, rxKey:'rx-1' },
+  { id:'m2',  name:'Omeprazol',      dose:'20mg',   cat:'Antiácido',     icon:'💊', price:85,  stock:true,  rx:true,  rxKey:'rx-1' },
+  { id:'m3',  name:'Enalapril',      dose:'10mg',   cat:'Antihipertens.',icon:'💊', price:120, stock:true,  rx:true,  rxKey:'rx-2' },
+  { id:'m4',  name:'Amoxicilina',    dose:'500mg',  cat:'Antibiótico',   icon:'💊', price:95,  stock:false, rx:true,  rxKey:'rx-3' },
+  { id:'m5',  name:'Loratadina',     dose:'10mg',   cat:'Antihistam.',   icon:'💊', price:55,  stock:true,  rx:false, rxKey:null   },
+  { id:'m6',  name:'Ibuprofeno',     dose:'400mg',  cat:'Analgésico',    icon:'💊', price:40,  stock:true,  rx:false, rxKey:null   },
+  { id:'m7',  name:'Metformina',     dose:'850mg',  cat:'Antidiabético', icon:'💊', price:75,  stock:true,  rx:true,  rxKey:null   },
+  { id:'m8',  name:'Vitamina C',     dose:'500mg',  cat:'Vitamina',      icon:'🍊', price:30,  stock:true,  rx:false, rxKey:null   },
+  { id:'m9',  name:'Vitamina D3',    dose:'1000 UI',cat:'Vitamina',      icon:'☀️', price:60,  stock:true,  rx:false, rxKey:null   },
+  { id:'m10', name:'Melatonina',     dose:'5mg',    cat:'Sueño',         icon:'💊', price:110, stock:true,  rx:false, rxKey:null   },
+  { id:'m11', name:'Ciprofloxacino', dose:'500mg',  cat:'Antibiótico',   icon:'💊', price:130, stock:true,  rx:true,  rxKey:null   },
+  { id:'m12', name:'Complejo B',     dose:'·',      cat:'Vitamina',      icon:'💊', price:55,  stock:true,  rx:false, rxKey:null   },
+];
+
+let activeRxFilter = null; // rxKey or null
+
+/* Render medication cards */
+function renderMeds(list) {
+  const grid = document.getElementById('meds-grid');
+  grid.innerHTML = list.map(m => `
+    <div class="med-card" id="medcard-${m.id}">
+      <div class="med-card-icon">${m.icon}</div>
+      <div>
+        <span class="med-card-badge${m.rx ? ' rx' : ''}">${m.rx ? '🔒 Con receta' : '🟢 Libre venta'}</span>
+      </div>
+      <div class="med-card-name">${m.name}</div>
+      <div class="med-card-detail">${m.dose} · ${m.cat}</div>
+      <div class="med-card-price">$${m.price}.00</div>
+      ${m.stock
+        ? `<button class="btn-add-cart" onclick="addToCart('${m.id}')">🛒 Agregar al carrito</button>`
+        : `<button class="btn-sm" disabled style="width:100%">Sin stock</button>`}
+    </div>
+  `).join('');
+}
+
+function filterMeds(query) {
+  const q = query.toLowerCase();
+  const list = MED_CATALOG.filter(m =>
+    (!activeRxFilter || m.rxKey === activeRxFilter) &&
+    (m.name.toLowerCase().includes(q) || m.cat.toLowerCase().includes(q))
+  );
+  renderMeds(list);
+}
+
+function showAllMeds() {
+  activeRxFilter = null;
+  document.getElementById('med-filter-banner').style.display = 'none';
+  renderMeds(MED_CATALOG);
+}
+
+function addToCart(id) {
+  showToast('✅ Medicamento agregado al carrito');
+}
+
+/* ── Prescription → Pharmacy ───────────────────────────────────── */
+function comprarReceta(rxId, date) {
+  const meds = MED_CATALOG.filter(m => m.rxKey === rxId);
+  const body = document.getElementById('modal-meds-body');
+
+  if (meds.length === 0) {
+    body.innerHTML = '<p style="color:#8aa5b0;">No hay medicamentos vinculados a esta receta en el catálogo.</p>';
+  } else {
+    body.innerHTML = `
+      <p style="font-size:13px;color:#4a6070;margin-bottom:16px;">
+        Medicamentos de tu receta del <strong>${date}</strong>:
+      </p>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        ${meds.map(m => `
+          <div style="display:flex;align-items:center;gap:14px;padding:12px;background:#f0f7f6;border-radius:8px;border:1px solid #d8eaea;">
+            <span style="font-size:24px;">${m.icon}</span>
+            <div style="flex:1;">
+              <strong style="font-size:14px;color:#0e2d3d;">${m.name}</strong>
+              <div style="font-size:12px;color:#8aa5b0;">${m.dose} · ${m.cat}</div>
+            </div>
+            <div style="font-size:16px;font-weight:800;color:#0d6e68;">$${m.price}.00</div>
+          </div>
+        `).join('')}
+      </div>
+      <div style="margin-top:14px;padding:10px 14px;background:#f0f7f6;border-radius:8px;font-size:13px;">
+        <div style="display:flex;justify-content:space-between;">
+          <span>Total estimado:</span>
+          <strong style="color:#0e2d3d;">$${meds.reduce((a,m) => a+m.price, 0)}.00</strong>
+        </div>
+      </div>
+    `;
+  }
+
+  const modal = document.getElementById('modal-farmacia');
+  modal.style.display = 'grid';
+}
+
+function closeFarmaciaModal() {
+  document.getElementById('modal-farmacia').style.display = 'none';
+}
+
+/* ── Section navigation ─────────────────────────────────────────── */
+const sectionTitles = {
+  inicio: '🏠 Inicio',
+  perfil: '👤 Mi Perfil',
+  citas: '📅 Mis Citas',
+  medicos: '👨‍⚕️ Mis Médicos',
+  recetas: '📋 Mis Recetas',
+  mifarmacia: '💊 Mi Farmacia',
+  medicamentos: '🛒 Medicamentos',
+  pedidos: '📦 Mis Pedidos',
+  historial: '📑 Historial Médico',
+  notificaciones: '🔔 Notificaciones',
+  pagos: '💳 Pagos',
+};
+
+window.showSection = function(key, linkEl) {
+  // Hide all sections
+  document.querySelectorAll('.patient-panel-section').forEach(s => s.classList.remove('active'));
+  // Show target
+  const sec = document.getElementById('section-' + key);
+  if (sec) sec.classList.add('active');
+
+  // Update topbar title
+  document.getElementById('topbar-title').textContent = sectionTitles[key] || key;
+
+  // Update active nav link
+  document.querySelectorAll('.nav-list a').forEach(a => a.classList.remove('active'));
+  if (linkEl) {
+    linkEl.classList.add('active');
+  } else {
+    const match = document.querySelector(`.nav-list a[data-section="${key}"]`);
+    if (match) match.classList.add('active');
+  }
+
+  // Populate medications on first visit
+  if (key === 'medicamentos') renderMeds(MED_CATALOG);
+
+  // Close sidebar on mobile
+  if (window.innerWidth < 720) {
+    document.getElementById('patientSidebar').classList.remove('open');
+  }
+
+  return false;
+};
+
+/* ── Notifications ─────────────────────────────────────────────── */
+window.readNotif = function(id) {
+  const item = document.getElementById(id);
+  if (item) item.classList.remove('unread');
+  updateNotifCount();
+};
+
+window.markAllRead = function() {
+  document.querySelectorAll('.notif-item.unread').forEach(i => i.classList.remove('unread'));
+  updateNotifCount();
+};
+
+function updateNotifCount() {
+  const count = document.querySelectorAll('.notif-item.unread').length;
+  const badge = document.getElementById('notif-count');
+  if (badge) badge.textContent = count || '';
+  if (badge) badge.style.display = count ? 'grid' : 'none';
+  const badgeNotif = document.getElementById('badge-notif');
+  if (badgeNotif) {
+    badgeNotif.textContent = count || '';
+    badgeNotif.style.display = count ? 'grid' : 'none';
+  }
+}
+
+/* ── Sidebar toggle (mobile) ───────────────────────────────────── */
+window.toggleSidebar = function() {
+  document.getElementById('patientSidebar').classList.toggle('open');
+};
+
+/* ── Toast ─────────────────────────────────────────────────────── */
+function showToast(msg, duration = 2800) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.transform = 'translateY(0)';
+  t.style.opacity = '1';
+  setTimeout(() => {
+    t.style.transform = 'translateY(100px)';
+    t.style.opacity = '0';
+  }, duration);
+}
+
+/* ── Responsive: show menu toggle on mobile ─────────────────────── */
+function checkMobile() {
+  const menuBtn = document.getElementById('menuToggle');
+  if (menuBtn) menuBtn.style.display = window.innerWidth < 720 ? 'flex' : 'none';
+}
+window.addEventListener('resize', checkMobile);
+checkMobile();
+
+/* ── Init ───────────────────────────────────────────────────────── */
+// Greet logged-in user (from localStorage or default)
+const patientName = sessionStorage.getItem('cb_patient_name') || 'Carlos';
+const el = document.getElementById('welcome-name');
+if (el) el.textContent = patientName;
+
+// Initial meds render (lazy, only when visiting section)
+</script>
+
 </body>
 </html>

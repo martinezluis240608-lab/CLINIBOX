@@ -554,12 +554,13 @@
           <!-- Mensaje de alerta / validación de credenciales -->
           <div class="login-alert" id="loginAlert" style="display: none;"></div>
 
-          <form id="patientLoginForm" class="login-form" onsubmit="handleLogin(event)">
+          <form id="patientLoginForm" class="login-form" action="public/login" method="post">
+            <input type="hidden" name="role" value="paciente" />
             <div class="form-group">
               <label for="loginEmail">Correo Electrónico</label>
               <div class="input-with-icon">
                 <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-                <input type="email" id="loginEmail" placeholder="ejemplo@clinibox.com" required value="paciente@clinibox.com" />
+                <input type="email" id="loginEmail" name="email" placeholder="ejemplo@clinibox.com" required value="paciente@clinibox.com" />
               </div>
             </div>
 
@@ -567,7 +568,7 @@
               <label for="loginPassword">Contraseña</label>
               <div class="input-with-icon">
                 <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                <input type="password" id="loginPassword" placeholder="••••••••" required value="123456" />
+                <input type="password" id="loginPassword" name="password" placeholder="••••••••" required value="123456" />
                 <button type="button" class="btn-toggle-pwd" id="btnTogglePassword" title="Mostrar/Ocultar contraseña">👁️</button>
               </div>
             </div>
@@ -600,83 +601,6 @@
       </div>
     </article>
 
-    <!-- ============================================================
-         PANEL PRINCIPAL DEL PACIENTE (DASHBOARD TRAS INICIAR SESIÓN)
-         ============================================================ -->
-    <article class="tour-stage" id="stage-dashboard">
-      <div class="dashboard-container">
-        <!-- Barra de saludo del paciente -->
-        <div class="dashboard-header glass-panel">
-          <div class="patient-profile-summary">
-            <div class="patient-avatar-badge">👨‍💼</div>
-            <div>
-              <h2 id="patientGreeting">¡Bienvenido de nuevo, Carlos Mendoza!</h2>
-              <span class="patient-id-badge">ID Paciente: CLB-8834 • Afiliado Activo</span>
-            </div>
-          </div>
-          <div class="dashboard-header-actions">
-            <button class="btn btn-outline btn-sm" onclick="goToStep(0)">
-              <span>🏠 Regresar al Paseo Virtual</span>
-            </button>
-            <button class="btn btn-danger btn-sm" onclick="handleLogout()">
-              <span>Cerrar sesión</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- Tarjetas del Dashboard -->
-        <div class="dashboard-grid">
-          <!-- Citas Médicas -->
-          <div class="dash-card glass-panel">
-            <div class="dash-card-header">
-              <span class="dash-icon">📅</span>
-              <h3>Próxima Cita</h3>
-            </div>
-            <div class="dash-card-body">
-              <div class="appointment-pill">
-                <strong>Medicina General - Consultorio 03</strong>
-                <p>Dr. Alejandro Morales • Mañana a las 10:30 AM</p>
-                <span class="badge-status-confirmed">Confirmada</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Recetas Activas -->
-          <div class="dash-card glass-panel">
-            <div class="dash-card-header">
-              <span class="dash-icon">💊</span>
-              <h3>Receta Activa</h3>
-            </div>
-            <div class="dash-card-body">
-              <p><strong>Receta #RX-9921</strong></p>
-              <ul class="dash-list">
-                <li>Amoxicilina 500mg (Cada 8 horas por 7 días)</li>
-                <li>Paracetamol 500mg (1 tableta cada 8 horas si hay dolor)</li>
-              </ul>
-              <button class="btn btn-sm btn-accent" id="btnDashViewPrescription">Ver Receta Completa</button>
-            </div>
-          </div>
-
-          <!-- Historial de Visitas -->
-          <div class="dash-card glass-panel">
-            <div class="dash-card-header">
-              <span class="dash-icon">📑</span>
-              <h3>Historial Clínico</h3>
-            </div>
-            <div class="dash-card-body">
-              <div class="history-item">
-                <span class="history-date">05 Sep 2026</span>
-                <span class="history-desc">Control Anual Preventivo - Aprobado</span>
-              </div>
-              <div class="history-item">
-                <span class="history-date">18 Ago 2026</span>
-                <span class="history-desc">Laboratorio Clínico (Hemograma Completo)</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </article>
   </main>
 
   <!-- ============================================================
@@ -966,6 +890,6 @@
   </div>
 
   <!-- Script principal del proyecto -->
-  <script src="script.js"></script>
+  <script src="script.js?v=20260913-2"></script>
 </body>
 </html>

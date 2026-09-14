@@ -4,40 +4,58 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Bitácora de medicamentos | CliniBox</title>
-<link rel="stylesheet" href="../assets/css/app.css">
+<link rel="stylesheet" href="/public/assets/css/patient-dashboard.css">
 </head>
-<body>
-<div class="app-shell">
-    <nav class="sidebar">
-        <div class="brand">
-            <div class="brand-mark">C</div>
-            <div><strong>CliniBox</strong><small>Panel paciente</small></div>
+<body class="patient-page">
+<div class="dashboard-container">
+
+    <div class="dashboard-header glass-panel">
+        <div class="patient-profile-summary">
+            <div class="patient-avatar-badge">👨‍💼</div>
+            <div>
+                <h2>Bitácora de medicamentos</h2>
+                <span class="patient-id-badge">Carlos Mendoza • Paciente</span>
+            </div>
         </div>
-        <div class="nav-list">
-            <a href="consultas">Consultas</a>
-            <a href="medicamentos" class="active">Medicamentos</a>
-            <a href="mensajes">Mensajes</a>
-            <a href="recetas">Recetas</a>
-            <a href="perfil">Perfil</a>
-            <a href="../dashboard/">Volver al panel</a>
+        <div class="dashboard-header-actions">
+            <a class="btn btn-outline btn-sm" href="../"><span>🏠 Regresar al Paseo Virtual</span></a>
+            <a class="btn btn-danger btn-sm" href="../"><span>Cerrar sesión</span></a>
         </div>
+    </div>
+
+    <nav class="patient-tabs" aria-label="Secciones del panel paciente">
+        <a href="inicio">Inicio</a>
+        <a href="consultas">Consultas</a>
+        <a href="medicamentos" class="active">Medicamentos</a>
+        <a href="mensajes">Mensajes</a>
+        <a href="recetas">Recetas</a>
+        <a href="agendarCita">Agendar cita</a>
+        <a href="perfil">Perfil</a>
     </nav>
-    <main class="main-content">
-        <section class="section-header">
-            <p class="eyebrow">Módulo paciente</p>
-            <h2>Bitácora de medicamentos</h2>
-            <p>Control diario de medicamentos indicados en consulta.</p>
-        </section>
-        <div class="table-wrapper">
-            <table>
-                <thead><tr><th>Medicamento</th><th>Horario</th><th>Tomado</th><th>Notas</th></tr></thead>
-                <tbody>
-                    <tr><td>Losartán 50mg</td><td>08:00 AM</td><td><span class="pill">Sí</span></td><td>Tomar con alimentos</td></tr>
-                    <tr><td>Losartán 50mg</td><td>08:00 PM</td><td><span class="pill">Pendiente</span></td><td>-</td></tr>
-                </tbody>
-            </table>
+
+    <div class="dashboard-grid">
+        <div class="dash-card">
+            <div class="dash-card-header">
+                <span class="dash-icon">💊</span>
+                <h3>Losartán 50mg</h3>
+            </div>
+            <div class="dash-card-body">
+                <p><strong>08:00 AM</strong> — Tomar con alimentos</p>
+                <span class="badge-status-confirmed">Tomado</span>
+            </div>
         </div>
-    </main>
+
+        <div class="dash-card">
+            <div class="dash-card-header">
+                <span class="dash-icon">💊</span>
+                <h3>Losartán 50mg</h3>
+            </div>
+            <div class="dash-card-body">
+                <p><strong>08:00 PM</strong> — Sin notas</p>
+                <span class="badge-status-pendiente">Pendiente</span>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>

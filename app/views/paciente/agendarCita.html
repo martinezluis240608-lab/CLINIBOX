@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <title>Agendar cita | CliniBox</title>
+        <link rel="stylesheet" href="/public/assets/css/app.css"></head>
+<body>
+    <div class="app-shell">
+        <nav class="sidebar">
+            <div class="brand">
+                <div class="brand-mark">C</div>
+                <div>
+                    <strong>CliniBox</strong>
+                    <small>Panel paciente</small>
+                </div>
+            </div>
+            <div class="nav-list">
+                <a href="inicio.html">Inicio</a>
+                <a href="consultas.html">Consultas</a>
+                <a href="medicamentos.html">Medicamentos</a>
+                <a href="mensajes.html">Mensajes</a>
+                <a href="recetas.html">Recetas</a>
+                <a href="agendarCita.html" class="active">Agendar cita</a>
+                <a href="perfil.html">Perfil</a>
+                <a href="../dashboard/">Volver al panel</a>
+            </div>
+        </nav>
+        <main class="main-content">
+            <section class="section-header">
+                <p class="eyebrow">Módulo paciente</p>
+                <h2>Agendar una cita</h2>
+                <p>Selecciona un día y un horario disponible para tu consulta.</p>
+            </section>
+            <section class="appointment-layout" aria-label="Selector de cita">
+                <div class="calendar-card">
+                    <div class="calendar-head">
+                        <button class="month-button" id="previousMonth" aria-label="Mes anterior">‹</button>
+                        <h3 id="monthLabel"></h3>
+                        <button class="month-button" id="nextMonth" aria-label="Mes siguiente">›</button>
+                    </div>
+                    <div class="calendar-weekdays">
+                        <span>lu</span>
+                        <span>ma</span>
+                        <span>mi</span>
+                        <span>ju</span>
+                        <span>vi</span>
+                        <span>sá</span>
+                        <span>do</span>
+                    </div>
+                    <div class="calendar-days" id="calendarDays"></div>
+                </div>
+                <div class="time-card">
+                    <h3>Horarios disponibles</h3>
+                    <p id="selectedDayText">Elige una fecha para ver los horarios.</p>
+                    <div class="time-list" id="timeList"></div>
+                </div>
+            </section>
+            <div class="reservation-bar">
+                <p id="reservationText">Selecciona una fecha y una hora para reservar.</p>
+                <button class="button" id="continueButton" type="button" disabled>Continuar</button>
+            </div>
+        </main>
+    </div>
+    function renderCalendar(){label.textContent=`${monthNames[displayed.getMonth()]} ${displayed.getFullYear()}`;days.innerHTML='';const firstWeekday=(displayed.getDay()+6)%7,lastDay=new Date(displayed.getFullYear(),displayed.getMonth()+1,0).getDate();for(let i=0;i<firstWeekday;i++)days.appendChild(document.createElement('span'));for(let d=1;d<=lastDay;d++){const date=new Date(displayed.getFullYear(),displayed.getMonth(),d),button=document.createElement('button');button.textContent=d;button.type='button';if(date<today||date.getDay()===0)button.disabled=true;if(date.getTime()===today.getTime())button.classList.add('today');if(selectedDate&&date.getTime()===selectedDate.getTime())button.classList.add('selected');button.addEventListener('click',()=>{selectedDate=date;selectedTime=null;renderCalendar();renderTimes();});days.appendChild(button);}}
+function renderTimes(){timeList.innerHTML='';if(!selectedDate)return;dayText.textContent=`Disponibilidad para el ${formatter.format(selectedDate)}.`;const times=timesByDay[selectedDate.getDay()]||[];if(!times.length){timeList.textContent='No hay horarios disponibles para esta fecha.';return;}times.forEach(time=>{const button=document.createElement('button');button.className='time-slot'+(selectedTime===time?' selected':'');button.textContent=time;button.type='button';button.addEventListener('click',()=>{selectedTime=time;renderTimes();updateReservation();});timeList.appendChild(button);});updateReservation();}
+function updateReservation(){if(selectedDate&&selectedTime){reservation.innerHTML=`Reservar el <strong>${formatter.format(selectedDate)}</strong> a las <strong>${selectedTime}</strong> horas`;continueButton.disabled=false;}else{reservation.textContent='Selecciona una fecha y una hora para reservar.';continueButton.disabled=true;}}
+document.querySelector('#previousMonth').addEventListener('click',()=>{displayed.setMonth(displayed.getMonth()-1);renderCalendar();});document.querySelector('#nextMonth').addEventListener('click',()=>{displayed.setMonth(displayed.getMonth()+1);renderCalendar();});continueButton.addEventListener('click',()=>alert(`Cita seleccionada: ${formatter.format(selectedDate)} a las ${selectedTime} horas.`));renderCalendar();updateReservation();})();
+</script></body></html>

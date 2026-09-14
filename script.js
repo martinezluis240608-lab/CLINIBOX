@@ -7,7 +7,7 @@
  * 1. La navegación entre las 7 etapas del recorrido.
  * 2. La actualización de la barra de progreso y el indicador HUD.
  * 3. Las ventanas emergentes (Modales) de Farmacia, Receta y Consultorio.
- * 4. El sistema de inicio de sesión y visualización del Dashboard del paciente.
+ * 4. El acceso al portal del paciente desde el recorrido virtual.
  * 5. Efectos sonoros interactivos utilizando la Web Audio API nativa.
  * 6. Soporte de teclado (Flechas ← y →, tecla Esc).
  * ==============================================================================
@@ -87,11 +87,11 @@ function goToStep(newStep) {
 
   currentStepIndex = newStep;
 
-  // Mostramos nuevamente las barras de navegación en caso de venir de login/dashboard
+  // Mostramos nuevamente las barras de navegación en caso de venir de login.
   tourProgressContainer.style.display = "block";
   hudBottomNav.style.display = "flex";
 
-  // Ocultamos todos los stages (incluyendo login y dashboard)
+  // Ocultamos todos los stages, incluida la pantalla de login.
   document.querySelectorAll(".tour-stage").forEach(stage => {
     stage.classList.remove("active");
   });
@@ -189,112 +189,14 @@ function updateProgressUI() {
 }
 
 // ------------------------------------------------------------------------------
-// 5. PANTALLA DE INICIO DE SESIÓN Y DASHBOARD DEL PACIENTE
+// 5. PANTALLA DE INICIO DE SESIÓN
 // ------------------------------------------------------------------------------
 
 /**
  * Muestra la pantalla de inicio de sesión del paciente.
  */
 function showLoginScreen() {
-  // Ocultamos todas las etapas anteriores
-  document.querySelectorAll(".tour-stage").forEach(stage => {
-    stage.classList.remove("active");
-  });
-
-  // Ocultamos la barra de navegación del tour temporalmente para una vista limpia
-  hudBottomNav.style.display = "none";
-  tourProgressContainer.style.display = "none";
-
-  // Actualizamos el HUD superior
-  hudLocationText.textContent = "Portal de Acceso Paciente";
-
-  // Activamos el stage de login
-  const loginStage = document.getElementById("stage-login");
-  if (loginStage) {
-    loginStage.classList.add("active");
-  }
-
-  playFeedbackTone(520, "sine", 0.1);
-}
-
-/**
- * Maneja el evento de envío del formulario de inicio de sesión.
- * @param {Event} event - Evento del formulario.
- */
-function handleLogin(event) {
-  event.preventDefault();
-
-  const emailInput = document.getElementById("loginEmail").value.trim();
-  const passwordInput = document.getElementById("loginPassword").value.trim();
-  const alertBox = document.getElementById("loginAlert");
-
-  // Validación básica del formulario
-  if (!emailInput || !passwordInput) {
-    showAlert("Por favor, completa todos los campos requeridos.", "error");
-    return;
-  }
-
-  // Simulación de autenticación (valida cualquier clave >= 4 dígitos o credenciales demo)
-  if (emailInput.includes("@") && passwordInput.length >= 4) {
-    showAlert("¡Credenciales verificadas con éxito! Ingresando al portal...", "success");
-    playFeedbackTone(660, "triangle", 0.15);
-
-    // Pequeño retardo simulado para una experiencia realista
-    setTimeout(() => {
-      showDashboard(emailInput);
-    }, 900);
-  } else {
-    showAlert("Correo o contraseña incorrectos. Revisa las credenciales de demo.", "error");
-    playFeedbackTone(200, "sawtooth", 0.2);
-  }
-}
-
-/**
- * Muestra alertas visuales dentro de la tarjeta de inicio de sesión.
- * @param {string} message - Mensaje a mostrar.
- * @param {'error'|'success'} type - Tipo de alerta.
- */
-function showAlert(message, type) {
-  const alertBox = document.getElementById("loginAlert");
-  if (!alertBox) return;
-
-  alertBox.textContent = message;
-  alertBox.className = `login-alert alert-${type}`;
-  alertBox.style.display = "block";
-}
-
-/**
- * Muestra el panel principal del paciente tras un login exitoso.
- * @param {string} userEmail - Correo del usuario autenticado.
- */
-function showDashboard(userEmail) {
-  document.querySelectorAll(".tour-stage").forEach(stage => {
-    stage.classList.remove("active");
-  });
-
-  const dashboardStage = document.getElementById("stage-dashboard");
-  if (dashboardStage) {
-    dashboardStage.classList.add("active");
-  }
-
-  // Personalizar saludo si el usuario usó otro correo
-  const greetingEl = document.getElementById("patientGreeting");
-  if (greetingEl && userEmail !== "paciente@clinibox.com") {
-    greetingEl.textContent = `¡Bienvenido de nuevo, ${userEmail.split("@")[0]}!`;
-  }
-
-  hudLocationText.textContent = "Dashboard del Paciente";
-}
-
-/**
- * Cierra la sesión activa y retorna a la pantalla de login.
- */
-function handleLogout() {
-  const alertBox = document.getElementById("loginAlert");
-  if (alertBox) {
-    alertBox.style.display = "none";
-  }
-  showLoginScreen();
+  window.location.assign("public/login");
 }
 
 /**
