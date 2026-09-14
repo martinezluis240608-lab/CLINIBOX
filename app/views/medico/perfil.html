@@ -3,38 +3,760 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Perfil médico | CliniBox</title>
-<link rel="stylesheet" href="../assets/css/app.css">
+<title>Perfil Médico | CliniBox</title>
+<link rel="stylesheet" href="assets/css/app.css">
+
+<style>
+    /* ==========================================================
+       ESTILOS DEL PERFIL MÉDICO PROFESIONAL - CLINIBOX
+    ========================================================== */
+    :root {
+        --primary: #0284c7;
+        --primary-hover: #0369a1;
+        --primary-light: #e0f2fe;
+        --success: #10b981;
+        --success-light: #ecfdf5;
+        --warning: #f59e0b;
+        --warning-light: #fffbeb;
+        --text-dark: #0f172a;
+        --text-muted: #64748b;
+        --bg-page: #f8fafc;
+        --bg-card: #ffffff;
+        --border: #e2e8f0;
+        --radius: 14px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+        margin: 0;
+        background-color: var(--bg-page);
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        color: var(--text-dark);
+    }
+
+    .app-shell { display: flex; min-height: 100vh; }
+
+    /* BARRA LATERAL */
+    .sidebar {
+        width: 260px;
+        background: #ffffff;
+        border-right: 1px solid var(--border);
+        padding: 24px 16px;
+        display: flex;
+        flex-direction: column;
+        flex-shrink: 0;
+    }
+
+    .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding-bottom: 22px;
+        margin-bottom: 18px;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .brand-mark {
+        width: 40px;
+        height: 40px;
+        background: var(--primary);
+        color: #ffffff;
+        font-weight: 800;
+        font-size: 1.25rem;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .brand:hover .brand-mark { transform: rotate(-8deg) scale(1.08); }
+    .brand strong { display: block; font-size: 1.15rem; color: var(--text-dark); line-height: 1.2; }
+    .brand small { color: var(--text-muted); font-size: 0.8rem; }
+
+    .nav-list { display: flex; flex-direction: column; gap: 4px; }
+    .nav-list a {
+        display: flex;
+        align-items: center;
+        padding: 11px 14px;
+        text-decoration: none;
+        color: var(--text-muted);
+        font-weight: 500;
+        font-size: 0.95rem;
+        border-radius: 8px;
+        transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .nav-list a:hover { background-color: #f1f5f9; color: var(--text-dark); transform: translateX(4px); }
+    .nav-list a.active { background-color: var(--primary-light); color: var(--primary); font-weight: 600; }
+
+    /* CONTENIDO PRINCIPAL */
+    .main-content {
+        flex: 1;
+        padding: 36px 44px;
+        max-width: 1200px;
+        overflow-y: auto;
+        animation: fadeInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    .section-header { margin-bottom: 24px; }
+    .eyebrow {
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-size: 0.78rem;
+        font-weight: 700;
+        color: var(--primary);
+        margin: 0 0 6px 0;
+    }
+
+    .section-header h2 {
+        margin: 0 0 4px 0;
+        font-size: 1.85rem;
+        color: var(--text-dark);
+        letter-spacing: -0.4px;
+    }
+
+    .section-header p { margin: 0; color: var(--text-muted); }
+
+    /* BANNER PRINCIPAL DEL PERFIL */
+    .profile-hero-card {
+        background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+        border-radius: var(--radius);
+        padding: 28px 32px;
+        color: #ffffff;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 28px;
+        box-shadow: 0 8px 24px rgba(2, 132, 199, 0.2);
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .profile-user-left {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .doctor-avatar {
+        width: 76px;
+        height: 76px;
+        border-radius: 50%;
+        background: #ffffff;
+        color: var(--primary);
+        font-weight: 800;
+        font-size: 1.8rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        border: 3px solid rgba(255, 255, 255, 0.8);
+    }
+
+    .doctor-titles h3 {
+        margin: 0 0 4px;
+        font-size: 1.45rem;
+        letter-spacing: -0.3px;
+    }
+
+    .doctor-titles p {
+        margin: 0 0 8px;
+        opacity: 0.9;
+        font-size: 0.95rem;
+    }
+
+    .badge-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: rgba(255, 255, 255, 0.2);
+        padding: 4px 10px;
+        border-radius: 999px;
+        font-size: 0.78rem;
+        font-weight: 600;
+        backdrop-filter: blur(4px);
+    }
+
+    .btn-edit-profile {
+        background: #ffffff;
+        color: var(--primary-hover);
+        border: none;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.2s ease;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-edit-profile:hover {
+        background: #f0f9ff;
+        transform: translateY(-1px);
+    }
+
+    /* PESTAÑAS DE NAVEGACIÓN DEL PERFIL */
+    .profile-tabs {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 24px;
+        border-bottom: 1px solid var(--border);
+        padding-bottom: 12px;
+    }
+
+    .tab-item {
+        background: none;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 8px;
+        font-size: 0.92rem;
+        font-weight: 600;
+        color: var(--text-muted);
+        cursor: pointer;
+        transition: all 0.15s ease;
+    }
+
+    .tab-item:hover { color: var(--primary); background: #f1f5f9; }
+    .tab-item.active {
+        background: var(--primary-light);
+        color: var(--primary);
+    }
+
+    /* CONTENEDOR DE PANELES */
+    .tab-content-panel { display: none; }
+    .tab-content-panel.active { display: block; animation: fadeInUp 0.3s ease; }
+
+    /* GRID DE CAMPOS DEL PERFIL */
+    .profile-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 18px;
+        margin-bottom: 24px;
+    }
+
+    .profile-field {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 20px 24px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .profile-field:hover {
+        transform: translateY(-3px);
+        border-color: #cbd5e1;
+        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.05);
+    }
+
+    .profile-field span {
+        font-size: 0.78rem;
+        text-transform: uppercase;
+        letter-spacing: 0.6px;
+        font-weight: 600;
+        color: var(--text-muted);
+    }
+
+    .profile-field strong {
+        font-size: 1.15rem;
+        color: var(--text-dark);
+        word-break: break-word;
+    }
+
+    /* TARJETA DE BIOGRAFÍA / CREDENCIALES */
+    .card-panel {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 24px 28px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+        margin-bottom: 20px;
+    }
+
+    .card-panel h4 {
+        margin: 0 0 12px;
+        font-size: 1.15rem;
+        color: var(--text-dark);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .card-panel p {
+        margin: 0;
+        font-size: 0.95rem;
+        color: var(--text-muted);
+        line-height: 1.6;
+    }
+
+    /* FILA DE CONFIGURACIÓN Y TOGGLES */
+    .settings-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .setting-item {
+        background: #f8fafc;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 16px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .setting-item strong { display: block; font-size: 0.95rem; color: var(--text-dark); margin-bottom: 2px; }
+    .setting-item span { font-size: 0.85rem; color: var(--text-muted); }
+
+    .toggle-btn {
+        background: var(--primary);
+        color: white;
+        border: none;
+        padding: 6px 14px;
+        border-radius: 999px;
+        font-size: 0.78rem;
+        font-weight: 700;
+        cursor: pointer;
+    }
+
+    .toggle-btn.off {
+        background: #cbd5e1;
+        color: #475569;
+    }
+
+    /* MODAL DE EDICIÓN */
+    .modal-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(15, 23, 42, 0.5);
+        backdrop-filter: blur(4px);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        z-index: 100;
+    }
+
+    .modal-overlay.active { display: flex; }
+
+    .modal-card {
+        background: #ffffff;
+        border-radius: var(--radius);
+        max-width: 560px;
+        width: 100%;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        overflow: hidden;
+        max-height: 90vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .modal-header {
+        padding: 18px 24px;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #f8fafc;
+    }
+
+    .modal-header h3 { margin: 0; font-size: 1.15rem; color: var(--text-dark); }
+    .close-btn { background: none; border: none; font-size: 1.3rem; cursor: pointer; color: var(--text-muted); }
+
+    .modal-body {
+        padding: 24px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group label { font-size: 0.85rem; font-weight: 600; color: #475569; }
+
+    .form-control {
+        padding: 10px 14px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        font-size: 0.92rem;
+        outline: none;
+        transition: all 0.2s ease;
+        font-family: inherit;
+    }
+
+    .form-control:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+    }
+
+    .modal-footer {
+        padding: 16px 24px;
+        border-top: 1px solid var(--border);
+        background: #f8fafc;
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+    }
+
+    .btn-primary {
+        background: var(--primary);
+        color: #ffffff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 0.92rem;
+        cursor: pointer;
+    }
+    .btn-primary:hover { background: var(--primary-hover); }
+
+    .btn-secondary {
+        background: #f1f5f9;
+        color: #334155;
+        border: 1px solid var(--border);
+        padding: 10px 16px;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        cursor: pointer;
+    }
+    .btn-secondary:hover { background: #e2e8f0; }
+
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(14px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 768px) {
+        .app-shell { flex-direction: column; }
+        .sidebar { width: 100%; border-right: none; border-bottom: 1px solid var(--border); }
+        .nav-list { flex-direction: row; flex-wrap: wrap; }
+        .main-content { padding: 20px; }
+        .profile-hero-card { flex-direction: column; align-items: flex-start; }
+    }
+</style>
 </head>
 <body>
 <div class="app-shell">
+    <!-- BARRA LATERAL -->
     <nav class="sidebar">
         <div class="brand">
             <div class="brand-mark">C</div>
             <div><strong>CliniBox</strong><small>Panel médico</small></div>
         </div>
         <div class="nav-list">
-            <a href="pacientes">Pacientes</a>
-            <a href="agenda">Agenda</a>
-            <a href="consultas">Consultas</a>
-            <a href="expedientes">Expedientes</a>
-            <a href="recetas">Recetas</a>
-            <a href="mensajes">Mensajes</a>
-            <a href="perfil" class="active">Perfil</a>
-            <a href="../dashboard/">Volver al panel</a>
+            <a href="pacientes.html">Pacientes</a>
+            <a href="agenda.html">Agenda</a>
+            <a href="consultas.html">Consultas</a>
+            <a href="expedientes.html">Expedientes</a>
+            <a href="recetas.html">Recetas</a>
+            <a href="mensajes.html">Mensajes</a>
+            <a href="perfil.html" class="active">Perfil</a>
+            <a href="../dashboard/index.html">Volver al panel</a>
         </div>
     </nav>
+
+    <!-- CONTENIDO PRINCIPAL -->
     <main class="main-content">
         <section class="section-header">
             <p class="eyebrow">Módulo médico</p>
             <h2>Perfil del médico</h2>
+            <p>Gestiona tus datos personales, credenciales clínicas y configuración de cuenta.</p>
         </section>
-        <div class="profile-grid">
-            <article class="profile-field"><span>Nombre</span><strong>Dra. Sofía Ramírez</strong></article>
-            <article class="profile-field"><span>Especialidad</span><strong>Medicina general</strong></article>
-            <article class="profile-field"><span>Correo</span><strong>sofia@clinibox.com</strong></article>
+
+        <!-- BANNER DE BIENVENIDA Y RESUMEN -->
+        <section class="profile-hero-card">
+            <div class="profile-user-left">
+                <div class="doctor-avatar" id="avatarInitials">SR</div>
+                <div class="doctor-titles">
+                    <h3 id="heroName">Dra. Sofía Ramírez</h3>
+                    <p id="heroSpecialty">Medicina General &bull; Consultorio 3B</p>
+                    <span class="badge-chip">
+                        <span style="width: 8px; height: 8px; background: #10b981; border-radius: 50%;"></span>
+                        En servicio activo &bull; Cédula: <span id="heroCedula">9482710-SSA</span>
+                    </span>
+                </div>
+            </div>
+            <button class="btn-edit-profile" onclick="openEditModal()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/>
+                </svg>
+                Editar Perfil
+            </button>
+        </section>
+
+        <!-- PESTAÑAS -->
+        <div class="profile-tabs">
+            <button class="tab-item active" onclick="switchTab('tabDatos', this)">Datos Profesionales</button>
+            <button class="tab-item" onclick="switchTab('tabCredenciales', this)">Credenciales y Consultorio</button>
+            <button class="tab-item" onclick="switchTab('tabConfig', this)">Seguridad y Notificaciones</button>
+        </div>
+
+        <!-- PESTAÑA 1: DATOS PROFESIONALES -->
+        <div class="tab-content-panel active" id="tabDatos">
+            <div class="profile-grid">
+                <article class="profile-field">
+                    <span>Nombre completo</span>
+                    <strong id="fieldName">Dra. Sofía Ramírez</strong>
+                </article>
+                <article class="profile-field">
+                    <span>Especialidad médica</span>
+                    <strong id="fieldSpecialty">Medicina general</strong>
+                </article>
+                <article class="profile-field">
+                    <span>Correo electrónico</span>
+                    <strong id="fieldEmail">sofia@clinibox.com</strong>
+                </article>
+                <article class="profile-field">
+                    <span>Teléfono directo</span>
+                    <strong id="fieldPhone">55 5555-0100 (Ext. 204)</strong>
+                </article>
+                <article class="profile-field">
+                    <span>Consultorio asignado</span>
+                    <strong id="fieldOffice">Consultorio 3B &bull; Hospital Central</strong>
+                </article>
+                <article class="profile-field">
+                    <span>Horario habitual</span>
+                    <strong id="fieldHours">Lunes a Viernes (08:00 - 16:00)</strong>
+                </article>
+            </div>
+
+            <section class="card-panel">
+                <h4>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--primary);">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                        <polyline points="14 2 14 8 20 8"/>
+                    </svg>
+                    Semblanza y Biografía Clínica
+                </h4>
+                <p id="fieldBio">Médica cirujana graduada con honores de la Facultad de Medicina. Más de 8 años de experiencia en atención clínica ambulatoria, medicina preventiva, control de padecimientos metabólicos crónicos y atención integral del paciente.</p>
+            </section>
+        </div>
+
+        <!-- PESTAÑA 2: CREDENCIALES -->
+        <div class="tab-content-panel" id="tabCredenciales">
+            <div class="card-panel">
+                <h4>Certificaciones Oficiales</h4>
+                <div class="settings-list">
+                    <div class="setting-item">
+                        <div>
+                            <strong>Cédula Profesional Federal</strong>
+                            <span>Número oficial expedido por la Dirección General de Profesiones: <em id="credCedula" style="font-style: normal; font-weight: 700; color: var(--primary);">9482710-SSA</em></span>
+                        </div>
+                        <span style="background: var(--success-light); color: var(--success); padding: 4px 10px; border-radius: 6px; font-weight: 700; font-size: 0.8rem;">Verificada</span>
+                    </div>
+                    <div class="setting-item">
+                        <div>
+                            <strong>Institución de Egreso</strong>
+                            <span>Facultad de Medicina &bull; Título de Médica Cirujana</span>
+                        </div>
+                        <span style="background: #f1f5f9; color: var(--text-dark); padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; font-weight: 600;">Registrada</span>
+                    </div>
+                    <div class="setting-item">
+                        <div>
+                            <strong>Firma y Sello Electrónico</strong>
+                            <span>Habilitada para emisión de recetas oficiales digitales en CliniBox</span>
+                        </div>
+                        <span style="background: var(--primary-light); color: var(--primary); padding: 4px 10px; border-radius: 6px; font-weight: 700; font-size: 0.8rem;">Activa</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PESTAÑA 3: SEGURIDAD Y NOTIFICACIONES -->
+        <div class="tab-content-panel" id="tabConfig">
+            <div class="card-panel">
+                <h4>Preferencias de Notificaciones Clínicas</h4>
+                <div class="settings-list">
+                    <div class="setting-item">
+                        <div>
+                            <strong>Avisos de nuevos mensajes de pacientes</strong>
+                            <span>Recibir alertas instantáneas cuando un paciente escribe en consulta virtual</span>
+                        </div>
+                        <button class="toggle-btn" onclick="toggleBtn(this)">Activo</button>
+                    </div>
+                    <div class="setting-item">
+                        <div>
+                            <strong>Recordatorios de citas en Agenda</strong>
+                            <span>Notificar 15 minutos antes de iniciar cada consulta programada</span>
+                        </div>
+                        <button class="toggle-btn" onclick="toggleBtn(this)">Activo</button>
+                    </div>
+                    <div class="setting-item">
+                        <div>
+                            <strong>Confirmación de surtido de recetas</strong>
+                            <span>Avisar cuando farmacia dispensa medicamentos a un paciente</span>
+                        </div>
+                        <button class="toggle-btn off" onclick="toggleBtn(this)">Inactivo</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </main>
 </div>
+
+<!-- ==========================================================
+     MODAL PARA EDITAR EL PERFIL
+========================================================== -->
+<div class="modal-overlay" id="editModal">
+    <div class="modal-card">
+        <div class="modal-header">
+            <h3>Editar Perfil Profesional</h3>
+            <button class="close-btn" onclick="closeModal()">&times;</button>
+        </div>
+        <form id="profileForm" onsubmit="saveProfile(event)">
+            <div class="modal-body">
+                <div style="display: grid; grid-template-columns: 1.4fr 1fr; gap: 14px;">
+                    <div class="form-group">
+                        <label for="mName">Nombre Completo *</label>
+                        <input type="text" id="mName" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="mCedula">Cédula Profesional *</label>
+                        <input type="text" id="mCedula" class="form-control" required>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+                    <div class="form-group">
+                        <label for="mSpecialty">Especialidad *</label>
+                        <input type="text" id="mSpecialty" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="mEmail">Correo Electrónico *</label>
+                        <input type="email" id="mEmail" class="form-control" required>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+                    <div class="form-group">
+                        <label for="mPhone">Teléfono de Consultorio</label>
+                        <input type="text" id="mPhone" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="mOffice">Consultorio</label>
+                        <input type="text" id="mOffice" class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="mHours">Horario Habitual</label>
+                    <input type="text" id="mHours" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label for="mBio">Semblanza Médica</label>
+                    <textarea id="mBio" class="form-control" rows="3"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-secondary" onclick="closeModal()">Cancelar</button>
+                <button type="submit" class="btn-primary">Guardar Cambios</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ==========================================================
+     LÓGICA JAVASCRIPT
+========================================================== -->
+<script>
+    const defaultProfile = {
+        name: "Dra. Sofía Ramírez",
+        specialty: "Medicina general",
+        email: "sofia@clinibox.com",
+        cedula: "9482710-SSA",
+        phone: "55 5555-0100 (Ext. 204)",
+        office: "Consultorio 3B • Hospital Central",
+        hours: "Lunes a Viernes (08:00 - 16:00)",
+        bio: "Médica cirujana graduada con honores de la Facultad de Medicina. Más de 8 años de experiencia en atención clínica ambulatoria, medicina preventiva, control de padecimientos metabólicos crónicos y atención integral del paciente."
+    };
+
+    let profileData = JSON.parse(localStorage.getItem('clinibox_perfil')) || defaultProfile;
+
+    function renderProfile() {
+        document.getElementById('heroName').textContent = profileData.name;
+        document.getElementById('fieldName').textContent = profileData.name;
+        document.getElementById('heroSpecialty').textContent = `${profileData.specialty} • ${profileData.office.split('•')[0].trim()}`;
+        document.getElementById('fieldSpecialty').textContent = profileData.specialty;
+        document.getElementById('fieldEmail').textContent = profileData.email;
+        document.getElementById('heroCedula').textContent = profileData.cedula;
+        document.getElementById('credCedula').textContent = profileData.cedula;
+        document.getElementById('fieldPhone').textContent = profileData.phone;
+        document.getElementById('fieldOffice').textContent = profileData.office;
+        document.getElementById('fieldHours').textContent = profileData.hours;
+        document.getElementById('fieldBio').textContent = profileData.bio;
+
+        // Iniciales del avatar
+        const words = profileData.name.replace('Dra. ', '').replace('Dr. ', '').split(' ');
+        if (words.length >= 2) {
+            document.getElementById('avatarInitials').textContent = (words[0][0] + words[1][0]).toUpperCase();
+        }
+    }
+
+    function switchTab(tabId, btn) {
+        document.querySelectorAll('.tab-content-panel').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.tab-item').forEach(b => b.classList.remove('active'));
+
+        document.getElementById(tabId).classList.add('active');
+        btn.classList.add('active');
+    }
+
+    function openEditModal() {
+        document.getElementById('mName').value = profileData.name;
+        document.getElementById('mSpecialty').value = profileData.specialty;
+        document.getElementById('mEmail').value = profileData.email;
+        document.getElementById('mCedula').value = profileData.cedula;
+        document.getElementById('mPhone').value = profileData.phone;
+        document.getElementById('mOffice').value = profileData.office;
+        document.getElementById('mHours').value = profileData.hours;
+        document.getElementById('mBio').value = profileData.bio;
+
+        document.getElementById('editModal').classList.add('active');
+    }
+
+    function closeModal() {
+        document.getElementById('editModal').classList.remove('active');
+    }
+
+    function saveProfile(e) {
+        e.preventDefault();
+
+        profileData.name = document.getElementById('mName').value.trim();
+        profileData.specialty = document.getElementById('mSpecialty').value.trim();
+        profileData.email = document.getElementById('mEmail').value.trim();
+        profileData.cedula = document.getElementById('mCedula').value.trim();
+        profileData.phone = document.getElementById('mPhone').value.trim();
+        profileData.office = document.getElementById('mOffice').value.trim();
+        profileData.hours = document.getElementById('mHours').value.trim();
+        profileData.bio = document.getElementById('mBio').value.trim();
+
+        localStorage.setItem('clinibox_perfil', JSON.stringify(profileData));
+        renderProfile();
+        closeModal();
+    }
+
+    function toggleBtn(btn) {
+        if (btn.classList.contains('off')) {
+            btn.classList.remove('off');
+            btn.textContent = 'Activo';
+        } else {
+            btn.classList.add('off');
+            btn.textContent = 'Inactivo';
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        renderProfile();
+    });
+</script>
 </body>
 </html>
