@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CLINIBOX – Paseo Virtual por la Clínica</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ============================================================
+       CABECERA Y HUD DE REALIDAD VIRTUAL
+       ============================================================ -->
+  <header class="hud-header">
+    <div class="hud-brand">
+      <div class="hud-logo-icon">
+        <!-- Ícono médico de cruz estilizada -->
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 6v12m-6-6h12"/>
+        </svg>
+      </div>
+      <div class="hud-brand-text">
+        <span class="hud-brand-title">CLINI<strong>BOX</strong></span>
+        <span class="hud-brand-tag">Paseo Virtual 360°</span>
+      </div>
+    </div>
+
+    <!-- Indicador de estación actual -->
+    <div class="hud-status" id="hudStatus">
+      <span class="hud-pulse"></span>
+      <span class="hud-location-text" id="hudLocationText">Bienvenida</span>
+    </div>
+
+    <!-- Acciones rápidas superiores -->
+    <div class="hud-actions">
+      <button class="hud-btn" id="btnHelp" title="Instrucciones de recorrido">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <span>Ayuda</span>
+      </button>
+      <button class="hud-btn" id="btnSoundToggle" title="Activar/Desactivar efectos de audio">
+        <svg id="soundIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+        <span id="soundLabel">Audio</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       BARRA DE PROGRESO DEL RECORRIDO (7 ESTACIONES)
+       ============================================================ -->
+  <section class="progress-section" id="tourProgressContainer">
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+    <div class="progress-steps" id="progressSteps">
+      <button class="step-node active" data-step="0" title="1. Bienvenida">
+        <span class="step-num">1</span>
+        <span class="step-name">Bienvenida</span>
+      </button>
+      <button class="step-node" data-step="1" title="2. Entrada">
+        <span class="step-num">2</span>
+        <span class="step-name">Entrada</span>
+      </button>
+      <button class="step-node" data-step="2" title="3. Recepción">
+        <span class="step-num">3</span>
+        <span class="step-name">Recepción</span>
+      </button>
+      <button class="step-node" data-step="3" title="4. Sala de Espera">
+        <span class="step-num">4</span>
+        <span class="step-name">Sala de Espera</span>
+      </button>
+      <button class="step-node" data-step="4" title="5. Farmacia">
+        <span class="step-num">5</span>
+        <span class="step-name">Farmacia</span>
+      </button>
+      <button class="step-node" data-step="5" title="6. Consultorio">
+        <span class="step-num">6</span>
+        <span class="step-name">Consultorio</span>
+      </button>
+      <button class="step-node" data-step="6" title="7. Fin del Paseo">
+        <span class="step-num">7</span>
+        <span class="step-name">Finalizar</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       CONTENEDOR PRINCIPAL: ESCENARIO VIRTUAL EN PRIMERA PERSONA
+       ============================================================ -->
+  <main class="vr-viewport" id="vrViewport">
+    <!-- Retícula sutil tipo Visor VR -->
+    <div class="vr-hud-overlay">
+      <div class="vr-crosshair"></div>
+      <div class="vr-corner vr-corner-tl"></div>
+      <div class="vr-corner vr-corner-tr"></div>
+      <div class="vr-corner vr-corner-bl"></div>
+      <div class="vr-corner vr-corner-br"></div>
+    </div>
+
+    <!-- ============================================================
+         ESTACIÓN 1: PANTALLA DE BIENVENIDA (PORTAL ÚNICO INTERACTIVO)
+         ============================================================ -->
+    <article class="tour-stage active" id="stage-0" data-index="0">
+      <div class="welcome-container">
+        <!-- Encabezado superior de bienvenida -->
+        <div class="welcome-header-box">
+          <div class="welcome-badge">🏥 Sistema de Salud Inmersivo 360°</div>
+          <h1 class="welcome-title">Bienvenido a nuestra <span class="text-gradient">Clínica Virtual CLINIBOX</span></h1>
+          <p class="welcome-subtitle">
+            Pasa el cursor sobre la experiencia para interactuar y haz clic para iniciar tu recorrido guiado como paciente.
+          </p>
+        </div>
+
+        <!-- Contenedor con una única imagen de fondo grande e interactiva -->
+        <div class="single-portal-wrapper" id="welcomePortals">
+          <div class="portal-card portal-single" id="portalMain" tabindex="0" role="button" aria-label="Explorar la clínica virtual CLINIBOX">
+            
+            <!-- Imagen de fondo interactiva de gran formato (Fachada y arquitectura clínica) -->
+            <div class="portal-bg-art bg-art-clinic">
+              <svg viewBox="0 0 900 520" preserveAspectRatio="xMidYMid slice" class="portal-svg">
+                <defs>
+                  <linearGradient id="mainSkyGrad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#0284c7"/>
+                    <stop offset="55%" stop-color="#38bdf8"/>
+                    <stop offset="100%" stop-color="#bae6fd"/>
+                  </linearGradient>
+                  <linearGradient id="mainGlassGrad" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stop-color="#bae6fd" stop-opacity="0.9"/>
+                    <stop offset="50%" stop-color="#7dd3fc" stop-opacity="0.75"/>
+                    <stop offset="100%" stop-color="#0284c7" stop-opacity="0.85"/>
+                  </linearGradient>
+                  <linearGradient id="mainFacadeGrad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#ffffff"/>
+                    <stop offset="100%" stop-color="#cbd5e1"/>
+                  </linearGradient>
+                </defs>
+                <!-- Cielo y atmósfera luminosa -->
+                <rect width="900" height="520" fill="url(#mainSkyGrad)"/>
+                <!-- Sol y resplandor ambiental -->
+                <circle cx="450" cy="140" r="180" fill="#ffffff" opacity="0.3"/>
+                <!-- Silueta de la clínica moderna -->
+                <rect x="150" y="80" width="600" height="340" rx="10" fill="url(#mainFacadeGrad)"/>
+                <!-- Ventanales de vidrio clínicos superiores -->
+                <rect x="190" y="110" width="140" height="60" rx="4" fill="url(#mainGlassGrad)"/>
+                <rect x="380" y="110" width="140" height="60" rx="4" fill="url(#mainGlassGrad)"/>
+                <rect x="570" y="110" width="140" height="60" rx="4" fill="url(#mainGlassGrad)"/>
+                <rect x="190" y="190" width="140" height="60" rx="4" fill="url(#mainGlassGrad)"/>
+                <rect x="380" y="190" width="140" height="60" rx="4" fill="url(#mainGlassGrad)"/>
+                <rect x="570" y="190" width="140" height="60" rx="4" fill="url(#mainGlassGrad)"/>
+                <!-- Letrero central iluminado CLINIBOX -->
+                <rect x="310" y="265" width="280" height="42" rx="8" fill="#0284c7"/>
+                <circle cx="335" cy="286" r="11" fill="#10b981"/>
+                <path d="M335 280 v12 M329 286 h12" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
+                <text x="450" y="292" fill="#ffffff" font-size="16" font-weight="900" font-family="sans-serif" text-anchor="middle" letter-spacing="2.5">CLINIBOX SALUD</text>
+                <!-- Marquesina y Puertas de acceso principal -->
+                <polygon points="260,320 640,320 670,345 230,345" fill="#0f172a"/>
+                <rect x="330" y="345" width="240" height="115" fill="#1e293b"/>
+                <rect x="345" y="355" width="102" height="105" fill="url(#mainGlassGrad)" stroke="#38bdf8" stroke-width="2"/>
+                <rect x="453" y="355" width="102" height="105" fill="url(#mainGlassGrad)" stroke="#38bdf8" stroke-width="2"/>
+                <!-- Sensor verde de movimiento -->
+                <rect x="442" y="348" width="16" height="5" rx="2" fill="#22c55e"/>
+                <!-- Sendero y accesibilidad -->
+                <polygon points="280,460 620,460 760,520 140,520" fill="#94a3b8"/>
+                <polygon points="380,460 520,460 580,520 320,520" fill="#0284c7" opacity="0.35"/>
+                <!-- Áreas verdes laterales -->
+                <rect x="120" y="430" width="90" height="50" rx="12" fill="#10b981"/>
+                <rect x="690" y="430" width="90" height="50" rx="12" fill="#10b981"/>
+              </svg>
+            </div>
+
+            <!-- Capa oscura interactiva (Dark Overlay) -->
+            <div class="portal-overlay"></div>
+
+            <!-- Contenido interactivo flotante -->
+            <div class="portal-content">
+              <span class="portal-tag">Paseo Virtual Guiado</span>
+              <h2 class="portal-title">Explorar la clínica</h2>
+              <p class="portal-desc">
+                Sumérgete en una experiencia interactiva en primera persona para conocer nuestras instalaciones médicas, aprender sobre la atención al paciente y descubrir el consultorio y la farmacia.
+              </p>
+              <div class="portal-action">
+                <button class="btn btn-primary btn-large btn-portal btn-glow" id="btnExploreClinic">
+                  <span>Comenzar recorrido</span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14m-7-7 7 7-7 7"/></svg>
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </article>
+
+
+    <!-- ============================================================
+         ESTACIÓN 2: ENTRADA DE LA CLÍNICA
+         ============================================================ -->
+    <article class="tour-stage" id="stage-1" data-index="1">
+      <div class="stage-scene scene-entrance">
+        <!-- Vista del edificio y puertas automáticas de cristal -->
+        <div class="building-facade">
+          <div class="facade-sign">
+            <div class="cross-icon">+</div>
+            <span>CENTRO DE ATENCIÓN MÉDICA CLINIBOX</span>
+          </div>
+          <div class="automatic-doors-frame">
+            <div class="door door-left"></div>
+            <div class="door door-right"></div>
+            <div class="interior-glimpse">
+              <span class="door-sensor-light"></span>
+              <span class="door-welcome-text">PUERTAS AUTOMÁTICAS ACTIVAS</span>
+            </div>
+          </div>
+          <div class="floor-mat">
+            <span>BIENVENIDO • INGRESO PACIENTES</span>
+          </div>
+        </div>
+
+        <!-- Tarjeta de información de la entrada -->
+        <div class="stage-info-card glass-panel">
+          <div class="info-badge">Paso 2 de 7 • Entrada Principal</div>
+          <h2>Entrada de la Clínica</h2>
+          <p>
+            Te encuentras frente al acceso principal de CLINIBOX. Las puertas automáticas con sensor de movimiento 
+            garantizan un ingreso seguro y accesible para todos los pacientes. Desde aquí puedes avanzar al área de recepción 
+            para registrar tu llegada.
+          </p>
+          <div class="stage-buttons-inline">
+            <button class="btn btn-accent" onclick="nextStep()">
+              <span>Entrar a la Recepción →</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============================================================
+         ESTACIÓN 3: RECEPCIÓN
+         ============================================================ -->
+    <article class="tour-stage" id="stage-2" data-index="2">
+      <div class="stage-scene scene-reception">
+        <!-- Elementos visuales: Mostrador, recepcionista, PC, sillas -->
+        <div class="reception-visuals">
+          <!-- Pantalla superior de turnos -->
+          <div class="queue-screen">
+            <div class="queue-header">🔔 Turnos de Atención</div>
+            <div class="queue-number">P-042 • Módulo 1</div>
+          </div>
+
+          <!-- Mostrador curvo y personal -->
+          <div class="reception-counter">
+            <div class="receptionist-avatar">
+              <div class="avatar-head">
+                <div class="avatar-face"></div>
+                <div class="avatar-hair"></div>
+              </div>
+              <div class="avatar-body medical-uniform">
+                <span class="badge-tag">Recepcionista</span>
+              </div>
+            </div>
+            <!-- Computadora y teléfono -->
+            <div class="counter-top">
+              <div class="reception-pc">
+                <div class="pc-monitor">
+                  <div class="pc-screen-content"></div>
+                </div>
+                <div class="pc-stand"></div>
+              </div>
+              <div class="counter-phone"></div>
+              <div class="counter-files"></div>
+            </div>
+            <div class="counter-desk">
+              <span class="counter-logo">CLINIBOX ATENCIÓN AL PACIENTE</span>
+            </div>
+          </div>
+
+          <!-- Sillas laterales -->
+          <div class="reception-chairs">
+            <div class="chair"></div>
+            <div class="chair"></div>
+          </div>
+        </div>
+
+        <!-- Tarjeta explicativa -->
+        <div class="stage-info-card glass-panel">
+          <div class="info-badge">Paso 3 de 7 • Módulo Central</div>
+          <h2>Área de Recepción</h2>
+          <p>
+            En este mostrador, el personal de salud valida tu identidad, confirma tus citas previas 
+            y te orienta hacia el servicio correspondiente. Aquí recibirás tu turno de atención 
+            antes de pasar a la sala de espera.
+          </p>
+          <div class="stage-buttons-inline">
+            <button class="btn btn-primary" onclick="nextStep()">
+              <span>Continuar hacia Sala de Espera →</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============================================================
+         ESTACIÓN 4: SALA DE ESPERA
+         ============================================================ -->
+    <article class="tour-stage" id="stage-3" data-index="3">
+      <div class="stage-scene scene-waiting-room">
+        <div class="waiting-visuals">
+          <!-- Pantalla con consejos de salud -->
+          <div class="health-screen">
+            <div class="health-screen-header">📺 CLINIBOX Salud & Prevención</div>
+            <div class="health-tip-slider" id="healthTipText">
+              💧 Recuerda beber suficiente agua y mantener hábitos saludables diariamente.
+            </div>
+          </div>
+
+          <div class="waiting-furniture">
+            <!-- Planta medicinal/ornamental -->
+            <div class="plant-pot">
+              <div class="plant-leaves">
+                <div class="leaf l1"></div>
+                <div class="leaf l2"></div>
+                <div class="leaf l3"></div>
+                <div class="leaf l4"></div>
+              </div>
+              <div class="pot-body"></div>
+            </div>
+
+            <!-- Fila de sillas cómodas -->
+            <div class="chairs-row">
+              <div class="waiting-chair"><span class="chair-cushion"></span></div>
+              <div class="waiting-chair active-seat"><span class="chair-cushion"></span></div>
+              <div class="waiting-chair"><span class="chair-cushion"></span></div>
+              <div class="waiting-chair"><span class="chair-cushion"></span></div>
+            </div>
+
+            <!-- Dispensador de agua -->
+            <div class="water-dispenser">
+              <div class="water-bottle"></div>
+              <div class="dispenser-body">
+                <div class="tap tap-cold"></div>
+                <div class="tap tap-hot"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Señalización en la pared -->
+          <div class="wall-signs">
+            <div class="sign-item">➡️ Farmacia Clínica</div>
+            <div class="sign-item">⬆️ Consultorios 1 al 8</div>
+          </div>
+        </div>
+
+        <div class="stage-info-card glass-panel">
+          <div class="info-badge">Paso 4 de 7 • Sala de Espera</div>
+          <h2>Sala de Espera Confortable</h2>
+          <p>
+            Espacio climatizado, diseñado para la tranquilidad y comodidad del paciente. Cuenta con 
+            pantallas educativas de salud preventiva, asientos ergonómicos y estación de hidratación.
+          </p>
+          <div class="stage-buttons-inline">
+            <button class="btn btn-primary" onclick="nextStep()">
+              <span>Ir a la Farmacia →</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============================================================
+         ESTACIÓN 5: FARMACIA
+         ============================================================ -->
+    <article class="tour-stage" id="stage-4" data-index="4">
+      <div class="stage-scene scene-pharmacy">
+        <div class="pharmacy-visuals">
+          <!-- Letrero de la farmacia -->
+          <div class="pharmacy-sign">
+            <span class="pharmacy-cross">✚</span>
+            <span>FARMACIA CLINIBOX • DISPENSARIO</span>
+          </div>
+
+          <!-- Estantes con medicamentos -->
+          <div class="medicine-shelves">
+            <div class="shelf">
+              <div class="med-item med-syrup" title="Jarabes y Soluciones"></div>
+              <div class="med-item med-box1" title="Antibióticos"></div>
+              <div class="med-item med-box2" title="Analgésicos"></div>
+              <div class="med-item med-bottle" title="Vitaminas"></div>
+            </div>
+            <div class="shelf">
+              <div class="med-item med-box3" title="Antiinflamatorios"></div>
+              <div class="med-item med-bottle" title="Gotas oftálmicas"></div>
+              <div class="med-item med-box1" title="Antihistamínicos"></div>
+              <div class="med-item med-syrup" title="Suero oral"></div>
+            </div>
+            <div class="shelf">
+              <div class="med-item med-box2" title="Cardiovasculares"></div>
+              <div class="med-item med-box3" title="Antigripales"></div>
+              <div class="med-item med-bottle" title="Cápsulas blandas"></div>
+              <div class="med-item med-box1" title="Gasa y curaciones"></div>
+            </div>
+          </div>
+
+          <!-- Mostrador de farmacia -->
+          <div class="pharmacy-counter">
+            <div class="counter-label">VENTANILLA DE DISPENSACIÓN</div>
+          </div>
+        </div>
+
+        <div class="stage-info-card glass-panel">
+          <div class="info-badge">Paso 5 de 7 • Dispensación</div>
+          <h2>Farmacia Clínica</h2>
+          <p>
+            Nuestra farmacia interna abastece tratamientos inmediatos y controlados. 
+            Puedes explorar el catálogo de medicamentos disponibles y revisar la consulta de tu receta médica.
+          </p>
+          <div class="stage-buttons-inline">
+            <button class="btn btn-secondary" id="btnOpenPharmacyModal">
+              <span>💊 Ver farmacia</span>
+            </button>
+            <button class="btn btn-accent" id="btnOpenPrescriptionModal">
+              <span>📋 Consultar mi receta</span>
+            </button>
+            <button class="btn btn-primary" onclick="nextStep()">
+              <span>Ir a Consultorio →</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============================================================
+         ESTACIÓN 6: CONSULTORIO MÉDICO
+         ============================================================ -->
+    <article class="tour-stage" id="stage-5" data-index="5">
+      <div class="stage-scene scene-doctor-office">
+        <div class="doctor-visuals">
+          <!-- Letrero consultorio -->
+          <div class="office-sign">
+            <span>CONSULTORIO 03 • MEDICINA INTEGRAL</span>
+          </div>
+
+          <div class="office-furniture">
+            <!-- Camilla de examen -->
+            <div class="examination-bed">
+              <div class="bed-pillow"></div>
+              <div class="bed-mattress">
+                <span class="bed-paper-sheet"></span>
+              </div>
+              <div class="bed-legs">
+                <div class="leg l-left"></div>
+                <div class="leg l-right"></div>
+              </div>
+              <div class="bed-step"></div>
+            </div>
+
+            <!-- Escritorio médico -->
+            <div class="doctor-desk">
+              <!-- Negatoscopio de Rayos X en la pared -->
+              <div class="xray-viewer">
+                <div class="xray-film">
+                  <div class="xray-ribs"></div>
+                  <div class="xray-spine"></div>
+                </div>
+              </div>
+
+              <!-- Monitor del doctor y accesorios -->
+              <div class="desk-surface">
+                <div class="doc-pc">
+                  <div class="doc-monitor">
+                    <span class="vitals-chart">📈</span>
+                  </div>
+                  <div class="doc-stand"></div>
+                </div>
+                <div class="stethoscope-prop" title="Estetoscopio"></div>
+                <div class="bp-monitor-prop" title="Tensiómetro digital"></div>
+              </div>
+              <div class="desk-body">
+                <div class="desk-drawers">
+                  <span class="drawer-handle"></span>
+                  <span class="drawer-handle"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="stage-info-card glass-panel">
+          <div class="info-badge">Paso 6 de 7 • Consulta Médica</div>
+          <h2>Consultorio Médico</h2>
+          <p>
+            Espacio equipado con tecnología de diagnóstico clínico, camilla ergonómica de revisión 
+            y sistema digital de historia médica. Aquí el profesional de la salud evalúa tus síntomas y emite tu diagnóstico.
+          </p>
+          <div class="stage-buttons-inline">
+            <button class="btn btn-secondary" id="btnDoctorModal">
+              <span>🩺 Entrar al consultorio</span>
+            </button>
+            <button class="btn btn-primary" onclick="nextStep()">
+              <span>Terminar paseo →</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============================================================
+         ESTACIÓN 7: FINALIZAR RECORRIDO
+         ============================================================ -->
+    <article class="tour-stage" id="stage-6" data-index="6">
+      <div class="stage-scene scene-finish">
+        <div class="finish-card glass-panel">
+          <div class="finish-icon-ring">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+              <polyline points="22 4 12 14.01 9 11.01"/>
+            </svg>
+          </div>
+          <div class="info-badge">¡Recorrido Completado!</div>
+          <h2>¡Has terminado el paseo virtual!</h2>
+          <p>
+            Has recorrido con éxito cada uno de los sectores principales de nuestra clínica: 
+            <strong>Entrada, Recepción, Sala de Espera, Farmacia y Consultorio</strong>.
+          </p>
+          <p class="finish-note">
+            Ahora estás listo para acceder a tu cuenta de paciente para gestionar tus citas, 
+            ver recetas electrónicas y consultar tu historial médico en tiempo real.
+          </p>
+          <div class="finish-actions">
+            <button class="btn btn-primary btn-large btn-glow" id="btnGoToLogin">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              <span>Ingresar al sistema</span>
+            </button>
+            <button class="btn btn-outline" onclick="goToStep(0)">
+              <span>🔄 Reiniciar recorrido</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============================================================
+         PANTALLA DE INICIO DE SESIÓN (LOGIN)
+         ============================================================ -->
+    <article class="tour-stage" id="stage-login">
+      <div class="login-wrapper">
+        <div class="login-card glass-panel">
+          <div class="login-header">
+            <div class="login-logo">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 6v12m-6-6h12"/></svg>
+            </div>
+            <h2>Portal del Paciente</h2>
+            <p>Ingresa tus credenciales para acceder a tus servicios de salud</p>
+          </div>
+
+          <!-- Mensaje de alerta / validación de credenciales -->
+          <div class="login-alert" id="loginAlert" style="display: none;"></div>
+
+          <form id="patientLoginForm" class="login-form" onsubmit="handleLogin(event)">
+            <div class="form-group">
+              <label for="loginEmail">Correo Electrónico</label>
+              <div class="input-with-icon">
+                <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                <input type="email" id="loginEmail" placeholder="ejemplo@clinibox.com" required value="paciente@clinibox.com" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="loginPassword">Contraseña</label>
+              <div class="input-with-icon">
+                <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                <input type="password" id="loginPassword" placeholder="••••••••" required value="123456" />
+                <button type="button" class="btn-toggle-pwd" id="btnTogglePassword" title="Mostrar/Ocultar contraseña">👁️</button>
+              </div>
+            </div>
+
+            <div class="login-options">
+              <label class="remember-label">
+                <input type="checkbox" checked /> Recordarme en este equipo
+              </label>
+              <button type="button" class="link-btn" id="btnForgotPassword">¿Olvidaste tu contraseña?</button>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-large btn-block" id="btnSubmitLogin">
+              <span>Iniciar sesión</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+            </button>
+          </form>
+
+          <!-- Credenciales demo de ayuda para el estudiante/evaluador -->
+          <div class="demo-credentials-box">
+            <strong>Credenciales de demostración:</strong>
+            <code>Correo: paciente@clinibox.com | Clave: 123456</code>
+          </div>
+
+          <div class="login-footer">
+            <button class="btn btn-outline btn-sm" onclick="goToStep(6)">
+              <span>← Volver al recorrido</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============================================================
+         PANEL PRINCIPAL DEL PACIENTE (DASHBOARD TRAS INICIAR SESIÓN)
+         ============================================================ -->
+    <article class="tour-stage" id="stage-dashboard">
+      <div class="dashboard-container">
+        <!-- Barra de saludo del paciente -->
+        <div class="dashboard-header glass-panel">
+          <div class="patient-profile-summary">
+            <div class="patient-avatar-badge">👨‍💼</div>
+            <div>
+              <h2 id="patientGreeting">¡Bienvenido de nuevo, Carlos Mendoza!</h2>
+              <span class="patient-id-badge">ID Paciente: CLB-8834 • Afiliado Activo</span>
+            </div>
+          </div>
+          <div class="dashboard-header-actions">
+            <button class="btn btn-outline btn-sm" onclick="goToStep(0)">
+              <span>🏠 Regresar al Paseo Virtual</span>
+            </button>
+            <button class="btn btn-danger btn-sm" onclick="handleLogout()">
+              <span>Cerrar sesión</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Tarjetas del Dashboard -->
+        <div class="dashboard-grid">
+          <!-- Citas Médicas -->
+          <div class="dash-card glass-panel">
+            <div class="dash-card-header">
+              <span class="dash-icon">📅</span>
+              <h3>Próxima Cita</h3>
+            </div>
+            <div class="dash-card-body">
+              <div class="appointment-pill">
+                <strong>Medicina General - Consultorio 03</strong>
+                <p>Dr. Alejandro Morales • Mañana a las 10:30 AM</p>
+                <span class="badge-status-confirmed">Confirmada</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recetas Activas -->
+          <div class="dash-card glass-panel">
+            <div class="dash-card-header">
+              <span class="dash-icon">💊</span>
+              <h3>Receta Activa</h3>
+            </div>
+            <div class="dash-card-body">
+              <p><strong>Receta #RX-9921</strong></p>
+              <ul class="dash-list">
+                <li>Amoxicilina 500mg (Cada 8 horas por 7 días)</li>
+                <li>Paracetamol 500mg (1 tableta cada 8 horas si hay dolor)</li>
+              </ul>
+              <button class="btn btn-sm btn-accent" id="btnDashViewPrescription">Ver Receta Completa</button>
+            </div>
+          </div>
+
+          <!-- Historial de Visitas -->
+          <div class="dash-card glass-panel">
+            <div class="dash-card-header">
+              <span class="dash-icon">📑</span>
+              <h3>Historial Clínico</h3>
+            </div>
+            <div class="dash-card-body">
+              <div class="history-item">
+                <span class="history-date">05 Sep 2026</span>
+                <span class="history-desc">Control Anual Preventivo - Aprobado</span>
+              </div>
+              <div class="history-item">
+                <span class="history-date">18 Ago 2026</span>
+                <span class="history-desc">Laboratorio Clínico (Hemograma Completo)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <!-- ============================================================
+       BARRA DE NAVEGACIÓN INFERIOR (CONTROLES DE PASEO)
+       ============================================================ -->
+  <nav class="hud-bottom-nav" id="hudBottomNav">
+    <button class="nav-control-btn" id="btnPrevStep" onclick="prevStep()">
+      <span class="arrow">←</span>
+      <span class="label">Regresar</span>
+    </button>
+
+    <button class="nav-control-btn home-btn" id="btnHome" onclick="goHome()">
+      <span class="icon">🏠</span>
+      <span class="label">Inicio</span>
+    </button>
+
+    <div class="nav-status-indicator">
+      <span class="nav-step-counter" id="navStepCounter">Paso 1 de 7</span>
+      <span class="nav-step-name" id="navStepName">Bienvenida</span>
+    </div>
+
+    <button class="nav-control-btn primary-next" id="btnNextStep" onclick="nextStep()">
+      <span class="label">Avanzar</span>
+      <span class="arrow">→</span>
+    </button>
+  </nav>
+
+  <!-- ============================================================
+       MODAL 1: CATÁLOGO DE FARMACIA
+       ============================================================ -->
+  <div class="modal-overlay" id="modalPharmacy">
+    <div class="modal-box glass-panel">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <span class="modal-icon">💊</span>
+          <h3>Farmacia CLINIBOX – Medicamentos Disponibles</h3>
+        </div>
+        <button class="modal-close-btn" onclick="closeModal('modalPharmacy')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="search-bar-wrap">
+          <input type="text" id="pharmacySearchInput" placeholder="Buscar medicamento o síntoma (ej. dolor, amoxicilina, tos)..." oninput="filterPharmacyItems()" />
+        </div>
+
+        <div class="pharmacy-grid" id="pharmacyGrid">
+          <!-- Generado dinámicamente o estructurado -->
+          <div class="pharmacy-product-card" data-name="amoxicilina antibiótico">
+            <div class="prod-badge">Antibiótico</div>
+            <div class="prod-title">Amoxicilina 500mg</div>
+            <p class="prod-desc">Caja con 20 cápsulas. Indicado para infecciones bacterianas respiratorias y dentales.</p>
+            <div class="prod-footer">
+              <span class="prod-stock in-stock">✓ Disponible</span>
+              <span class="prod-price">$6.50</span>
+            </div>
+          </div>
+
+          <div class="pharmacy-product-card" data-name="paracetamol analgésico dolor fiebre">
+            <div class="prod-badge">Analgésico</div>
+            <div class="prod-title">Paracetamol 500mg</div>
+            <p class="prod-desc">Caja con 30 comprimidos. Alivio para dolores musculares, cefaleas y control de fiebre.</p>
+            <div class="prod-footer">
+              <span class="prod-stock in-stock">✓ Disponible</span>
+              <span class="prod-price">$3.20</span>
+            </div>
+          </div>
+
+          <div class="pharmacy-product-card" data-name="ibuprofeno dolor inflamación">
+            <div class="prod-badge">Antiinflamatorio</div>
+            <div class="prod-title">Ibuprofeno 400mg</div>
+            <p class="prod-desc">Caja con 10 tabletas recubiertas. Para procesos inflamatorios y dolores articulares.</p>
+            <div class="prod-footer">
+              <span class="prod-stock in-stock">✓ Disponible</span>
+              <span class="prod-price">$4.80</span>
+            </div>
+          </div>
+
+          <div class="pharmacy-product-card" data-name="jarabe ambroxol tos expectorante">
+            <div class="prod-badge">Expectorante</div>
+            <div class="prod-title">Jarabe Expectorante 120ml</div>
+            <p class="prod-desc">Solución oral para el alivio de la tos con flema y descongestión bronquial.</p>
+            <div class="prod-footer">
+              <span class="prod-stock in-stock">✓ Disponible</span>
+              <span class="prod-price">$7.10</span>
+            </div>
+          </div>
+
+          <div class="pharmacy-product-card" data-name="suero oral hidratación sales">
+            <div class="prod-badge">Hidratación</div>
+            <div class="prod-title">Sales de Rehidratación Oral</div>
+            <p class="prod-desc">Sobres solubles para prevenir y tratar la deshidratación moderada.</p>
+            <div class="prod-footer">
+              <span class="prod-stock in-stock">✓ Disponible</span>
+              <span class="prod-price">$2.00</span>
+            </div>
+          </div>
+
+          <div class="pharmacy-product-card" data-name="multivitamínico vitaminas energía defensas">
+            <div class="prod-badge">Suplemento</div>
+            <div class="prod-title">Multivitamínico con Zinc</div>
+            <p class="prod-desc">Frasco con 60 cápsulas blandas con vitaminas A, C, D3 y complejo B.</p>
+            <div class="prod-footer">
+              <span class="prod-stock in-stock">✓ Disponible</span>
+              <span class="prod-price">$12.50</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="openModal('modalPrescription'); closeModal('modalPharmacy');">
+          <span>📋 Consultar mi receta digital</span>
+        </button>
+        <button class="btn btn-primary" onclick="closeModal('modalPharmacy')">Entendido</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       MODAL 2: CONSULTA DE RECETA MÉDICA
+       ============================================================ -->
+  <div class="modal-overlay" id="modalPrescription">
+    <div class="modal-box glass-panel prescription-box">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <span class="modal-icon">📋</span>
+          <h3>Receta Médica Electrónica Oficial</h3>
+        </div>
+        <button class="modal-close-btn" onclick="closeModal('modalPrescription')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="prescription-paper">
+          <div class="rx-header">
+            <div class="rx-clinic-title">CLINIBOX • Sistema Hospitalario Digital</div>
+            <div class="rx-meta">
+              <span>Folio: <strong>RX-2026-9921</strong></span>
+              <span>Fecha de Emisión: <strong>Hoy</strong></span>
+            </div>
+          </div>
+          <div class="rx-patient-info">
+            <p><strong>Paciente:</strong> Carlos Mendoza (34 años)</p>
+            <p><strong>Médico Tratante:</strong> Dr. Alejandro Morales (M.P. 55421)</p>
+            <p><strong>Diagnóstico:</strong> Faringitis Aguda / Cuadro Gripal Común</p>
+          </div>
+          <hr class="rx-divider" />
+          <div class="rx-body">
+            <h4>Medicamentos Prescritos (Rp.):</h4>
+            <div class="rx-medication">
+              <div class="rx-item-title">1. Amoxicilina 500mg Cápsulas</div>
+              <div class="rx-item-indic">Tomar 1 cápsula vía oral cada 8 horas por 7 días continuos después de los alimentos.</div>
+            </div>
+            <div class="rx-medication">
+              <div class="rx-item-title">2. Paracetamol 500mg Tabletas</div>
+              <div class="rx-item-indic">Tomar 1 tableta cada 8 horas sólo si presenta dolor o temperatura corporal mayor a 38°C.</div>
+            </div>
+            <div class="rx-medication">
+              <div class="rx-item-title">3. Hidratación abundante y reposo relativo</div>
+              <div class="rx-item-indic">Beber 2 a 3 litros de agua al día. Evitar cambios bruscos de temperatura.</div>
+            </div>
+          </div>
+          <div class="rx-footer">
+            <div class="rx-stamp">
+              <div class="stamp-circle">VALIDADO ELECTRÓNICAMENTE • CLINIBOX</div>
+            </div>
+            <div class="rx-signature">
+              <span class="sig-line">_______________________________</span>
+              <span>Firma y Sello Médico Digital</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="window.print()">🖨️ Imprimir / Guardar PDF</button>
+        <button class="btn btn-primary" onclick="closeModal('modalPrescription')">Cerrar Receta</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       MODAL 3: ENTRAR AL CONSULTORIO MÉDICO (DETALLE)
+       ============================================================ -->
+  <div class="modal-overlay" id="modalDoctor">
+    <div class="modal-box glass-panel">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <span class="modal-icon">🩺</span>
+          <h3>Consulta en Curso – Consultorio 03</h3>
+        </div>
+        <button class="modal-close-btn" onclick="closeModal('modalDoctor')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="doctor-detail-wrap">
+          <div class="doctor-badge-card">
+            <div class="doc-portrait">👨‍⚕️</div>
+            <div>
+              <h4>Dr. Alejandro Morales</h4>
+              <p>Especialista en Medicina General & Telemedicina</p>
+              <span class="online-indicator">🟢 Consultorio Disponible</span>
+            </div>
+          </div>
+
+          <div class="consultation-summary">
+            <h4>Resumen de la Consulta Preventiva:</h4>
+            <div class="vitals-grid">
+              <div class="vital-item">
+                <span class="vital-lbl">Presión Arterial</span>
+                <span class="vital-val">120 / 80 mmHg</span>
+              </div>
+              <div class="vital-item">
+                <span class="vital-lbl">Frecuencia Cardíaca</span>
+                <span class="vital-val">74 lpm</span>
+              </div>
+              <div class="vital-item">
+                <span class="vital-lbl">Saturación O2</span>
+                <span class="vital-val">98% Normal</span>
+              </div>
+              <div class="vital-item">
+                <span class="vital-lbl">Temperatura</span>
+                <span class="vital-val">36.6 °C</span>
+              </div>
+            </div>
+
+            <div class="doctor-notes">
+              <p><strong>Observaciones del Médico:</strong> "Paciente en buen estado general. Se realiza examen de auscultación pulmonar y revisión faríngea. Se indica receta electrónica y reposo adecuado para recuperación."</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="openModal('modalPrescription'); closeModal('modalDoctor');">
+          <span>📋 Ver Receta Generada</span>
+        </button>
+        <button class="btn btn-primary" onclick="closeModal('modalDoctor')">Finalizar Revisión</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       MODAL 4: RECUPERAR CONTRASEÑA
+       ============================================================ -->
+  <div class="modal-overlay" id="modalForgotPassword">
+    <div class="modal-box glass-panel modal-compact">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <span class="modal-icon">🔑</span>
+          <h3>Recuperar Contraseña</h3>
+        </div>
+        <button class="modal-close-btn" onclick="closeModal('modalForgotPassword')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p>Introduce el correo electrónico asociado a tu cuenta de paciente CLINIBOX y te enviaremos un enlace seguro para restablecer tu contraseña.</p>
+        <div class="form-group" style="margin-top: 15px;">
+          <label for="recoveryEmail">Correo Electrónico:</label>
+          <input type="email" id="recoveryEmail" placeholder="paciente@clinibox.com" value="paciente@clinibox.com" />
+        </div>
+        <div id="recoveryFeedback" class="feedback-msg" style="display:none;"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closeModal('modalForgotPassword')">Cancelar</button>
+        <button class="btn btn-primary" id="btnSendRecovery" onclick="simulatePasswordRecovery()">Enviar Enlace</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       MODAL 5: AYUDA E INSTRUCCIONES
+       ============================================================ -->
+  <div class="modal-overlay" id="modalHelp">
+    <div class="modal-box glass-panel modal-compact">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <span class="modal-icon">💡</span>
+          <h3>Guía de Navegación del Paseo Virtual</h3>
+        </div>
+        <button class="modal-close-btn" onclick="closeModal('modalHelp')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <ul class="help-list">
+          <li><strong>Avanzar y Regresar:</strong> Usa los botones inferiores o las flechas de tu teclado (← y →).</li>
+          <li><strong>Barra de Progreso:</strong> Haz clic en cualquier estación numerada para teletransportarte de inmediato.</li>
+          <li><strong>Interacción:</strong> En Farmacia y Consultorio encontrarás botones especiales para ver productos y recetas.</li>
+          <li><strong>Ingreso al Sistema:</strong> Al finalizar el recorrido en la etapa 7, podrás iniciar sesión con las credenciales demo.</li>
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" onclick="closeModal('modalHelp')">¡Entendido, vamos!</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Script principal del proyecto -->
+  <script src="script.js"></script>
+</body>
+</html>

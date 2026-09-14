@@ -1,0 +1,2406 @@
+/* ==========================================================================
+   CLINIBOX – ESTILOS DEL PASEO VIRTUAL 360° (CSS PURO)
+   Diseño moderno, clínico, responsive y con efectos de Realidad Virtual
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. VARIABLES DE COLOR Y CONFIGURACIÓN GLOBAL
+   -------------------------------------------------------------------------- */
+:root {
+  /* Paleta Médica Profesional */
+  --primary: #0284c7;           /* Azul médico vibrante */
+  --primary-dark: #0369a1;      /* Azul ultramar clínico */
+  --primary-light: #e0f2fe;     /* Azul cielo pastel suave */
+  --accent: #10b981;            /* Verde esmeralda salud */
+  --accent-light: #d1fae5;      /* Verde suave de éxito */
+  --danger: #ef4444;            /* Rojo alerta médica */
+  --warning: #f59e0b;           /* Ámbar aviso */
+
+  /* Colores de Fondo y Superficie */
+  --bg-main: #f0f7fd;           /* Fondo general azulino suave */
+  --bg-surface: #ffffff;        /* Fondo blanco puro */
+  --text-main: #0f172a;         /* Texto principal oscuro de alto contraste */
+  --text-muted: #64748b;        /* Texto secundario / gris medio */
+  --border-light: rgba(148, 163, 184, 0.25);
+
+  /* Sombras y Glassmorphism */
+  --shadow-sm: 0 2px 8px rgba(2, 132, 199, 0.08);
+  --shadow-md: 0 8px 24px rgba(15, 23, 42, 0.08);
+  --shadow-lg: 0 16px 40px rgba(15, 23, 42, 0.14);
+  --shadow-glow: 0 0 25px rgba(2, 132, 199, 0.4);
+
+  /* Curvaturas de borde */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --radius-pill: 9999px;
+
+  /* Transiciones */
+  --transition-smooth: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* --------------------------------------------------------------------------
+   2. REINICIO Y ESTILOS BASE
+   -------------------------------------------------------------------------- */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background: radial-gradient(circle at 50% 20%, #ffffff 0%, var(--bg-main) 100%);
+  color: var(--text-main);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  user-select: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* --------------------------------------------------------------------------
+   3. CABECERA HUD (ESTILO REALIDAD VIRTUAL)
+   -------------------------------------------------------------------------- */
+.hud-header {
+  height: 64px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-light);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: var(--shadow-sm);
+}
+
+.hud-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.hud-logo-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
+}
+
+.hud-logo-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.hud-brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.hud-brand-title {
+  font-size: 1.25rem;
+  letter-spacing: 0.5px;
+  color: var(--text-main);
+}
+
+.hud-brand-title strong {
+  color: var(--primary);
+}
+
+.hud-brand-tag {
+  font-size: 0.72rem;
+  color: var(--accent);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.hud-status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(2, 132, 199, 0.08);
+  padding: 6px 16px;
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(2, 132, 199, 0.2);
+}
+
+.hud-pulse {
+  width: 10px;
+  height: 10px;
+  background-color: var(--accent);
+  border-radius: 50%;
+  box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+  animation: pulse-ring 2s infinite;
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+  70% { transform: scale(1.1); box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+
+.hud-location-text {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--primary-dark);
+}
+
+.hud-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.hud-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #ffffff;
+  border: 1px solid var(--border-light);
+  padding: 7px 14px;
+  border-radius: var(--radius-pill);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.hud-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.hud-btn:hover {
+  background: var(--primary-light);
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+/* --------------------------------------------------------------------------
+   4. BARRA DE PROGRESO DEL RECORRIDO (7 ESTACIONES)
+   -------------------------------------------------------------------------- */
+.progress-section {
+  background: #ffffff;
+  padding: 14px 24px;
+  border-bottom: 1px solid var(--border-light);
+  position: relative;
+  z-index: 90;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02);
+}
+
+.progress-track {
+  position: absolute;
+  top: 32px;
+  left: 5%;
+  right: 5%;
+  height: 4px;
+  background: #e2e8f0;
+  z-index: 1;
+  border-radius: 2px;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  border-radius: 2px;
+  transition: width 0.4s ease;
+}
+
+.progress-steps {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.step-node {
+  background: #ffffff;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 0 4px;
+  outline: none;
+  transition: var(--transition-smooth);
+}
+
+.step-num {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #f1f5f9;
+  border: 2px solid #cbd5e1;
+  color: var(--text-muted);
+  font-weight: 700;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition-smooth);
+}
+
+.step-name {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.step-node:hover .step-num {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.step-node.active .step-num {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #ffffff;
+  box-shadow: 0 0 12px rgba(2, 132, 199, 0.5);
+  transform: scale(1.15);
+}
+
+.step-node.active .step-name {
+  color: var(--primary-dark);
+  font-weight: 700;
+}
+
+.step-node.completed .step-num {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #ffffff;
+}
+
+/* --------------------------------------------------------------------------
+   5. VIEWPORT DE REALIDAD VIRTUAL (CONTENEDOR 1ª PERSONA)
+   -------------------------------------------------------------------------- */
+.vr-viewport {
+  flex: 1;
+  position: relative;
+  perspective: 1000px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  min-height: calc(100vh - 190px);
+  overflow: hidden;
+  background: linear-gradient(180deg, #f8fcff 0%, #e6f2fb 100%);
+}
+
+/* Retícula HUD VR sutil */
+.vr-hud-overlay {
+  position: absolute;
+  inset: 12px;
+  pointer-events: none;
+  z-index: 10;
+  border: 1px dashed rgba(2, 132, 199, 0.12);
+  border-radius: var(--radius-lg);
+}
+
+.vr-crosshair {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 14px;
+  height: 14px;
+  border: 1.5px solid rgba(2, 132, 199, 0.25);
+  border-radius: 50%;
+  transition: var(--transition-smooth);
+}
+
+.vr-corner {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-color: rgba(2, 132, 199, 0.4);
+  border-style: solid;
+}
+
+.vr-corner-tl { top: 8px; left: 8px; border-width: 2px 0 0 2px; }
+.vr-corner-tr { top: 8px; right: 8px; border-width: 2px 2px 0 0; }
+.vr-corner-bl { bottom: 8px; left: 8px; border-width: 0 0 2px 2px; }
+.vr-corner-br { bottom: 8px; right: 8px; border-width: 0 2px 2px 0; }
+
+/* --------------------------------------------------------------------------
+   6. ESCENARIOS Y TRANSICIONES DE 1ª PERSONA
+   -------------------------------------------------------------------------- */
+.tour-stage {
+  display: none;
+  width: 100%;
+  max-width: 1050px;
+  opacity: 0;
+  transform: scale(0.92) translateZ(-40px);
+  transition: opacity 0.45s ease, transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  z-index: 5;
+}
+
+.tour-stage.active {
+  display: block;
+  opacity: 1;
+  transform: scale(1) translateZ(0);
+}
+
+/* Panel Glassmorphism */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: 30px;
+}
+
+/* --------------------------------------------------------------------------
+   7. ESTACIÓN 1: PANTALLA DE BIENVENIDA
+   -------------------------------------------------------------------------- */
+/* --------------------------------------------------------------------------
+   7. ESTACIÓN 1: PANTALLA DE BIENVENIDA (SPLIT SCREEN FLEXBOX CON EFECTO VR)
+   -------------------------------------------------------------------------- */
+.welcome-container {
+  width: 100%;
+  max-width: 1060px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.welcome-header-box {
+  text-align: center;
+  max-width: 820px;
+  margin: 0 auto;
+}
+
+.welcome-badge {
+  display: inline-block;
+  background: var(--primary-light);
+  color: var(--primary-dark);
+  font-weight: 700;
+  font-size: 0.85rem;
+  padding: 6px 18px;
+  border-radius: var(--radius-pill);
+  margin-bottom: 12px;
+  border: 1px solid rgba(2, 132, 199, 0.2);
+}
+
+.welcome-title {
+  font-size: 2.2rem;
+  font-weight: 800;
+  line-height: 1.25;
+  margin-bottom: 10px;
+}
+
+.text-gradient {
+  background: linear-gradient(120deg, var(--primary), #4f46e5);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.welcome-subtitle {
+  font-size: 1rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+/* CONTENEDOR FLEXBOX: IMAGEN PRINCIPAL GRANDE E INTERACTIVA */
+.single-portal-wrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  perspective: 1200px;
+}
+
+/* TARJETA / PORTAL INTERACTIVO DE GRAN FORMATO */
+.portal-card {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  background: #0f172a;
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  box-shadow: var(--shadow-md);
+  outline: none;
+  /* Transición fluida para que al pasar el mouse se agrande suavemente */
+  transition: transform 0.55s cubic-bezier(0.25, 1, 0.5, 1),
+              box-shadow 0.5s ease,
+              border-color 0.4s ease,
+              filter 0.5s ease;
+}
+
+.portal-single {
+  width: 100%;
+  max-width: 920px;
+  min-height: 480px;
+  margin: 0 auto;
+}
+
+/* COMPORTAMIENTO INTERACTIVO AL PASAR EL MOUSE (HOVER):
+   - La imagen y tarjeta se AGRANDAN suavemente con zoom inmersivo y elevación 3D.
+   - El overlay oscuro se intensifica para dar protagonismo al texto y al botón. */
+.portal-single:hover,
+.portal-single:focus-visible {
+  transform: translateY(-8px) scale(1.02);
+  border-color: var(--primary);
+  box-shadow: 0 28px 60px rgba(2, 132, 199, 0.4);
+  z-index: 5;
+}
+
+/* IMAGEN DE FONDO DE GRAN TAMAÑO */
+.portal-bg-art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  overflow: hidden;
+  background-color: #0f172a;
+}
+
+.portal-svg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.85s cubic-bezier(0.25, 1, 0.5, 1), filter 0.6s ease;
+}
+
+/* Zoom suave inmersivo en la imagen al hacer hover */
+.portal-card:hover .portal-svg {
+  transform: scale(1.1);
+}
+
+/* CAPA OSCURA (DARK OVERLAY) QUE APARECE SOBRE LA IMAGEN SELECCIONADA */
+.portal-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(
+    180deg,
+    rgba(15, 23, 42, 0.15) 0%,
+    rgba(15, 23, 42, 0.55) 40%,
+    rgba(15, 23, 42, 0.88) 85%,
+    rgba(15, 23, 42, 0.98) 100%
+  );
+  backdrop-filter: blur(1px);
+  -webkit-backdrop-filter: blur(1px);
+  transition: background 0.5s ease, opacity 0.5s ease, backdrop-filter 0.5s ease;
+}
+
+/* Efecto oscuro más profundo y dramático al seleccionar la imagen */
+.portal-card:hover .portal-overlay,
+.portal-card:focus-visible .portal-overlay {
+  background: linear-gradient(
+    180deg,
+    rgba(15, 23, 42, 0.32) 0%,
+    rgba(15, 23, 42, 0.72) 42%,
+    rgba(15, 23, 42, 0.94) 80%,
+    rgba(15, 23, 42, 0.99) 100%
+  );
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+
+/* CONTENIDO FLOTANTE (TEXTO Y BOTÓN) */
+.portal-content {
+  position: relative;
+  z-index: 3;
+  padding: 32px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transform: translateY(0);
+  transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.portal-tag {
+  align-self: flex-start;
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.18);
+  color: #e0f2fe;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(8px);
+}
+
+.portal-entrance .portal-tag {
+  color: #7dd3fc;
+  border-color: rgba(56, 189, 248, 0.4);
+}
+
+.portal-interior .portal-tag {
+  color: #6ee7b7;
+  border-color: rgba(52, 211, 153, 0.4);
+}
+
+.portal-title {
+  font-size: 1.9rem;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1.2;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+  transition: color 0.3s ease;
+}
+
+.portal-card:hover .portal-title {
+  color: #f8fafc;
+}
+
+.portal-desc {
+  font-size: 0.95rem;
+  color: #cbd5e1;
+  line-height: 1.55;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5);
+  max-width: 440px;
+}
+
+.portal-action {
+  margin-top: 10px;
+}
+
+.btn-portal {
+  width: 100%;
+  max-width: 280px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+  transition: var(--transition-smooth);
+}
+
+.portal-card:hover .btn-portal {
+  transform: translateY(-2px) scale(1.03);
+}
+
+/* --------------------------------------------------------------------------
+   8. COMPONENTES VISUALES DE LAS ESTACIONES (CSS PURO)
+   -------------------------------------------------------------------------- */
+.stage-scene {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 28px;
+  align-items: center;
+}
+
+.stage-info-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.info-badge {
+  align-self: flex-start;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  background: var(--primary-light);
+  color: var(--primary-dark);
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+}
+
+.stage-info-card h2 {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--text-main);
+}
+
+.stage-info-card p {
+  color: var(--text-muted);
+  line-height: 1.65;
+  font-size: 0.98rem;
+}
+
+.stage-buttons-inline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+/* ESCENA 2: ENTRADA DE LA CLÍNICA */
+.building-facade {
+  background: linear-gradient(180deg, #dbeafe 0%, #bfdbfe 100%);
+  border: 3px solid #93c5fd;
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  min-height: 320px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow: inset 0 0 30px rgba(2, 132, 199, 0.15);
+}
+
+.facade-sign {
+  background: #ffffff;
+  border: 2px solid var(--primary);
+  color: var(--primary-dark);
+  font-weight: 800;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  padding: 8px 18px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: var(--shadow-sm);
+}
+
+.cross-icon {
+  background: var(--primary);
+  color: #ffffff;
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+}
+
+.automatic-doors-frame {
+  width: 80%;
+  height: 170px;
+  background: rgba(224, 242, 254, 0.4);
+  border: 4px solid #64748b;
+  border-bottom: none;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+.interior-glimpse {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, #ffffff 10%, #e2e8f0 90%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--primary);
+  z-index: 1;
+}
+
+.door-sensor-light {
+  width: 14px;
+  height: 6px;
+  background: #22c55e;
+  border-radius: 3px;
+  margin-bottom: 8px;
+  box-shadow: 0 0 8px #22c55e;
+  animation: sensorBlink 1.5s infinite;
+}
+
+@keyframes sensorBlink {
+  50% { opacity: 0.4; }
+}
+
+.door {
+  width: 49%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.85), rgba(186, 230, 253, 0.75));
+  border: 2px solid rgba(14, 165, 233, 0.6);
+  z-index: 2;
+  transition: transform 1s ease-in-out;
+}
+
+/* Efecto de puertas automáticas que se abren suavemente */
+.scene-entrance:hover .door-left {
+  transform: translateX(-80%);
+}
+
+.scene-entrance:hover .door-right {
+  transform: translateX(80%);
+}
+
+.floor-mat {
+  background: #334155;
+  color: #f8fafc;
+  font-size: 0.72rem;
+  letter-spacing: 2px;
+  font-weight: 700;
+  padding: 6px 20px;
+  border-radius: 4px;
+  width: 70%;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+/* ESCENA 3: RECEPCIÓN */
+.reception-visuals {
+  background: linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%);
+  border: 2px solid #cbd5e1;
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  min-height: 330px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+}
+
+.queue-screen {
+  background: #0f172a;
+  color: #38bdf8;
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  width: fit-content;
+  align-self: flex-end;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.2);
+  border: 2px solid #1e293b;
+}
+
+.queue-header {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  color: #94a3b8;
+}
+
+.queue-number {
+  font-size: 1.1rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.reception-counter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  margin-top: 15px;
+}
+
+/* Avatar del Recepcionista */
+.receptionist-avatar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: -15px;
+  z-index: 1;
+}
+
+.avatar-head {
+  position: relative;
+  width: 46px;
+  height: 46px;
+}
+
+.avatar-face {
+  width: 38px;
+  height: 38px;
+  background: #fbcfe8;
+  border-radius: 50%;
+  margin: 4px auto 0;
+  border: 2px solid #f472b6;
+}
+
+.avatar-hair {
+  position: absolute;
+  top: 0;
+  left: 3px;
+  right: 3px;
+  height: 20px;
+  background: #475569;
+  border-radius: 18px 18px 0 0;
+}
+
+.avatar-body.medical-uniform {
+  width: 60px;
+  height: 36px;
+  background: #0284c7;
+  border-radius: 12px 12px 0 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  padding-bottom: 2px;
+}
+
+.badge-tag {
+  font-size: 0.55rem;
+  background: #ffffff;
+  color: #0369a1;
+  font-weight: 800;
+  padding: 1px 4px;
+  border-radius: 3px;
+}
+
+.counter-top {
+  width: 90%;
+  height: 18px;
+  background: #f1f5f9;
+  border: 2px solid #94a3b8;
+  border-radius: 6px 6px 0 0;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  z-index: 2;
+}
+
+.reception-pc {
+  position: absolute;
+  top: -46px;
+  left: 20%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.pc-monitor {
+  width: 52px;
+  height: 36px;
+  background: #1e293b;
+  border: 2px solid #0f172a;
+  border-radius: 4px;
+  padding: 3px;
+}
+
+.pc-screen-content {
+  width: 100%;
+  height: 100%;
+  background: #0284c7;
+  border-radius: 2px;
+}
+
+.pc-stand {
+  width: 12px;
+  height: 10px;
+  background: #64748b;
+}
+
+.counter-phone {
+  position: absolute;
+  top: -12px;
+  right: 25%;
+  width: 18px;
+  height: 12px;
+  background: #334155;
+  border-radius: 2px;
+}
+
+.counter-desk {
+  width: 95%;
+  height: 75px;
+  background: linear-gradient(180deg, #0284c7 0%, #0369a1 100%);
+  border-radius: 0 0 16px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  box-shadow: var(--shadow-sm);
+}
+
+.reception-chairs {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 15px;
+}
+
+.chair {
+  width: 32px;
+  height: 38px;
+  background: #0ea5e9;
+  border-radius: 6px;
+  border-bottom: 6px solid #0369a1;
+}
+
+/* ESCENA 4: SALA DE ESPERA */
+.waiting-visuals {
+  background: #f8fafc;
+  border: 2px solid #e2e8f0;
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  min-height: 330px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.health-screen {
+  background: #0f172a;
+  border: 3px solid #334155;
+  border-radius: var(--radius-sm);
+  color: #ffffff;
+  padding: 12px 16px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.health-screen-header {
+  font-size: 0.7rem;
+  color: #38bdf8;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.health-tip-slider {
+  font-size: 0.85rem;
+  color: #f1f5f9;
+}
+
+.waiting-furniture {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  margin: 20px 0;
+}
+
+.chairs-row {
+  display: flex;
+  gap: 8px;
+}
+
+.waiting-chair {
+  width: 36px;
+  height: 48px;
+  background: #3b82f6;
+  border-radius: 8px 8px 4px 4px;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.08);
+}
+
+.active-seat {
+  background: #0284c7;
+  border: 2px solid #38bdf8;
+}
+
+.chair-cushion {
+  width: 100%;
+  height: 16px;
+  background: #1d4ed8;
+  border-radius: 2px 2px 4px 4px;
+}
+
+/* Planta en maceta CSS */
+.plant-pot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.plant-leaves {
+  position: relative;
+  width: 44px;
+  height: 36px;
+}
+
+.leaf {
+  position: absolute;
+  width: 20px;
+  height: 28px;
+  background: #22c55e;
+  border-radius: 50% 50% 0 50%;
+}
+
+.l1 { left: 4px; transform: rotate(-25deg); background: #16a34a; }
+.l2 { right: 4px; transform: rotate(25deg); }
+.l3 { left: 12px; top: -6px; transform: rotate(5deg); background: #4ade80; }
+
+.pot-body {
+  width: 32px;
+  height: 28px;
+  background: #d97706;
+  border-radius: 4px 4px 10px 10px;
+}
+
+/* Dispensador de agua CSS */
+.water-dispenser {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.water-bottle {
+  width: 24px;
+  height: 30px;
+  background: #38bdf8;
+  border-radius: 8px 8px 2px 2px;
+  opacity: 0.85;
+}
+
+.dispenser-body {
+  width: 30px;
+  height: 46px;
+  background: #e2e8f0;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+}
+
+.tap {
+  width: 5px;
+  height: 8px;
+  border-radius: 2px;
+}
+
+.tap-cold { background: #0284c7; }
+.tap-hot { background: #ef4444; }
+
+.wall-signs {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.sign-item {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  padding: 4px 10px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--primary-dark);
+  border-radius: 4px;
+}
+
+/* ESCENA 5: FARMACIA */
+.pharmacy-visuals {
+  background: #f0fdf4;
+  border: 2px solid #bbf7d0;
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  min-height: 330px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.pharmacy-sign {
+  background: #15803d;
+  color: #ffffff;
+  padding: 8px 16px;
+  border-radius: var(--radius-md);
+  font-weight: 800;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  letter-spacing: 0.5px;
+}
+
+.pharmacy-cross {
+  font-size: 1.2rem;
+  color: #86efac;
+}
+
+.medicine-shelves {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 15px 0;
+}
+
+.shelf {
+  background: #ffffff;
+  border: 1px solid #86efac;
+  border-bottom: 4px solid #16a34a;
+  border-radius: 6px;
+  padding: 8px 14px;
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  height: 52px;
+}
+
+.med-item {
+  border-radius: 4px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.med-item:hover {
+  transform: translateY(-4px) scale(1.1);
+}
+
+.med-syrup {
+  width: 18px;
+  height: 36px;
+  background: #ea580c;
+  border-radius: 3px 3px 2px 2px;
+}
+
+.med-bottle {
+  width: 22px;
+  height: 32px;
+  background: #0284c7;
+  border-radius: 6px;
+}
+
+.med-box1 {
+  width: 32px;
+  height: 24px;
+  background: #10b981;
+}
+
+.med-box2 {
+  width: 28px;
+  height: 26px;
+  background: #6366f1;
+}
+
+.med-box3 {
+  width: 34px;
+  height: 22px;
+  background: #eab308;
+}
+
+.pharmacy-counter {
+  background: #ffffff;
+  border: 2px solid #16a34a;
+  padding: 8px;
+  border-radius: var(--radius-sm);
+  text-align: center;
+}
+
+.counter-label {
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #15803d;
+  letter-spacing: 1px;
+}
+
+/* ESCENA 6: CONSULTORIO MÉDICO */
+.doctor-visuals {
+  background: #f8fafc;
+  border: 2px solid #cbd5e1;
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  min-height: 330px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.office-sign {
+  background: #0369a1;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.85rem;
+  padding: 6px 14px;
+  border-radius: var(--radius-sm);
+  letter-spacing: 0.5px;
+}
+
+.office-furniture {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin: 15px 0;
+}
+
+/* Camilla de Examen */
+.examination-bed {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.bed-pillow {
+  width: 24px;
+  height: 10px;
+  background: #e2e8f0;
+  border-radius: 4px;
+  margin-bottom: -4px;
+  z-index: 2;
+}
+
+.bed-mattress {
+  width: 120px;
+  height: 24px;
+  background: #0284c7;
+  border-radius: 6px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.bed-paper-sheet {
+  position: absolute;
+  top: 0;
+  left: 10%;
+  right: 10%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.bed-legs {
+  display: flex;
+  justify-content: space-between;
+  width: 100px;
+}
+
+.leg {
+  width: 6px;
+  height: 40px;
+  background: #64748b;
+}
+
+.bed-step {
+  width: 34px;
+  height: 14px;
+  background: #94a3b8;
+  border-radius: 3px;
+  margin-top: -14px;
+}
+
+/* Escritorio Médico y Negatoscopio */
+.doctor-desk {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.xray-viewer {
+  width: 80px;
+  height: 60px;
+  background: #000000;
+  border: 4px solid #ffffff;
+  border-radius: 4px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 15px rgba(56, 189, 248, 0.6);
+}
+
+.xray-film {
+  position: relative;
+  width: 50px;
+  height: 40px;
+}
+
+.xray-ribs {
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(180deg, #38bdf8 0, #38bdf8 2px, transparent 2px, transparent 8px);
+  opacity: 0.8;
+}
+
+.xray-spine {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 100%;
+  background: #ffffff;
+}
+
+.desk-surface {
+  width: 150px;
+  height: 18px;
+  background: #e2e8f0;
+  border: 2px solid #cbd5e1;
+  border-radius: 4px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.doc-pc {
+  position: absolute;
+  top: -38px;
+  left: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.doc-monitor {
+  width: 44px;
+  height: 30px;
+  background: #1e293b;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+}
+
+.doc-stand {
+  width: 10px;
+  height: 8px;
+  background: #64748b;
+}
+
+.stethoscope-prop {
+  position: absolute;
+  top: -8px;
+  right: 20px;
+  width: 14px;
+  height: 14px;
+  border: 2px solid #0f172a;
+  border-radius: 50%;
+}
+
+.desk-body {
+  width: 140px;
+  height: 60px;
+  background: #f1f5f9;
+  border: 2px solid #cbd5e1;
+  border-top: none;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.desk-drawers {
+  width: 50px;
+  height: 100%;
+  background: #e2e8f0;
+  border-left: 2px solid #cbd5e1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.drawer-handle {
+  width: 18px;
+  height: 3px;
+  background: #64748b;
+  border-radius: 2px;
+}
+
+/* ESCENA 7: FINALIZAR RECORRIDO */
+.scene-finish {
+  display: flex;
+  justify-content: center;
+}
+
+.finish-card {
+  text-align: center;
+  max-width: 650px;
+  margin: 0 auto;
+}
+
+.finish-icon-ring {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--accent-light);
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 18px;
+}
+
+.finish-icon-ring svg {
+  width: 40px;
+  height: 40px;
+}
+
+.finish-card h2 {
+  font-size: 2rem;
+  margin-bottom: 12px;
+}
+
+.finish-note {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  margin: 14px 0 26px;
+}
+
+.finish-actions {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+/* --------------------------------------------------------------------------
+   9. PANTALLA DE INICIO DE SESIÓN (LOGIN)
+   -------------------------------------------------------------------------- */
+.login-wrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 440px;
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.login-logo {
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 12px;
+  box-shadow: var(--shadow-sm);
+}
+
+.login-logo svg {
+  width: 30px;
+  height: 30px;
+}
+
+.login-header h2 {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-bottom: 6px;
+}
+
+.login-header p {
+  color: var(--text-muted);
+  font-size: 0.88rem;
+}
+
+.login-alert {
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 18px;
+}
+
+.login-alert.alert-error {
+  background: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid #f87171;
+}
+
+.login-alert.alert-success {
+  background: #dcfce7;
+  color: #15803d;
+  border: 1px solid #86efac;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: left;
+}
+
+.form-group label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.input-with-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon {
+  position: absolute;
+  left: 14px;
+  width: 18px;
+  height: 18px;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px 14px 12px 42px;
+  border: 1.5px solid #cbd5e1;
+  border-radius: var(--radius-md);
+  font-size: 0.95rem;
+  color: var(--text-main);
+  outline: none;
+  background: #ffffff;
+  transition: var(--transition-smooth);
+}
+
+.form-group input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.15);
+}
+
+.btn-toggle-pwd {
+  position: absolute;
+  right: 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.login-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.82rem;
+}
+
+.remember-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.link-btn {
+  background: none;
+  border: none;
+  color: var(--primary);
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0;
+  font-size: 0.82rem;
+}
+
+.link-btn:hover {
+  color: var(--primary-dark);
+}
+
+.demo-credentials-box {
+  margin-top: 18px;
+  padding: 10px 14px;
+  background: #f8fafc;
+  border: 1px dashed #94a3b8;
+  border-radius: var(--radius-sm);
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.demo-credentials-box code {
+  display: block;
+  margin-top: 4px;
+  color: var(--primary-dark);
+  font-weight: 700;
+}
+
+.login-footer {
+  margin-top: 18px;
+  text-align: center;
+}
+
+/* --------------------------------------------------------------------------
+   10. PANEL PRINCIPAL DEL PACIENTE (DASHBOARD)
+   -------------------------------------------------------------------------- */
+.dashboard-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.patient-profile-summary {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.patient-avatar-badge {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: var(--primary-light);
+  border: 2px solid var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+}
+
+.patient-id-badge {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--accent);
+  background: var(--accent-light);
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+}
+
+.dashboard-header-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.dash-card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.dash-card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid var(--border-light);
+  padding-bottom: 10px;
+}
+
+.dash-icon {
+  font-size: 1.4rem;
+}
+
+.dash-card-header h3 {
+  font-size: 1.1rem;
+  font-weight: 800;
+}
+
+.dash-card-body {
+  font-size: 0.92rem;
+  color: var(--text-muted);
+}
+
+.appointment-pill {
+  background: #f8fafc;
+  border-left: 4px solid var(--primary);
+  padding: 12px;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.badge-status-confirmed {
+  align-self: flex-start;
+  background: var(--accent-light);
+  color: var(--accent);
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+}
+
+.dash-list {
+  list-style: none;
+  margin: 10px 0 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.dash-list li {
+  padding-left: 18px;
+  position: relative;
+  font-size: 0.88rem;
+}
+
+.dash-list li::before {
+  content: "•";
+  color: var(--accent);
+  position: absolute;
+  left: 4px;
+  font-weight: 900;
+}
+
+.history-item {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 0;
+  border-bottom: 1px dashed #e2e8f0;
+}
+
+.history-date {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.history-desc {
+  font-size: 0.85rem;
+  color: var(--text-main);
+}
+
+/* --------------------------------------------------------------------------
+   11. BOTONES Y CONTROLES
+   -------------------------------------------------------------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: var(--radius-pill);
+  font-size: 0.92rem;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  transition: var(--transition-smooth);
+  text-decoration: none;
+}
+
+.btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(2, 132, 199, 0.35);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(2, 132, 199, 0.5);
+}
+
+.btn-secondary {
+  background: var(--primary-light);
+  color: var(--primary-dark);
+}
+
+.btn-secondary:hover {
+  background: #bae6fd;
+  color: #0369a1;
+  transform: translateY(-2px);
+}
+
+.btn-accent {
+  background: linear-gradient(135deg, var(--accent), #059669);
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);
+}
+
+.btn-accent:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.45);
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1.5px solid #cbd5e1;
+  color: var(--text-main);
+}
+
+.btn-outline:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+  background: #f8fafc;
+}
+
+.btn-danger {
+  background: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid #fca5a5;
+}
+
+.btn-danger:hover {
+  background: #fecaca;
+}
+
+.btn-large {
+  padding: 14px 28px;
+  font-size: 1.05rem;
+}
+
+.btn-block {
+  width: 100%;
+}
+
+.btn-sm {
+  padding: 6px 14px;
+  font-size: 0.8rem;
+}
+
+.btn-glow {
+  animation: pulseGlow 2.5s infinite;
+}
+
+@keyframes pulseGlow {
+  0% { box-shadow: 0 4px 14px rgba(2, 132, 199, 0.4); }
+  50% { box-shadow: 0 0 25px rgba(2, 132, 199, 0.7); }
+  100% { box-shadow: 0 4px 14px rgba(2, 132, 199, 0.4); }
+}
+
+/* --------------------------------------------------------------------------
+   12. BARRA DE NAVEGACIÓN INFERIOR (HUD CONTROLS)
+   -------------------------------------------------------------------------- */
+.hud-bottom-nav {
+  height: 72px;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-top: 1px solid var(--border-light);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30px;
+  position: sticky;
+  bottom: 0;
+  z-index: 100;
+  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.04);
+}
+
+.nav-control-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #ffffff;
+  border: 1.5px solid #cbd5e1;
+  padding: 10px 22px;
+  border-radius: var(--radius-pill);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-main);
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.nav-control-btn:hover:not(:disabled) {
+  border-color: var(--primary);
+  color: var(--primary);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+.nav-control-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.nav-control-btn.primary-next {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  border-color: transparent;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.35);
+}
+
+.nav-control-btn.primary-next:hover {
+  box-shadow: 0 6px 18px rgba(2, 132, 199, 0.5);
+}
+
+.home-btn {
+  padding: 10px 18px;
+}
+
+.nav-status-indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.nav-step-counter {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.nav-step-name {
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--primary-dark);
+}
+
+/* --------------------------------------------------------------------------
+   13. MODALES EMERGENTES Y DIÁLOGOS
+   -------------------------------------------------------------------------- */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 200;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.modal-overlay.open {
+  display: flex;
+  opacity: 1;
+}
+
+.modal-box {
+  width: 100%;
+  max-width: 680px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transform: scale(0.92);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  padding: 24px;
+}
+
+.modal-overlay.open .modal-box {
+  transform: scale(1);
+}
+
+.modal-compact {
+  max-width: 480px;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.modal-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.modal-icon {
+  font-size: 1.5rem;
+}
+
+.modal-header h3 {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--text-main);
+}
+
+.modal-close-btn {
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  line-height: 1;
+  transition: color 0.2s;
+}
+
+.modal-close-btn:hover {
+  color: var(--danger);
+}
+
+.modal-body {
+  padding: 20px 0;
+  overflow-y: auto;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border-light);
+}
+
+/* Modal Farmacia Grid */
+.search-bar-wrap input {
+  width: 100%;
+  padding: 10px 16px;
+  border: 1.5px solid #cbd5e1;
+  border-radius: var(--radius-pill);
+  font-size: 0.9rem;
+  outline: none;
+  margin-bottom: 16px;
+}
+
+.search-bar-wrap input:focus {
+  border-color: var(--primary);
+}
+
+.pharmacy-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 14px;
+}
+
+.pharmacy-product-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: var(--radius-md);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  transition: var(--transition-smooth);
+}
+
+.pharmacy-product-card:hover {
+  border-color: var(--accent);
+  box-shadow: var(--shadow-sm);
+}
+
+.prod-badge {
+  font-size: 0.68rem;
+  font-weight: 800;
+  background: var(--accent-light);
+  color: #047857;
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  width: fit-content;
+}
+
+.prod-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.prod-desc {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+  flex: 1;
+}
+
+.prod-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 8px;
+  border-top: 1px dashed #f1f5f9;
+}
+
+.prod-stock {
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.prod-stock.in-stock {
+  color: var(--accent);
+}
+
+.prod-price {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--primary-dark);
+}
+
+/* Modal Receta Médica */
+.prescription-box {
+  max-width: 600px;
+}
+
+.prescription-paper {
+  background: #ffffff;
+  border: 2px solid #e2e8f0;
+  padding: 24px;
+  border-radius: var(--radius-sm);
+  box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.02);
+}
+
+.rx-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.rx-clinic-title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--primary-dark);
+}
+
+.rx-meta {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  text-align: right;
+}
+
+.rx-patient-info {
+  font-size: 0.88rem;
+  margin-bottom: 12px;
+}
+
+.rx-patient-info p {
+  margin-bottom: 4px;
+}
+
+.rx-divider {
+  border: none;
+  height: 1px;
+  background: #e2e8f0;
+  margin: 12px 0;
+}
+
+.rx-body h4 {
+  font-size: 0.92rem;
+  margin-bottom: 10px;
+  color: var(--text-main);
+}
+
+.rx-medication {
+  background: #f8fafc;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  margin-bottom: 8px;
+  border-left: 3px solid var(--accent);
+}
+
+.rx-item-title {
+  font-weight: 700;
+  font-size: 0.88rem;
+}
+
+.rx-item-indic {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.rx-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: 24px;
+}
+
+.stamp-circle {
+  border: 2px dashed #0284c7;
+  color: #0284c7;
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 8px;
+  border-radius: 50%;
+  text-align: center;
+  width: 90px;
+  height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: rotate(-10deg);
+}
+
+.rx-signature {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.sig-line {
+  color: #94a3b8;
+  margin-bottom: 4px;
+}
+
+/* Modal Consultorio */
+.doctor-detail-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.doctor-badge-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: #f8fafc;
+  padding: 16px;
+  border-radius: var(--radius-md);
+  border: 1px solid #e2e8f0;
+}
+
+.doc-portrait {
+  font-size: 2.4rem;
+}
+
+.doctor-badge-card h4 {
+  font-size: 1.15rem;
+  color: var(--text-main);
+}
+
+.doctor-badge-card p {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.online-indicator {
+  font-size: 0.75rem;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.vitals-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 10px;
+  margin: 12px 0;
+}
+
+.vital-item {
+  background: #f1f5f9;
+  padding: 10px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.vital-lbl {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.vital-val {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--primary-dark);
+}
+
+.doctor-notes {
+  background: #eff6ff;
+  border-left: 4px solid var(--primary);
+  padding: 12px;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  font-size: 0.88rem;
+  color: #1e3a8a;
+  line-height: 1.5;
+}
+
+.help-list {
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 0.92rem;
+  color: var(--text-muted);
+}
+
+.help-list li strong {
+  color: var(--text-main);
+}
+
+.feedback-msg {
+  margin-top: 12px;
+  padding: 10px;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+/* --------------------------------------------------------------------------
+   14. RESPONSIVE DESIGN (MEDIA QUERIES)
+   -------------------------------------------------------------------------- */
+@media (max-width: 860px) {
+  .single-portal-wrapper {
+    width: 100%;
+  }
+
+  .portal-single {
+    min-height: 380px;
+  }
+
+  .portal-single:hover {
+    transform: translateY(-4px) scale(1.01);
+  }
+
+  .stage-scene {
+    grid-template-columns: 1fr;
+  }
+
+  .step-name {
+    display: none;
+  }
+
+  .progress-section {
+    padding: 10px 14px;
+  }
+
+  .hud-header {
+    padding: 0 14px;
+  }
+
+  .hud-brand-tag {
+    display: none;
+  }
+
+  .hud-bottom-nav {
+    padding: 0 14px;
+  }
+
+  .welcome-title {
+    font-size: 1.7rem;
+  }
+
+  .stage-info-card h2 {
+    font-size: 1.4rem;
+  }
+}
+
+@media (max-width: 520px) {
+  .nav-control-btn .label {
+    display: none;
+  }
+
+  .nav-control-btn {
+    padding: 10px 14px;
+  }
+
+  .hud-status {
+    padding: 4px 10px;
+  }
+
+  .hud-location-text {
+    font-size: 0.75rem;
+  }
+}

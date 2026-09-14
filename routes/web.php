@@ -17,6 +17,8 @@ return function (Router $router): void {
 
     $router->get('/dashboard', [DashboardController::class, 'index']);
 
+    $router->get('/paciente/recorrido', [PacienteController::class, 'recorrido']);
+
     $router->get('/medico/pacientes', [MedicoController::class, 'pacientes']);
     $router->get('/medico/consultas', [MedicoController::class, 'consultas']);
     $router->get('/medico/recetas', [MedicoController::class, 'recetas']);

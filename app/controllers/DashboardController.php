@@ -12,6 +12,11 @@ class DashboardController extends Controller
 
         $role = \auth_role();
 
+        if ($role === 'paciente') {
+            $this->view('dashboard/paciente', ['title' => 'Panel del paciente']);
+            return;
+        }
+
         $this->view('dashboard/index', [
             'title' => 'Panel principal',
             'modules' => $this->modulesFor($role),
