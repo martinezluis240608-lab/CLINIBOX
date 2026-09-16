@@ -136,6 +136,7 @@ body {
 }
 
 .hud-pulse {
+  display: none;
   width: 10px;
   height: 10px;
   background-color: var(--accent);
@@ -357,6 +358,45 @@ body {
   transform: scale(1) translateZ(0);
 }
 
+.floating-menu-wrap {
+  min-height: calc(100vh - 120px);
+  display: grid;
+  place-items: center;
+  padding: 40px 20px;
+}
+
+.floating-menu-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(180px, 1fr));
+  gap: 22px;
+  width: min(760px, 90vw);
+}
+
+.floating-menu-btn {
+  appearance: none;
+  border: 1px solid rgba(14, 116, 144, 0.18);
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: var(--primary-dark);
+  font-weight: 800;
+  font-size: 1.08rem;
+  letter-spacing: 0.02em;
+  border-radius: 22px;
+  min-height: 90px;
+  padding: 18px 20px;
+  box-shadow: 0 18px 35px rgba(15, 23, 42, 0.08);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.floating-menu-btn:hover,
+.floating-menu-btn:focus-visible {
+  transform: translateY(-4px);
+  box-shadow: 0 24px 40px rgba(15, 23, 42, 0.12);
+  border-color: rgba(14, 116, 144, 0.42);
+}
+
 /* Panel Glassmorphism */
 .glass-panel {
   background: rgba(255, 255, 255, 0.94);
@@ -374,137 +414,222 @@ body {
 /* --------------------------------------------------------------------------
    7. ESTACIÓN 1: PANTALLA DE BIENVENIDA (SPLIT SCREEN FLEXBOX CON EFECTO VR)
    -------------------------------------------------------------------------- */
-.welcome-container {
+.intro-door-screen {
   width: 100%;
-  max-width: 1060px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 22px;
+  min-height: calc(100vh - 36px);
+  display: grid;
+  place-items: center;
+  background: linear-gradient(180deg, #edf6fb 0%, #e7f3fb 100%);
 }
 
-.welcome-header-box {
-  text-align: center;
-  max-width: 820px;
-  margin: 0 auto;
-}
-
-.welcome-badge {
-  display: inline-block;
-  background: var(--primary-light);
-  color: var(--primary-dark);
-  font-weight: 700;
-  font-size: 0.85rem;
-  padding: 6px 18px;
-  border-radius: var(--radius-pill);
-  margin-bottom: 12px;
-  border: 1px solid rgba(2, 132, 199, 0.2);
-}
-
-.welcome-title {
-  font-size: 2.2rem;
-  font-weight: 800;
-  line-height: 1.25;
-  margin-bottom: 10px;
-}
-
-.text-gradient {
-  background: linear-gradient(120deg, var(--primary), #4f46e5);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.welcome-subtitle {
-  font-size: 1rem;
-  color: var(--text-muted);
-  line-height: 1.6;
-}
-
-/* CONTENEDOR FLEXBOX: IMAGEN PRINCIPAL GRANDE E INTERACTIVA */
-.single-portal-wrapper {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  perspective: 1200px;
-}
-
-/* TARJETA / PORTAL INTERACTIVO DE GRAN FORMATO */
-.portal-card {
+.intro-door-scene {
   position: relative;
-  border-radius: var(--radius-lg);
+  width: min(100%, 1480px);
+  height: min(78vh, 760px);
+  display: grid;
+  place-items: center;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.32), rgba(159, 208, 242, 0.25)),
+    linear-gradient(135deg, rgba(214, 231, 245, 0.6), rgba(248, 250, 252, 0.92));
+  border: 3px solid rgba(59, 130, 246, 0.8);
+  border-radius: 0;
   overflow: hidden;
   cursor: pointer;
+  transition: all 0.35s ease;
+  box-shadow:
+    inset 0 0 0 2px rgba(255,255,255,0.55),
+    0 8px 28px rgba(59, 130, 246, 0.08);
+}
+
+.intro-door-frame {
+  position: relative;
+  width: calc(100% - 12px);
+  height: calc(100% - 12px);
+  background: linear-gradient(180deg, rgba(226, 239, 249, 0.75), rgba(255,255,255,0.85));
+  overflow: hidden;
+  border-radius: 0;
+}
+
+.intro-door-frame::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(255,255,255,0.18), transparent 8%, transparent 50%, rgba(255,255,255,0.18) 100%);
+  pointer-events: none;
+}
+
+.intro-door-panel {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  background:
+    linear-gradient(135deg,
+      rgba(255,255,255,0.7) 0%,
+      rgba(224, 242, 254, 0.38) 18%,
+      rgba(147, 197, 253, 0.45) 46%,
+      rgba(15, 23, 42, 0.72) 100%);
+  border: 3px solid rgba(59, 130, 246, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.7s ease, filter 0.7s ease;
+  box-shadow:
+    inset 0 0 0 2px rgba(255,255,255,0.42),
+    inset 0 -14px 18px rgba(15, 23, 42, 0.18),
+    inset 18px 0 20px rgba(255,255,255,0.12);
+}
+
+.intro-door-panel::before {
+  content: "";
+  position: absolute;
+  inset: 12% 8% 12% 8%;
+  border-radius: 18px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.2), rgba(148, 163, 184, 0.08));
+  border: 2px solid rgba(255,255,255,0.15);
+  box-shadow: inset 0 0 18px rgba(255,255,255,0.06);
+}
+
+.intro-door-panel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(255,255,255,0.4), transparent 18%, transparent 82%, rgba(255,255,255,0.28));
+  mix-blend-mode: screen;
+}
+
+.intro-door-panel.left {
+  left: 0;
+  border-right: 2px solid rgba(59,130,246,0.9);
+  transform-origin: left center;
+}
+
+.intro-door-panel.right {
+  right: 0;
+  border-left: 2px solid rgba(59,130,246,0.9);
+  transform-origin: right center;
+}
+
+.intro-door-sensor {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 18px;
+  height: 18px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: transparent;
+  box-shadow: none;
+  opacity: 0;
+  z-index: 3;
+}
+
+.intro-door-scene:hover .intro-door-panel.left,
+.intro-door-scene.is-open .intro-door-panel.left {
+  transform: translateX(-62%);
+}
+
+.intro-door-scene:hover .intro-door-panel.right,
+.intro-door-scene.is-open .intro-door-panel.right {
+  transform: translateX(62%);
+}
+
+.intro-system-title {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.6s ease 0.3s, transform 0.6s ease 0.3s;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.clinibox-brand {
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  background: #0f172a;
-  border: 2px solid rgba(255, 255, 255, 0.9);
-  box-shadow: var(--shadow-md);
-  outline: none;
-  /* Transición fluida para que al pasar el mouse se agrande suavemente */
-  transition: transform 0.55s cubic-bezier(0.25, 1, 0.5, 1),
-              box-shadow 0.5s ease,
-              border-color 0.4s ease,
-              filter 0.5s ease;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 }
 
-.portal-single {
-  width: 100%;
-  max-width: 920px;
-  min-height: 480px;
-  margin: 0 auto;
-}
-
-/* COMPORTAMIENTO INTERACTIVO AL PASAR EL MOUSE (HOVER):
-   - La imagen y tarjeta se AGRANDAN suavemente con zoom inmersivo y elevación 3D.
-   - El overlay oscuro se intensifica para dar protagonismo al texto y al botón. */
-.portal-single:hover,
-.portal-single:focus-visible {
-  transform: translateY(-8px) scale(1.02);
-  border-color: var(--primary);
-  box-shadow: 0 28px 60px rgba(2, 132, 199, 0.4);
-  z-index: 5;
-}
-
-/* IMAGEN DE FONDO DE GRAN TAMAÑO */
-.portal-bg-art {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-  overflow: hidden;
-  background-color: #0f172a;
-}
-
-.portal-svg {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.clinibox-icon {
+  width: min(42vw, 520px);
+  height: auto;
   display: block;
-  transition: transform 0.85s cubic-bezier(0.25, 1, 0.5, 1), filter 0.6s ease;
+  filter: drop-shadow(0 22px 35px rgba(15, 23, 42, 0.12));
+  transform: translateY(14px);
 }
 
-/* Zoom suave inmersivo en la imagen al hacer hover */
-.portal-card:hover .portal-svg {
-  transform: scale(1.1);
+.clinibox-wordmark {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 0;
+  line-height: 0.8;
+  transform: translateY(8px);
 }
 
-/* CAPA OSCURA (DARK OVERLAY) QUE APARECE SOBRE LA IMAGEN SELECCIONADA */
-.portal-overlay {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  background: linear-gradient(
-    180deg,
-    rgba(15, 23, 42, 0.15) 0%,
-    rgba(15, 23, 42, 0.55) 40%,
-    rgba(15, 23, 42, 0.88) 85%,
-    rgba(15, 23, 42, 0.98) 100%
-  );
-  backdrop-filter: blur(1px);
-  -webkit-backdrop-filter: blur(1px);
-  transition: background 0.5s ease, opacity 0.5s ease, backdrop-filter 0.5s ease;
+.clinibox-wordmark span {
+  display: inline-block;
+  font-weight: 900;
+  letter-spacing: -0.08em;
+  font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+.word-clini {
+  font-size: clamp(4rem, 8vw, 10rem);
+  color: #0d4f9f;
+}
+
+.word-box {
+  font-size: clamp(4rem, 8vw, 10rem);
+  color: #10b785;
+}
+
+.intro-door-scene:hover .intro-system-title,
+.intro-door-scene.is-open .intro-system-title {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.intro-door-scene:hover .clinibox-icon,
+.intro-door-scene.is-open .clinibox-icon {
+  transform: translateY(0);
+}
+
+.intro-door-scene:hover .clinibox-wordmark,
+.intro-door-scene.is-open .clinibox-wordmark {
+  transform: translateY(0);
+}
+
+/* ocultar paneles previos no deseados en la pantalla inicial */
+#stage-0 .welcome-container,
+#stage-0 .portal-card,
+#stage-0 .portal-content,
+#stage-0 .portal-overlay,
+#stage-0 .portal-door-scene,
+#stage-0 .portal-door-frame,
+#stage-0 .portal-reveal {
+  display: none;
+}
+
+#stage-0 .intro-door-screen {
+  display: grid;
+}
+
+#stage-0 .intro-door-scene {
+  display: grid;
+}
+
+#stage-1 .info-badge,
+#stage-6 .info-badge {
+  display: none;
+}
+
+/* Mantener solo el panel principal de inicio limpio */
+#stage-0 .tour-stage {
+  display: block;
 }
 
 /* Efecto oscuro más profundo y dramático al seleccionar la imagen */

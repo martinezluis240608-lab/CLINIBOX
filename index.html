@@ -9,81 +9,6 @@
 <body>
 
   <!-- ============================================================
-       CABECERA Y HUD DE REALIDAD VIRTUAL
-       ============================================================ -->
-  <header class="hud-header">
-    <div class="hud-brand">
-      <div class="hud-logo-icon">
-        <!-- Ícono médico de cruz estilizada -->
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 6v12m-6-6h12"/>
-        </svg>
-      </div>
-      <div class="hud-brand-text">
-        <span class="hud-brand-title">CLINI<strong>BOX</strong></span>
-        <span class="hud-brand-tag">Paseo Virtual 360°</span>
-      </div>
-    </div>
-
-    <!-- Indicador de estación actual -->
-    <div class="hud-status" id="hudStatus">
-      <span class="hud-pulse"></span>
-      <span class="hud-location-text" id="hudLocationText">Bienvenida</span>
-    </div>
-
-    <!-- Acciones rápidas superiores -->
-    <div class="hud-actions">
-      <button class="hud-btn" id="btnHelp" title="Instrucciones de recorrido">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-        <span>Ayuda</span>
-      </button>
-      <button class="hud-btn" id="btnSoundToggle" title="Activar/Desactivar efectos de audio">
-        <svg id="soundIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
-        <span id="soundLabel">Audio</span>
-      </button>
-    </div>
-  </header>
-
-  <!-- ============================================================
-       BARRA DE PROGRESO DEL RECORRIDO (7 ESTACIONES)
-       ============================================================ -->
-  <section class="progress-section" id="tourProgressContainer">
-    <div class="progress-track">
-      <div class="progress-fill" id="progressFill"></div>
-    </div>
-    <div class="progress-steps" id="progressSteps">
-      <button class="step-node active" data-step="0" title="1. Bienvenida">
-        <span class="step-num">1</span>
-        <span class="step-name">Bienvenida</span>
-      </button>
-      <button class="step-node" data-step="1" title="2. Entrada">
-        <span class="step-num">2</span>
-        <span class="step-name">Entrada</span>
-      </button>
-      <button class="step-node" data-step="2" title="3. Recepción">
-        <span class="step-num">3</span>
-        <span class="step-name">Recepción</span>
-      </button>
-      <button class="step-node" data-step="3" title="4. Sala de Espera">
-        <span class="step-num">4</span>
-        <span class="step-name">Sala de Espera</span>
-      </button>
-      <button class="step-node" data-step="4" title="5. Farmacia">
-        <span class="step-num">5</span>
-        <span class="step-name">Farmacia</span>
-      </button>
-      <button class="step-node" data-step="5" title="6. Consultorio">
-        <span class="step-num">6</span>
-        <span class="step-name">Consultorio</span>
-      </button>
-      <button class="step-node" data-step="6" title="7. Fin del Paseo">
-        <span class="step-num">7</span>
-        <span class="step-name">Finalizar</span>
-      </button>
-    </div>
-  </section>
-
-  <!-- ============================================================
        CONTENEDOR PRINCIPAL: ESCENARIO VIRTUAL EN PRIMERA PERSONA
        ============================================================ -->
   <main class="vr-viewport" id="vrViewport">
@@ -100,91 +25,36 @@
          ESTACIÓN 1: PANTALLA DE BIENVENIDA (PORTAL ÚNICO INTERACTIVO)
          ============================================================ -->
     <article class="tour-stage active" id="stage-0" data-index="0">
-      <div class="welcome-container">
-        <!-- Encabezado superior de bienvenida -->
-        <div class="welcome-header-box">
-          <div class="welcome-badge">🏥 Sistema de Salud Inmersivo 360°</div>
-          <h1 class="welcome-title">Bienvenido a nuestra <span class="text-gradient">Clínica Virtual CLINIBOX</span></h1>
-          <p class="welcome-subtitle">
-            Pasa el cursor sobre la experiencia para interactuar y haz clic para iniciar tu recorrido guiado como paciente.
-          </p>
-        </div>
+      <div class="intro-door-screen">
+        <div class="intro-door-scene" id="introDoorScene" tabindex="0" role="button" aria-label="Abrir acceso principal">
+          <div class="intro-door-frame">
+            <div class="intro-door-panel left"></div>
+            <div class="intro-door-panel right"></div>
+            <div class="intro-door-sensor" aria-hidden="true"></div>
+          </div>
 
-        <!-- Contenedor con una única imagen de fondo grande e interactiva -->
-        <div class="single-portal-wrapper" id="welcomePortals">
-          <div class="portal-card portal-single" id="portalMain" tabindex="0" role="button" aria-label="Explorar la clínica virtual CLINIBOX">
-            
-            <!-- Imagen de fondo interactiva de gran formato (Fachada y arquitectura clínica) -->
-            <div class="portal-bg-art bg-art-clinic">
-              <svg viewBox="0 0 900 520" preserveAspectRatio="xMidYMid slice" class="portal-svg">
+          <div class="intro-system-title" id="introSystemTitle" aria-label="CLINIBOX">
+            <div class="clinibox-brand">
+              <svg class="clinibox-icon" viewBox="0 0 700 700" role="img" aria-label="Logo de CLINIBOX">
                 <defs>
-                  <linearGradient id="mainSkyGrad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stop-color="#0284c7"/>
-                    <stop offset="55%" stop-color="#38bdf8"/>
-                    <stop offset="100%" stop-color="#bae6fd"/>
-                  </linearGradient>
-                  <linearGradient id="mainGlassGrad" x1="0" y1="0" x2="1" y2="1">
-                    <stop offset="0%" stop-color="#bae6fd" stop-opacity="0.9"/>
-                    <stop offset="50%" stop-color="#7dd3fc" stop-opacity="0.75"/>
-                    <stop offset="100%" stop-color="#0284c7" stop-opacity="0.85"/>
-                  </linearGradient>
-                  <linearGradient id="mainFacadeGrad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stop-color="#ffffff"/>
-                    <stop offset="100%" stop-color="#cbd5e1"/>
+                  <linearGradient id="brandBlue" x1="0%" x2="100%" y1="0%" y2="100%">
+                    <stop offset="0%" stop-color="#0c5fb2" />
+                    <stop offset="100%" stop-color="#05a6c9" />
                   </linearGradient>
                 </defs>
-                <!-- Cielo y atmósfera luminosa -->
-                <rect width="900" height="520" fill="url(#mainSkyGrad)"/>
-                <!-- Sol y resplandor ambiental -->
-                <circle cx="450" cy="140" r="180" fill="#ffffff" opacity="0.3"/>
-                <!-- Silueta de la clínica moderna -->
-                <rect x="150" y="80" width="600" height="340" rx="10" fill="url(#mainFacadeGrad)"/>
-                <!-- Ventanales de vidrio clínicos superiores -->
-                <rect x="190" y="110" width="140" height="60" rx="4" fill="url(#mainGlassGrad)"/>
-                <rect x="380" y="110" width="140" height="60" rx="4" fill="url(#mainGlassGrad)"/>
-                <rect x="570" y="110" width="140" height="60" rx="4" fill="url(#mainGlassGrad)"/>
-                <rect x="190" y="190" width="140" height="60" rx="4" fill="url(#mainGlassGrad)"/>
-                <rect x="380" y="190" width="140" height="60" rx="4" fill="url(#mainGlassGrad)"/>
-                <rect x="570" y="190" width="140" height="60" rx="4" fill="url(#mainGlassGrad)"/>
-                <!-- Letrero central iluminado CLINIBOX -->
-                <rect x="310" y="265" width="280" height="42" rx="8" fill="#0284c7"/>
-                <circle cx="335" cy="286" r="11" fill="#10b981"/>
-                <path d="M335 280 v12 M329 286 h12" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
-                <text x="450" y="292" fill="#ffffff" font-size="16" font-weight="900" font-family="sans-serif" text-anchor="middle" letter-spacing="2.5">CLINIBOX SALUD</text>
-                <!-- Marquesina y Puertas de acceso principal -->
-                <polygon points="260,320 640,320 670,345 230,345" fill="#0f172a"/>
-                <rect x="330" y="345" width="240" height="115" fill="#1e293b"/>
-                <rect x="345" y="355" width="102" height="105" fill="url(#mainGlassGrad)" stroke="#38bdf8" stroke-width="2"/>
-                <rect x="453" y="355" width="102" height="105" fill="url(#mainGlassGrad)" stroke="#38bdf8" stroke-width="2"/>
-                <!-- Sensor verde de movimiento -->
-                <rect x="442" y="348" width="16" height="5" rx="2" fill="#22c55e"/>
-                <!-- Sendero y accesibilidad -->
-                <polygon points="280,460 620,460 760,520 140,520" fill="#94a3b8"/>
-                <polygon points="380,460 520,460 580,520 320,520" fill="#0284c7" opacity="0.35"/>
-                <!-- Áreas verdes laterales -->
-                <rect x="120" y="430" width="90" height="50" rx="12" fill="#10b981"/>
-                <rect x="690" y="430" width="90" height="50" rx="12" fill="#10b981"/>
+
+                <rect x="65" y="65" width="570" height="570" rx="110" fill="url(#brandBlue)" opacity="0.96"/>
+                <rect x="120" y="120" width="460" height="460" rx="90" fill="#f2f5f7"/>
+                <circle cx="350" cy="350" r="180" fill="url(#brandBlue)"/>
+                <rect x="285" y="230" width="130" height="240" rx="30" fill="#ffffff"/>
+                <rect x="210" y="305" width="280" height="130" rx="30" fill="#ffffff"/>
               </svg>
-            </div>
 
-            <!-- Capa oscura interactiva (Dark Overlay) -->
-            <div class="portal-overlay"></div>
-
-            <!-- Contenido interactivo flotante -->
-            <div class="portal-content">
-              <span class="portal-tag">Paseo Virtual Guiado</span>
-              <h2 class="portal-title">Explorar la clínica</h2>
-              <p class="portal-desc">
-                Sumérgete en una experiencia interactiva en primera persona para conocer nuestras instalaciones médicas, aprender sobre la atención al paciente y descubrir el consultorio y la farmacia.
-              </p>
-              <div class="portal-action">
-                <button class="btn btn-primary btn-large btn-portal btn-glow" id="btnExploreClinic">
-                  <span>Comenzar recorrido</span>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14m-7-7 7 7-7 7"/></svg>
-                </button>
+              <div class="clinibox-wordmark" aria-label="CLINIBOX">
+                <span class="word-clini">CLini</span>
+                <span class="word-box">Box</span>
               </div>
             </div>
-
           </div>
         </div>
       </div>
@@ -192,43 +62,29 @@
 
 
     <!-- ============================================================
-         ESTACIÓN 2: ENTRADA DE LA CLÍNICA
+         ESTACIÓN 2: MENÚ DE APARTADOS FLOTANTES
          ============================================================ -->
     <article class="tour-stage" id="stage-1" data-index="1">
-      <div class="stage-scene scene-entrance">
-        <!-- Vista del edificio y puertas automáticas de cristal -->
-        <div class="building-facade">
-          <div class="facade-sign">
-            <div class="cross-icon">+</div>
-            <span>CENTRO DE ATENCIÓN MÉDICA CLINIBOX</span>
-          </div>
-          <div class="automatic-doors-frame">
-            <div class="door door-left"></div>
-            <div class="door door-right"></div>
-            <div class="interior-glimpse">
-              <span class="door-sensor-light"></span>
-              <span class="door-welcome-text">PUERTAS AUTOMÁTICAS ACTIVAS</span>
-            </div>
-          </div>
-          <div class="floor-mat">
-            <span>BIENVENIDO • INGRESO PACIENTES</span>
-          </div>
-        </div>
-
-        <!-- Tarjeta de información de la entrada -->
-        <div class="stage-info-card glass-panel">
-          <div class="info-badge">Paso 2 de 7 • Entrada Principal</div>
-          <h2>Entrada de la Clínica</h2>
-          <p>
-            Te encuentras frente al acceso principal de CLINIBOX. Las puertas automáticas con sensor de movimiento 
-            garantizan un ingreso seguro y accesible para todos los pacientes. Desde aquí puedes avanzar al área de recepción 
-            para registrar tu llegada.
-          </p>
-          <div class="stage-buttons-inline">
-            <button class="btn btn-accent" onclick="nextStep()">
-              <span>Entrar a la Recepción →</span>
-            </button>
-          </div>
+      <div class="floating-menu-wrap">
+        <div class="floating-menu-grid">
+          <button class="floating-menu-btn" onclick="goToStep(1)">
+            <span>Centro Médico</span>
+          </button>
+          <button class="floating-menu-btn" onclick="goToStep(2)">
+            <span>Recepción</span>
+          </button>
+          <button class="floating-menu-btn" onclick="goToStep(3)">
+            <span>Sala de Espera</span>
+          </button>
+          <button class="floating-menu-btn" onclick="goToStep(4)">
+            <span>Farmacia</span>
+          </button>
+          <button class="floating-menu-btn" onclick="goToStep(5)">
+            <span>Consultorio</span>
+          </button>
+          <button class="floating-menu-btn" onclick="goToStep(6)">
+            <span>Finalizar</span>
+          </button>
         </div>
       </div>
     </article>
