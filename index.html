@@ -62,29 +62,56 @@
 
 
     <!-- ============================================================
-         ESTACIÓN 2: MENÚ DE APARTADOS FLOTANTES
+         ESTACIÓN 2: MENÚ DE APARTADOS FLOTANTES / REVELADO DESPUÉS DE ABRIR LAS PUERTAS
          ============================================================ -->
     <article class="tour-stage" id="stage-1" data-index="1">
-      <div class="floating-menu-wrap">
-        <div class="floating-menu-grid">
-          <button class="floating-menu-btn" onclick="goToStep(1)">
-            <span>Centro Médico</span>
+      <div class="feature-stage-shell">
+        <div class="feature-stage-copy">
+          <p class="feature-kicker">CliniBox</p>
+          <h2>Tu salud, más cerca de ti</h2>
+          <p>Accede a cada parte de la experiencia clínica con un entorno moderno, claro y listo para acompañarte en cada paso.</p>
+        </div>
+
+        <div class="feature-carousel" id="featureCarousel" aria-label="Servicios de CliniBox">
+          <button class="feature-card active" type="button" data-feature="clinic" data-step="2">
+            <span class="feature-card-icon icon-clinic">🩺</span>
+            <span class="feature-card-label">Centro Médico</span>
           </button>
-          <button class="floating-menu-btn" onclick="goToStep(2)">
-            <span>Recepción</span>
+
+          <button class="feature-card" type="button" data-feature="pharmacy" data-step="4">
+            <span class="feature-card-icon icon-pharmacy">💊</span>
+            <span class="feature-card-label">Farmacia</span>
           </button>
-          <button class="floating-menu-btn" onclick="goToStep(3)">
-            <span>Sala de Espera</span>
+
+          <button class="feature-card" type="button" data-feature="consult" data-step="5">
+            <span class="feature-card-icon icon-consult">📋</span>
+            <span class="feature-card-label">Consultorio</span>
           </button>
-          <button class="floating-menu-btn" onclick="goToStep(4)">
-            <span>Farmacia</span>
+
+          <button class="feature-card" type="button" data-feature="login" aria-label="Iniciar sesión">
+            <span class="feature-card-icon icon-login">🔐</span>
+            <span class="feature-card-label">Iniciar sesión</span>
           </button>
-          <button class="floating-menu-btn" onclick="goToStep(5)">
-            <span>Consultorio</span>
-          </button>
-          <button class="floating-menu-btn" onclick="goToStep(6)">
-            <span>Finalizar</span>
-          </button>
+        </div>
+
+        <div class="feature-detail-panel">
+          <div class="feature-detail active" data-content="clinic">
+            <span class="detail-tag">Especialistas</span>
+            <h3>Atención médica integral</h3>
+            <p>Un espacio pensado para cuidar cada etapa de tu bienestar con profesionales cercanos, tecnología y seguimiento continuo.</p>
+          </div>
+
+          <div class="feature-detail" data-content="pharmacy">
+            <span class="detail-tag">Farmacia</span>
+            <h3>Medicamentos y dispensación</h3>
+            <p>Consulta disponibilidad, reenfíos y productos de salud para continuar tu tratamiento sin complicaciones.</p>
+          </div>
+
+          <div class="feature-detail" data-content="consult">
+            <span class="detail-tag">Consultorio</span>
+            <h3>Evaluación y seguimiento</h3>
+            <p>Explora la atención profesional con consultas organizadas, historial y herramientas para cuidar tu salud.</p>
+          </div>
         </div>
       </div>
     </article>
@@ -98,7 +125,7 @@
         <div class="reception-visuals">
           <!-- Pantalla superior de turnos -->
           <div class="queue-screen">
-            <div class="queue-header">🔔 Turnos de Atención</div>
+            <div class="queue-header"> Turnos de Atención</div>
             <div class="queue-number">P-042 • Módulo 1</div>
           </div>
 
@@ -162,9 +189,9 @@
         <div class="waiting-visuals">
           <!-- Pantalla con consejos de salud -->
           <div class="health-screen">
-            <div class="health-screen-header">📺 CLINIBOX Salud & Prevención</div>
+            <div class="health-screen-header"> CLINIBOX Salud & Prevención</div>
             <div class="health-tip-slider" id="healthTipText">
-              💧 Recuerda beber suficiente agua y mantener hábitos saludables diariamente.
+               Recuerda beber suficiente agua y mantener hábitos saludables diariamente.
             </div>
           </div>
 
@@ -458,31 +485,6 @@
     </article>
 
   </main>
-
-  <!-- ============================================================
-       BARRA DE NAVEGACIÓN INFERIOR (CONTROLES DE PASEO)
-       ============================================================ -->
-  <nav class="hud-bottom-nav" id="hudBottomNav">
-    <button class="nav-control-btn" id="btnPrevStep" onclick="prevStep()">
-      <span class="arrow">←</span>
-      <span class="label">Regresar</span>
-    </button>
-
-    <button class="nav-control-btn home-btn" id="btnHome" onclick="goHome()">
-      <span class="icon">🏠</span>
-      <span class="label">Inicio</span>
-    </button>
-
-    <div class="nav-status-indicator">
-      <span class="nav-step-counter" id="navStepCounter">Paso 1 de 7</span>
-      <span class="nav-step-name" id="navStepName">Bienvenida</span>
-    </div>
-
-    <button class="nav-control-btn primary-next" id="btnNextStep" onclick="nextStep()">
-      <span class="label">Avanzar</span>
-      <span class="arrow">→</span>
-    </button>
-  </nav>
 
   <!-- ============================================================
        MODAL 1: CATÁLOGO DE FARMACIA

@@ -382,11 +382,16 @@ function toggleSound() {
 document.addEventListener("DOMContentLoaded", () => {
   // 1. Iniciar en la Estación 1: Bienvenida
   goToStep(0);
+  bindFeatureInteractions();
+  setActiveFeature("clinic");
 
   // 2. Control de interactividad de la pantalla de bienvenida
   const introDoorScene = document.getElementById("introDoorScene");
+  let tourStartRequested = false;
 
   const startTour = () => {
+    if (tourStartRequested) return;
+    tourStartRequested = true;
     playFeedbackTone(520, "sine", 0.12);
     if (introDoorScene) {
       introDoorScene.classList.add("is-open");
@@ -398,12 +403,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (introDoorScene) {
     introDoorScene.addEventListener("mouseenter", () => {
-      introDoorScene.classList.add("is-open");
-      playFeedbackTone(300, "sine", 0.05);
-    });
-
-    introDoorScene.addEventListener("mouseleave", () => {
-      introDoorScene.classList.remove("is-open");
+      startTour();
     });
 
     introDoorScene.addEventListener("click", startTour);
@@ -523,4 +523,75 @@ function initHealthTipsSlider() {
       }, 300);
     }, 4500);
   }
+}
+function setActiveFeature(featureName) {
+  const cards = document.querySelectorAll(".feature-card");
+  const details = document.querySelectorAll(".feature-detail");
+
+  cards.forEach(card => {
+    const isActive = card.dataset.feature === featureName;
+    card.classList.toggle("active", isActive);
+    card.setAttribute("aria-pressed", String(isActive));
+  });
+
+  details.forEach(detail => {
+    detail.classList.toggle("active", detail.dataset.content === featureName);
+  });
+}
+
+function bindFeatureInteractions() {
+  const featureCarousel = document.getElementById("featureCarousel");
+  const featureCards = document.querySelectorAll(".feature-card");
+  const featureButtons = document.querySelectorAll(".feature-cta");
+
+  if (featureCarousel) {
+    let isDragging = false;
+    let startX = 0;
+    let scrollLeft = 0;
+
+    featureCarousel.addEventListener("pointerdown", (event) => {
+      isDragging = true;
+      startX = event.clientX;
+      scrollLeft = featureCarousel.scrollLeft;
+      featureCarousel.setPointerCapture(event.pointerId);
+    });
+
+    featureCarousel.addEventListener("pointermove", (event) => {
+      if (!isDragging) return;
+      const delta = event.clientX - startX;
+      featureCarousel.scrollLeft = scrollLeft - delta;
+    });
+
+    featureCarousel.addEventListener("pointerup", () => {
+      isDragging = false;
+    });
+
+    featureCarousel.addEventListener("pointerleave", () => {
+      isDragging = false;
+    });
+  }
+
+  featureCards.forEach(card => {
+    card.addEventListener("click", () => {
+      const feature = card.dataset.feature;
+      setActiveFeature(feature);
+
+      if (feature === "login") {
+        showLoginScreen();
+        return;
+      }
+
+      const detail = document.querySelector(`.feature-detail[data-content="${feature}"]`);
+      if (detail) {
+        detail.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      }
+    });
+  });
+
+  featureButtons.forEach(button => {
+    button.addEventListener("click", () => {
+      const nextStep = Number(button.dataset.step || 2);
+      goToStep(nextStep);
+    });
+  });
 }
