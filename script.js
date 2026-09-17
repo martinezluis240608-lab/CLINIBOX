@@ -388,6 +388,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // 2. Control de interactividad de la pantalla de bienvenida
   const introDoorScene = document.getElementById("introDoorScene");
   let tourStartRequested = false;
+  let tourTransitionTimer = null;
 
   const startTour = () => {
     if (tourStartRequested) return;
@@ -396,15 +397,31 @@ document.addEventListener("DOMContentLoaded", () => {
     if (introDoorScene) {
       introDoorScene.classList.add("is-open");
     }
-    window.setTimeout(() => {
+    tourTransitionTimer = window.setTimeout(() => {
       goToStep(1);
+      tourTransitionTimer = null;
     }, 700);
+  };
+
+  const closeIntroDoor = () => {
+    if (tourTransitionTimer) {
+      window.clearTimeout(tourTransitionTimer);
+      tourTransitionTimer = null;
+    }
+
+    if (introDoorScene) {
+      introDoorScene.classList.remove("is-open");
+    }
+
+    tourStartRequested = false;
   };
 
   if (introDoorScene) {
     introDoorScene.addEventListener("mouseenter", () => {
       startTour();
     });
+
+    introDoorScene.addEventListener("mouseleave", closeIntroDoor);
 
     introDoorScene.addEventListener("click", startTour);
     introDoorScene.addEventListener("keydown", (e) => {
