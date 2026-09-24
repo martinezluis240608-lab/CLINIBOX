@@ -22,7 +22,7 @@
  */
 const TOUR_STAGES = [
   { id: "stage-0", title: "Bienvenida", badge: "Paso 1 de 7 • Bienvenida" },
-  { id: "stage-1", title: "Entrada Principal", badge: "Paso 2 de 7 • Fachada y Accesos" },
+  { id: "stage-1", title: "Centro Médico", badge: "Paso 2 de 7 • Atención y Acceso" },
   { id: "stage-2", title: "Recepción", badge: "Paso 3 de 7 • Módulo de Turnos" },
   { id: "stage-3", title: "Sala de Espera", badge: "Paso 4 de 7 • Sala Confortable" },
   { id: "stage-4", title: "Farmacia", badge: "Paso 5 de 7 • Dispensario de Fármacos" },
@@ -87,9 +87,22 @@ function goToStep(newStep) {
 
   currentStepIndex = newStep;
 
-  // Mostramos nuevamente las barras de navegación en caso de venir de login.
-  tourProgressContainer.style.display = "block";
-  hudBottomNav.style.display = "flex";
+  const introVisible = currentStepIndex === 0;
+  const headerOverlay = document.querySelector(".vr-hud-overlay");
+  const systemHeader = document.querySelector(".hud-header");
+
+  if (systemHeader) {
+    systemHeader.style.display = introVisible ? "none" : "flex";
+  }
+  if (tourProgressContainer) {
+    tourProgressContainer.style.display = introVisible ? "none" : "block";
+  }
+  if (hudBottomNav) {
+    hudBottomNav.style.display = introVisible ? "none" : "flex";
+  }
+  if (headerOverlay) {
+    headerOverlay.style.display = introVisible ? "none" : "block";
+  }
 
   // Ocultamos todos los stages, incluida la pantalla de login.
   document.querySelectorAll(".tour-stage").forEach(stage => {
@@ -149,10 +162,14 @@ function updateProgressUI() {
 
   // 1. Actualizar textos en el HUD superior e inferior
   if (hudLocationText) {
-    hudLocationText.textContent = `${currentStepIndex + 1}. ${currentStageInfo.title}`;
+    hudLocationText.textContent = currentStepIndex === 1 || currentStepIndex === 6
+      ? currentStageInfo.title
+      : `${currentStepIndex + 1}. ${currentStageInfo.title}`;
   }
   if (navStepCounter) {
-    navStepCounter.textContent = `Paso ${currentStepIndex + 1} de ${TOUR_STAGES.length}`;
+    navStepCounter.textContent = currentStepIndex === 1 || currentStepIndex === 6
+      ? ""
+      : `Paso ${currentStepIndex + 1} de ${TOUR_STAGES.length}`;
   }
   if (navStepName) {
     navStepName.textContent = currentStageInfo.title;
@@ -365,28 +382,53 @@ function toggleSound() {
 document.addEventListener("DOMContentLoaded", () => {
   // 1. Iniciar en la Estación 1: Bienvenida
   goToStep(0);
+  bindFeatureInteractions();
+  setActiveFeature("clinic");
 
-  // 2. Control de interactividad del portal de bienvenida (Imagen única interactiva)
+  // 2. Control de interactividad de la pantalla de bienvenida
+  const introDoorScene = document.getElementById("introDoorScene");
+  let tourStartRequested = false;
+  let tourTransitionTimer = null;
+
   const startTour = () => {
+    if (tourStartRequested) return;
+    tourStartRequested = true;
     playFeedbackTone(520, "sine", 0.12);
-    goToStep(1); // Inicia el paseo virtual en la Entrada de la clínica (Paso 2)
+    if (introDoorScene) {
+      introDoorScene.classList.add("is-open");
+    }
+    tourTransitionTimer = window.setTimeout(() => {
+      goToStep(1);
+      tourTransitionTimer = null;
+    }, 700);
   };
 
-  if (portalMain) {
-    portalMain.addEventListener("click", startTour);
-    portalMain.addEventListener("mouseenter", () => playFeedbackTone(300, "sine", 0.05));
-    portalMain.addEventListener("keydown", (e) => {
+  const closeIntroDoor = () => {
+    if (tourTransitionTimer) {
+      window.clearTimeout(tourTransitionTimer);
+      tourTransitionTimer = null;
+    }
+
+    if (introDoorScene) {
+      introDoorScene.classList.remove("is-open");
+    }
+
+    tourStartRequested = false;
+  };
+
+  if (introDoorScene) {
+    introDoorScene.addEventListener("mouseenter", () => {
+      startTour();
+    });
+
+    introDoorScene.addEventListener("mouseleave", closeIntroDoor);
+
+    introDoorScene.addEventListener("click", startTour);
+    introDoorScene.addEventListener("keydown", (e) => {
       if (e.key === "Enter" || e.key === " ") {
         e.preventDefault();
         startTour();
       }
-    });
-  }
-
-  if (btnExploreClinic) {
-    btnExploreClinic.addEventListener("click", (e) => {
-      e.stopPropagation(); // Evita doble disparo con el contenedor
-      startTour();
     });
   }
 
@@ -498,4 +540,75 @@ function initHealthTipsSlider() {
       }, 300);
     }, 4500);
   }
+}
+function setActiveFeature(featureName) {
+  const cards = document.querySelectorAll(".feature-card");
+  const details = document.querySelectorAll(".feature-detail");
+
+  cards.forEach(card => {
+    const isActive = card.dataset.feature === featureName;
+    card.classList.toggle("active", isActive);
+    card.setAttribute("aria-pressed", String(isActive));
+  });
+
+  details.forEach(detail => {
+    detail.classList.toggle("active", detail.dataset.content === featureName);
+  });
+}
+
+function bindFeatureInteractions() {
+  const featureCarousel = document.getElementById("featureCarousel");
+  const featureCards = document.querySelectorAll(".feature-card");
+  const featureButtons = document.querySelectorAll(".feature-cta");
+
+  if (featureCarousel) {
+    let isDragging = false;
+    let startX = 0;
+    let scrollLeft = 0;
+
+    featureCarousel.addEventListener("pointerdown", (event) => {
+      isDragging = true;
+      startX = event.clientX;
+      scrollLeft = featureCarousel.scrollLeft;
+      featureCarousel.setPointerCapture(event.pointerId);
+    });
+
+    featureCarousel.addEventListener("pointermove", (event) => {
+      if (!isDragging) return;
+      const delta = event.clientX - startX;
+      featureCarousel.scrollLeft = scrollLeft - delta;
+    });
+
+    featureCarousel.addEventListener("pointerup", () => {
+      isDragging = false;
+    });
+
+    featureCarousel.addEventListener("pointerleave", () => {
+      isDragging = false;
+    });
+  }
+
+  featureCards.forEach(card => {
+    card.addEventListener("click", () => {
+      const feature = card.dataset.feature;
+      setActiveFeature(feature);
+
+      if (feature === "login") {
+        showLoginScreen();
+        return;
+      }
+
+      const detail = document.querySelector(`.feature-detail[data-content="${feature}"]`);
+      if (detail) {
+        detail.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      }
+    });
+  });
+
+  featureButtons.forEach(button => {
+    button.addEventListener("click", () => {
+      const nextStep = Number(button.dataset.step || 2);
+      goToStep(nextStep);
+    });
+  });
 }
