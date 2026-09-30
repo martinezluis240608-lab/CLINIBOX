@@ -11,19 +11,21 @@
        ESTILOS DEL MÓDULO DE MENSAJES - CLINIBOX MÉDICO
     ========================================================== */
     :root {
-        --primary: #0284c7;
-        --primary-hover: #0369a1;
-        --primary-light: #e0f2fe;
-        --success: #10b981;
-        --success-light: #ecfdf5;
-        --warning: #f59e0b;
-        --text-dark: #0f172a;
-        --text-muted: #64748b;
-        --bg-page: #f8fafc;
-        --bg-card: #ffffff;
-        --border: #e2e8f0;
-        --radius: 14px;
-    }
+    --primary: #0284c7;
+    --primary-hover: #0369a1;
+    --primary-light: #e0f2fe;
+    --success: #10b981;
+    --success-light: #ecfdf5;
+    --warning: #f59e0b;
+    --text-dark: #0f172a;
+    --text-muted: #060606;
+    --bg-page: #f8fafc;
+    --bg-card: #ffffff;
+    --border: #e2e8f0;
+    --radius: 14px;
+    --danger: #ef4444;
+    --danger-light: #fef2f2;
+}
 
     * { box-sizing: border-box; }
 
@@ -35,7 +37,7 @@
     /* Fondo con imagen clínica */
     background-color: var(--bg-page);
     background-image:
-        linear-gradient(rgba(248, 250, 252, 0.88), rgba(248, 250, 252, 0.88)),
+        linear-gradient(rgba(248, 250, 252, 0), rgba(248, 250, 252, 0)),
         url("/CLINIBOX/public/assets/css/img/fondo-clinica.png");
     background-size: cover;
     background-position: center;
@@ -429,7 +431,120 @@
         .main-content { padding: 20px; }
     }
 
-    /* ==========================================================
+
+
+/* BOTONES */
+    .btn-primary {
+        background: var(--primary);
+        color: #ffffff;
+        border: none;
+        padding: 11px 20px;
+        border-radius: 9px;
+        font-weight: 600;
+        font-size: 0.92rem;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.2s ease;
+        box-shadow: 0 3px 10px rgba(2, 132, 199, 0.25);
+    }
+
+    .btn-primary:hover {
+        background: var(--primary-hover);
+        transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+        background: #f1f5f9;
+        color: #334155;
+        border: 1px solid var(--border);
+        padding: 9px 18px;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 0.88rem;
+        cursor: pointer;
+        transition: all 0.15s ease;
+    }
+
+    .btn-secondary:hover { background: #e2e8f0; }
+
+
+/* MODALES */
+    .modal-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(15, 23, 42, 0.5);
+        backdrop-filter: blur(4px);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        z-index: 100;
+    }
+
+    .modal-overlay.active { display: flex; }
+
+    .modal-card {
+        background: #ffffff;
+        border-radius: var(--radius);
+        max-width: 620px;
+        width: 100%;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        overflow: hidden;
+        max-height: 90vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .modal-header {
+        padding: 18px 24px;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #f8fafc;
+    }
+
+    .modal-header h3 { margin: 0; font-size: 1.15rem; color: var(--text-dark); }
+    .close-btn { background: none; border: none; font-size: 1.3rem; cursor: pointer; color: var(--text-muted); }
+
+    .modal-body {
+        padding: 24px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group label { font-size: 0.85rem; font-weight: 600; color: #475569; }
+
+    .form-control {
+        padding: 10px 14px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        font-size: 0.92rem;
+        outline: none;
+        transition: all 0.2s ease;
+        font-family: inherit;
+    }
+
+    .form-control:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+    }
+
+    .modal-footer {
+        padding: 16px 24px;
+        border-top: 1px solid var(--border);
+        background: #f8fafc;
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+    }
+
+        /* ==========================================================
    MODAL CERRAR SESIÓN
 ========================================================== */
 
@@ -770,25 +885,6 @@
         renderActiveMessages();
     });
 
-    function cerrarSesion(event) {
-    event.preventDefault();
-
-    const confirmar = confirm("¿Desea cerrar sesión?");
-
-    if (confirmar) {
-        window.location.href = "../../../index.html";
-    }
-}
-// MENU DE LA C
-function toggleBrandMenu(e){
-    e.stopPropagation();
-    document.getElementById('brandDropdown').parentElement.classList.toggle('open');
-}
-// Cerrar si das clic afuera
-document.addEventListener('click', () => {
-    const wrapper = document.querySelector('.brand-wrapper');
-    if(wrapper) wrapper.classList.remove('open');
-});
 </script>
 <!-- MODAL CERRAR SESIÓN -->
 <div class="modal-overlay" id="logoutModal">
@@ -834,6 +930,16 @@ function cerrarModalSesion() {
 function confirmarCerrarSesion() {
     window.location.href = "../../../index.html";
 }
+// MENU DE LA C
+function toggleBrandMenu(e){
+    e.stopPropagation();
+    document.getElementById('brandDropdown').parentElement.classList.toggle('open');
+}
+// Cerrar si das clic afuera
+document.addEventListener('click', () => {
+    const wrapper = document.querySelector('.brand-wrapper');
+    if(wrapper) wrapper.classList.remove('open');
+});
 </script>
 </body>
 </html>
