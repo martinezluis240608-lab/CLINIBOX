@@ -1,0 +1,740 @@
+/* =========================================================
+   CLINIBOX - CARRITO
+   Mismo estilo visual de la tienda y favoritos.
+========================================================= */
+
+
+/* =========================================================
+   PÁGINA
+========================================================= */
+
+.cart-page {
+
+    min-height:
+        calc(100vh - 90px);
+
+    padding:
+        45px 30px 70px;
+
+    position:
+        relative;
+
+    z-index:
+        2;
+
+}
+
+
+.cart-page-container {
+
+    width:
+        min(1200px, 100%);
+
+    margin:
+        0 auto;
+
+}
+
+
+/* =========================================================
+   ENCABEZADO
+========================================================= */
+
+.cart-page-heading {
+
+    margin-bottom:
+        30px;
+
+}
+
+
+.cart-kicker {
+
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    gap:
+        8px;
+
+    color:
+        var(--blue-dark);
+
+    font-size:
+        12px;
+
+    font-weight:
+        800;
+
+    letter-spacing:
+        .12em;
+
+}
+
+
+.cart-page-heading h1 {
+
+    margin:
+        8px 0 6px;
+
+    color:
+        var(--navy);
+
+    font-size:
+        clamp(30px, 4vw, 46px);
+
+}
+
+
+.cart-page-heading p {
+
+    margin:
+        0;
+
+    color:
+        var(--text-soft);
+
+    font-size:
+        15px;
+
+}
+
+
+/* =========================================================
+   CONTENIDO
+========================================================= */
+
+#cartContent {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        minmax(0, 1fr) 340px;
+
+    gap:
+        25px;
+
+    align-items:
+        start;
+
+}
+
+
+/* =========================================================
+   PRODUCTOS
+========================================================= */
+
+.cart-products {
+
+    background:
+        rgba(255,255,255,.78);
+
+    border:
+        1px solid rgba(255,255,255,.85);
+
+    border-radius:
+        24px;
+
+    box-shadow:
+        0 18px 45px rgba(38,76,96,.10);
+
+    backdrop-filter:
+        blur(18px);
+
+}
+
+
+.cart-item {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        100px 1fr auto;
+
+    gap:
+        18px;
+
+    align-items:
+        center;
+
+    padding:
+        20px;
+
+    border-bottom:
+        1px solid rgba(80,120,140,.12);
+
+}
+
+
+.cart-item:last-child {
+
+    border-bottom:
+        none;
+
+}
+
+
+/* =========================================================
+   IMAGEN
+========================================================= */
+
+.cart-item-image {
+
+    width:
+        100px;
+
+    height:
+        100px;
+
+    border-radius:
+        20px;
+
+    background:
+        rgba(184,245,255,.55);
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+}
+
+
+.cart-item-image span {
+
+    font-size:
+        52px;
+
+}
+
+
+/* =========================================================
+   INFORMACIÓN
+========================================================= */
+
+.cart-item-info small {
+
+    display:
+        block;
+
+    color:
+        var(--text-soft);
+
+    margin-bottom:
+        5px;
+
+}
+
+
+.cart-item-info h3 {
+
+    margin:
+        0 0 12px;
+
+    color:
+        var(--navy);
+
+    font-size:
+        18px;
+
+}
+
+
+/* =========================================================
+   PRECIO EN MÓVIL
+========================================================= */
+
+.cart-item-price-mobile {
+
+    display:
+        none;
+
+}
+
+
+/* =========================================================
+   CANTIDAD
+========================================================= */
+
+.cart-quantity {
+
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    gap:
+        12px;
+
+    margin-bottom:
+        12px;
+
+}
+
+
+.cart-quantity-button {
+
+    width:
+        32px;
+
+    height:
+        32px;
+
+    border:
+        1px solid rgba(8,43,85,.16);
+
+    border-radius:
+        9px;
+
+    background:
+        rgba(255,255,255,.85);
+
+    color:
+        var(--blue-dark);
+
+    cursor:
+        pointer;
+
+    font-size:
+        18px;
+
+    font-weight:
+        800;
+
+}
+
+
+.cart-quantity span {
+
+    min-width:
+        22px;
+
+    text-align:
+        center;
+
+    color:
+        var(--navy);
+
+    font-weight:
+        800;
+
+}
+
+
+/* =========================================================
+   ELIMINAR
+========================================================= */
+
+.cart-remove {
+
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    gap:
+        6px;
+
+    border:
+        none;
+
+    background:
+        transparent;
+
+    color:
+        #e54b68;
+
+    cursor:
+        pointer;
+
+    font-weight:
+        700;
+
+    padding:
+        0;
+
+}
+
+
+.cart-remove:hover {
+
+    text-decoration:
+        underline;
+
+}
+
+
+/* =========================================================
+   PRECIO
+========================================================= */
+
+.cart-price {
+
+    font-size:
+        19px;
+
+    font-weight:
+        800;
+
+    color:
+        var(--blue-dark);
+
+}
+
+
+/* =========================================================
+   RESUMEN
+========================================================= */
+
+.cart-summary {
+
+    padding:
+        25px;
+
+    background:
+        rgba(255,255,255,.78);
+
+    border:
+        1px solid rgba(255,255,255,.85);
+
+    border-radius:
+        24px;
+
+    box-shadow:
+        0 18px 45px rgba(38,76,96,.10);
+
+    backdrop-filter:
+        blur(18px);
+
+}
+
+
+.cart-summary h2 {
+
+    margin:
+        0 0 25px;
+
+    color:
+        var(--navy);
+
+}
+
+
+.summary-row {
+
+    display:
+        flex;
+
+    justify-content:
+        space-between;
+
+    gap:
+        15px;
+
+    padding:
+        13px 0;
+
+    color:
+        var(--text-soft);
+
+}
+
+
+.summary-row strong {
+
+    color:
+        var(--blue-dark);
+
+}
+
+
+.summary-total {
+
+    margin-top:
+        10px;
+
+    padding-top:
+        20px;
+
+    border-top:
+        1px solid rgba(8,43,85,.15);
+
+    font-size:
+        20px;
+
+    color:
+        var(--navy);
+
+}
+
+
+.summary-total strong {
+
+    color:
+        var(--navy);
+
+}
+
+
+/* =========================================================
+   BOTÓN CONTINUAR
+========================================================= */
+
+.checkout-button {
+
+    width:
+        100%;
+
+    margin-top:
+        20px;
+
+    padding:
+        15px 18px;
+
+    border:
+        none;
+
+    border-radius:
+        15px;
+
+    background:
+        linear-gradient(135deg, var(--blue), var(--blue-light));
+
+    color:
+        white;
+
+    font-weight:
+        800;
+
+    box-shadow:
+        0 8px 20px rgba(4,68,118,.18);
+
+    cursor:
+        pointer;
+
+    transition:
+        .2s ease;
+
+}
+
+
+.checkout-button:hover {
+
+    transform:
+        translateY(-2px);
+
+}
+
+
+/* =========================================================
+   CARRITO VACÍO
+========================================================= */
+
+.cart-empty {
+
+    min-height:
+        360px;
+
+    padding:
+        50px;
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    text-align:
+        center;
+
+}
+
+
+.cart-empty-icon {
+
+    width:
+        60px;
+
+    height:
+        60px;
+
+    color:
+        var(--blue-light);
+
+    margin-bottom:
+        15px;
+
+}
+
+
+.cart-empty h2 {
+
+    margin:
+        5px 0;
+
+    color:
+        var(--navy);
+
+}
+
+
+.cart-empty p {
+
+    color:
+        var(--text-soft);
+
+    margin-bottom:
+        20px;
+
+}
+
+
+.cart-empty-button {
+
+    display:
+        inline-flex;
+
+    width:
+        auto;
+
+    text-decoration:
+        none;
+
+}
+
+
+/* =========================================================
+   VOLVER
+========================================================= */
+
+.cart-back {
+
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    gap:
+        8px;
+
+    margin-top:
+        25px;
+
+    color:
+        var(--blue-dark);
+
+    text-decoration:
+        none;
+
+    font-weight:
+        700;
+
+}
+
+
+.cart-back:hover {
+
+    color:
+        var(--navy);
+
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 850px) {
+
+    #cartContent {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    .cart-page {
+
+        padding:
+            30px 15px 50px;
+
+    }
+
+
+    .cart-item {
+
+        grid-template-columns:
+            75px 1fr;
+
+    }
+
+
+    .cart-item-image {
+
+        width:
+            75px;
+
+        height:
+            75px;
+
+    }
+
+
+    .cart-item-image span {
+
+        font-size:
+            40px;
+
+    }
+
+
+    .cart-price {
+
+        grid-column:
+            2;
+
+        font-size:
+            17px;
+
+    }
+
+
+    .cart-item-price-mobile {
+
+        display:
+            block;
+
+        margin-bottom:
+            10px;
+
+        color:
+            var(--blue-dark);
+
+        font-weight:
+            800;
+
+    }
+
+}

@@ -4,639 +4,317 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>CliniBox | Tu salud, en buenas manos</title>
+    <title>CliniBox | Tu salud, nuestra prioridad</title>
 
-    <link rel="stylesheet" href="css/style.css">
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="login.css">
 </head>
 
 <body>
 
-    <!-- ================= HEADER ================= -->
+    <!-- FONDO GENERAL -->
+    <main class="hospital">
 
-    <header class="header">
+        <div class="background-overlay"></div>
 
-        <div class="container header-content">
+        <!-- LOGO SUPERIOR -->
+        <header class="top-header">
 
-            <a href="index.html" class="logo">
-                <div class="logo-icon">
-                    <i data-lucide="heart-pulse"></i>
+            <div class="brand">
+                <div class="brand-icon">
+                    <svg viewBox="0 0 80 80">
+                        <path d="M40 67
+                                 C35 62 12 48 12 29
+                                 C12 17 21 10 31 10
+                                 C36 10 40 13 40 18
+                                 C40 13 44 10 49 10
+                                 C59 10 68 17 68 29
+                                 C68 48 45 62 40 67Z"
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-width="5"/>
+
+                        <polyline points="20,37 31,37 35,27 41,48 46,37 58,37"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  stroke-width="4"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"/>
+                    </svg>
                 </div>
 
-                <div class="logo-text">
-                    <span>Clini</span>Box
+                <div>
+                    <h1>Clini<span>Box</span></h1>
+                    <p>Tu salud, nuestra prioridad</p>
                 </div>
+            </div>
+
+        </header>
+
+
+        <!-- CONTENEDOR PRINCIPAL -->
+        <section class="entrance">
+
+            <!-- LOGIN DETRÁS DE LAS PUERTAS -->
+            <div class="login-container">
+
+                <div class="login-card">
+
+                    <div class="login-logo">
+                        <div class="mini-heart">♡</div>
+                    </div>
+
+                    <h2>Bienvenido a CliniBox</h2>
+
+                    <p class="login-description">
+                        Accede a tu espacio de salud
+                    </p>
+
+                    <form id="loginForm">
+
+                        <div class="input-group">
+
+                            <label for="usuario">
+                                Correo electrónico o usuario
+                            </label>
+
+                            <div class="input-box">
+
+                                <span>✉</span>
+
+                                <input
+                                    type="text"
+                                    id="usuario"
+                                    name="usuario"
+                                    placeholder="Ingresa tu usuario"
+                                    required
+                                >
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label for="password">
+                                Contraseña
+                            </label>
+
+                            <div class="input-box">
+
+                                <span>●</span>
+
+                                <input
+                                    type="password"
+                                    id="password"
+                                    name="password"
+                                    placeholder="Ingresa tu contraseña"
+                                    required
+                                >
+
+                                <button
+                                    type="button"
+                                    class="show-password"
+                                    id="showPassword">
+                                    ◉
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="login-options">
+
+                            <label class="remember">
+                                <input type="checkbox">
+                                <span>Recordarme</span>
+                            </label>
+
+                            <a href="#">
+                                ¿Olvidaste tu contraseña?
+                            </a>
+
+                        </div>
+
+
+                        <button
+                            type="submit"
+                            class="login-button">
+
+                            Iniciar sesión
+
+                            <span>→</span>
+
+                        </button>
+
+                    </form>
+
+                    <div class="secure-message">
+                        🔒 Tu información está protegida
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ZONA QUE MANTIENE EL HOVER -->
+            <div class="door-area" id="doorArea">
+
+                <!-- PUERTA IZQUIERDA -->
+                <div class="door door-left">
+
+                    <div class="door-glass"></div>
+
+                    <div class="door-handle"></div>
+
+                    <div class="door-content">
+
+                        <div class="door-logo">
+                            ♡
+                        </div>
+
+                        <span>CLINIBOX</span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- PUERTA DERECHA -->
+                <div class="door door-right">
+
+                    <div class="door-glass"></div>
+
+                    <div class="door-handle"></div>
+
+                    <div class="door-content">
+
+                        <div class="door-logo">
+                            ♡
+                        </div>
+
+                        <span>CLINIBOX</span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- TEXTO CENTRAL -->
+                <div class="entrance-message">
+
+                    <div class="entrance-heart">
+                        ♡
+                    </div>
+
+                    <h2>Bienvenido a CliniBox</h2>
+
+                    <p>
+                        Coloca el cursor para entrar
+                    </p>
+
+                    <div class="pulse-line"></div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ACCESOS PRINCIPALES -->
+        <nav class="quick-access">
+
+            <a href="../medicos/medicos.html"
+               class="quick-button">
+
+                <div class="quick-icon">
+                    <span>♙</span>
+                </div>
+
+                <div>
+                    <strong>Conoce a nuestros médicos</strong>
+                    <small>Especialistas y profesionales</small>
+                </div>
+
+                <span class="arrow">→</span>
+
             </a>
 
 
-            <nav class="navigation">
+            <a href="../tienda/tienda.html"
+               class="quick-button">
 
-                <a href="#inicio" class="active">Inicio</a>
-                <a href="#tienda">Tienda</a>
-                <a href="#servicios">Servicios</a>
-                <a href="#nosotros">Nosotros</a>
-                <a href="#contacto">Contacto</a>
-
-            </nav>
-
-
-            <div class="header-actions">
-
-                <button class="icon-button" title="Buscar">
-                    <i data-lucide="search"></i>
-                </button>
-
-                <button class="icon-button cart-button" title="Carrito">
-                    <i data-lucide="shopping-cart"></i>
-                    <span class="cart-count">0</span>
-                </button>
-
-                <a href="login.html" class="login-button">
-                    <i data-lucide="user-round"></i>
-                    Iniciar sesión
-                </a>
-
-            </div>
-
-        </div>
-
-    </header>
-
-
-    <!-- ================= HERO ================= -->
-
-    <main>
-
-        <section class="hero" id="inicio">
-
-            <div class="container hero-content">
-
-                <div class="hero-text">
-
-                    <span class="hero-label">
-                        <i data-lucide="sparkles"></i>
-                        Cuidado integral para ti
-                    </span>
-
-                    <h1>
-                        Tu salud,
-                        <span>en buenas manos.</span>
-                    </h1>
-
-                    <p>
-                        Encuentra productos para tu bienestar,
-                        agenda tus consultas y lleva el control de
-                        tu información médica en un solo lugar.
-                    </p>
-
-                    <div class="hero-buttons">
-
-                        <a href="#tienda" class="primary-button">
-                            Explorar tienda
-                            <i data-lucide="arrow-right"></i>
-                        </a>
-
-                        <a href="#servicios" class="secondary-button">
-                            Conoce nuestros servicios
-                        </a>
-
-                    </div>
-
+                <div class="quick-icon">
+                    <span>🛒</span>
                 </div>
-
-
-                <div class="hero-visual">
-
-                    <div class="hero-card">
-
-                        <div class="hero-card-top">
-
-                            <span class="status">
-                                <span></span>
-                                Atención disponible
-                            </span>
-
-                            <i data-lucide="heart-pulse"></i>
-
-                        </div>
-
-
-                        <div class="medical-icon">
-                            <i data-lucide="stethoscope"></i>
-                        </div>
-
-
-                        <h3>
-                            Cuidamos de ti
-                        </h3>
-
-                        <p>
-                            Atención médica y productos
-                            pensados para tu bienestar.
-                        </p>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- ================= CATEGORÍAS ================= -->
-
-        <section class="categories">
-
-            <div class="container">
-
-                <div class="section-heading">
-
-                    <div>
-                        <span class="section-label">
-                            Encuentra lo que necesitas
-                        </span>
-
-                        <h2>
-                            Explora nuestras categorías
-                        </h2>
-                    </div>
-
-                    <a href="#tienda" class="view-all">
-                        Ver todo
-                        <i data-lucide="arrow-right"></i>
-                    </a>
-
-                </div>
-
-
-                <div class="category-grid">
-
-                    <a href="#" class="category-card">
-
-                        <div class="category-icon">
-                            <i data-lucide="pill"></i>
-                        </div>
-
-                        <h3>Medicamentos</h3>
-
-                        <p>
-                            Productos para tu cuidado
-                        </p>
-
-                    </a>
-
-
-                    <a href="#" class="category-card">
-
-                        <div class="category-icon">
-                            <i data-lucide="heart-pulse"></i>
-                        </div>
-
-                        <h3>Salud y bienestar</h3>
-
-                        <p>
-                            Cuida tu cuerpo
-                        </p>
-
-                    </a>
-
-
-                    <a href="#" class="category-card">
-
-                        <div class="category-icon">
-                            <i data-lucide="baby"></i>
-                        </div>
-
-                        <h3>Cuidado infantil</h3>
-
-                        <p>
-                            Para los más pequeños
-                        </p>
-
-                    </a>
-
-
-                    <a href="#" class="category-card">
-
-                        <div class="category-icon">
-                            <i data-lucide="thermometer"></i>
-                        </div>
-
-                        <h3>Equipo médico</h3>
-
-                        <p>
-                            Monitoreo y cuidado
-                        </p>
-
-                    </a>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- ================= PRODUCTOS ================= -->
-
-        <section class="products-section" id="tienda">
-
-            <div class="container">
-
-                <div class="section-heading">
-
-                    <div>
-
-                        <span class="section-label">
-                            Nuestra tienda
-                        </span>
-
-                        <h2>
-                            Productos destacados
-                        </h2>
-
-                    </div>
-
-                    <a href="#" class="view-all">
-                        Ver todos
-                        <i data-lucide="arrow-right"></i>
-                    </a>
-
-                </div>
-
-
-                <div class="product-grid">
-
-
-                    <!-- PRODUCTO 1 -->
-
-                    <article class="product-card">
-
-                        <div class="product-image">
-                            <span class="product-tag">
-                                Destacado
-                            </span>
-
-                            <div class="product-placeholder">
-                                <i data-lucide="pill"></i>
-                            </div>
-                        </div>
-
-                        <div class="product-info">
-
-                            <span class="product-category">
-                                Salud
-                            </span>
-
-                            <h3>
-                                Producto de salud
-                            </h3>
-
-                            <div class="product-bottom">
-
-                                <strong>
-                                    $199.00
-                                </strong>
-
-                                <button class="add-cart">
-                                    <i data-lucide="shopping-cart"></i>
-                                </button>
-
-                            </div>
-
-                        </div>
-
-                    </article>
-
-
-                    <!-- PRODUCTO 2 -->
-
-                    <article class="product-card">
-
-                        <div class="product-image">
-
-                            <div class="product-placeholder">
-                                <i data-lucide="thermometer"></i>
-                            </div>
-
-                        </div>
-
-                        <div class="product-info">
-
-                            <span class="product-category">
-                                Equipo médico
-                            </span>
-
-                            <h3>
-                                Termómetro digital
-                            </h3>
-
-                            <div class="product-bottom">
-
-                                <strong>
-                                    $249.00
-                                </strong>
-
-                                <button class="add-cart">
-                                    <i data-lucide="shopping-cart"></i>
-                                </button>
-
-                            </div>
-
-                        </div>
-
-                    </article>
-
-
-                    <!-- PRODUCTO 3 -->
-
-                    <article class="product-card">
-
-                        <div class="product-image">
-
-                            <div class="product-placeholder">
-                                <i data-lucide="heart-pulse"></i>
-                            </div>
-
-                        </div>
-
-                        <div class="product-info">
-
-                            <span class="product-category">
-                                Bienestar
-                            </span>
-
-                            <h3>
-                                Monitor de salud
-                            </h3>
-
-                            <div class="product-bottom">
-
-                                <strong>
-                                    $499.00
-                                </strong>
-
-                                <button class="add-cart">
-                                    <i data-lucide="shopping-cart"></i>
-                                </button>
-
-                            </div>
-
-                        </div>
-
-                    </article>
-
-
-                    <!-- PRODUCTO 4 -->
-
-                    <article class="product-card">
-
-                        <div class="product-image">
-
-                            <div class="product-placeholder">
-                                <i data-lucide="bandage"></i>
-                            </div>
-
-                        </div>
-
-                        <div class="product-info">
-
-                            <span class="product-category">
-                                Cuidado personal
-                            </span>
-
-                            <h3>
-                                Kit de primeros auxilios
-                            </h3>
-
-                            <div class="product-bottom">
-
-                                <strong>
-                                    $349.00
-                                </strong>
-
-                                <button class="add-cart">
-                                    <i data-lucide="shopping-cart"></i>
-                                </button>
-
-                            </div>
-
-                        </div>
-
-                    </article>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- ================= SERVICIOS ================= -->
-
-        <section class="services" id="servicios">
-
-            <div class="container">
-
-                <div class="services-content">
-
-                    <div class="services-text">
-
-                        <span class="section-label">
-                            Servicios médicos
-                        </span>
-
-                        <h2>
-                            Más que una tienda,
-                            cuidamos de ti.
-                        </h2>
-
-                        <p>
-                            CliniBox integra herramientas digitales
-                            para facilitar el acceso a tus servicios
-                            de salud y mantener tu información
-                            organizada.
-                        </p>
-
-                        <a href="login.html" class="primary-button">
-                            Conocer servicios
-                            <i data-lucide="arrow-right"></i>
-                        </a>
-
-                    </div>
-
-
-                    <div class="service-list">
-
-                        <div class="service-item">
-
-                            <div class="service-icon">
-                                <i data-lucide="calendar-check"></i>
-                            </div>
-
-                            <div>
-                                <h3>Agenda tu cita</h3>
-                                <p>
-                                    Programa tus consultas de manera sencilla.
-                                </p>
-                            </div>
-
-                        </div>
-
-
-                        <div class="service-item">
-
-                            <div class="service-icon">
-                                <i data-lucide="file-heart"></i>
-                            </div>
-
-                            <div>
-                                <h3>Expediente clínico</h3>
-                                <p>
-                                    Consulta tu información médica.
-                                </p>
-                            </div>
-
-                        </div>
-
-
-                        <div class="service-item">
-
-                            <div class="service-icon">
-                                <i data-lucide="clipboard-plus"></i>
-                            </div>
-
-                            <div>
-                                <h3>Consultas médicas</h3>
-                                <p>
-                                    Gestiona tus consultas desde CliniBox.
-                                </p>
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- ================= NOSOTROS ================= -->
-
-        <section class="about" id="nosotros">
-
-            <div class="container about-content">
 
                 <div>
-
-                    <span class="section-label">
-                        Sobre CliniBox
-                    </span>
-
-                    <h2>
-                        Tecnología al servicio de tu salud.
-                    </h2>
-
+                    <strong>Tienda virtual</strong>
+                    <small>Productos para tu salud</small>
                 </div>
 
-                <p>
-                    Nuestro objetivo es ofrecer una experiencia
-                    sencilla y confiable para que puedas encontrar
-                    productos de salud y gestionar tus servicios
-                    médicos desde un mismo lugar.
-                </p>
+                <span class="arrow">→</span>
 
-            </div>
+            </a>
 
-        </section>
+
+            <a href="../citas/agendar.html"
+               class="quick-button">
+
+                <div class="quick-icon">
+                    <span>▣</span>
+                </div>
+
+                <div>
+                    <strong>Agendar cita</strong>
+                    <small>Agenda tu consulta</small>
+                </div>
+
+                <span class="arrow">→</span>
+
+            </a>
+
+
+            <button
+                class="quick-button login-access"
+                id="loginAccess">
+
+                <div class="quick-icon">
+                    <span>♙</span>
+                </div>
+
+                <div>
+                    <strong>Iniciar sesión</strong>
+                    <small>Accede a tu cuenta</small>
+                </div>
+
+                <span class="arrow">→</span>
+
+            </button>
+
+        </nav>
+
+
+        <!-- INDICADOR -->
+        <div class="bottom-info">
+
+            <span class="status-dot"></span>
+
+            Plataforma médica digital
+
+            <span class="separator">•</span>
+
+            Atención segura y confiable
+
+        </div>
 
     </main>
 
 
-    <!-- ================= FOOTER ================= -->
-
-    <footer class="footer" id="contacto">
-
-        <div class="container footer-content">
-
-            <div class="footer-brand">
-
-                <a href="#" class="logo">
-
-                    <div class="logo-icon">
-                        <i data-lucide="heart-pulse"></i>
-                    </div>
-
-                    <div class="logo-text">
-                        <span>Clini</span>Box
-                    </div>
-
-                </a>
-
-                <p>
-                    Tu salud, en buenas manos.
-                </p>
-
-            </div>
-
-
-            <div class="footer-column">
-
-                <h4>CliniBox</h4>
-
-                <a href="#nosotros">Nosotros</a>
-                <a href="#servicios">Servicios</a>
-                <a href="#contacto">Contacto</a>
-
-            </div>
-
-
-            <div class="footer-column">
-
-                <h4>Tienda</h4>
-
-                <a href="#tienda">Productos</a>
-                <a href="#">Categorías</a>
-                <a href="#">Carrito</a>
-
-            </div>
-
-
-            <div class="footer-column">
-
-                <h4>Contacto</h4>
-
-                <span>📍 Miahuatlán, Oaxaca</span>
-                <span>📞 000 000 0000</span>
-                <span>✉️ contacto@clinibox.com</span>
-
-            </div>
-
-        </div>
-
-
-        <div class="footer-bottom">
-
-            <p>
-                © 2026 CliniBox. Todos los derechos reservados.
-            </p>
-
-        </div>
-
-    </footer>
-
-
-    <script src="js/main.js"></script>
+    <script src="login.js"></script>
 
 </body>
 </html>

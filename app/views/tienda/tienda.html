@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>CliniBox | Tienda</title>
+
+
+    <!-- =====================================================
+         FUENTE
+    ====================================================== -->
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+
+    <!-- =====================================================
+         ICONOS
+    ====================================================== -->
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+
+    <!-- =====================================================
+         CSS GENERAL
+    ====================================================== -->
+
+    <link rel="stylesheet"
+          href="/CLINIBOX/CLINIBOX/public/assets/css/style.css">
+
+
+    <!-- =====================================================
+         CSS DE LA TIENDA
+    ====================================================== -->
+
+    <link rel="stylesheet"
+          href="/CLINIBOX/CLINIBOX/public/assets/css/tienda.css?v=20260928.3">
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     FONDO
+===================================================== -->
+
+<div class="shop-background"></div>
+
+<div class="shop-background-overlay"></div>
+
+
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header class="shop-header">
+
+    <div class="shop-header-inner">
+
+
+        <!-- LOGO -->
+
+        <a href="/CLINIBOX/CLINIBOX/public/tienda"
+           class="shop-logo">
+
+            <div class="shop-logo-icon">
+
+                <i data-lucide="heart-pulse"></i>
+
+            </div>
+
+            <div class="shop-logo-text">
+
+                <span>Clini</span>Box
+
+            </div>
+
+        </a>
+
+
+
+        <!-- ACCIONES -->
+
+        <div class="shop-actions">
+
+
+            <!-- BUSCADOR -->
+
+            <div class="shop-search">
+
+                <button
+                    class="shop-circle-button search-toggle"
+                    type="button"
+                    title="Buscar productos"
+                    aria-label="Buscar productos"
+                    aria-expanded="false"
+                    aria-controls="storeSearch"
+                >
+
+                    <i data-lucide="search"></i>
+
+                </button>
+
+
+                <input
+                    type="text"
+                    id="storeSearch"
+                    placeholder="Buscar productos..."
+                    autocomplete="off"
+                    aria-label="Buscar productos"
+                >
+
+            </div>
+
+
+
+            <!-- FAVORITOS -->
+
+            <!-- El diseño del botón se conserva.
+                 Ahora solamente se le agrega funcionalidad. -->
+
+            <button
+                class="shop-circle-button"
+                type="button"
+                title="Favoritos"
+                id="favoritesButton"
+            >
+
+                <i data-lucide="heart"></i>
+
+            </button>
+
+
+
+            <!-- CARRITO -->
+
+            <!-- Este botón ahora abre carrito.html -->
+
+            <button
+                class="shop-circle-button cart-button"
+                type="button"
+                title="Carrito"
+                id="cartButton"
+            >
+
+                <i data-lucide="shopping-cart"></i>
+
+                <span
+                    class="cart-badge"
+                    id="cartCount"
+                >
+                    0
+                </span>
+
+            </button>
+
+
+
+            <!-- USUARIO -->
+
+            <!-- No modificamos login ni perfil. -->
+
+            <button
+                class="shop-circle-button"
+                type="button"
+                title="Mi cuenta"
+                id="accountButton"
+            >
+
+                <i data-lucide="user-round"></i>
+
+            </button>
+
+
+        </div>
+
+
+
+        <!-- =================================================
+             MENÚ DE CUENTA
+        ================================================== -->
+
+        <div
+            class="account-menu"
+            id="accountMenu"
+        >
+
+            <div class="account-menu-title">
+
+                Mi cuenta
+
+            </div>
+
+
+            <a href="/CLINIBOX/CLINIBOX/public/login">
+
+                <i data-lucide="user"></i>
+
+                Iniciar sesión
+
+            </a>
+
+
+            <a href="/CLINIBOX/CLINIBOX/public/pedidos">
+
+                <i data-lucide="package"></i>
+
+                Mis pedidos
+
+            </a>
+
+
+            <a href="/CLINIBOX/CLINIBOX/public/ayuda">
+
+                <i data-lucide="circle-help"></i>
+
+                Ayuda
+
+            </a>
+
+        </div>
+
+
+    </div>
+
+</header>
+
+
+
+<!-- =====================================================
+     LAYOUT PRINCIPAL
+===================================================== -->
+
+<main class="shop-layout">
+
+
+    <!-- =================================================
+         SIDEBAR
+    ================================================== -->
+
+    <aside class="shop-sidebar">
+
+
+        <nav class="shop-category-menu">
+
+
+            <!-- TODOS -->
+
+            <a
+                href="/CLINIBOX/CLINIBOX/public/tienda"
+                class="shop-category active"
+            >
+
+                <span class="category-icon">
+
+                    <i data-lucide="layout-grid"></i>
+
+                </span>
+
+                <span>Todos</span>
+
+            </a>
+
+
+
+            <!-- MEDICAMENTOS -->
+
+            <a
+                href="/CLINIBOX/CLINIBOX/public/categoria.html?categoria=medicamentos"
+                class="shop-category"
+            >
+
+                <span class="category-icon">
+
+                    <i data-lucide="pill"></i>
+
+                </span>
+
+                <span>Medicamentos</span>
+
+            </a>
+
+
+
+            <!-- HIGIENE -->
+
+            <a
+                href="/CLINIBOX/CLINIBOX/public/categoria.html?categoria=cuidado-personal"
+                class="shop-category"
+            >
+
+                <span class="category-icon">
+
+                    <i data-lucide="spray-can"></i>
+
+                </span>
+
+                <span>Higiene personal</span>
+
+            </a>
+
+
+
+            <!-- DERMATOLOGÍA -->
+
+            <a
+                href="/CLINIBOX/CLINIBOX/public/categoria.html?categoria=dermatologia"
+                class="shop-category"
+            >
+
+                <span class="category-icon">
+
+                    <i data-lucide="smile"></i>
+
+                </span>
+
+                <span>Cuidado de la piel</span>
+
+            </a>
+
+
+
+            <!-- VITAMINAS -->
+
+            <a
+                href="/CLINIBOX/CLINIBOX/public/categoria.html?categoria=salud-bienestar"
+                class="shop-category"
+            >
+
+                <span class="category-icon">
+
+                    <i data-lucide="leaf"></i>
+
+                </span>
+
+                <span>Vitaminas y suplementos</span>
+
+            </a>
+
+
+
+            <!-- PRIMEROS AUXILIOS -->
+
+            <a
+                href="/CLINIBOX/CLINIBOX/public/categoria.html?categoria=primeros-auxilios"
+                class="shop-category"
+            >
+
+                <span class="category-icon">
+
+                    <i data-lucide="briefcase-medical"></i>
+
+                </span>
+
+                <span>Primeros auxilios</span>
+
+            </a>
+
+
+
+            <!-- EQUIPO MÉDICO -->
+
+            <a
+                href="/CLINIBOX/CLINIBOX/public/categoria.html?categoria=equipo-medico"
+                class="shop-category"
+            >
+
+                <span class="category-icon">
+
+                    <i data-lucide="stethoscope"></i>
+
+                </span>
+
+                <span>Equipos médicos</span>
+
+            </a>
+
+
+
+            <!-- ACCESORIOS -->
+
+            <a
+                href="/CLINIBOX/CLINIBOX/public/categoria.html?categoria=accesorios"
+                class="shop-category"
+            >
+
+                <span class="category-icon">
+
+                    <i data-lucide="bandage"></i>
+
+                </span>
+
+                <span>Accesorios</span>
+
+            </a>
+
+
+        </nav>
+
+
+
+        <!-- ENVÍO -->
+
+        <div class="shipping-box">
+
+            <div class="shipping-box-icon">
+
+                <i data-lucide="truck"></i>
+
+            </div>
+
+
+            <div>
+
+                <strong>Envío seguro</strong>
+
+
+            </div>
+
+
+            <i
+                data-lucide="arrow-right"
+                class="shipping-arrow"
+            ></i>
+
+        </div>
+
+
+    </aside>
+
+
+
+    <!-- =================================================
+         CENTRO
+    ================================================== -->
+
+    <section class="shop-main">
+
+
+        <!-- OFERTAS -->
+
+        <section class="shop-panel offers-panel">
+
+
+            <div class="panel-header">
+
+                <div class="panel-title">
+
+                    <span class="panel-title-icon">
+
+                        <i data-lucide="gift"></i>
+
+                    </span>
+
+                    <h2>
+
+                        Ofertas del día
+
+                    </h2>
+
+                </div>
+
+
+                <div class="panel-arrows">
+
+                    <button
+                        type="button"
+                        class="arrow-button"
+                        id="offerPrev"
+                    >
+
+                        <i data-lucide="chevron-left"></i>
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="arrow-button"
+                        id="offerNext"
+                    >
+
+                        <i data-lucide="chevron-right"></i>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div
+                class="offers-grid"
+                id="offersGrid"
+            ></div>
+
+
+        </section>
+
+
+
+        <!-- PRODUCTOS MÁS BUSCADOS -->
+
+        <section class="shop-panel popular-panel">
+
+
+            <div class="panel-header">
+
+                <div class="panel-title">
+
+                    <span class="panel-title-icon search-icon">
+
+                        <i data-lucide="search"></i>
+
+                    </span>
+
+                    <h2>
+
+                        Productos más buscados
+
+                    </h2>
+
+                </div>
+
+
+                <button
+                    class="see-all-button"
+                    id="seeAllProducts"
+                    type="button"
+                >
+
+                    Ver todos
+
+                    <i data-lucide="arrow-right"></i>
+
+                </button>
+
+            </div>
+
+
+            <div
+                class="popular-products"
+                id="productGrid"
+            ></div>
+
+
+        </section>
+
+
+    </section>
+
+
+
+    <!-- =================================================
+         COLUMNA DERECHA
+    ================================================== -->
+
+    <aside class="shop-right">
+
+
+        <!-- CANASTA -->
+
+        <section class="right-panel basket-panel">
+
+
+            <div class="right-panel-header">
+
+                <div>
+
+                    <h2>
+
+                        Tu canasta
+
+                        <span
+                            class="basket-number"
+                            id="basketNumber"
+                        >
+                            0
+                        </span>
+
+                    </h2>
+
+                </div>
+
+
+                <button
+                    class="close-cart"
+                    id="closeCart"
+                    type="button"
+                >
+
+                    <i data-lucide="x"></i>
+
+                </button>
+
+            </div>
+
+
+            <div
+                class="basket-items"
+                id="basketItems"
+            >
+
+                <div class="empty-basket">
+
+                    <i data-lucide="shopping-bag"></i>
+
+                    <strong>
+
+                        Tu canasta está vacía
+
+                    </strong>
+
+                    <span>
+
+                        Agrega productos para verlos aquí.
+
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="basket-summary">
+
+                <div>
+
+                    <span>Subtotal</span>
+
+                    <strong id="basketSubtotal">
+                        $0.00
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>Ahorro</span>
+
+                    <strong id="basketSavings">
+                        $0.00
+                    </strong>
+
+                </div>
+
+
+                <div class="basket-total">
+
+                    <span>Total</span>
+
+                    <strong id="basketTotal">
+                        $0.00
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- Este botón ahora lleva al carrito completo -->
+
+            <a
+                href="/CLINIBOX/CLINIBOX/public/carrito"
+                class="basket-button"
+            >
+
+                <i data-lucide="shopping-cart"></i>
+
+                Carrito de compras
+
+            </a>
+
+
+        </section>
+
+
+
+        <!-- RECETAS -->
+
+        <section class="right-panel recipes-panel">
+
+
+            <div class="recipes-header">
+
+                <div>
+
+                    <h2>
+
+                        Tus Recetas Clínicas
+
+                    </h2>
+
+                </div>
+
+
+                <div class="doctor-avatar">
+
+                    <i data-lucide="user-round"></i>
+
+                </div>
+
+            </div>
+
+
+            <div class="recipe-list">
+
+
+                <div class="recipe-item">
+
+                    <div class="recipe-check">
+
+                        <i data-lucide="check"></i>
+
+                    </div>
+
+
+                    <div class="recipe-image medicine-image">
+
+                        💊
+
+                    </div>
+
+
+                    <div class="recipe-info">
+
+                        <strong>
+
+                            Paracetamol 500 mg
+
+                        </strong>
+
+                        <span>
+
+                            300 mg
+
+                        </span>
+
+
+                        <button
+                            class="recipe-add"
+                            type="button"
+                            data-product-id="1"
+                            data-product-name="Paracetamol 500 mg"
+                            data-product-category="Medicamentos"
+                            data-product-price="45"
+                            data-product-old-price="60"
+                            data-product-image="💊"
+                            aria-label="Añadir Paracetamol 500 mg al carrito"
+                            title="Añadir Paracetamol 500 mg al carrito"
+                        >
+
+                            <i data-lucide="shopping-cart" aria-hidden="true"></i>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="recipe-item">
+
+                    <div class="recipe-check">
+
+                        <i data-lucide="check"></i>
+
+                    </div>
+
+
+                    <div class="recipe-image vitamin-image">
+
+                        🍊
+
+                    </div>
+
+
+                    <div class="recipe-info">
+
+                        <strong>
+
+                            Vitamina C
+
+                        </strong>
+
+                        <span>
+
+                            68 mg
+
+                        </span>
+
+
+                        <button
+                            class="recipe-add"
+                            type="button"
+                            data-product-id="2"
+                            data-product-name="Vitamina C 1000 mg"
+                            data-product-category="Vitaminas y suplementos"
+                            data-product-price="120"
+                            data-product-old-price="150"
+                            data-product-image="🍊"
+                            aria-label="Añadir Vitamina C 1000 mg al carrito"
+                            title="Añadir Vitamina C 1000 mg al carrito"
+                        >
+
+                            <i data-lucide="shopping-cart" aria-hidden="true"></i>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="recipe-item">
+
+                    <div class="recipe-check">
+
+                        <i data-lucide="check"></i>
+
+                    </div>
+
+
+                    <div class="recipe-image gauze-image">
+
+                        ▤
+
+                    </div>
+
+
+                    <div class="recipe-info">
+
+                        <strong>
+
+                            Gauze médica
+
+                        </strong>
+
+                        <span>
+
+                            500 mg
+
+                        </span>
+
+
+                        <button
+                            class="recipe-add"
+                            type="button"
+                            data-product-id="4"
+                            data-product-name="Gasas estériles"
+                            data-product-category="Primeros auxilios"
+                            data-product-price="60"
+                            data-product-old-price="75"
+                            data-product-image="▤"
+                            aria-label="Añadir Gasas estériles al carrito"
+                            title="Añadir Gasas estériles al carrito"
+                        >
+
+                            <i data-lucide="shopping-cart" aria-hidden="true"></i>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+    </aside>
+
+
+</main>
+
+
+
+<!-- =====================================================
+     NOTIFICACIÓN
+===================================================== -->
+
+<div
+    class="cart-notification"
+    id="cartNotification"
+>
+
+    <div class="notification-check">
+
+        ✓
+
+    </div>
+
+
+    <div>
+
+        <strong>Producto agregado</strong>
+
+        <span id="notificationProduct"></span>
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script src="/CLINIBOX/CLINIBOX/public/assets/js/carrito.js?v=20260928.4"></script>
+<script src="/CLINIBOX/CLINIBOX/public/assets/js/favoritos.js?v=20260928.1"></script>
+<script src="/CLINIBOX/CLINIBOX/public/assets/js/tienda.js?v=20260928.5"></script>
+
+
+<script>
+
+    if (
+        typeof lucide !== "undefined" &&
+        lucide.createIcons
+    ) {
+
+        lucide.createIcons();
+
+    }
+
+</script>
+
+
+</body>
+
+</html>
