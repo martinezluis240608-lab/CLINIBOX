@@ -6,13 +6,13 @@
 
     <title>CliniBox | Tu salud, nuestra prioridad</title>
 
-    <link rel="stylesheet" href="login.css">
+    <link rel="stylesheet" href="../public/assets/css/login.css?v=20260930-6">
 </head>
 
 <body>
 
     <!-- FONDO GENERAL -->
-    <main class="hospital">
+    <main class="hospital" id="hospital">
 
         <div class="background-overlay"></div>
 
@@ -21,24 +21,9 @@
 
             <div class="brand">
                 <div class="brand-icon">
-                    <svg viewBox="0 0 80 80">
-                        <path d="M40 67
-                                 C35 62 12 48 12 29
-                                 C12 17 21 10 31 10
-                                 C36 10 40 13 40 18
-                                 C40 13 44 10 49 10
-                                 C59 10 68 17 68 29
-                                 C68 48 45 62 40 67Z"
-                              fill="none"
-                              stroke="currentColor"
-                              stroke-width="5"/>
-
-                        <polyline points="20,37 31,37 35,27 41,48 46,37 58,37"
-                                  fill="none"
-                                  stroke="currentColor"
-                                  stroke-width="4"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"/>
+                    <svg viewBox="0 0 80 80" aria-hidden="true">
+                        <path d="M40 68C34 62 12 47 12 29 12 18 20 10 31 10c5 0 9 3 9 8 0-5 4-8 9-8 11 0 19 8 19 19 0 18-22 33-28 39Z" fill="none" stroke="currentColor" stroke-width="4"/>
+                        <polyline points="18,39 30,39 35,28 41,50 47,38 61,38" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                 </div>
 
@@ -54,128 +39,33 @@
         <!-- CONTENEDOR PRINCIPAL -->
         <section class="entrance">
 
-            <!-- LOGIN DETRÁS DE LAS PUERTAS -->
+            <!-- CONTENIDO DETRÁS DE LAS PUERTAS -->
             <div class="login-container">
-
                 <div class="login-card">
-
-                    <div class="login-logo">
-                        <div class="mini-heart">♡</div>
-                    </div>
-
+                    <p class="welcome-kicker">CENTRO MÉDICO · CLINIBOX</p>
                     <h2>Bienvenido a CliniBox</h2>
-
                     <p class="login-description">
-                        Accede a tu espacio de salud
+                        Atención médica cercana, organizada y humana. Entra para continuar con tu cuidado.
                     </p>
-
-                    <form id="loginForm">
-
-                        <div class="input-group">
-
-                            <label for="usuario">
-                                Correo electrónico o usuario
-                            </label>
-
-                            <div class="input-box">
-
-                                <span>✉</span>
-
-                                <input
-                                    type="text"
-                                    id="usuario"
-                                    name="usuario"
-                                    placeholder="Ingresa tu usuario"
-                                    required
-                                >
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="input-group">
-
-                            <label for="password">
-                                Contraseña
-                            </label>
-
-                            <div class="input-box">
-
-                                <span>●</span>
-
-                                <input
-                                    type="password"
-                                    id="password"
-                                    name="password"
-                                    placeholder="Ingresa tu contraseña"
-                                    required
-                                >
-
-                                <button
-                                    type="button"
-                                    class="show-password"
-                                    id="showPassword">
-                                    ◉
-                                </button>
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="login-options">
-
-                            <label class="remember">
-                                <input type="checkbox">
-                                <span>Recordarme</span>
-                            </label>
-
-                            <a href="#">
-                                ¿Olvidaste tu contraseña?
-                            </a>
-
-                        </div>
-
-
-                        <button
-                            type="submit"
-                            class="login-button">
-
-                            Iniciar sesión
-
-                            <span>→</span>
-
-                        </button>
-
-                    </form>
-
-                    <div class="secure-message">
-                        🔒 Tu información está protegida
-                    </div>
-
                 </div>
-
             </div>
 
 
             <!-- ZONA QUE MANTIENE EL HOVER -->
-            <div class="door-area" id="doorArea">
+            <div class="door-area" id="doorArea" aria-hidden="true">
 
                 <!-- PUERTA IZQUIERDA -->
                 <div class="door door-left">
 
                     <div class="door-glass"></div>
+                    <div class="door-frame"></div>
 
                     <div class="door-handle"></div>
 
                     <div class="door-content">
 
-                        <div class="door-logo">
-                            ♡
-                        </div>
-
-                        <span>CLINIBOX</span>
+                        <span class="door-mark">+</span>
+                        <span>ACCESO CLINIBOX</span>
 
                     </div>
 
@@ -186,38 +76,19 @@
                 <div class="door door-right">
 
                     <div class="door-glass"></div>
+                    <div class="door-frame"></div>
 
                     <div class="door-handle"></div>
 
                     <div class="door-content">
 
-                        <div class="door-logo">
-                            ♡
-                        </div>
-
-                        <span>CLINIBOX</span>
+                        <span class="door-mark">+</span>
+                        <span>ACCESO CLINIBOX</span>
 
                     </div>
 
                 </div>
 
-
-                <!-- TEXTO CENTRAL -->
-                <div class="entrance-message">
-
-                    <div class="entrance-heart">
-                        ♡
-                    </div>
-
-                    <h2>Bienvenido a CliniBox</h2>
-
-                    <p>
-                        Coloca el cursor para entrar
-                    </p>
-
-                    <div class="pulse-line"></div>
-
-                </div>
 
             </div>
 
@@ -227,12 +98,10 @@
         <!-- ACCESOS PRINCIPALES -->
         <nav class="quick-access">
 
-            <a href="../medicos/medicos.html"
+            <a href="views/medico/perfil.html"
                class="quick-button">
 
-                <div class="quick-icon">
-                    <span>♙</span>
-                </div>
+                <div class="quick-icon" aria-hidden="true"><span>✚</span></div>
 
                 <div>
                     <strong>Conoce a nuestros médicos</strong>
@@ -244,12 +113,10 @@
             </a>
 
 
-            <a href="../tienda/tienda.html"
+            <a href="../public/tienda"
                class="quick-button">
 
-                <div class="quick-icon">
-                    <span>🛒</span>
-                </div>
+                <div class="quick-icon" aria-hidden="true"><span>＋</span></div>
 
                 <div>
                     <strong>Tienda virtual</strong>
@@ -261,12 +128,10 @@
             </a>
 
 
-            <a href="../citas/agendar.html"
+            <a href="views/paciente/agendarCita.html"
                class="quick-button">
 
-                <div class="quick-icon">
-                    <span>▣</span>
-                </div>
+                <div class="quick-icon" aria-hidden="true"><span>□</span></div>
 
                 <div>
                     <strong>Agendar cita</strong>
@@ -278,13 +143,9 @@
             </a>
 
 
-            <button
-                class="quick-button login-access"
-                id="loginAccess">
+            <a class="quick-button login-access" href="../public/login">
 
-                <div class="quick-icon">
-                    <span>♙</span>
-                </div>
+                <div class="quick-icon" aria-hidden="true"><span>↗</span></div>
 
                 <div>
                     <strong>Iniciar sesión</strong>
@@ -293,7 +154,7 @@
 
                 <span class="arrow">→</span>
 
-            </button>
+            </a>
 
         </nav>
 
@@ -314,7 +175,7 @@
     </main>
 
 
-    <script src="login.js"></script>
+    <script src="../public/assets/js/doors.js?v=20260930-9" defer></script>
 
 </body>
 </html>
