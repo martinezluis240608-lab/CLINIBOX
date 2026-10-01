@@ -46,7 +46,7 @@ class AuthController extends Controller
 
         session_regenerate_id(true);
         $_SESSION['user'] = $users[$role];
-        $this->redirect('/dashboard');
+        $this->redirect($role === 'paciente' ? '/paciente/perfil' : '/dashboard');
     }
 
     public function logout(): void
@@ -54,7 +54,6 @@ class AuthController extends Controller
         $_SESSION = [];
         session_destroy();
 
-        header('Location: ' . \url('/'));
-        exit;
+        $this->redirect('/login');
     }
 }

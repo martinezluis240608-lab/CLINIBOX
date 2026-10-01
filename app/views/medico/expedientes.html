@@ -3,42 +3,1284 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Expedientes | CliniBox</title>
+<title>Expedientes Clínicos | CliniBox</title>
 <link rel="stylesheet" href="assets/css/app.css">
+
+<style>
+    /* ==========================================================
+       ESTILOS DEL MÓDULO DE EXPEDIENTES - CLINIBOX MÉDICO
+    ========================================================== */
+    :root {
+        --primary: #0284c7;
+        --primary-hover: #0369a1;
+        --primary-light: #e0f2fe;
+        --success: #10b981;
+        --success-light: #ecfdf5;
+        --warning: #f59e0b;
+        --warning-light: #fffbeb;
+        --danger: #ef4444;
+        --danger-light: #fef2f2;
+        --purple: #8b5cf6;
+        --purple-light: #f5f3ff;
+        --text-dark: #0f172a;
+        --text-muted: #020202;
+        --bg-page: #f8fafc;
+        --bg-card: #ffffff;
+        --border: #e2e8f0;
+        --radius: 14px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+    margin: 0;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: var(--text-dark);
+
+    /* Fondo con imagen clínica */
+    background-color: var(--bg-page);
+    background-image:
+        linear-gradient(rgba(248, 250, 252, 0), rgba(248, 250, 252, 0)),
+        url("/CLINIBOX/public/assets/css/img/fondo-clinica.png");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+}
+
+    .app-shell { display: flex; min-height: 100vh; }
+
+    /* BARRA LATERAL */
+    .sidebar {
+        width: 260px;
+        background: #ffffff;
+        border-right: 1px solid var(--border);
+        padding: 24px 16px;
+        display: flex;
+        flex-direction: column;
+        flex-shrink: 0;
+    }
+
+    .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding-bottom: 22px;
+        margin-bottom: 18px;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .brand-mark {
+        width: 40px;
+        height: 40px;
+        background: var(--primary);
+        color: #ffffff;
+        font-weight: 800;
+        font-size: 1.25rem;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .brand:hover .brand-mark { transform: rotate(-8deg) scale(1.08); }
+    .brand strong { display: block; font-size: 1.15rem; color: var(--text-dark); line-height: 1.2; }
+    .brand small { color: var(--text-muted); font-size: 0.8rem; }
+
+    .nav-list { display: flex; flex-direction: column; gap: 4px; }
+    .nav-list a {
+        display: flex;
+        align-items: center;
+        padding: 11px 14px;
+        text-decoration: none;
+        color: var(--text-muted);
+        font-weight: 500;
+        font-size: 0.95rem;
+        border-radius: 8px;
+        transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .nav-list a:hover { background-color: #f1f5f9; color: var(--text-dark); transform: translateX(4px); }
+    .nav-list a.active { background-color: var(--primary-light); color: var(--primary); font-weight: 600; }
+
+    /* CONTENIDO PRINCIPAL */
+    .main-content {
+        flex: 1;
+        padding: 36px 44px;
+        max-width: 1200px;
+        overflow-y: auto;
+        animation: fadeInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    .header-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 24px;
+        flex-wrap: wrap;
+        gap: 16px;
+    }
+
+    .eyebrow {
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-size: 0.78rem;
+        font-weight: 700;
+        color: var(--primary);
+        margin: 0 0 6px 0;
+    }
+
+    .section-header h2 {
+        margin: 0 0 4px 0;
+        font-size: 1.85rem;
+        color: var(--text-dark);
+        letter-spacing: -0.4px;
+    }
+
+    .section-header p { margin: 0; color: var(--text-muted); }
+
+    /* BOTONES */
+    .btn-primary {
+        background: var(--primary);
+        color: #ffffff;
+        border: none;
+        padding: 11px 20px;
+        border-radius: 9px;
+        font-weight: 600;
+        font-size: 0.92rem;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.2s ease;
+        box-shadow: 0 3px 10px rgba(2, 132, 199, 0.25);
+    }
+    .btn-primary:hover { background: var(--primary-hover); transform: translateY(-1px); }
+
+    .btn-secondary {
+        background: #f1f5f9;
+        color: #334155;
+        border: 1px solid var(--border);
+        padding: 9px 16px;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 0.88rem;
+        cursor: pointer;
+        transition: all 0.15s ease;
+    }
+    .btn-secondary:hover { background: #e2e8f0; }
+
+    /* METRICAS SUPERIORES */
+    .summary-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 16px;
+        margin-bottom: 26px;
+    }
+
+    .summary-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 18px 20px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+    }
+
+    .summary-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--primary-light);
+        color: var(--primary);
+        flex-shrink: 0;
+    }
+
+    .summary-info span {
+        display: block;
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        margin-bottom: 2px;
+    }
+
+    .summary-info strong { font-size: 1.25rem; color: var(--text-dark); }
+
+    /* BARRA DE FILTRO POR PACIENTE Y BÚSQUEDA */
+    .filter-bar {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 16px 20px;
+        margin-bottom: 24px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        flex-wrap: wrap;
+    }
+
+    .patient-selector-box {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .patient-selector-box label {
+        font-size: 0.88rem;
+        font-weight: 600;
+        color: var(--text-muted);
+    }
+
+    .select-patient {
+        padding: 9px 14px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        font-size: 0.9rem;
+        background: #f8fafc;
+        outline: none;
+        font-weight: 600;
+        color: var(--text-dark);
+    }
+
+    .search-input {
+        padding: 9px 14px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        font-size: 0.88rem;
+        width: 280px;
+        outline: none;
+    }
+
+    .search-input:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+    }
+
+    /* LÍNEA DE TIEMPO CLÍNICA */
+    .timeline {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .timeline-item {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-left: 4px solid var(--primary);
+        border-radius: var(--radius);
+        padding: 22px 24px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 20px;
+        transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .timeline-item:hover {
+        transform: translateX(6px);
+        border-color: #cbd5e1;
+        border-left-color: var(--primary-hover);
+        box-shadow: 0 10px 22px rgba(0, 0, 0, 0.05);
+    }
+
+    .timeline-left {
+        display: flex;
+        gap: 18px;
+        align-items: flex-start;
+    }
+
+    .timeline-date-badge {
+        font-size: 0.82rem;
+        font-weight: 700;
+        color: var(--primary);
+        background: var(--primary-light);
+        padding: 6px 12px;
+        border-radius: 8px;
+        white-space: nowrap;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-width: 82px;
+    }
+
+    .timeline-content h3 {
+        margin: 0 0 4px 0;
+        font-size: 1.15rem;
+        color: var(--text-dark);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .badge-tag {
+        font-size: 0.72rem;
+        padding: 2px 8px;
+        border-radius: 999px;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+    .badge-evolucion { background: var(--primary-light); color: var(--primary); }
+    .badge-ingreso { background: var(--success-light); color: #065f46; }
+    .badge-lab { background: var(--purple-light); color: var(--purple); }
+
+    .timeline-diagnosis {
+        font-size: 0.88rem;
+        color: var(--primary-hover);
+        font-weight: 600;
+        margin-bottom: 6px;
+    }
+
+    .timeline-text {
+        margin: 0;
+        color: var(--text-muted);
+        font-size: 0.92rem;
+        line-height: 1.5;
+    }
+
+    .timeline-actions {
+        display: flex;
+        gap: 6px;
+    }
+
+    .btn-act {
+        border: none;
+        padding: 6px 10px;
+        border-radius: 6px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.15s ease;
+    }
+
+    .btn-act-view { background: #f1f5f9; color: var(--text-dark); }
+    .btn-act-view:hover { background: #e2e8f0; }
+
+    .btn-act-edit { background: var(--primary-light); color: var(--primary); }
+    .btn-act-edit:hover { background: #bae6fd; }
+
+    .btn-act-del { background: var(--danger-light); color: var(--danger); }
+    .btn-act-del:hover { background: #fecaca; }
+
+    /* MODALES */
+    .modal-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(15, 23, 42, 0.5);
+        backdrop-filter: blur(4px);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        z-index: 100;
+    }
+
+    .modal-overlay.active { display: flex; }
+
+    .modal-card {
+        background: #ffffff;
+        border-radius: var(--radius);
+        max-width: 580px;
+        width: 100%;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        overflow: hidden;
+        max-height: 90vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .modal-header {
+        padding: 18px 24px;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #f8fafc;
+    }
+
+    .modal-header h3 { margin: 0; font-size: 1.15rem; color: var(--text-dark); }
+    .close-btn { background: none; border: none; font-size: 1.3rem; cursor: pointer; color: var(--text-muted); }
+
+    .modal-body {
+        padding: 24px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group label { font-size: 0.85rem; font-weight: 600; color: #475569; }
+
+    .form-control {
+        padding: 10px 14px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        font-size: 0.92rem;
+        outline: none;
+        transition: all 0.2s ease;
+        font-family: inherit;
+    }
+
+    .form-control:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+    }
+
+    .modal-footer {
+        padding: 16px 24px;
+        border-top: 1px solid var(--border);
+        background: #f8fafc;
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+    }
+
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(14px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 768px) {
+        .app-shell { flex-direction: column; }
+        .sidebar { width: 100%; border-right: none; border-bottom: 1px solid var(--border); }
+        .nav-list { flex-direction: row; flex-wrap: wrap; }
+        .main-content { padding: 20px; }
+        .timeline-item { flex-direction: column; gap: 12px; }
+        .filter-bar { flex-direction: column; align-items: stretch; }
+        .search-input { width: 100%; }
+    }
+
+    /* ==========================================================
+   MODAL CERRAR SESIÓN
+========================================================== */
+
+.logout-modal {
+    max-width: 420px;
+}
+
+.logout-body {
+    text-align: center;
+    align-items: center;
+    padding: 30px 24px;
+}
+
+.logout-icon {
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    background: var(--primary-light);
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.logout-body p {
+    margin: 0;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text-dark);
+}
+
+.logout-body span {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin-top: 5px;
+}
+
+/* ==========================================================
+   DOCUMENTOS PDF DEL PACIENTE
+========================================================== */
+
+.document-section {
+    margin-top: 18px;
+    padding: 16px;
+    background: #f8fafc;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+}
+
+.document-section > strong {
+    display: block;
+    margin-bottom: 12px;
+    color: var(--text-dark);
+    font-size: 0.9rem;
+}
+
+.pdf-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.pdf-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 10px 12px;
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+}
+
+.pdf-name {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.88rem;
+    color: var(--text-dark);
+}
+
+.pdf-date {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.pdf-select-btn {
+    border: none;
+    background: var(--primary-light);
+    color: var(--primary);
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.pdf-select-btn:hover {
+    background: #bae6fd;
+}
+
+.no-documents {
+    padding: 14px;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    background: #ffffff;
+    border: 1px dashed var(--border);
+    border-radius: 8px;
+}
+
+/* NUEVO - MENU DE USUARIO EN LA C */
+.brand-wrapper{ position: relative; }
+.brand{
+    cursor:pointer;
+    user-select:none;
+    position:relative;
+}
+.brand-chevron{
+    margin-left:auto;
+    color:var(--text-muted);
+    transition:transform .2s ease;
+}
+.brand-wrapper.open .brand-chevron{ transform:rotate(180deg); }
+
+.brand-dropdown{
+    position:absolute;
+    top:calc(100% + 12px);
+    left:0;
+    width:220px;
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:12px;
+    box-shadow:0 10px 30px rgba(0,0,0,.1);
+    padding:6px;
+    display:none;
+    z-index:50;
+    animation:scaleUp .2s ease;
+}
+.brand-wrapper.open .brand-dropdown{ display:block; }
+
+.dropdown-header{
+    padding:8px 12px 8px;
+    font-size:.75rem;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.5px;
+    color:var(--text-muted);
+    border-bottom:1px solid var(--border);
+    margin-bottom:6px;
+}
+.dropdown-item{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:10px 12px;
+    border-radius:8px;
+    text-decoration:none;
+    color:var(--text-dark);
+    font-size:.9rem;
+    font-weight:500;
+    transition:all .15s ease;
+}
+.dropdown-item:hover{ background:#f1f5f9; }
+.dropdown-item.danger{ color:var(--danger); }
+.dropdown-item.danger:hover{ background:var(--danger-light); }
+</style>
 </head>
 <body>
 <div class="app-shell">
+    <!-- BARRA LATERAL -->
     <nav class="sidebar">
-        <div class="brand">
-            <div class="brand-mark">C</div>
-            <div><strong>CliniBox</strong><small>Panel médico</small></div>
+        <div class="brand-wrapper">
+    <div class="brand" id="brandMenuToggle" onclick="toggleBrandMenu(event)">
+        <div class="brand-mark">C</div>
+        <div><strong>CliniBox</strong><small>Panel médico</small></div>
+        <svg class="brand-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+    </div>
+    <div class="brand-dropdown" id="brandDropdown">
+        <div class="dropdown-header">
+            <strong>Mi cuenta</strong>
         </div>
+        <a href="perfil.html" class="dropdown-item">
+            <span>👤</span> Perfil
+        </a>
+        <a href="#" onclick="cerrarSesion(event)" class="dropdown-item danger">
+            <span>🚪</span> Cerrar sesión
+        </a>
+    </div>
+</div>
         <div class="nav-list">
-            <a href="pacientes">Pacientes</a>
-            <a href="agenda">Agenda</a>
-            <a href="consultas">Consultas</a>
-            <a href="expedientes" class="active">Expedientes</a>
-            <a href="recetas">Recetas</a>
-            <a href="mensajes">Mensajes</a>
-            <a href="perfil">Perfil</a>
-            <a href="../dashboard/">Volver al panel</a>
+            <a href="pacientes.html">Pacientes</a>
+            <a href="agenda.html">Agenda</a>
+            <a href="consultas.html">Consultas</a>
+            <a href="expedientes.html" class="active">Expedientes</a>
+            <a href="recetas.html">Recetas</a>
+            <a href="mensajes.html">Mensajes</a>
         </div>
     </nav>
+
+    <!-- CONTENIDO PRINCIPAL -->
     <main class="main-content">
-        <section class="section-header">
-            <p class="eyebrow">Módulo médico</p>
-            <h2>Expedientes clínicos</h2>
-        </section>
-        <div class="timeline">
-            <article class="timeline-item">
-                <span>01/09/2026</span>
-                <div>
-                    <h3>Carlos Mendoza</h3>
-                    <p>Consulta general y seguimiento de tratamiento.</p>
+        <div class="header-row">
+            <section class="section-header">
+                <p class="eyebrow">Módulo médico</p>
+                <h2>Expedientes clínicos y notas de evolución</h2>
+                <p>Historial médico completo, antecedentes y seguimiento de tus pacientes.</p>
+            </section>
+            <button class="btn-primary" onclick="openNewEntryModal()">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="5" x2="12" y2="19"/>
+                    <line x1="5" y1="12" x2="19" y2="12"/>
+                </svg>
+                Nueva Nota de Evolución
+            </button>
+        </div>
+
+        <!-- 1. RESUMEN DE MÉTRICAS -->
+        <div class="summary-grid">
+            <div class="summary-card">
+                <div class="summary-icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                        <polyline points="14 2 14 8 20 8"/>
+                        <line x1="16" y1="13" x2="8" y2="13"/>
+                    </svg>
                 </div>
-            </article>
+                <div class="summary-info">
+                    <span>Expedientes activos</span>
+                    <strong>3 pacientes</strong>
+                </div>
+            </div>
+
+            <div class="summary-card">
+                <div class="summary-icon" style="background: var(--success-light); color: var(--success);">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 11 12 14 22 4"/>
+                        <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+                    </svg>
+                </div>
+                <div class="summary-info">
+                    <span>Notas registradas</span>
+                    <strong id="notesCountLabel">5 notas clínicas</strong>
+                </div>
+            </div>
+
+            <div class="summary-card">
+                <div class="summary-icon" style="background: var(--warning-light); color: var(--warning);">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/>
+                        <polyline points="12 6 12 12 16 14"/>
+                    </svg>
+                </div>
+                <div class="summary-info">
+                    <span>Último registro</span>
+                    <strong>Carlos Mendoza (07/09/2026)</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. FILTRADO POR PACIENTE Y BÚSQUEDA -->
+        <div class="filter-bar">
+            <div class="patient-selector-box">
+                <label for="selectPatientFilter">Ver expediente de:</label>
+                <select id="selectPatientFilter" class="select-patient" onchange="filterByPatient()">
+                    <option value="todos">Todos los pacientes</option>
+                    <option value="Carlos Mendoza" selected>Carlos Mendoza (#EXP-084)</option>
+                    <option value="Mariana Morales Rivas">Mariana Morales Rivas (#EXP-085)</option>
+                    <option value="Roberto Sánchez Gómez">Roberto Sánchez Gómez (#EXP-086)</option>
+                </select>
+            </div>
+            <input type="text" class="search-input" id="searchNotes" placeholder="Buscar por diagnóstico o texto..." oninput="searchNotes()">
+        </div>
+
+        <!-- 3. LÍNEA DE TIEMPO DE ENTRADAS DEL EXPEDIENTE -->
+        <div class="timeline" id="timelineContainer">
+            <!-- Entradas inyectadas con JavaScript -->
         </div>
     </main>
 </div>
+
+<!-- ==========================================================
+     MODAL PARA CREAR / EDITAR NOTA DE EXPEDIENTE
+========================================================== -->
+<div class="modal-overlay" id="entryModal">
+    <div class="modal-card">
+        <div class="modal-header">
+            <h3 id="modalTitle">Nueva Nota en Expediente</h3>
+            <button class="close-btn" onclick="closeModal()">&times;</button>
+        </div>
+        <form id="entryForm" onsubmit="saveEntry(event)">
+            <input type="hidden" id="eId">
+            <div class="modal-body">
+                <div style="display: grid; grid-template-columns: 1.3fr 1fr; gap: 14px;">
+                    <div class="form-group">
+                        <label for="ePatient">Paciente *</label>
+                        <select id="ePatient" class="form-control" required>
+                            <option value="Carlos Mendoza">Carlos Mendoza (#EXP-084)</option>
+                            <option value="Mariana Morales Rivas">Mariana Morales Rivas (#EXP-085)</option>
+                            <option value="Roberto Sánchez Gómez">Roberto Sánchez Gómez (#EXP-086)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="eDate">Fecha del Registro *</label>
+                        <input type="date" id="eDate" class="form-control" required>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+                    <div class="form-group">
+                        <label for="eType">Tipo de Entrada</label>
+                        <select id="eType" class="form-control">
+                            <option value="Evolución">Nota de Evolución</option>
+                            <option value="Ingreso">Ingreso / Primera vez</option>
+                            <option value="Laboratorio">Estudio / Laboratorio</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="eDiagnosis">Diagnóstico / Motivo *</label>
+                        <input type="text" id="eDiagnosis" class="form-control" placeholder="Ej. Faringoamigdalitis aguda" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="eNotes">Nota Clínica / Resumen de Atención *</label>
+                    <textarea id="eNotes" class="form-control" rows="3" placeholder="Descripción del cuadro clínico, exploración física y evolución del paciente..." required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="eTreatment">Tratamiento e Indicaciones Prescritas</label>
+                    <input type="text" id="eTreatment" class="form-control" placeholder="Ej. Paracetamol 500mg c/8h + Reposo relativo">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-secondary" onclick="closeModal()">Cancelar</button>
+                <button type="submit" class="btn-primary">Guardar en Expediente</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ==========================================================
+     MODAL PARA VER DETALLE COMPLETO DE LA NOTA
+========================================================== -->
+<div class="modal-overlay" id="viewModal">
+    <div class="modal-card">
+        <div class="modal-header">
+            <h3>Detalle del Registro Clínico</h3>
+            <button class="close-btn" onclick="closeViewModal()">&times;</button>
+        </div>
+        <div class="modal-body" id="viewModalContent">
+            <!-- Inyectado con JS -->
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn-secondary" onclick="closeViewModal()">Cerrar</button>
+        </div>
+    </div>
+</div>
+
+<!-- ==========================================================
+     LÓGICA JAVASCRIPT: CRUD + PERSISTENCIA LOCAL
+========================================================== -->
+<script>
+    const defaultEntries = [
+        {
+            id: 1,
+            patient: "Carlos Mendoza",
+            exp: "EXP-084",
+            date: "2026-09-07",
+            type: "Evolución",
+            diagnosis: "Faringoamigdalitis aguda y mialgia",
+            notes: "Paciente acude refiriendo odinofagia de 48 horas de evolución y malestar general. Faringe hiperémica con placas leves. Se inicia tratamiento sintomático y antiinflamatorio.",
+            treatment: "Paracetamol 500 mg c/8h + Naproxeno Sódico 550 mg c/12h por 3 días."
+        },
+        {
+            id: 2,
+            patient: "Carlos Mendoza",
+            exp: "EXP-084",
+            date: "2026-09-01",
+            type: "Evolución",
+            diagnosis: "Control general y seguimiento de tratamiento",
+            notes: "Consulta general y seguimiento de tratamiento crónico. Presión arterial controlada (120/80 mmHg). No se reportan efectos adversos al tratamiento antihipertensivo.",
+            treatment: "Continuar Losartán 50 mg cada 12 horas."
+        },
+        {
+            id: 3,
+            patient: "Carlos Mendoza",
+            exp: "EXP-084",
+            date: "2026-08-15",
+            type: "Ingreso",
+            diagnosis: "Apertura de Expediente / Hipertensión Arterial Primaria",
+            notes: "Apertura formal de expediente clínico. Antecedente heredofamiliar de hipertensión por línea paterna. Se establece plan dietético bajo en sodio y monitoreo ambulatorio.",
+            treatment: "Inicio de Losartán 50 mg en toma matutina y vespertina."
+        },
+        {
+            id: 4,
+            patient: "Mariana Morales Rivas",
+            exp: "EXP-085",
+            date: "2026-08-28",
+            type: "Laboratorio",
+            diagnosis: "Control metabólico preventivo",
+            notes: "Revisión de química sanguínea: Glucosa 91 mg/dL, Colesterol total 178 mg/dL. Parámetros dentro de la normalidad. Paciente asintomática.",
+            treatment: "Mantener plan de actividad física regular (30 min diarios)."
+        },
+        {
+            id: 5,
+            patient: "Roberto Sánchez Gómez",
+            exp: "EXP-086",
+            date: "2026-08-15",
+            type: "Evolución",
+            diagnosis: "Lumbalgia mecánica aguda",
+            notes: "Dolor lumbosacro desencadenado por esfuerzo físico moderado. Sin compromiso radicular ni signos de alarma. Reflejos osteotendinosos conservados.",
+            treatment: "Reposo relativo por 48 horas + calor local + analgésico oral."
+        }
+    
+    ];
+    const documentosPacientes = {
+    "Carlos Mendoza": [
+        {
+            nombre: "Análisis de sangre.pdf",
+            fecha: "07/09/2026"
+        },
+        {
+            nombre: "Radiografía de tórax.pdf",
+            fecha: "01/09/2026"
+        },
+        {
+            nombre: "Resultados de laboratorio.pdf",
+            fecha: "15/08/2026"
+        }
+    ],
+
+    "Mariana Morales Rivas": [
+        {
+            nombre: "Química sanguínea.pdf",
+            fecha: "28/08/2026"
+        },
+        {
+            nombre: "Examen general.pdf",
+            fecha: "28/08/2026"
+        }
+    ],
+
+    "Roberto Sánchez Gómez": [
+        {
+            nombre: "Radiografía lumbar.pdf",
+            fecha: "15/08/2026"
+        }
+    ]
+};
+
+    let entries = JSON.parse(localStorage.getItem('clinibox_expedientes')) || defaultEntries;
+
+    function saveStorage() {
+        localStorage.setItem('clinibox_expedientes', JSON.stringify(entries));
+    }
+
+    function renderTimeline(filtered = null) {
+        const container = document.getElementById('timelineContainer');
+        container.innerHTML = '';
+
+        const filterVal = document.getElementById('selectPatientFilter').value;
+        let list = filtered;
+
+        if (!list) {
+            if (filterVal === 'todos') {
+                list = entries;
+            } else {
+                list = entries.filter(e => e.patient === filterVal);
+            }
+        }
+
+        document.getElementById('notesCountLabel').textContent = `${list.length} nota${list.length === 1 ? '' : 's'} clínica${list.length === 1 ? '' : 's'}`;
+
+        if (list.length === 0) {
+            container.innerHTML = `
+                <div style="background: white; border: 1px solid var(--border); border-radius: 12px; text-align: center; padding: 36px 20px; color: var(--text-muted);">
+                    No hay entradas registradas en el expediente seleccionado.
+                </div>
+            `;
+            return;
+        }
+
+        list.forEach(item => {
+            let badgeClass = 'badge-evolucion';
+            if (item.type === 'Ingreso') badgeClass = 'badge-ingreso';
+            if (item.type === 'Laboratorio') badgeClass = 'badge-lab';
+
+            const art = document.createElement('article');
+            art.className = 'timeline-item';
+            art.innerHTML = `
+                <div class="timeline-left">
+                    <div class="timeline-date-badge">
+                        <span>${formatDate(item.date)}</span>
+                    </div>
+                    <div class="timeline-content">
+                        <h3>
+                            ${item.patient}
+                            <span class="badge-tag ${badgeClass}">${item.type}</span>
+                        </h3>
+                        <div class="timeline-diagnosis">${item.diagnosis}</div>
+                        <p class="timeline-text">${item.notes}</p>
+                    </div>
+                </div>
+                <div class="timeline-actions">
+                    <button class="btn-act btn-act-view" onclick="viewEntry(${item.id})">👁️ Ver</button>
+                    <button class="btn-act btn-act-edit" onclick="openEditEntryModal(${item.id})">✏️ Editar</button>
+                    <button class="btn-act btn-act-del" onclick="deleteEntry(${item.id})">🗑️</button>
+                </div>
+            `;
+            container.appendChild(art);
+        });
+    }
+
+    function formatDate(str) {
+        if (!str) return '-';
+        const parts = str.split('-');
+        if (parts.length === 3) return `${parts[2]}/${parts[1]}/${parts[0]}`;
+        return str;
+    }
+
+    function filterByPatient() {
+        renderTimeline();
+    }
+
+    function searchNotes() {
+        const q = document.getElementById('searchNotes').value.toLowerCase();
+        const filterVal = document.getElementById('selectPatientFilter').value;
+
+        const filtered = entries.filter(e => {
+            const matchPatient = (filterVal === 'todos' || e.patient === filterVal);
+            const matchText = e.patient.toLowerCase().includes(q) ||
+                              e.diagnosis.toLowerCase().includes(q) ||
+                              e.notes.toLowerCase().includes(q);
+            return matchPatient && matchText;
+        });
+
+        renderTimeline(filtered);
+    }
+
+    function openNewEntryModal() {
+        document.getElementById('entryForm').reset();
+        document.getElementById('eId').value = '';
+        document.getElementById('eDate').value = new Date().toISOString().split('T')[0];
+        
+        const filterVal = document.getElementById('selectPatientFilter').value;
+        if (filterVal !== 'todos') {
+            document.getElementById('ePatient').value = filterVal;
+        }
+
+        document.getElementById('modalTitle').textContent = 'Nueva Entrada en Expediente';
+        document.getElementById('entryModal').classList.add('active');
+    }
+
+    function openEditEntryModal(id) {
+        const item = entries.find(e => e.id === id);
+        if (!item) return;
+
+        document.getElementById('eId').value = item.id;
+        document.getElementById('ePatient').value = item.patient;
+        document.getElementById('eDate').value = item.date;
+        document.getElementById('eType').value = item.type;
+        document.getElementById('eDiagnosis').value = item.diagnosis;
+        document.getElementById('eNotes').value = item.notes;
+        document.getElementById('eTreatment').value = item.treatment || '';
+
+        document.getElementById('modalTitle').textContent = 'Editar Registro Clínico';
+        document.getElementById('entryModal').classList.add('active');
+    }
+
+    function closeModal() {
+        document.getElementById('entryModal').classList.remove('active');
+    }
+
+    function saveEntry(e) {
+        e.preventDefault();
+
+        const id = document.getElementById('eId').value;
+        const patient = document.getElementById('ePatient').value;
+        const date = document.getElementById('eDate').value;
+        const type = document.getElementById('eType').value;
+        const diagnosis = document.getElementById('eDiagnosis').value.trim();
+        const notes = document.getElementById('eNotes').value.trim();
+        const treatment = document.getElementById('eTreatment').value.trim();
+
+        if (id) {
+            const index = entries.findIndex(item => item.id == id);
+            if (index !== -1) {
+                entries[index].patient = patient;
+                entries[index].date = date;
+                entries[index].type = type;
+                entries[index].diagnosis = diagnosis;
+                entries[index].notes = notes;
+                entries[index].treatment = treatment;
+            }
+        } else {
+            entries.unshift({
+                id: Date.now(),
+                patient: patient,
+                exp: patient === 'Carlos Mendoza' ? 'EXP-084' : (patient.includes('Mariana') ? 'EXP-085' : 'EXP-086'),
+                date: date,
+                type: type,
+                diagnosis: diagnosis,
+                notes: notes,
+                treatment: treatment
+            });
+        }
+
+        saveStorage();
+        renderTimeline();
+        closeModal();
+    }
+
+    function deleteEntry(id) {
+        if (confirm('¿Estás seguro de eliminar esta entrada del expediente clínico?')) {
+            entries = entries.filter(e => e.id !== id);
+            saveStorage();
+            renderTimeline();
+        }
+    }
+
+    function viewEntry(id) {
+        const item = entries.find(e => e.id === id);
+        if (!item) return;
+
+        const content = document.getElementById('viewModalContent');
+        content.innerHTML = `
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 12px;">
+                <div>
+                    <h4 style="margin: 0 0 2px; font-size: 1.2rem; color: var(--text-dark);">${item.patient}</h4>
+                    <span style="font-size: 0.8rem; color: var(--primary); font-weight: 700;">#${item.exp}</span>
+                </div>
+                <div style="text-align: right;">
+                    <span style="font-size: 0.82rem; background: var(--primary-light); color: var(--primary); padding: 4px 10px; border-radius: 6px; font-weight: 700;">${item.type}</span>
+                    <div style="font-size: 0.82rem; color: var(--text-muted); margin-top: 4px;">${formatDate(item.date)}</div>
+                </div>
+            </div>
+
+            <div style="margin-top: 14px;">
+                <strong style="font-size: 0.82rem; color: var(--text-muted); text-transform: uppercase;">Diagnóstico Clínico:</strong>
+                <p style="margin: 4px 0 12px; font-size: 1rem; color: var(--text-dark); font-weight: 600;">${item.diagnosis}</p>
+            </div>
+
+            <div style="background: #f8fafc; border: 1px solid var(--border); border-radius: 8px; padding: 14px; margin-bottom: 12px;">
+                <strong style="font-size: 0.82rem; color: var(--text-muted); text-transform: uppercase; display: block; margin-bottom: 4px;">Nota Médica:</strong>
+                <p style="margin: 0; font-size: 0.92rem; color: var(--text-dark); line-height: 1.5;">${item.notes}</p>
+            </div>
+
+            ${item.treatment ? `
+                <div style="background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 8px; padding: 12px;">
+                    <strong style="font-size: 0.82rem; color: #065f46; text-transform: uppercase; display: block; margin-bottom: 2px;">Tratamiento Prescrito:</strong>
+                    <p style="margin: 0; font-size: 0.9rem; color: #047857; font-weight: 500;">${item.treatment}</p>
+                </div>
+            ` : ''}
+
+            <div class="document-section">
+    <strong>📎 Documentos del paciente</strong>
+
+    <div class="pdf-list">
+        ${mostrarDocumentos(item.patient)}
+    </div>
+    
+</div>
+        `;
+    function mostrarDocumentos(paciente) {
+
+    const documentos = documentosPacientes[paciente] || [];
+
+    if (documentos.length === 0) {
+        return `
+            <div class="no-documents">
+                No hay documentos registrados para este paciente.
+            </div>
+        `;
+    }
+
+    return documentos.map((doc, index) => `
+        <div class="pdf-item">
+
+            <div>
+                <div class="pdf-name">
+                    📄 ${doc.nombre}
+                </div>
+
+                <div class="pdf-date">
+                    Registrado: ${doc.fecha}
+                </div>
+            </div>
+
+            <button
+                type="button"
+                class="pdf-select-btn"
+                onclick="seleccionarDocumento('${paciente}', ${index})">
+                Ver PDF
+            </button>
+
+        </div>
+    `).join('');
+}
+
+        document.getElementById('viewModal').classList.add('active');
+    }
+
+    let archivoPDF = null;
+    let urlPDF = null;
+
+    function seleccionarDocumento(paciente, indice) {
+
+    const documentos = documentosPacientes[paciente];
+
+    if (!documentos || !documentos[indice]) {
+        return;
+    }
+
+    const documento = documentos[indice];
+
+    /*
+     * Aquí se coloca la ubicación real del PDF.
+     *
+     * Ejemplo:
+     * documentos/Carlos Mendoza/Analisis de sangre.pdf
+     */
+
+    const rutaPDF = `documentos/${paciente}/${documento.nombre}`;
+
+    window.open(rutaPDF, '_blank');
+}
+
+    function cargarPDF(event) {
+        const archivo = event.target.files[0];
+
+        if (!archivo) {
+            return;
+        }
+
+        if (archivo.type !== 'application/pdf') {
+            alert('Solo se permiten archivos PDF.');
+            event.target.value = '';
+            return;
+        }
+
+        archivoPDF = archivo;
+
+        if (urlPDF) {
+            URL.revokeObjectURL(urlPDF);
+        }
+
+        urlPDF = URL.createObjectURL(archivo);
+
+        document.getElementById('pdfInfo').innerHTML = `
+            📄 <strong>${archivo.name}</strong>
+            <br>
+            <small>${(archivo.size / 1024 / 1024).toFixed(2)} MB</small>
+        `;
+
+        document.getElementById('openPdfBtn').style.display = 'inline-flex';
+    }
+
+    function abrirPDF() {
+        if (!urlPDF) {
+            return;
+        }
+
+        window.open(urlPDF, '_blank');
+    }
+
+    function closeViewModal() {
+        document.getElementById('viewModal').classList.remove('active');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        renderTimeline();
+    });
+
+    function cerrarSesion(event) {
+        event.preventDefault();
+        document.getElementById('logoutModal').classList.add('active');
+    }
+
+    // MENU DE LA C
+function toggleBrandMenu(e){
+    e.stopPropagation();
+    document.getElementById('brandDropdown').parentElement.classList.toggle('open');
+}
+// Cerrar si das clic afuera
+document.addEventListener('click', () => {
+    const wrapper = document.querySelector('.brand-wrapper');
+    if(wrapper) wrapper.classList.remove('open');
+});
+
+    function cerrarModalSesion() {
+        document.getElementById('logoutModal').classList.remove('active');
+    }
+
+    function confirmarCerrarSesion() {
+        window.location.href = '../../../index.html';
+    }
+</script>
+<!-- MODAL CERRAR SESIÓN -->
+<div class="modal-overlay" id="logoutModal">
+    <div class="modal-card logout-modal">
+        <div class="modal-header">
+            <h3>Cerrar sesión</h3>
+            <button class="close-btn" onclick="cerrarModalSesion()">&times;</button>
+        </div>
+
+        <div class="modal-body logout-body">
+            <div class="logout-icon">✓</div>
+            <p>¿Desea cerrar sesión?</p>
+            <span>Se cerrará su sesión y regresará a la página principal.</span>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn-secondary" onclick="cerrarModalSesion()">Cancelar</button>
+            <button type="button" class="btn-primary" onclick="confirmarCerrarSesion()">Cerrar sesión</button>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>

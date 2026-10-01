@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CliniBox - Login Médico</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: #eef7f7;
+    background-image:
+        linear-gradient(rgba(238, 247, 247, 0.85), rgba(238, 247, 247, 0.85)),
+        url("../assets/img/fondo-clinica.jpg");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+}
+
+        .login-container {
+            width: 400px;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+
+        .logo {
+            text-align: center;
+            font-size: 35px;
+            margin-bottom: 10px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #176b87;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #176b87;
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            background: #176b87;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .btn-login:hover {
+            background: #12566d;
+        }
+
+        .mensaje {
+            text-align: center;
+            margin-top: 15px;
+            color: #c0392b;
+            font-size: 14px;
+        }
+
+        .volver {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #176b87;
+            text-decoration: none;
+        }
+
+        .volver:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-container">
+
+        <div class="logo">🩺</div>
+
+        <h1>CliniBox</h1>
+
+        <p class="subtitle">Ingreso al consultorio médico</p>
+
+        <form id="loginMedico">
+
+            <div class="form-group">
+                <label for="usuario">Nombre del médico</label>
+
+                <input
+                    type="text"
+                    id="usuario"
+                    placeholder="Escribe tu nombre"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="password">Cédula profesional</label>
+
+                <input
+                    type="password"
+                    id="password"
+                    placeholder="Escribe tu cédula profesional"
+                    required
+                >
+            </div>
+
+            <button type="submit" class="btn-login">
+                Entrar al consultorio
+            </button>
+
+            <p id="mensaje" class="mensaje"></p>
+
+        </form>
+
+        <a href="../index.html" class="volver">
+            ← Regresar
+        </a>
+
+    </div>
+
+
+    <script>
+
+        document.getElementById("loginMedico").addEventListener("submit", function(event) {
+
+            event.preventDefault();
+
+            const usuario = document.getElementById("usuario").value.trim();
+            const password = document.getElementById("password").value.trim();
+            const mensaje = document.getElementById("mensaje");
+
+            /*
+             * DATOS DE EJEMPLO
+             * Aquí puedes cambiar el nombre y la cédula
+             * por los datos del médico.
+             */
+
+            const medicoUsuario = "Sofía Ramírez";
+            const medicoPassword = "12345678";
+
+            if (usuario === medicoUsuario && password === medicoPassword) {
+
+                // Guardamos que el médico inició sesión
+                localStorage.setItem("medicoSesion", usuario);
+
+                // Entrar al panel de pacientes
+                window.location.href =
+                    "http://localhost/clinibox/app/views/medico/pacientes.html";
+
+            } else {
+
+                mensaje.textContent =
+                    "El nombre del médico o la cédula profesional son incorrectos.";
+
+            }
+
+        });
+
+    </script>
+
+</body>
+</html>

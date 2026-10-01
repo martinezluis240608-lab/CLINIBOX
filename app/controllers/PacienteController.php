@@ -6,6 +6,11 @@ use App\Core\Controller;
 
 class PacienteController extends Controller
 {
+    public function recorrido(): void
+    {
+        $this->view('paciente/recorrido', ['title' => 'Recorrido virtual']);
+    }
+
     public function consultas(): void
     {
         $this->requireRole(['paciente']);

@@ -1,0 +1,527 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Recorrido virtual 3D por la clínica CliniBox con vista interactiva estilo Google Maps.">
+  <title>Clínica Virtual 3D | CliniBox</title>
+  <link rel="stylesheet" href="../assets/css/tour.css?v=6">
+</head>
+<body class="tour-page light-clinical-theme">
+<main class="tour-shell">
+
+  <!-- Three.js WebGL Corridor Canvas -->
+  <canvas id="clinicScene" aria-label="Escena 3D del pasillo clínico CliniBox"></canvas>
+
+  <!-- Partículas flotantes de ambiente clínico -->
+  <div class="ambient-particles" id="ambientParticles"></div>
+
+  <!-- ── TOP BAR HUD (TEMA BLANCO CLÍNICO) ──────────────────── -->
+  <header class="tour-topbar">
+    <a class="tour-brand" href="../" aria-label="Volver a CliniBox">
+      <span class="tour-brand-mark">+</span>
+      <span><strong>CliniBox</strong><small>Clínica Virtual 3D</small></span>
+    </a>
+
+    <div class="tour-progress" aria-label="Progreso del recorrido">
+      <span class="progress-label">Ubicación: <strong id="currentAreaName">Pasillo Principal</strong></span>
+      <span class="progress-track"><i id="progressBar"></i></span>
+      <strong id="progressText">1 / 4 Puertas</strong>
+    </div>
+
+    <!-- Acciones de cabecera -->
+    <div class="topbar-actions">
+      <button type="button" class="topbar-btn btn-tab-login" onclick="openDoorModal(null, 'login')">
+        🔐 Iniciar sesión
+      </button>
+      <button type="button" class="topbar-btn btn-tab-tour" onclick="openDoorModal(null, 'continue')">
+        🛒 Entrar a Tienda Médica
+      </button>
+      <a class="tour-exit" href="../">Salir <span aria-hidden="true">×</span></a>
+    </div>
+  </header>
+
+  <!-- ── INTRO SCREEN ───────────────────────────────────────── -->
+  <section class="tour-intro" id="tourIntro">
+    <div class="intro-glass-card">
+      <div class="intro-badge">🏥 Pasillo Clínico Interactivo 3D</div>
+      <p class="tour-kicker">Bienvenido a CLINIBOX</p>
+      <h1>Navega por la Clínica Virtual en 3D</h1>
+      <p>Arrastra el ratón para rotar en 360° como en <strong>Google Maps</strong>, usa el zoom y camina hacia las 4 puertas de atención médica.</p>
+
+      <div class="hallway-doors-preview">
+        <div class="hdp-item" onclick="startTourAndGo('tienda')">🛒 Tienda Médica</div>
+        <div class="hdp-item" onclick="startTourAndGo('agendar')">📅 Agendar Cita</div>
+        <div class="hdp-item" onclick="startTourAndGo('medico')">💬 Hablar con Médico</div>
+        <div class="hdp-item" onclick="startTourAndGo('clinicas')">📍 Clínicas Cerca</div>
+      </div>
+
+      <div class="intro-actions">
+        <button class="tour-primary" id="startTour" type="button">
+          🚶 Entrar a la Clínica 3D <span aria-hidden="true">→</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── REALISTIC CLINICAL VIEWPORT & GOOGLE MAPS CONTROLS ───── -->
+  <div class="clinic-viewport" id="clinicViewport" aria-live="polite">
+    <div class="clinic-scene-wrap" id="clinicSceneWrap">
+
+      <!-- CONTROLES NAVEGACIÓN 3D ESTILO GOOGLE MAPS -->
+      <div class="gmaps-nav-widget" aria-label="Controles de vista 3D estilo Google Maps">
+        <button type="button" onclick="gmapsZoomIn()" title="Acercar cámara (+)">+</button>
+        <button type="button" onclick="gmapsZoomOut()" title="Alejar cámara (-)">−</button>
+        <button type="button" onclick="gmapsResetView()" title="Restablecer vista 360°">🧭</button>
+        <span class="gmaps-hint">🖱️ Arrastra con el ratón para rotar 360°</span>
+      </div>
+
+      <!-- === PASILLO LONGITUDINAL CON 4 PUERTAS === -->
+      <div class="hallway-container">
+        
+        <div class="hallway-banner">
+          <span>🏥 PASILLO PRINCIPAL DE ATENCIÓN MÉDICA Y TIENDA</span>
+        </div>
+
+        <!-- DOORS GRID ALONG THE HALLWAY -->
+        <div class="hallway-doors-grid">
+
+          <!-- PUERTA 1: TIENDA MÉDICA -->
+          <div class="door-card-unit active" id="door-unit-tienda" data-door="tienda">
+            <div class="door-sign neon-green">
+              <span class="ds-icon">🛒</span>
+              <div class="ds-text-wrap">
+                <span class="ds-title">PUERTA 01</span>
+                <span class="ds-subtitle">TIENDA MÉDICA</span>
+              </div>
+            </div>
+
+            <div class="3d-door-frame interactive-element" onclick="openDoorModal('tienda', 'continue')">
+              <div class="door-panel-3d" id="panel-tienda">
+                <div class="door-glass-window">
+                  <span class="gw-icon">🛒</span>
+                  <span class="gw-label">Tienda Salud</span>
+                </div>
+                <div class="door-knob"></div>
+              </div>
+            </div>
+
+            <div class="door-floor-target" onclick="openDoorModal('tienda', 'continue')">
+              <div class="target-ring"></div>
+              <span>📍 Entrar a Tienda Médica</span>
+            </div>
+          </div>
+
+          <!-- PUERTA 2: AGENDAR CITA -->
+          <div class="door-card-unit" id="door-unit-agendar" data-door="agendar">
+            <div class="door-sign neon-blue">
+              <span class="ds-icon">📅</span>
+              <div class="ds-text-wrap">
+                <span class="ds-title">PUERTA 02</span>
+                <span class="ds-subtitle">AGENDAR CITA</span>
+              </div>
+            </div>
+
+            <div class="3d-door-frame interactive-element" onclick="openDoorModal('agendar', 'continue')">
+              <div class="door-panel-3d" id="panel-agendar">
+                <div class="door-glass-window">
+                  <span class="gw-icon">📅</span>
+                  <span class="gw-label">Citas Médicas</span>
+                </div>
+                <div class="door-knob"></div>
+              </div>
+            </div>
+
+            <div class="door-floor-target" onclick="openDoorModal('agendar', 'continue')">
+              <div class="target-ring"></div>
+              <span>📍 Entrar a Agendar Cita</span>
+            </div>
+          </div>
+
+          <!-- PUERTA 3: CONVERSAR CON MÉDICO -->
+          <div class="door-card-unit" id="door-unit-medico" data-door="medico">
+            <div class="door-sign neon-purple">
+              <span class="ds-icon">💬</span>
+              <div class="ds-text-wrap">
+                <span class="ds-title">PUERTA 03</span>
+                <span class="ds-subtitle">CONVERSAR CON MÉDICO</span>
+              </div>
+            </div>
+
+            <div class="3d-door-frame interactive-element" onclick="openDoorModal('medico', 'continue')">
+              <div class="door-panel-3d" id="panel-medico">
+                <div class="door-glass-window">
+                  <span class="gw-icon">💬</span>
+                  <span class="gw-label">Consulta Live</span>
+                </div>
+                <div class="door-knob"></div>
+              </div>
+            </div>
+
+            <div class="door-floor-target" onclick="openDoorModal('medico', 'continue')">
+              <div class="target-ring"></div>
+              <span>📍 Entrar a Telemedicina</span>
+            </div>
+          </div>
+
+          <!-- PUERTA 4: CONOCER CLÍNICAS CERCA -->
+          <div class="door-card-unit" id="door-unit-clinicas" data-door="clinicas">
+            <div class="door-sign neon-teal">
+              <span class="ds-icon">📍</span>
+              <div class="ds-text-wrap">
+                <span class="ds-title">PUERTA 04</span>
+                <span class="ds-subtitle">CLÍNICAS CERCA</span>
+              </div>
+            </div>
+
+            <div class="3d-door-frame interactive-element" onclick="openDoorModal('clinicas', 'continue')">
+              <div class="door-panel-3d" id="panel-clinicas">
+                <div class="door-glass-window">
+                  <span class="gw-icon">📍</span>
+                  <span class="gw-label">Mapa Sucursales</span>
+                </div>
+                <div class="door-knob"></div>
+              </div>
+            </div>
+
+            <div class="door-floor-target" onclick="openDoorModal('clinicas', 'continue')">
+              <div class="target-ring"></div>
+              <span>📍 Ver Clínicas Cercanas</span>
+            </div>
+          </div>
+
+        </div><!-- /hallway-doors-grid -->
+
+        <!-- ANIMATED WALKING PATIENT AVATAR IN 3D HALLWAY -->
+        <div class="hallway-avatar-wrap" id="hallwayAvatarWrap">
+          <div class="avatar-speech-bubble" id="avatarSpeech">
+            💬 ¡Arrastra para rotar la cámara 360° o entra a una puerta!
+          </div>
+          <div class="walking-avatar-character">
+            <div class="ac-head">
+              <div class="ac-hair"></div>
+              <div class="ac-face">
+                <div class="ac-eye"></div>
+                <div class="ac-eye"></div>
+              </div>
+            </div>
+            <div class="ac-torso">
+              <div class="ac-badge">✦</div>
+              <div class="ac-arms">
+                <div class="ac-arm left"></div>
+                <div class="ac-arm right"></div>
+              </div>
+            </div>
+            <div class="ac-legs">
+              <div class="ac-leg left"></div>
+              <div class="ac-leg right"></div>
+            </div>
+          </div>
+          <div class="avatar-shadow"></div>
+        </div>
+
+      </div><!-- /hallway-container -->
+
+    </div><!-- /clinic-scene-wrap -->
+  </div><!-- /clinic-viewport -->
+
+  <!-- ── SCENE INFO FLOATING CARD ────────────────────────────── -->
+  <aside class="tour-scene-card" aria-live="polite" id="sceneCard">
+    <span class="scene-index" id="sceneIndex">01</span>
+    <p class="tour-kicker" id="sceneKicker">Puerta 01</p>
+    <h2 id="sceneTitle">🛒 Tienda Médica</h2>
+    <p id="sceneCopy">Catálogo completo de productos de salud, medicamentos y entrega a domicilio.</p>
+    <div class="scene-actions" id="sceneActions">
+      <!-- Generado dinámicamente -->
+    </div>
+  </aside>
+
+  <!-- ── HOTSPOTS DE LAS 4 PUERTAS ──────────────────────────── -->
+  <nav class="tour-hotspots" aria-label="Puertas del pasillo">
+    <button class="hotspot active" type="button" data-door="tienda">
+      <i>01</i><span>🛒 Tienda Médica</span>
+    </button>
+    <button class="hotspot" type="button" data-door="agendar">
+      <i>02</i><span>📅 Agendar Cita</span>
+    </button>
+    <button class="hotspot" type="button" data-door="medico">
+      <i>03</i><span>💬 Hablar con Médico</span>
+    </button>
+    <button class="hotspot" type="button" data-door="clinicas">
+      <i>04</i><span>📍 Clínicas Cerca</span>
+    </button>
+  </nav>
+
+  <!-- ── PERSISTENT FLOATING HUD ACTION BAR ────────────────────── -->
+  <div class="tour-bottom-hud" aria-label="Navegación por pasillo">
+    <div class="hud-buttons-wrap">
+      <button type="button" class="hud-pill btn-pill-login" onclick="openDoorModal(null, 'login')">
+        <span class="pill-icon">🔐</span>
+        <span>Iniciar sesión en esta puerta</span>
+      </button>
+
+      <button type="button" class="hud-pill btn-pill-continue" onclick="openDoorModal(null, 'continue')">
+        <span class="pill-icon">➡️</span>
+        <span>Entrar a explorar esta sección</span>
+      </button>
+
+      <div class="hud-nav-arrows">
+        <button type="button" id="previousScene" title="Puerta anterior" aria-label="Puerta anterior">←</button>
+        <button type="button" id="nextScene" title="Siguiente puerta" aria-label="Siguiente puerta">→</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       UNIVERSAL PER-DOOR DUAL-TAB MODAL (LOGIN vs RECORRIDO/PREVIEWS)
+  ============================================================ -->
+  <section class="area-tab-modal" id="areaTabModal" aria-hidden="true" aria-modal="true" role="dialog">
+    <div class="modal-backdrop" onclick="closeDoorModal()"></div>
+    <div class="modal-card animate-pop-in">
+      
+      <!-- Modal Header Bar -->
+      <div class="modal-header-bar">
+        <div class="modal-area-context" id="modalAreaContext">
+          <span class="mac-icon" id="modalAreaIcon">🛒</span>
+          <div>
+            <h3 id="modalAreaTitle">Puerta 01 – Tienda Médica</h3>
+            <span class="mac-subtitle" id="modalAreaSubtitle">Farmacia y Catálogo de Salud</span>
+          </div>
+        </div>
+        <button class="modal-close-btn" onclick="closeDoorModal()" aria-label="Cerrar modal">✕</button>
+      </div>
+
+      <!-- Tab Switcher Header -->
+      <div class="modal-tabs-header">
+        <button type="button" class="tab-btn active" id="tabBtnLogin" onclick="switchModalTab('login')">
+          <span>🔐 Iniciar Sesión</span>
+        </button>
+        <button type="button" class="tab-btn" id="tabBtnContinue" onclick="switchModalTab('continue')">
+          <span>➡️ Continuar Recorrido</span>
+        </button>
+      </div>
+
+      <!-- Tab Body Panels -->
+      <div class="modal-body-panels">
+        
+        <!-- PANEL 1: INICIAR SESIÓN -->
+        <div class="tab-panel active" id="panelLogin">
+          <div class="panel-intro-text">
+            <p id="panelLoginDesc">
+              Inicia sesión en tu espacio de paciente para realizar tus compras y acceder a tus servicios.
+            </p>
+          </div>
+
+          <form class="patient-login-form" id="areaLoginForm" novalidate onsubmit="handleAreaLogin(event)">
+            <input type="hidden" name="role" value="paciente">
+            <input type="hidden" id="loginDoorKey" name="door_key" value="tienda">
+
+            <div class="login-field">
+              <label for="gate-email">Correo electrónico / Usuario</label>
+              <div class="input-wrap">
+                <span class="field-icon">✉</span>
+                <input type="email" id="gate-email" name="email" placeholder="paciente@clinibox.test" required autocomplete="email">
+              </div>
+            </div>
+
+            <div class="login-field">
+              <label for="gate-password">Contraseña</label>
+              <div class="input-wrap">
+                <span class="field-icon">🔒</span>
+                <input type="password" id="gate-password" name="password" placeholder="••••••••" required autocomplete="current-password">
+              </div>
+            </div>
+
+            <div class="login-message" id="gateLoginMsg" aria-live="polite"></div>
+
+            <div class="gate-form-actions">
+              <button class="tour-primary btn-block" type="submit" id="gateSubmitBtn">
+                🔐 Acceder a mi espacio <span aria-hidden="true">→</span>
+              </button>
+            </div>
+          </form>
+
+          <div class="gate-divider"><span>o</span></div>
+
+          <div class="quick-demo-access">
+            <button class="register-btn" type="button" onclick="demoQuickLogin()">
+              🚀 Acceso rápido de demostración
+            </button>
+          </div>
+        </div>
+
+        <!-- PANEL 2: CONTINUAR RECORRIDO (INTERACTIVE PREVIEWS FOR EACH DOOR) -->
+        <div class="tab-panel" id="panelContinue">
+          
+          <!-- PREVIEW 1: TIENDA MÉDICA -->
+          <div class="door-preview-container" id="preview-tienda">
+            <div class="dp-header">
+              <span class="dp-icon">🛒</span>
+              <h4>Tienda Médica & Catálogo de Salud</h4>
+              <p>Busca medicamentos, insumos médicos y consulta precios sin iniciar sesión.</p>
+            </div>
+
+            <div class="med-search-bar">
+              <input type="text" id="medSearchInput" placeholder="Buscar en la Tienda Médica (ej: Paracetamol, Termómetro)..." oninput="filterMedicines(this.value)">
+            </div>
+
+            <div class="meds-interactive-grid" id="medsGrid">
+              <div class="med-card-item">
+                <span class="mci-icon">💊</span>
+                <div class="mci-info">
+                  <strong>Paracetamol 500mg</strong>
+                  <span>Caja x 20 tabletas - Analgésico</span>
+                </div>
+                <span class="mci-price">$45.00</span>
+              </div>
+              <div class="med-card-item">
+                <span class="mci-icon">💊</span>
+                <div class="mci-info">
+                  <strong>Amoxicilina 500mg</strong>
+                  <span>Caja x 12 cápsulas - Antibiótico</span>
+                </div>
+                <span class="mci-price">$120.00</span>
+              </div>
+              <div class="med-card-item">
+                <span class="mci-icon">🌡️</span>
+                <div class="mci-info">
+                  <strong>Termómetro Digital</strong>
+                  <span>Infrarrojo de alta precisión</span>
+                </div>
+                <span class="mci-price">$250.00</span>
+              </div>
+              <div class="med-card-item">
+                <span class="mci-icon">💊</span>
+                <div class="mci-info">
+                  <strong>Ibuprofeno 400mg</strong>
+                  <span>Caja x 10 tabletas - Antiinflamatorio</span>
+                </div>
+                <span class="mci-price">$55.00</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- PREVIEW 2: AGENDAR CITA -->
+          <div class="door-preview-container" id="preview-agendar" style="display:none">
+            <div class="dp-header">
+              <span class="dp-icon">📅</span>
+              <h4>Módulo de Agendamiento de Citas</h4>
+              <p>Selecciona especialidad, fecha y horario de consulta.</p>
+            </div>
+
+            <form class="appointment-demo-form" onsubmit="handleAppointmentSubmit(event)">
+              <div class="form-group-sm">
+                <label>Especialidad médica</label>
+                <select id="appSpecialty">
+                  <option>🩺 Medicina General</option>
+                  <option>❤️ Cardiología</option>
+                  <option>👶 Pediatría</option>
+                  <option>🧴 Dermatología</option>
+                </select>
+              </div>
+              <div class="form-group-sm">
+                <label>Médico especialista</label>
+                <select id="appDoctor">
+                  <option>👨‍⚕️ Dr. Carlos Mendoza (Disponible hoy)</option>
+                  <option>👩‍⚕️ Dra. Ana Torres (Disponible hoy)</option>
+                </select>
+              </div>
+              <div class="form-row-sm">
+                <div>
+                  <label>Fecha</label>
+                  <input type="date" value="2026-09-10" id="appDate">
+                </div>
+                <div>
+                  <label>Horario</label>
+                  <select id="appTime">
+                    <option>10:00 AM</option>
+                    <option>11:30 AM</option>
+                    <option>04:00 PM</option>
+                  </select>
+                </div>
+              </div>
+              <button type="submit" class="tour-primary btn-block">
+                📅 Solicitar Reserva de Cita
+              </button>
+            </form>
+          </div>
+
+          <!-- PREVIEW 3: CONVERSAR CON MÉDICO -->
+          <div class="door-preview-container" id="preview-medico" style="display:none">
+            <div class="dp-header">
+              <span class="dp-icon">💬</span>
+              <h4>Consulta Médica Virtual en Vivo</h4>
+              <p>Conversa directamente con un médico especialista de guardia.</p>
+            </div>
+
+            <div class="live-chat-box">
+              <div class="lcb-header">
+                <div class="lcb-doctor-avatar">👨‍⚕️</div>
+                <div>
+                  <strong>Dr. Carlos Mendoza</strong>
+                  <span class="status-badge-green">🟢 En línea ahora</span>
+                </div>
+              </div>
+              <div class="lcb-messages" id="chatMessages">
+                <div class="chat-msg doc">
+                  <span>¡Hola! Soy el Dr. Carlos Mendoza. ¿En qué síntoma o consulta médica puedo ayudarte hoy?</span>
+                </div>
+              </div>
+              <div class="lcb-input-bar">
+                <input type="text" id="chatInput" placeholder="Escribe tu consulta médica..." onkeydown="if(event.key==='Enter') sendChatMessage()">
+                <button type="button" onclick="sendChatMessage()">Enviar</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- PREVIEW 4: CONOCER CLÍNICAS CERCA -->
+          <div class="door-preview-container" id="preview-clinicas" style="display:none">
+            <div class="dp-header">
+              <span class="dp-icon">📍</span>
+              <h4>Clínicas y Sucursales Cercanas</h4>
+              <p>Encuentra la clínica CliniBox más cercana a tu ubicación actual.</p>
+            </div>
+
+            <div class="clinics-list">
+              <div class="clinic-location-card">
+                <div class="clc-icon">🏥</div>
+                <div class="clc-info">
+                  <strong>CliniBox Sucursal Central</strong>
+                  <span>📍 Av. Principal #450, Centro</span>
+                  <small>⏱ Abierto 24 Horas • A 1.2 km de ti</small>
+                </div>
+                <button class="btn-sm-primary" onclick="showElementTooltip('Mapa: Av. Principal #450')">📍 Cómo llegar</button>
+              </div>
+              <div class="clinic-location-card">
+                <div class="clc-icon">🏥</div>
+                <div class="clc-info">
+                  <strong>CliniBox Plaza Norte</strong>
+                  <span>📍 Av. de las Américas #1200</span>
+                  <small>⏱ Lun-Sáb 8:00 AM - 8:00 PM • A 3.5 km</small>
+                </div>
+                <button class="btn-sm-primary" onclick="showElementTooltip('Mapa: Plaza Norte')">📍 Cómo llegar</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="guide-actions" style="margin-top: 20px;">
+            <button type="button" class="tour-primary btn-block" id="btnNextDoor" onclick="advanceToNextDoor()">
+              ➡️ Avanzar a la siguiente puerta <span aria-hidden="true">→</span>
+            </button>
+            <button type="button" class="tour-secondary btn-block" onclick="closeDoorModal()">
+              👀 Seguir caminando por el pasillo
+            </button>
+          </div>
+
+        </div><!-- /panelContinue -->
+
+      </div><!-- /modal-body-panels -->
+    </div><!-- /modal-card -->
+  </section>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+<script src="../assets/js/tour.js?v=6"></script>
+</body>
+</html>

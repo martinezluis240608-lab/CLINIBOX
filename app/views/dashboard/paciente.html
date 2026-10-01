@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Mi perfil | CliniBox</title>
-  <link rel="stylesheet" href="../assets/css/app.css">
-  <link rel="stylesheet" href="../assets/css/patient-dashboard.css">
+  <title>Mi espacio | CliniBox</title>
+  <link rel="stylesheet" href="assets/css/app.css">
+  <link rel="stylesheet" href="assets/css/patient-dashboard.css">
 </head>
 <body class="patient-dashboard-page">
 
@@ -17,7 +17,7 @@
   <nav class="patient-sidebar" id="patientSidebar">
 
     <!-- Brand -->
-    <a class="patient-brand" href="../../" aria-label="Inicio CliniBox">
+    <a class="patient-brand" href="../" aria-label="Inicio CliniBox">
       <span>+</span>
       <strong>CliniBox<small>Mi espacio de salud</small></strong>
     </a>
@@ -25,11 +25,11 @@
     <!-- Patient info -->
     <div class="sidebar-patient-info">
       <div class="sp-avatar">
-        <span id="sb-initials">CM</span>
+        <span id="sb-initials">MG</span>
         <div class="sp-online-dot"></div>
       </div>
       <div>
-        <span class="sp-name" id="sb-name">Carlos Mendoza</span>
+        <span class="sp-name" id="sb-name">María García</span>
         <span class="sp-role">Paciente</span>
       </div>
     </div>
@@ -37,10 +37,10 @@
     <!-- Nav -->
     <div class="nav-section-title">Principal</div>
     <div class="nav-list">
-      <a href="#" data-section="inicio" onclick="showSection('inicio',this)">
+      <a href="#" class="active" data-section="inicio" onclick="showSection('inicio',this)">
         <span class="ni-icon">🏠</span> Inicio
       </a>
-      <a href="#" class="active" data-section="perfil" onclick="showSection('perfil',this)">
+      <a href="#" data-section="perfil" onclick="showSection('perfil',this)">
         <span class="ni-icon">👤</span> Mi perfil
       </a>
       <a href="#" data-section="citas" onclick="showSection('citas',this)">
@@ -85,7 +85,7 @@
     </div>
 
     <div class="patient-logout">
-      <form action="../../logout" method="post">
+      <form action="logout" method="post">
         <button type="submit">
           <span>🚪</span> Cerrar sesión
         </button>
@@ -103,27 +103,27 @@
       <div style="display:flex;align-items:center;gap:12px;">
         <button class="btn-sm" id="menuToggle" onclick="toggleSidebar()" aria-label="Menú"
                 style="display:none;">☰</button>
-        <span class="topbar-section-title" id="topbar-title">👤 Mi Perfil</span>
+        <span class="topbar-section-title" id="topbar-title">🏠 Inicio</span>
       </div>
       <div class="patient-top-actions">
         <button class="notification-button" aria-label="Notificaciones"
                 onclick="showSection('notificaciones',null)">
           🔔<span id="notif-count">4</span>
         </button>
-        <a class="patient-avatar" href="#" onclick="showSection('perfil',null)">CM</a>
+        <a class="patient-avatar" href="#" onclick="showSection('perfil',null)">MG</a>
       </div>
     </header>
 
     <!-- ══════════════════════════════════════════════════════════
          SECCIÓN: INICIO
     ══════════════════════════════════════════════════════════ -->
-    <section class="patient-panel-section" id="section-inicio">
+    <section class="patient-panel-section active" id="section-inicio">
 
       <!-- Welcome band -->
       <div class="patient-welcome-band" style="margin-top:20px;">
         <div>
           <p class="patient-status">Todo en orden</p>
-          <h2>Hola, <span id="welcome-name">Carlos</span> 👋</h2>
+          <h2>Hola, <span id="welcome-name">María</span> 👋</h2>
           <p>Tu salud, más cerca. Aquí encontrarás todo lo que necesitas.</p>
         </div>
         <a class="patient-primary-action" href="#" onclick="showSection('citas',null)">
@@ -257,31 +257,31 @@
     <!-- ══════════════════════════════════════════════════════════
          SECCIÓN: PERFIL
     ══════════════════════════════════════════════════════════ -->
-    <section class="patient-panel-section active" id="section-perfil">
+    <section class="patient-panel-section" id="section-perfil">
       <div class="section-topbar">
         <h2>👤 Mi Perfil</h2>
         <button class="btn-primary" onclick="alert('Modo edición próximamente')">✏️ Editar perfil</button>
       </div>
       <div class="profile-grid">
         <div class="profile-card-main">
-          <div class="pcm-avatar">CM</div>
+          <div class="pcm-avatar">MG</div>
           <div>
-            <div class="pcm-name">Carlos Mendoza</div>
+            <div class="pcm-name">María García López</div>
             <span class="pcm-role">Paciente · CliniBox</span>
             <div class="pcm-stats">
-              <div class="pcm-stat"><strong>42</strong><span>Años</span></div>
-              <div class="pcm-stat"><strong>O+</strong><span>Tipo de sangre</span></div>
+              <div class="pcm-stat"><strong>28</strong><span>Años</span></div>
+              <div class="pcm-stat"><strong>A+</strong><span>Tipo de sangre</span></div>
               <div class="pcm-stat"><strong>5</strong><span>Citas este año</span></div>
             </div>
           </div>
         </div>
         <div class="profile-details-grid">
-          <div class="pd-item"><label>📧 Correo</label><span>paciente@clinibox.test</span></div>
-          <div class="pd-item"><label>📱 Teléfono</label><span>+52 55 1111 1111</span></div>
-          <div class="pd-item"><label>📍 Dirección</label><span>Dirección pendiente de actualizar</span></div>
-          <div class="pd-item"><label>🎂 Nacimiento</label><span>12 de Marzo, 1984</span></div>
-          <div class="pd-item"><label>🩸 Tipo de sangre</label><span>O Positivo</span></div>
-          <div class="pd-item"><label>⚠️ Alergias</label><span>Sin alergias registradas</span></div>
+          <div class="pd-item"><label>📧 Correo</label><span>maria.garcia@email.com</span></div>
+          <div class="pd-item"><label>📱 Teléfono</label><span>+52 55 1234 5678</span></div>
+          <div class="pd-item"><label>📍 Dirección</label><span>Av. Reforma 123, CDMX</span></div>
+          <div class="pd-item"><label>🎂 Nacimiento</label><span>15 de Marzo, 1998</span></div>
+          <div class="pd-item"><label>🩸 Tipo de sangre</label><span>A Positivo</span></div>
+          <div class="pd-item"><label>⚠️ Alergias</label><span>Penicilina</span></div>
           <div class="pd-item"><label>💊 Medicamentos actuales</label><span>Omeprazol 20mg, Loratadina 10mg</span></div>
           <div class="pd-item"><label>🏥 Médico principal</label><span>Dr. Carlos Mendoza</span></div>
         </div>
@@ -1008,7 +1008,7 @@ checkMobile();
 
 /* ── Init ───────────────────────────────────────────────────────── */
 // Greet logged-in user (from localStorage or default)
-const patientName = sessionStorage.getItem('cb_patient_name') || 'Carlos';
+const patientName = sessionStorage.getItem('cb_patient_name') || 'María';
 const el = document.getElementById('welcome-name');
 if (el) el.textContent = patientName;
 
