@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>CliniBox | Producto</title>
+	<link rel="stylesheet" href="/CLINIBOX/CLINIBOX/public/assets/css/tienda.css?v=20260928.2">
+	<style>
+		.product-page { min-height: calc(100vh - 100px); padding: 38px 24px 70px; }
+		.product-container { width: min(1200px, 100%); margin: 0 auto; }
+		.product-detail { display: grid; grid-template-columns: minmax(280px, .9fr) minmax(0, 1.1fr); gap: 34px; padding: 30px; border: 1px solid var(--border); border-radius: var(--radius-xl); background: var(--glass); box-shadow: var(--shadow); backdrop-filter: blur(18px); }
+		.product-image { min-height: 360px; display: grid; place-items: center; overflow: hidden; border: 1px solid rgba(255,255,255,.8); border-radius: var(--radius-lg); background: linear-gradient(145deg, rgba(184,245,255,.5), rgba(255,255,255,.64)); }
+		.product-image span { font-size: 96px; filter: drop-shadow(0 12px 18px rgba(4,68,118,.15)); }
+		.product-information { min-width: 0; display: flex; flex-direction: column; align-items: flex-start; color: var(--text); }
+		.product-information small { color: var(--blue-dark); font-size: 12px; font-weight: 800; text-transform: uppercase; }
+		.product-information h1 { margin: 9px 0 0; color: var(--navy); font-size: 32px; line-height: 1.2; overflow-wrap: anywhere; }
+		.product-price { margin: 18px 0 10px; color: var(--blue-dark); font-size: 28px; font-weight: 800; }
+		.product-description { color: var(--text-soft); line-height: 1.65; }
+		.product-features { width: 100%; margin-top: 22px; }
+		.product-features h3 { margin-bottom: 4px; color: var(--navy); font-size: 16px; }
+		.product-feature { display: flex; justify-content: space-between; gap: 18px; padding: 11px 0; border-bottom: 1px solid rgba(8,43,85,.12); color: var(--text-soft); }
+		.product-feature strong { color: var(--navy); text-align: right; }
+		.product-option { width: 100%; margin-top: 20px; }
+		.product-option label { display: block; margin-bottom: 8px; color: var(--navy); font-size: 13px; font-weight: 700; }
+		.product-option input { width: 100%; min-height: 44px; padding: 10px 13px; border: 1px solid rgba(8,43,85,.16); border-radius: var(--radius-sm); background: rgba(255,255,255,.78); color: var(--text); font-size: 16px; }
+		.product-add { width: 100%; min-height: 48px; margin-top: 20px; padding: 12px 17px; border: 0; border-radius: var(--radius-sm); background: linear-gradient(135deg, var(--blue), var(--blue-light)); box-shadow: var(--shadow-soft); color: white; cursor: pointer; font-size: 14px; font-weight: 800; transition: var(--transition); }
+		.product-add:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+		.product-back { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 20px; color: var(--blue-dark); font-size: 13px; font-weight: 700; }
+		.product-back:hover { color: var(--blue); }
+		.product-back svg { width: 17px; height: 17px; }
+		.product-not-found { grid-column: 1 / -1; padding: 40px; text-align: center; color: var(--text-soft); }
+		.product-not-found h2 { margin-bottom: 16px; color: var(--navy); }
+		.product-not-found a { color: var(--blue-dark); font-weight: 700; }
+		@media (max-width: 800px) { .product-detail { grid-template-columns: 1fr; gap: 24px; padding: 20px; } .product-image { min-height: 280px; } }
+		@media (max-width: 480px) { .product-page { padding: 24px 15px 45px; } .product-detail { gap: 18px; padding: 15px; } .product-image { min-height: 220px; } .product-image span { font-size: 76px; } .product-information h1 { font-size: 25px; } .product-price { font-size: 24px; } }
+	</style>
+</head>
+<body>
+	<div class="shop-background"></div>
+	<div class="shop-background-overlay"></div>
+	<header class="shop-header">
+		<div class="shop-header-inner">
+			<a href="/CLINIBOX/CLINIBOX/public/tienda" class="shop-logo">
+				<div class="shop-logo-icon"><i data-lucide="heart-pulse"></i></div>
+				<div class="shop-logo-text"><span>Clini</span>Box</div>
+			</a>
+			<div class="shop-actions">
+				<a href="/CLINIBOX/CLINIBOX/public/favoritos" class="shop-circle-button" title="Favoritos" aria-label="Favoritos"><i data-lucide="heart"></i></a>
+				<a href="/CLINIBOX/CLINIBOX/public/carrito" class="shop-circle-button cart-button" title="Carrito" aria-label="Carrito"><i data-lucide="shopping-cart"></i><span class="cart-badge" id="cartCount">0</span></a>
+				<a href="/CLINIBOX/CLINIBOX/public/login" class="shop-circle-button" title="Mi cuenta" aria-label="Mi cuenta"><i data-lucide="user-round"></i></a>
+			</div>
+		</div>
+	</header>
+
+	<main class="product-page">
+		<div class="product-container">
+			<a href="/CLINIBOX/CLINIBOX/public/tienda" class="product-back"><i data-lucide="arrow-left"></i> Volver a la tienda</a>
+			<div id="productDetail" class="product-detail"></div>
+		</div>
+	</main>
+
+	<script src="https://unpkg.com/lucide@latest"></script>
+	<script src="/CLINIBOX/CLINIBOX/public/assets/js/carrito.js?v=20260928.2"></script>
+	<script>
+		const productos = {
+			1: { id: 1, nombre: "Paracetamol 500 mg", categoria: "Medicamentos", precio: 89, imagen: "💊", descripcion: "Analgésico de uso común para el cuidado diario.", caracteristicas: { Presentación: "Caja", Contenido: "20 tabletas", Marca: "CliniBox" } },
+			2: { id: 2, nombre: "Ibuprofeno 400 mg", categoria: "Medicamentos", precio: 99, imagen: "💊", descripcion: "Producto disponible para complementar tu botiquín.", caracteristicas: { Presentación: "Caja", Contenido: "20 tabletas", Marca: "CliniBox" } },
+			3: { id: 3, nombre: "Vitaminas diarias", categoria: "Medicamentos", precio: 189, imagen: "💊", descripcion: "Una opción práctica para acompañar tu bienestar.", caracteristicas: { Presentación: "Frasco", Contenido: "30 cápsulas", Marca: "CliniBox" } },
+			4: { id: 4, nombre: "Gel antibacterial", categoria: "Cuidado personal", precio: 59, imagen: "🧴", descripcion: "Gel antibacterial para higiene de manos.", caracteristicas: { Contenido: "250 ml", Tipo: "Higiene personal", Marca: "CliniBox" } },
+			5: { id: 5, nombre: "Shampoo dermatológico", categoria: "Cuidado personal", precio: 149, imagen: "🧴", descripcion: "Cuidado diario para cabello y cuero cabelludo.", caracteristicas: { Contenido: "400 ml", Tipo: "Cuidado personal", Marca: "CliniBox" } },
+			6: { id: 6, nombre: "Crema hidratante", categoria: "Cuidado personal", precio: 129, imagen: "🧴", descripcion: "Hidratación para el cuidado diario de la piel.", caracteristicas: { Contenido: "250 ml", Tipo: "Cuidado de la piel", Marca: "CliniBox" } },
+			7: { id: 7, nombre: "Kit de primeros auxilios", categoria: "Primeros auxilios", precio: 349, imagen: "🩹", descripcion: "Todo lo necesario para tener a la mano ante imprevistos.", caracteristicas: { Tipo: "Botiquín", Contenido: "Kit completo", Marca: "CliniBox" } },
+			8: { id: 8, nombre: "Gasas estériles", categoria: "Primeros auxilios", precio: 79, imagen: "🩹", descripcion: "Gasas para curaciones y primeros auxilios.", caracteristicas: { Presentación: "Paquete", Contenido: "10 piezas", Marca: "CliniBox" } },
+			9: { id: 9, nombre: "Monitor de salud", categoria: "Salud y bienestar", precio: 399, imagen: "❤️", descripcion: "Una herramienta para acompañar el monitoreo personal.", caracteristicas: { Tipo: "Monitor", Uso: "Hogar", Marca: "CliniBox" } },
+			10: { id: 10, nombre: "Banda inteligente de actividad", categoria: "Salud y bienestar", precio: 599, imagen: "❤️", descripcion: "Acompaña tus hábitos y actividad diaria.", caracteristicas: { Tipo: "Accesorio", Conectividad: "Bluetooth", Marca: "CliniBox" } },
+			11: { id: 11, nombre: "Protector solar FPS 50", categoria: "Dermatología", precio: 219, imagen: "☀️", descripcion: "Protección para el cuidado diario de tu piel.", caracteristicas: { Tipo: "Protector solar", Contenido: "120 ml", Marca: "CliniBox" } },
+			12: { id: 12, nombre: "Crema para piel sensible", categoria: "Dermatología", precio: 189, imagen: "🧴", descripcion: "Cuidado suave para pieles sensibles.", caracteristicas: { Tipo: "Crema", Contenido: "100 ml", Marca: "CliniBox" } },
+			13: { id: 13, nombre: "Kit de relajación", categoria: "Salud emocional", precio: 299, imagen: "🧠", descripcion: "Productos para acompañar tus momentos de descanso.", caracteristicas: { Tipo: "Bienestar", Contenido: "Kit", Marca: "CliniBox" } },
+			14: { id: 14, nombre: "Glucómetro digital", categoria: "Diabetes", precio: 449, imagen: "🩸", descripcion: "Equipo práctico para el monitoreo en casa.", caracteristicas: { Tipo: "Glucómetro", Uso: "Hogar", Marca: "CliniBox" } },
+			15: { id: 15, nombre: "Balanza nutricional", categoria: "Nutrición", precio: 299, imagen: "🍎", descripcion: "Apoya la preparación de hábitos nutricionales.", caracteristicas: { Tipo: "Balanza", Uso: "Hogar", Marca: "CliniBox" } },
+			16: { id: 16, nombre: "Termómetro digital", categoria: "Equipo médico", precio: 249, imagen: "🌡️", descripcion: "Medición práctica para el cuidado en casa.", caracteristicas: { Tipo: "Termómetro", Modelo: "Digital", Marca: "CliniBox" } },
+			17: { id: 17, nombre: "Tensiómetro digital", categoria: "Equipo médico", precio: 549, imagen: "🩺", descripcion: "Equipo para monitoreo personal de la presión.", caracteristicas: { Tipo: "Tensiómetro", Modelo: "Digital", Marca: "CliniBox" } },
+			18: { id: 18, nombre: "Oxímetro de pulso", categoria: "Equipo médico", precio: 329, imagen: "🫀", descripcion: "Dispositivo compacto para mediciones en casa.", caracteristicas: { Tipo: "Oxímetro", Uso: "Hogar", Marca: "CliniBox" } }
+		};
+
+		const params = new URLSearchParams(window.location.search);
+		const id = params.get("id");
+		const productoBase = productos[id];
+		const producto = params.has("nombre") ? {
+			id,
+			nombre: params.get("nombre") || productoBase?.nombre || "Producto",
+			categoria: params.get("categoria") || productoBase?.categoria || "",
+			precio: Number(params.get("precio") || productoBase?.precio || 0),
+			imagen: params.get("imagen") || productoBase?.imagen || "💊",
+			descripcion: params.get("descripcion") || productoBase?.descripcion || "",
+			oldPrice: Number(params.get("oldPrice") || productoBase?.precio || 0),
+			caracteristicas: productoBase?.caracteristicas || {
+				Categoría: params.get("categoria") || ""
+			}
+		} : productoBase;
+		const contenedor = document.getElementById("productDetail");
+
+		if (!producto) {
+			contenedor.innerHTML = '<div class="product-not-found"><h2>Producto no encontrado</h2><a href="/CLINIBOX/CLINIBOX/public/tienda">Volver a la tienda</a></div>';
+		} else {
+			const caracteristicas = Object.entries(producto.caracteristicas || {}).map(([nombre, valor]) => `<div class="product-feature"><span>${nombre}</span><strong>${valor}</strong></div>`).join("");
+			contenedor.innerHTML = `<div class="product-image"><span>${producto.imagen}</span></div><div class="product-information"><small>${producto.categoria}</small><h1>${producto.nombre}</h1><div class="product-price">$${producto.precio.toFixed(2)}</div><p class="product-description">${producto.descripcion}</p><div class="product-features"><h3>Características</h3>${caracteristicas}</div><div class="product-option"><label for="cantidadProducto">Cantidad</label><input id="cantidadProducto" type="number" min="1" value="1"></div><button class="product-add" id="btnAgregarProducto">AGREGAR AL CARRITO</button></div>`;
+			document.getElementById("btnAgregarProducto").addEventListener("click", () => {
+				const cantidad = Math.max(1, Number(document.getElementById("cantidadProducto").value) || 1);
+				agregarProductoAlCarrito({ ...producto, cantidad });
+				alert("Producto agregado al carrito.");
+			});
+		}
+
+		lucide.createIcons();
+	</script>
+</body>
+</html>

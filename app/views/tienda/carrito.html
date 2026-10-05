@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>CliniBox | Mi carrito</title>
+
+
+    <!-- FUENTE -->
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+
+    <!-- ICONOS -->
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+
+    <!-- CSS GENERAL -->
+
+    <link rel="stylesheet"
+          href="/CLINIBOX/CLINIBOX/public/assets/css/style.css">
+
+
+    <!-- MISMO CSS DE TIENDA -->
+
+    <link rel="stylesheet"
+            href="/CLINIBOX/CLINIBOX/public/assets/css/tienda.css?v=20260928.2">
+
+
+    <!-- CSS DEL CARRITO -->
+
+    <link rel="stylesheet"
+            href="/CLINIBOX/CLINIBOX/public/assets/css/carrito.css?v=20260928.1">
+
+</head>
+
+
+<body>
+
+
+<!-- MISMO FONDO -->
+
+<div class="shop-background"></div>
+
+<div class="shop-background-overlay"></div>
+
+
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header class="shop-header">
+
+    <div class="shop-header-inner">
+
+
+        <!-- LOGO -->
+
+        <a href="/CLINIBOX/CLINIBOX/public/tienda"
+           class="shop-logo">
+
+            <div class="shop-logo-icon">
+
+                <i data-lucide="heart-pulse"></i>
+
+            </div>
+
+            <div class="shop-logo-text">
+
+                <span>Clini</span>Box
+
+            </div>
+
+        </a>
+
+
+        <div class="shop-actions">
+
+
+            <!-- FAVORITOS -->
+
+            <button
+                class="shop-circle-button"
+                type="button"
+                title="Favoritos"
+                id="favoritesButton"
+            >
+
+                <i data-lucide="heart"></i>
+
+            </button>
+
+
+            <!-- CARRITO -->
+
+            <button
+                class="shop-circle-button cart-button"
+                type="button"
+                title="Carrito"
+                id="cartButton"
+            >
+
+                <i data-lucide="shopping-cart"></i>
+
+                <span
+                    class="cart-badge"
+                    id="cartCount"
+                >
+                    0
+                </span>
+
+            </button>
+
+
+            <!-- CUENTA -->
+
+            <button
+                class="shop-circle-button"
+                type="button"
+                title="Mi cuenta"
+            >
+
+                <i data-lucide="user-round"></i>
+
+            </button>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+
+<!-- =====================================================
+     CONTENIDO DEL CARRITO
+===================================================== -->
+
+<main class="cart-page">
+
+    <div class="cart-page-container">
+
+
+        <!-- ENCABEZADO -->
+
+        <div class="cart-page-heading">
+
+            <h1>
+
+                Mi carrito
+
+            </h1>
+
+
+            <p>
+
+                Revisa tus productos antes de continuar.
+
+            </p>
+
+        </div>
+
+
+        <!-- =================================================
+             JAVASCRIPT COLOCARÁ AQUÍ LOS PRODUCTOS
+        ================================================== -->
+
+        <div id="cartContent"></div>
+
+
+        <!-- VOLVER A TIENDA -->
+
+        <a
+            href="/CLINIBOX/CLINIBOX/public/tienda"
+            class="cart-back"
+        >
+
+            <i data-lucide="arrow-left"></i>
+
+            Seguir comprando
+
+        </a>
+
+    </div>
+
+</main>
+
+
+
+<!-- JAVASCRIPT -->
+
+<script src="/CLINIBOX/CLINIBOX/public/assets/js/carrito.js?v=20260928.1"></script>
+
+
+<script>
+
+    if (
+        typeof lucide !== "undefined" &&
+        lucide.createIcons
+    ) {
+
+        lucide.createIcons();
+
+    }
+
+</script>
+
+
+</body>
+
+</html>

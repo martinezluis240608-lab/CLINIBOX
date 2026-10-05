@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CliniBox | Centro de ayuda</title>
+    <link rel="stylesheet" href="/CLINIBOX/CLINIBOX/public/assets/css/tienda.css">
+    <style>
+        .help-page { min-height: 100vh; padding: 50px 0 90px; background: #f7f9fc; }
+        .help-container { width: min(1100px, 90%); margin: auto; }
+        .help-hero { padding: 45px 20px; border-radius: 28px; text-align: center; background: linear-gradient(135deg, #eef5ff, #f8fbff); }
+        .help-hero h1 { margin: 10px 0; font-size: 42px; }
+        .help-hero p { color: #64748b; }
+        .help-search { width: min(80%, 650px); margin-top: 25px; padding: 17px 20px; border: 1px solid #dbe4ee; border-radius: 15px; font-size: 16px; }
+        .help-categories { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 35px; }
+        .help-category { padding: 25px; border: 1px solid #e5ebf2; border-radius: 20px; background: white; transition: .25s; }
+        .help-category:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(30,50,80,.08); }
+        .help-category p { color: #718096; font-size: 14px; }
+        .faq { margin-top: 50px; }
+        .faq-item { margin-bottom: 10px; overflow: hidden; border: 1px solid #e5ebf2; border-radius: 15px; background: white; }
+        .faq-question { width: 100%; display: flex; justify-content: space-between; padding: 20px; border: 0; background: white; cursor: pointer; font-size: 16px; font-weight: 700; text-align: left; }
+        .faq-answer { display: none; padding: 0 20px 20px; color: #64748b; line-height: 1.6; }
+        .faq-item.open .faq-answer { display: block; }
+        @media (max-width: 700px) { .help-categories { grid-template-columns: 1fr; } .help-hero h1 { font-size: 32px; } }
+    </style>
+</head>
+<body>
+    <header class="store-header"><div class="store-container header-content">
+        <a href="/CLINIBOX/CLINIBOX/public/tienda" class="store-logo"><div class="store-logo-icon"><i data-lucide="heart-pulse"></i></div><div class="store-logo-text"><span>Clini</span>Box</div></a>
+        <nav class="store-navigation"><a href="/CLINIBOX/CLINIBOX/public/tienda">Tienda</a><a href="/CLINIBOX/CLINIBOX/public/favoritos">Favoritos</a><a href="/CLINIBOX/CLINIBOX/public/pedidos">Mis pedidos</a><a class="active" href="/CLINIBOX/CLINIBOX/public/ayuda">Ayuda</a></nav>
+        <div class="store-actions"><a href="/CLINIBOX/CLINIBOX/public/favoritos" class="store-icon-button"><i data-lucide="heart"></i></a><a href="/CLINIBOX/CLINIBOX/public/carrito" target="_blank" class="store-icon-button"><i data-lucide="shopping-cart"></i></a><a href="/CLINIBOX/CLINIBOX/public/login" class="store-account"><i data-lucide="user-round"></i></a></div>
+    </div></header>
+    <main class="help-page"><div class="help-container">
+        <section class="help-hero"><i data-lucide="life-buoy" style="width:55px;height:55px"></i><h1>Centro de ayuda</h1><p>Estamos aquí para ayudarte.</p><input id="helpSearch" class="help-search" type="search" placeholder="¿Qué necesitas saber?"></section>
+        <section class="help-categories"><div class="help-category"><i data-lucide="shopping-cart"></i><h3>Compras</h3><p>Aprende cómo realizar una compra.</p></div><div class="help-category"><i data-lucide="package"></i><h3>Pedidos</h3><p>Consulta y da seguimiento a tus pedidos.</p></div><div class="help-category"><i data-lucide="heart"></i><h3>Favoritos</h3><p>Guarda tus productos preferidos.</p></div><div class="help-category"><i data-lucide="user-round"></i><h3>Mi cuenta</h3><p>Información sobre tu cuenta.</p></div><div class="help-category"><i data-lucide="credit-card"></i><h3>Pagos</h3><p>Información sobre el proceso de compra.</p></div><div class="help-category"><i data-lucide="message-circle"></i><h3>Contacto</h3><p>¿Necesitas hablar con nosotros?</p></div></section>
+        <section class="faq"><h2>Preguntas frecuentes</h2><div class="faq-item"><button class="faq-question">¿Cómo agrego un producto al carrito?<i data-lucide="chevron-down"></i></button><div class="faq-answer">Selecciona el producto, configura sus características, elige la cantidad y presiona "Agregar al carrito".</div></div><div class="faq-item"><button class="faq-question">¿Cuándo necesito iniciar sesión?<i data-lucide="chevron-down"></i></button><div class="faq-answer">Puedes navegar por la tienda y agregar productos al carrito sin iniciar sesión. El inicio de sesión se solicita al continuar con la compra.</div></div><div class="faq-item"><button class="faq-question">¿Cómo guardo un producto en favoritos?<i data-lucide="chevron-down"></i></button><div class="faq-answer">Presiona el corazón que aparece en el producto. El producto aparecerá automáticamente en Mis favoritos.</div></div><div class="faq-item"><button class="faq-question">¿Dónde puedo consultar mis pedidos?<i data-lucide="chevron-down"></i></button><div class="faq-answer">En Mis pedidos podrás consultar tus compras y su estado.</div></div></section>
+    </div></main>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        document.querySelectorAll(".faq-question").forEach(button => button.addEventListener("click", () => button.parentElement.classList.toggle("open")));
+        document.getElementById("helpSearch").addEventListener("input", function () { const text = this.value.toLowerCase(); document.querySelectorAll(".faq-item").forEach(item => { item.style.display = item.textContent.toLowerCase().includes(text) ? "block" : "none"; }); });
+        lucide.createIcons();
+    </script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CliniBox | Mis pedidos</title>
+    <link rel="stylesheet" href="/CLINIBOX/CLINIBOX/public/assets/css/tienda.css">
+    <style>
+        .orders-page { min-height: 100vh; padding: 55px 0 80px; background: #f7f9fc; }
+        .orders-container { width: min(1100px, 90%); margin: auto; }
+        .orders-heading h1 { font-size: 38px; }
+        .orders-heading p { color: #718096; }
+        .order-card { margin-top: 20px; padding: 25px; border: 1px solid #e5ebf2; border-radius: 22px; background: white; }
+        .order-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 18px; border-bottom: 1px solid #edf1f5; }
+        .order-status { padding: 7px 13px; border-radius: 20px; background: #eaf7ef; color: #23844b; font-size: 13px; font-weight: 700; }
+        .order-product { display: flex; justify-content: space-between; padding: 15px 0; }
+        .order-total { text-align: right; font-size: 20px; font-weight: 800; }
+        .orders-empty { margin-top: 30px; padding: 70px 20px; text-align: center; background: white; border-radius: 22px; }
+        .orders-empty a { display: inline-block; margin-top: 20px; padding: 12px 18px; border-radius: 10px; background: #2563eb; color: white; }
+    </style>
+</head>
+<body>
+    <header class="store-header"><div class="store-container header-content">
+        <a href="/CLINIBOX/CLINIBOX/public/tienda" class="store-logo"><div class="store-logo-icon"><i data-lucide="heart-pulse"></i></div><div class="store-logo-text"><span>Clini</span>Box</div></a>
+        <nav class="store-navigation"><a href="/CLINIBOX/CLINIBOX/public/tienda">Tienda</a><a href="/CLINIBOX/CLINIBOX/public/favoritos">Favoritos</a><a class="active" href="/CLINIBOX/CLINIBOX/public/pedidos">Mis pedidos</a><a href="/CLINIBOX/CLINIBOX/public/ayuda">Ayuda</a></nav>
+        <div class="store-actions"><a href="/CLINIBOX/CLINIBOX/public/favoritos" class="store-icon-button"><i data-lucide="heart"></i></a><a href="/CLINIBOX/CLINIBOX/public/carrito" target="_blank" class="store-icon-button"><i data-lucide="shopping-cart"></i></a><a href="/CLINIBOX/CLINIBOX/public/login" class="store-account"><i data-lucide="user-round"></i></a></div>
+    </div></header>
+    <main class="orders-page"><div class="orders-container"><div class="orders-heading"><h1>Mis pedidos</h1><p>Consulta el estado y los detalles de tus compras.</p></div><div id="ordersContainer"></div></div></main>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        const pedidos = JSON.parse(localStorage.getItem("cliniboxPedidos") || "[]");
+        const contenedor = document.getElementById("ordersContainer");
+        if (!pedidos.length) {
+            contenedor.innerHTML = '<div class="orders-empty"><i data-lucide="package-open" style="width:60px;height:60px"></i><h2>Todavía no tienes pedidos</h2><p>Cuando realices una compra, aparecerá aquí.</p><a href="/CLINIBOX/CLINIBOX/public/tienda">Ir a la tienda</a></div>';
+        } else {
+            pedidos.forEach(pedido => {
+                const productos = (pedido.productos || []).map(producto => `<div class="order-product"><span>${producto.nombre} × ${producto.cantidad}</span><strong>$${(Number(producto.precio) * Number(producto.cantidad)).toFixed(2)}</strong></div>`).join("");
+                const card = document.createElement("article");
+                card.className = "order-card";
+                card.innerHTML = `<div class="order-header"><div><strong>${pedido.id || "Pedido"}</strong><br><small>${pedido.fecha || ""}</small></div><span class="order-status">${pedido.estado || "En proceso"}</span></div>${productos}<div class="order-total">Total: $${Number(pedido.total || 0).toFixed(2)}</div>`;
+                contenedor.appendChild(card);
+            });
+        }
+        lucide.createIcons();
+    </script>
+</body>
+</html>

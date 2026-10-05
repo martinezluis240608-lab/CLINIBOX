@@ -6,10 +6,21 @@ use App\Controllers\DashboardController;
 use App\Controllers\HomeController;
 use App\Controllers\MedicoController;
 use App\Controllers\PacienteController;
+use App\Controllers\TiendaController;
 use App\Core\Router;
 
 return function (Router $router): void {
     $router->get('/', [HomeController::class, 'index']);
+    $router->get('/tienda', [TiendaController::class, 'index']);
+    $router->get('/tienda/categoria', [TiendaController::class, 'categoria']);
+    $router->get('/categoria.html', [TiendaController::class, 'categoria']);
+    $router->get('/favoritos', [TiendaController::class, 'favoritos']);
+    $router->get('/favoritos.html', [TiendaController::class, 'favoritos']);
+    $router->get('/producto', [TiendaController::class, 'producto']);
+    $router->get('/producto.html', [TiendaController::class, 'producto']);
+    $router->get('/pedidos', [TiendaController::class, 'pedidos']);
+    $router->get('/ayuda', [TiendaController::class, 'ayuda']);
+    $router->get('/carrito', [TiendaController::class, 'carrito']);
 
     $router->get('/login', [AuthController::class, 'login']);
     $router->post('/login', [AuthController::class, 'attempt']);

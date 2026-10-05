@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>CliniBox | Mis favoritos</title>
+
+
+    <!-- FUENTE -->
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+
+    <!-- ICONOS -->
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+
+    <!-- CSS GENERAL -->
+
+    <link rel="stylesheet"
+          href="/CLINIBOX/CLINIBOX/public/assets/css/style.css">
+
+
+    <!-- MISMO CSS DE TIENDA -->
+
+    <link rel="stylesheet"
+          href="/CLINIBOX/CLINIBOX/public/assets/css/tienda.css?v=20260928">
+
+
+    <!-- CSS ESPECÍFICO DE FAVORITOS -->
+
+    <link rel="stylesheet"
+          href="/CLINIBOX/CLINIBOX/public/assets/css/favoritos.css?v=20260928">
+
+</head>
+
+
+<body>
+
+
+<!-- MISMO FONDO QUE LA TIENDA -->
+
+<div class="shop-background"></div>
+
+<div class="shop-background-overlay"></div>
+
+
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header class="shop-header">
+
+    <div class="shop-header-inner">
+
+
+        <!-- LOGO -->
+
+        <a href="/CLINIBOX/CLINIBOX/public/tienda"
+           class="shop-logo">
+
+            <div class="shop-logo-icon">
+
+                <i data-lucide="heart-pulse"></i>
+
+            </div>
+
+            <div class="shop-logo-text">
+
+                <span>Clini</span>Box
+
+            </div>
+
+        </a>
+
+
+        <div class="shop-actions">
+
+
+            <!-- FAVORITOS -->
+
+            <button
+                class="shop-circle-button"
+                type="button"
+                title="Favoritos"
+                id="favoritesButton"
+            >
+
+                <i data-lucide="heart"></i>
+
+            </button>
+
+
+            <!-- CARRITO -->
+
+            <button
+                class="shop-circle-button cart-button"
+                type="button"
+                title="Carrito"
+                id="cartButton"
+            >
+
+                <i data-lucide="shopping-cart"></i>
+
+                <span
+                    class="cart-badge"
+                    id="cartCount"
+                >
+                    0
+                </span>
+
+            </button>
+
+
+            <!-- CUENTA -->
+
+            <button
+                class="shop-circle-button"
+                type="button"
+                title="Mi cuenta"
+            >
+
+                <i data-lucide="user-round"></i>
+
+            </button>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+
+<!-- =====================================================
+     FAVORITOS
+===================================================== -->
+
+<main class="favorites-page">
+
+    <div class="favorites-container">
+
+
+        <div class="favorites-heading">
+
+            <span class="favorites-kicker">
+
+                <i data-lucide="heart"></i>
+
+                TU SELECCIÓN
+
+            </span>
+
+
+            <h1>
+
+                Mis favoritos
+
+            </h1>
+
+
+            <p>
+
+                Guarda aquí los productos que quieres
+                tener a la mano.
+
+            </p>
+
+        </div>
+
+
+        <!-- AQUÍ JAVASCRIPT INSERTARÁ LOS PRODUCTOS -->
+
+        <div
+            id="favoritesGrid"
+            class="favorites-grid"
+        ></div>
+
+
+        <!-- ESTADO VACÍO -->
+
+        <section
+            id="favoritesEmpty"
+            class="favorites-empty"
+        >
+
+            <div class="favorites-empty-icon">
+
+                <i data-lucide="heart-off"></i>
+
+            </div>
+
+
+            <h2>
+
+                Todavía no tienes favoritos
+
+            </h2>
+
+
+            <p>
+
+                Cuando encuentres algo que te guste,
+                presiona el corazón para guardarlo aquí.
+
+            </p>
+
+
+            <a
+                href="/CLINIBOX/CLINIBOX/public/tienda"
+                class="favorites-button"
+            >
+
+                Explorar tienda
+
+            </a>
+
+        </section>
+
+
+        <a
+            href="/CLINIBOX/CLINIBOX/public/tienda"
+            class="favorites-back"
+        >
+
+            <i data-lucide="arrow-left"></i>
+
+            Volver a la tienda
+
+        </a>
+
+    </div>
+
+</main>
+
+
+
+<!-- JAVASCRIPT -->
+
+<script src="/CLINIBOX/CLINIBOX/public/assets/js/favoritos.js?v=20260928.1"></script>
+
+
+<script>
+
+    if (
+        typeof lucide !== "undefined" &&
+        lucide.createIcons
+    ) {
+
+        lucide.createIcons();
+
+    }
+
+</script>
+
+
+</body>
+
+</html>
