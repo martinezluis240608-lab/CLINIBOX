@@ -1,208 +1,295 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CliniBox - Login Médico</title>
-
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-        }
-
-        body {
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    background-color: #eef7f7;
-    background-image:
-        linear-gradient(rgba(238, 247, 247, 0.85), rgba(238, 247, 247, 0.85)),
-        url("../assets/img/fondo-clinica.jpg");
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    background-repeat: no-repeat;
-}
-
-        .login-container {
-            width: 400px;
-            background: white;
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
-        }
-
-        .logo {
-            text-align: center;
-            font-size: 35px;
-            margin-bottom: 10px;
-        }
-
-        h1 {
-            text-align: center;
-            color: #176b87;
-            margin-bottom: 10px;
-        }
-
-        .subtitle {
-            text-align: center;
-            color: #666;
-            margin-bottom: 30px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            color: #333;
-            font-weight: bold;
-        }
-
-        input {
-            width: 100%;
-            padding: 13px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            font-size: 15px;
-        }
-
-        input:focus {
-            outline: none;
-            border-color: #176b87;
-        }
-
-        .btn-login {
-            width: 100%;
-            padding: 14px;
-            border: none;
-            border-radius: 8px;
-            background: #176b87;
-            color: white;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .btn-login:hover {
-            background: #12566d;
-        }
-
-        .mensaje {
-            text-align: center;
-            margin-top: 15px;
-            color: #c0392b;
-            font-size: 14px;
-        }
-
-        .volver {
-            display: block;
-            text-align: center;
-            margin-top: 20px;
-            color: #176b87;
-            text-decoration: none;
-        }
-
-        .volver:hover {
-            text-decoration: underline;
-        }
-    </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Iniciar Sesión | CliniBox</title>
+<link rel="stylesheet" href="/clinibox/public/assets/css/login_medico.css">
 </head>
+<body class="auth-page">
 
-<body>
+<div class="auth-shell">
 
-    <div class="login-container">
-
-        <div class="logo">🩺</div>
-
-        <h1>CliniBox</h1>
-
-        <p class="subtitle">Ingreso al consultorio médico</p>
-
-        <form id="loginMedico">
-
-            <div class="form-group">
-                <label for="usuario">Nombre del médico</label>
-
-                <input
-                    type="text"
-                    id="usuario"
-                    placeholder="Escribe tu nombre"
-                    required
-                >
+    <!-- LADO IZQUIERDO: BRANDING -->
+    <aside class="auth-brand">
+        <div class="auth-brand-content">
+            <div class="auth-logo">
+                <div class="brand-mark">C</div>
+                <div>
+                    <strong>CliniBox</strong>
+                    <small>Panel médico</small>
+                </div>
             </div>
 
-            <div class="form-group">
-                <label for="password">Cédula profesional</label>
+            <!-- 👇 NUEVO RECUADRO -->
+    <div class="brand-card">
+        <h1>Bienvenido de nuevo</h1>
+        <p>Accede a tu panel clínico y gestiona consultas, expedientes y pacientes desde un solo lugar.</p>
 
-                <input
-                    type="password"
-                    id="password"
-                    placeholder="Escribe tu cédula profesional"
-                    required
-                >
-            </div>
-
-            <button type="submit" class="btn-login">
-                Entrar al consultorio
-            </button>
-
-            <p id="mensaje" class="mensaje"></p>
-
-        </form>
-
-        <a href="../index.html" class="volver">
-            ← Regresar
-        </a>
-
+        <ul class="auth-features">
+            <li>✅ Historial clínico seguro</li>
+            <li>✅ Agenda y consultas en tiempo real</li>
+            <li>✅ Acceso para médicos y pacientes</li>
+        </ul>
     </div>
+    <!-- 👆 FIN RECUADRO -->
+</div>
+        <div class="auth-brand-footer">
+            © 2026 CliniBox · Todos los derechos reservados
+        </div>
+    </aside>
 
+    <!-- LADO DERECHO: FORMULARIO -->
+    <main class="auth-form-side">
+        <div class="auth-card">
 
-    <script>
+            <div class="auth-header">
+                <p class="eyebrow">Acceso seguro</p>
+                <h2 id="formTitle">Iniciar sesión</h2>
+                <p id="formSubtitle">Ingresa con tu correo y contraseña</p>
+            </div>
 
-        document.getElementById("loginMedico").addEventListener("submit", function(event) {
+            <!-- SELECTOR DE ROL -->
+            <div class="role-switch" role="tablist">
+                <button type="button" class="role-btn active" data-role="paciente" onclick="setRole('paciente', this)">
+                    🧑‍🦱 Paciente
+                </button>
+                <button type="button" class="role-btn" data-role="medico" onclick="setRole('medico', this)">
+                    🩺 Médico
+                </button>
+            </div>
 
-            event.preventDefault();
+            <!-- FORM LOGIN -->
+            <form id="loginForm" onsubmit="handleLogin(event)" novalidate>
 
-            const usuario = document.getElementById("usuario").value.trim();
-            const password = document.getElementById("password").value.trim();
-            const mensaje = document.getElementById("mensaje");
+                <div class="form-group">
+                    <label for="email">Correo electrónico</label>
+                    <input type="email" id="email" class="form-control" placeholder="tucorreo@clinica.com" required autocomplete="email">
+                </div>
 
-            /*
-             * DATOS DE EJEMPLO
-             * Aquí puedes cambiar el nombre y la cédula
-             * por los datos del médico.
-             */
+                <div class="form-group">
+                    <label for="password">Contraseña</label>
+                    <div class="input-password">
+                        <input type="password" id="password" class="form-control" placeholder="••••••••" required autocomplete="current-password">
+                        <button type="button" class="toggle-pass" onclick="togglePassword()" aria-label="Mostrar contraseña">
+                            👁️
+                        </button>
+                    </div>
+                </div>
 
-            const medicoUsuario = "Sofía Ramírez";
-            const medicoPassword = "12345678";
+                <div class="row-between">
+                    <label class="remember">
+                        <input type="checkbox" id="remember"> Recordarme
+                    </label>
+                    <a href="#" class="link-forgot" onclick="openForgot(event)">¿Olvidaste tu contraseña?</a>
+                </div>
 
-            if (usuario === medicoUsuario && password === medicoPassword) {
+                <button type="submit" class="btn-primary btn-block">
+                    Iniciar sesión
+                </button>
 
-                // Guardamos que el médico inició sesión
-                localStorage.setItem("medicoSesion", usuario);
+                <p class="auth-footnote">
+                    ¿No tienes cuenta? <a href="#" onclick="openRegister(event)">Regístrate aquí</a>
+                </p>
+            </form>
 
-                // Entrar al panel de pacientes
-                window.location.href =
-                    "http://localhost/clinibox/app/views/medico/pacientes.html";
+        </div>
+    </main>
 
-            } else {
+</div>
 
-                mensaje.textContent =
-                    "El nombre del médico o la cédula profesional son incorrectos.";
+<!-- ==========================================================
+     MODAL: OLVIDÉ MI CONTRASEÑA
+========================================================== -->
+<div class="modal-overlay" id="forgotModal">
+    <div class="modal-card">
+        <div class="modal-header">
+            <h3>Recuperar contraseña</h3>
+            <button class="close-btn" onclick="closeForgot()">&times;</button>
+        </div>
+        <form onsubmit="handleForgot(event)">
+            <div class="modal-body">
+                <p style="margin:0;color:var(--text-muted);font-size:.92rem;line-height:1.5;">
+                    Ingresa tu correo y te enviaremos un enlace para restablecer tu contraseña.
+                </p>
+                <div class="form-group">
+                    <label for="forgotEmail">Correo electrónico</label>
+                    <input type="email" id="forgotEmail" class="form-control" placeholder="tucorreo@clinica.com" required>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-secondary" onclick="closeForgot()">Cancelar</button>
+                <button type="submit" class="btn-primary">Enviar enlace</button>
+            </div>
+        </form>
+    </div>
+</div>
 
-            }
+<!-- ==========================================================
+     MODAL: REGISTRO
+========================================================== -->
+<div class="modal-overlay" id="registerModal">
+    <div class="modal-card">
+        <div class="modal-header">
+            <h3>Crear cuenta</h3>
+            <button class="close-btn" onclick="closeRegister()">&times;</button>
+        </div>
+        <form onsubmit="handleRegister(event)">
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="regName">Nombre completo *</label>
+                    <input type="text" id="regName" class="form-control" placeholder="Ej. Carlos Mendoza" required>
+                </div>
+                <div class="form-group">
+                    <label for="regEmail">Correo electrónico *</label>
+                    <input type="email" id="regEmail" class="form-control" placeholder="tucorreo@clinica.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="regPass">Contraseña *</label>
+                    <input type="password" id="regPass" class="form-control" placeholder="Mínimo 6 caracteres" minlength="6" required>
+                </div>
+                <div class="form-group">
+                    <label for="regRole">Tipo de cuenta</label>
+                    <select id="regRole" class="form-control">
+                        <option value="paciente">Paciente</option>
+                        <option value="medico">Médico</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-secondary" onclick="closeRegister()">Cancelar</button>
+                <button type="submit" class="btn-primary">Registrarme</button>
+            </div>
+        </form>
+    </div>
+</div>
 
-        });
+<!-- ==========================================================
+     TOAST DE MENSAJES
+========================================================== -->
+<div class="toast" id="toast"></div>
 
-    </script>
+<script>
+    let currentRole = 'paciente';
+
+    /* ==================== CAMBIO DE ROL ==================== */
+    function setRole(role, btn) {
+        currentRole = role;
+        document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const title = document.getElementById('formTitle');
+        const subtitle = document.getElementById('formSubtitle');
+        const emailInput = document.getElementById('email');
+
+        if (role === 'medico') {
+            title.textContent = 'Acceso Médico';
+            subtitle.textContent = 'Ingresa con tus credenciales clínicas';
+            emailInput.placeholder = 'dr.apellido@clinica.com';
+        } else {
+            title.textContent = 'Acceso Paciente';
+            subtitle.textContent = 'Ingresa con tu correo y contraseña';
+            emailInput.placeholder = 'tucorreo@correo.com';
+        }
+    }
+
+    /* ==================== MOSTRAR / OCULTAR CONTRASEÑA ==================== */
+    function togglePassword() {
+        const input = document.getElementById('password');
+        input.type = input.type === 'password' ? 'text' : 'password';
+    }
+
+    /* ==================== LOGIN ==================== */
+    function handleLogin(e) {
+        e.preventDefault();
+        const email = document.getElementById('email').value.trim();
+        const pass  = document.getElementById('password').value.trim();
+
+        if (!email || !pass) {
+            showToast('Completa todos los campos', 'error');
+            return;
+        }
+
+        // Usuarios demo (reemplaza con tu backend)
+        const users = {
+            'paciente@demo.com': { pass: '123456', role: 'paciente', redirect: '/clinibox/app/views/paciente/inicio.html' },
+            'medico@demo.com':   { pass: '123456', role: 'medico',   redirect: '/clinibox/app/views/medico/consultas.html' }
+        };
+
+        const user = users[email];
+
+        if (!user || user.pass !== pass) {
+            showToast('Correo o contraseña incorrectos', 'error');
+            return;
+        }
+
+        if (user.role !== currentRole) {
+            showToast(`Esta cuenta es de tipo "${user.role}". Cambia la pestaña.`, 'error');
+            return;
+        }
+
+        // Guardar sesión
+        localStorage.setItem('clinibox_session', JSON.stringify({
+            email, role: user.role, ts: Date.now()
+        }));
+
+        showToast('¡Bienvenido! Redirigiendo...', 'success');
+
+        setTimeout(() => {
+            window.location.href = user.redirect;
+        }, 900);
+    }
+
+    /* ==================== OLVIDÉ MI CONTRASEÑA ==================== */
+    function openForgot(e) {
+        e.preventDefault();
+        document.getElementById('forgotModal').classList.add('active');
+    }
+    function closeForgot() {
+        document.getElementById('forgotModal').classList.remove('active');
+    }
+    function handleForgot(e) {
+        e.preventDefault();
+        const email = document.getElementById('forgotEmail').value.trim();
+        showToast(`Enlace enviado a ${email}`, 'success');
+        closeForgot();
+        e.target.reset();
+    }
+
+    /* ==================== REGISTRO ==================== */
+    function openRegister(e) {
+        e.preventDefault();
+        document.getElementById('registerModal').classList.add('active');
+    }
+    function closeRegister() {
+        document.getElementById('registerModal').classList.remove('active');
+    }
+    function handleRegister(e) {
+        e.preventDefault();
+        const name = document.getElementById('regName').value.trim();
+        showToast(`Cuenta creada para ${name}. Ya puedes iniciar sesión.`, 'success');
+        closeRegister();
+        e.target.reset();
+    }
+
+    /* ==================== TOAST ==================== */
+    let toastTimer;
+    function showToast(msg, type = 'info') {
+        const t = document.getElementById('toast');
+        t.textContent = msg;
+        t.className = `toast show ${type}`;
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
+    }
+
+    /* ==================== CERRAR MODALES CON ESC ==================== */
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            closeForgot();
+            closeRegister();
+        }
+    });
+</script>
 
 </body>
 </html>
