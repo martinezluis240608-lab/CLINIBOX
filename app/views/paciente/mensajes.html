@@ -1,48 +1,158 @@
 <!doctype html>
 <html lang="es">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Consulta rápida | CliniBox</title>
-<link rel="stylesheet" href="../assets/css/app.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Mensajes con Médico | CliniBox Paciente</title>
+  <link rel="stylesheet" href="patient-dashboard.css">
+  <link rel="stylesheet" href="../../../public/assets/css/patient-dashboard.css">
+  <link rel="stylesheet" href="../../../assets/css/patient-dashboard.css">
+  <link rel="stylesheet" href="/CLINIBOX/public/assets/css/patient-dashboard.css">
+  <link rel="stylesheet" href="/CLINIBOX/assets/css/patient-dashboard.css">
 </head>
-<body>
-<div class="app-shell">
-    <nav class="sidebar">
-        <div class="brand">
-            <div class="brand-mark">C</div>
-            <div><strong>CliniBox</strong><small>Panel paciente</small></div>
-        </div>
-        <div class="nav-list">
-            <a href="consultas">Consultas</a>
-            <a href="medicamentos">Medicamentos</a>
-            <a href="mensajes" class="active">Mensajes</a>
-            <a href="recetas">Recetas</a>
-            <a href="perfil">Perfil</a>
-            <a href="../dashboard/">Volver al panel</a>
-        </div>
+<body class="patient-dashboard-page">
+<div class="app-shell patient-shell">
+  <aside class="patient-sidebar" id="patientSidebar">
+    <a class="patient-brand" href="../../../index.html" title="Volver al Paseo Virtual 360°">
+      <span class="patient-brand-mark">+</span>
+      <div class="patient-brand-text">
+        <strong>CliniBox</strong>
+        <small>Portal del Paciente</small>
+      </div>
+    </a>
+
+    <div class="sidebar-patient-info">
+      <div class="sp-avatar">
+        <span>CM</span>
+        <span class="sp-online-dot"></span>
+      </div>
+      <div class="sp-details">
+        <span class="sp-name">Carlos Mendoza</span>
+        <span class="sp-role">ID: CLB-8834 • Activo</span>
+      </div>
+    </div>
+
+    <div class="nav-section-title">Menú del Paciente</div>
+    <nav class="nav-list" aria-label="Navegación principal">
+      <a href="perfil.html#inicio">
+        <span class="ni-icon">🏠</span>
+        <span>Inicio</span>
+      </a>
+      <a href="agendarCita.html">
+        <span class="ni-icon">📅</span>
+        <span>Citas Médicas</span>
+        <span class="nav-badge">1</span>
+      </a>
+      <a href="perfil.html#recetas">
+        <span class="ni-icon">💊</span>
+        <span>Farmacia y Recetas</span>
+        <span class="nav-badge">2</span>
+      </a>
+      <a href="mensajes.html" class="active">
+        <span class="ni-icon">💬</span>
+        <span>Mensajes</span>
+      </a>
+      <a href="perfil.html">
+        <span class="ni-icon">👤</span>
+        <span>Mi Perfil</span>
+      </a>
     </nav>
-    <main class="main-content">
-        <section class="section-header">
-            <p class="eyebrow">Módulo paciente</p>
-            <h2>Consulta rápida</h2>
-            <p>Conversación de ejemplo con el médico asignado.</p>
-        </section>
-        <div class="chat-window">
-            <article class="chat-bubble">
-                <span>Dra. Sofía Ramírez - 09:12 AM</span>
-                <p>Buenos días Carlos, ¿cómo te has sentido con el nuevo tratamiento?</p>
-            </article>
-            <article class="chat-bubble mine">
-                <span>Paciente - 09:15 AM</span>
-                <p>Buenos días doctora, mejor, ya casi no tengo molestias.</p>
-            </article>
-            <form class="chat-form">
-                <input type="text" placeholder="Escribe un mensaje" aria-label="Mensaje">
-                <button class="button" type="button">Enviar</button>
-            </form>
+
+    <div class="patient-sidebar-footer">
+      <a class="btn-sidebar-link" href="../../../index.html">
+        <span>🏥</span>
+        <span>Regresar al Paseo Virtual</span>
+      </a>
+      <a class="btn-sidebar-link logout" href="../auth/login.html" onclick="handlePatientLogout(event)">
+        <span>🚪</span>
+        <span>Cerrar sesión</span>
+      </a>
+    </div>
+  </aside>
+
+  <main class="patient-main">
+    <header class="patient-topbar">
+      <div class="topbar-left">
+        <h1 class="topbar-section-title">💬 Consulta Rápida con Médico</h1>
+      </div>
+      <div class="patient-top-actions">
+        <a class="btn btn-outline btn-sm" href="perfil.html">
+          <span>Ver Mi Portal Completo</span>
+        </a>
+      </div>
+    </header>
+
+    <div class="glass-panel chat-unified-container">
+      <div class="chat-doctor-header">
+        <div class="doctor-chat-avatar">👩‍⚕️</div>
+        <div>
+          <h3 style="font-size: 1.05rem; font-weight:800; color:var(--text-main);">Dra. Sofía Ramírez</h3>
+          <p style="font-size: 0.8rem; color: var(--accent); font-weight:700;">🟢 En línea • Medicina Preventiva CliniBox</p>
         </div>
-    </main>
+      </div>
+
+      <div class="chat-conversation-area" id="chatArea">
+        <div class="chat-bubble doctor">
+          <p>Hola Carlos, ¿cómo has respondido al tratamiento con amoxicilina que iniciaste?</p>
+          <span class="chat-time">09:12 AM • Dra. Sofía</span>
+        </div>
+
+        <div class="chat-bubble patient">
+          <p>Buenos días doctora, mucho mejor. La fiebre ya bajó por completo y el dolor de garganta es casi nulo.</p>
+          <span class="chat-time">09:15 AM • Tú</span>
+        </div>
+
+        <div class="chat-bubble doctor">
+          <p>Excelente noticia Carlos. Recuerda completar rigurosamente los 7 días de amoxicilina aunque ya te sientas al 100%.</p>
+          <span class="chat-time">09:18 AM • Dra. Sofía</span>
+        </div>
+      </div>
+
+      <form class="chat-input-bar" onsubmit="enviarMensaje(event)">
+        <input type="text" id="inputChat" placeholder="Escribe tu consulta médica..." required autocomplete="off">
+        <button type="submit" class="btn btn-primary">
+          <span>Enviar</span>
+        </button>
+      </form>
+    </div>
+  </main>
 </div>
+<script>
+  function enviarMensaje(e) {
+    e.preventDefault();
+    const input = document.getElementById('inputChat');
+    const txt = input.value.trim();
+    if (!txt) return;
+
+    const area = document.getElementById('chatArea');
+    const msg = document.createElement('div');
+    msg.className = 'chat-bubble patient';
+    msg.innerHTML = `<p>${txt}</p><span class="chat-time">Ahora • Tú</span>`;
+    area.appendChild(msg);
+    input.value = '';
+    area.scrollTop = area.scrollHeight;
+
+    setTimeout(() => {
+      const resp = document.createElement('div');
+      resp.className = 'chat-bubble doctor';
+      resp.innerHTML = `<p>Recibido Carlos: "${txt}". Cualquier síntoma adicional me indicas.</p><span class="chat-time">Ahora • Dra. Sofía</span>`;
+      area.appendChild(resp);
+      area.scrollTop = area.scrollHeight;
+    }, 1000);
+  }
+
+  function handlePatientLogout(e) {
+    if (e) e.preventDefault();
+    if (confirm('¿Deseas cerrar tu sesión del portal de paciente?')) {
+      try {
+        sessionStorage.clear();
+        localStorage.removeItem('clinibox_user');
+        localStorage.removeItem('patient_session');
+      } catch (err) {}
+      window.location.href = '../auth/login.html';
+    }
+  }
+</script>
 </body>
 </html>
+

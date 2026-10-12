@@ -341,7 +341,7 @@
         <p>Ingresa tus credenciales para acceder a tus servicios de salud</p>
       </header>
 
-      <form class="login-form" action="login" method="post">
+      <form class="login-form" action="../paciente/perfil.html" method="get">
         <input type="hidden" name="role" value="paciente">
         <div class="form-group">
           <label for="loginEmail">Correo Electrónico</label>
@@ -382,6 +382,14 @@
       input.type = visible ? 'password' : 'text';
       this.textContent = visible ? '👁️' : '🙈';
     });
+
+    const loginForm = document.querySelector('.login-form');
+    if (loginForm) {
+      loginForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        window.location.href = '../paciente/perfil.html#inicio';
+      });
+    }
   </script>
 </body>
 </html>

@@ -1,69 +1,230 @@
 <!doctype html>
 <html lang="es">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width,initial-scale=1">
-        <title>Agendar cita | CliniBox</title>
-        <link rel="stylesheet" href="/public/assets/css/app.css"></head>
-<body>
-    <div class="app-shell">
-        <nav class="sidebar">
-            <div class="brand">
-                <div class="brand-mark">C</div>
-                <div>
-                    <strong>CliniBox</strong>
-                    <small>Panel paciente</small>
-                </div>
-            </div>
-            <div class="nav-list">
-                <a href="inicio.html">Inicio</a>
-                <a href="consultas.html">Consultas</a>
-                <a href="medicamentos.html">Medicamentos</a>
-                <a href="mensajes.html">Mensajes</a>
-                <a href="recetas.html">Recetas</a>
-                <a href="agendarCita.html" class="active">Agendar cita</a>
-                <a href="perfil.html">Perfil</a>
-                <a href="../dashboard/">Volver al panel</a>
-            </div>
-        </nav>
-        <main class="main-content">
-            <section class="section-header">
-                <p class="eyebrow">Módulo paciente</p>
-                <h2>Agendar una cita</h2>
-                <p>Selecciona un día y un horario disponible para tu consulta.</p>
-            </section>
-            <section class="appointment-layout" aria-label="Selector de cita">
-                <div class="calendar-card">
-                    <div class="calendar-head">
-                        <button class="month-button" id="previousMonth" aria-label="Mes anterior">‹</button>
-                        <h3 id="monthLabel"></h3>
-                        <button class="month-button" id="nextMonth" aria-label="Mes siguiente">›</button>
-                    </div>
-                    <div class="calendar-weekdays">
-                        <span>lu</span>
-                        <span>ma</span>
-                        <span>mi</span>
-                        <span>ju</span>
-                        <span>vi</span>
-                        <span>sá</span>
-                        <span>do</span>
-                    </div>
-                    <div class="calendar-days" id="calendarDays"></div>
-                </div>
-                <div class="time-card">
-                    <h3>Horarios disponibles</h3>
-                    <p id="selectedDayText">Elige una fecha para ver los horarios.</p>
-                    <div class="time-list" id="timeList"></div>
-                </div>
-            </section>
-            <div class="reservation-bar">
-                <p id="reservationText">Selecciona una fecha y una hora para reservar.</p>
-                <button class="button" id="continueButton" type="button" disabled>Continuar</button>
-            </div>
-        </main>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Agendar Cita | CliniBox</title>
+  <link rel="stylesheet" href="patient-dashboard.css">
+  <link rel="stylesheet" href="../../../public/assets/css/patient-dashboard.css">
+  <link rel="stylesheet" href="../../../assets/css/patient-dashboard.css">
+  <link rel="stylesheet" href="/CLINIBOX/public/assets/css/patient-dashboard.css">
+  <link rel="stylesheet" href="/CLINIBOX/assets/css/patient-dashboard.css">
+</head>
+<body class="patient-dashboard-page">
+
+<div class="app-shell patient-shell">
+  <!-- Barra lateral simplificada (5 opciones) -->
+  <aside class="patient-sidebar" id="patientSidebar">
+    <a class="patient-brand" href="../../../index.html" title="Volver al Paseo Virtual 360°">
+      <span class="patient-brand-mark">+</span>
+      <div class="patient-brand-text">
+        <strong>CliniBox</strong>
+        <small>Portal del Paciente</small>
+      </div>
+    </a>
+
+    <div class="sidebar-patient-info">
+      <div class="sp-avatar">
+        <span>CM</span>
+        <span class="sp-online-dot"></span>
+      </div>
+      <div class="sp-details">
+        <span class="sp-name">Carlos Mendoza</span>
+        <span class="sp-role">ID: CLB-8834 • Activo</span>
+      </div>
     </div>
-    function renderCalendar(){label.textContent=`${monthNames[displayed.getMonth()]} ${displayed.getFullYear()}`;days.innerHTML='';const firstWeekday=(displayed.getDay()+6)%7,lastDay=new Date(displayed.getFullYear(),displayed.getMonth()+1,0).getDate();for(let i=0;i<firstWeekday;i++)days.appendChild(document.createElement('span'));for(let d=1;d<=lastDay;d++){const date=new Date(displayed.getFullYear(),displayed.getMonth(),d),button=document.createElement('button');button.textContent=d;button.type='button';if(date<today||date.getDay()===0)button.disabled=true;if(date.getTime()===today.getTime())button.classList.add('today');if(selectedDate&&date.getTime()===selectedDate.getTime())button.classList.add('selected');button.addEventListener('click',()=>{selectedDate=date;selectedTime=null;renderCalendar();renderTimes();});days.appendChild(button);}}
-function renderTimes(){timeList.innerHTML='';if(!selectedDate)return;dayText.textContent=`Disponibilidad para el ${formatter.format(selectedDate)}.`;const times=timesByDay[selectedDate.getDay()]||[];if(!times.length){timeList.textContent='No hay horarios disponibles para esta fecha.';return;}times.forEach(time=>{const button=document.createElement('button');button.className='time-slot'+(selectedTime===time?' selected':'');button.textContent=time;button.type='button';button.addEventListener('click',()=>{selectedTime=time;renderTimes();updateReservation();});timeList.appendChild(button);});updateReservation();}
-function updateReservation(){if(selectedDate&&selectedTime){reservation.innerHTML=`Reservar el <strong>${formatter.format(selectedDate)}</strong> a las <strong>${selectedTime}</strong> horas`;continueButton.disabled=false;}else{reservation.textContent='Selecciona una fecha y una hora para reservar.';continueButton.disabled=true;}}
-document.querySelector('#previousMonth').addEventListener('click',()=>{displayed.setMonth(displayed.getMonth()-1);renderCalendar();});document.querySelector('#nextMonth').addEventListener('click',()=>{displayed.setMonth(displayed.getMonth()+1);renderCalendar();});continueButton.addEventListener('click',()=>alert(`Cita seleccionada: ${formatter.format(selectedDate)} a las ${selectedTime} horas.`));renderCalendar();updateReservation();})();
-</script></body></html>
+
+    <div class="nav-section-title">Menú del Paciente</div>
+    <nav class="nav-list" aria-label="Navegación principal">
+      <a href="perfil.html#inicio">
+        <span class="ni-icon">🏠</span>
+        <span>Inicio</span>
+      </a>
+      <a href="agendarCita.html" class="active">
+        <span class="ni-icon">📅</span>
+        <span>Citas Médicas</span>
+        <span class="nav-badge">1</span>
+      </a>
+      <a href="perfil.html#recetas">
+        <span class="ni-icon">💊</span>
+        <span>Farmacia y Recetas</span>
+        <span class="nav-badge">2</span>
+      </a>
+      <a href="perfil.html#mensajes">
+        <span class="ni-icon">💬</span>
+        <span>Mensajes</span>
+      </a>
+      <a href="perfil.html#perfil">
+        <span class="ni-icon">👤</span>
+        <span>Mi Perfil</span>
+      </a>
+    </nav>
+
+    <div class="patient-sidebar-footer">
+      <a class="btn-sidebar-link" href="../../../index.html">
+        <span>🏥</span>
+        <span>Regresar al Paseo Virtual</span>
+      </a>
+      <a class="btn-sidebar-link logout" href="../auth/login.html" onclick="handlePatientLogout(event)">
+        <span>🚪</span>
+        <span>Cerrar sesión</span>
+      </a>
+    </div>
+  </aside>
+
+  <!-- Contenido principal -->
+  <main class="patient-main">
+    <header class="patient-topbar">
+      <div class="topbar-left">
+        <h1 class="topbar-section-title">📅 Agendar Cita Médica</h1>
+      </div>
+      <div class="patient-top-actions">
+        <span class="topbar-badge-tour">🏥 Consultorios Disponibles</span>
+        <a class="btn btn-outline btn-sm" href="perfil.html">
+          <span>Ver Mi Portal Completo</span>
+        </a>
+      </div>
+    </header>
+
+    <div class="appointments-grid-layout">
+      <!-- Selector de Cita -->
+      <article class="glass-panel appointment-book-card">
+        <div class="card-title-bar">
+          <h3><span>📅</span> Selección de Consulta</h3>
+          <span class="status-tag confirmed">Disponibilidad en Tiempo Real</span>
+        </div>
+
+        <form id="formCitaDirecta" onsubmit="confirmarReserva(event)">
+          <div class="form-group-clean">
+            <label for="selEspecialidad">Especialidad médica</label>
+            <select id="selEspecialidad" required>
+              <option value="Medicina General">Medicina General - Dr. Carlos Mendoza</option>
+              <option value="Cardiología">Cardiología - Dra. Sofía Ramírez</option>
+              <option value="Pediatría">Pediatría - Dr. Daniel Torres</option>
+              <option value="Dermatología">Dermatología - Dra. Elena Ortiz</option>
+            </select>
+          </div>
+
+          <div class="form-group-clean">
+            <label for="selModalidad">Modalidad</label>
+            <select id="selModalidad" required>
+              <option value="Presencial (Consultorio 03)">Presencial en Clínica CliniBox</option>
+              <option value="Virtual 3D">Telemedicina en línea</option>
+            </select>
+          </div>
+
+          <div class="form-group-clean">
+            <label for="selFecha">Fecha de consulta</label>
+            <input type="date" id="selFecha" required value="2026-09-25">
+          </div>
+
+          <div class="form-group-clean">
+            <label>Horarios disponibles</label>
+            <div class="slot-chips-wrap">
+              <button type="button" class="slot-chip selected" onclick="marcarHorario(this, '09:00 AM')">09:00 AM</button>
+              <button type="button" class="slot-chip" onclick="marcarHorario(this, '10:30 AM')">10:30 AM</button>
+              <button type="button" class="slot-chip" onclick="marcarHorario(this, '01:00 PM')">01:00 PM</button>
+              <button type="button" class="slot-chip" onclick="marcarHorario(this, '03:30 PM')">03:30 PM</button>
+              <button type="button" class="slot-chip" onclick="marcarHorario(this, '05:00 PM')">05:00 PM</button>
+            </div>
+            <input type="hidden" id="valHorario" value="09:00 AM">
+          </div>
+
+          <div id="reservaFeedback" style="display:none; padding:12px; border-radius:8px; margin-bottom:14px; font-weight:700; font-size:0.88rem;"></div>
+
+          <button type="submit" class="btn btn-primary" style="width:100%;">
+            <span>Confirmar Cita</span>
+          </button>
+        </form>
+      </article>
+
+      <!-- Lista de Citas Programadas -->
+      <article class="glass-panel appointment-list-card">
+        <div class="card-title-bar">
+          <h3><span>📑</span> Citas Programadas</h3>
+        </div>
+        <div class="appointment-items-list" id="contenedorCitas">
+          <div class="appointment-entry">
+            <div class="ae-date-col">
+              <small>Mañana</small>
+              <strong>10:30</strong>
+            </div>
+            <div class="ae-info-col">
+              <strong>Dr. Carlos Mendoza</strong>
+              <p>Medicina General • Consultorio 03</p>
+            </div>
+            <span class="status-tag confirmed">Confirmada</span>
+          </div>
+
+          <div class="appointment-entry">
+            <div class="ae-date-col" style="background:#f1f5f9; color:#475569;">
+              <small>12 Ago</small>
+              <strong>10:00</strong>
+            </div>
+            <div class="ae-info-col">
+              <strong>Dra. Sofía Ramírez</strong>
+              <p>Revisión Preventiva General</p>
+            </div>
+            <span class="status-tag" style="background:#f1f5f9; color:#64748b;">Completada</span>
+          </div>
+        </div>
+      </article>
+    </div>
+  </main>
+</div>
+
+<script>
+  function marcarHorario(btn, hora) {
+    document.querySelectorAll('.slot-chip').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    document.getElementById('valHorario').value = hora;
+  }
+
+  function confirmarReserva(e) {
+    e.preventDefault();
+    const esp = document.getElementById('selEspecialidad').value;
+    const mod = document.getElementById('selModalidad').value;
+    const fec = document.getElementById('selFecha').value;
+    const hor = document.getElementById('valHorario').value;
+    const fb = document.getElementById('reservaFeedback');
+
+    fb.style.display = 'block';
+    fb.style.background = '#d1fae5';
+    fb.style.color = '#065f46';
+    fb.style.border = '1px solid #10b981';
+    fb.textContent = `¡Cita agendada con éxito para el ${fec} a las ${hor} (${esp})!`;
+
+    const contenedor = document.getElementById('contenedorCitas');
+    const nuevoItem = document.createElement('div');
+    nuevoItem.className = 'appointment-entry';
+    nuevoItem.innerHTML = `
+      <div class="ae-date-col">
+        <small>${fec.slice(5)}</small>
+        <strong>${hor}</strong>
+      </div>
+      <div class="ae-info-col">
+        <strong>${esp}</strong>
+        <p>${mod}</p>
+      </div>
+      <span class="status-tag confirmed">Nueva</span>
+    `;
+    contenedor.prepend(nuevoItem);
+
+    setTimeout(() => { fb.style.display = 'none'; }, 4500);
+  }
+
+  function handlePatientLogout(e) {
+    if (e) e.preventDefault();
+    if (confirm('¿Deseas cerrar tu sesión del portal de paciente?')) {
+      try {
+        sessionStorage.clear();
+        localStorage.removeItem('clinibox_user');
+        localStorage.removeItem('patient_session');
+      } catch (err) {}
+      window.location.href = '../auth/login.html';
+    }
+  }
+</script>
+</body>
+</html>
+

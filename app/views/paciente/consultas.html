@@ -1,42 +1,146 @@
 <!doctype html>
 <html lang="es">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Mis consultas | CliniBox</title>
-<link rel="stylesheet" href="../assets/css/app.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Mis Consultas | CliniBox Paciente</title>
+  <link rel="stylesheet" href="patient-dashboard.css">
+  <link rel="stylesheet" href="../../../public/assets/css/patient-dashboard.css">
+  <link rel="stylesheet" href="../../../assets/css/patient-dashboard.css">
+  <link rel="stylesheet" href="/CLINIBOX/public/assets/css/patient-dashboard.css">
+  <link rel="stylesheet" href="/CLINIBOX/assets/css/patient-dashboard.css">
 </head>
-<body>
-<div class="app-shell">
-    <nav class="sidebar">
-        <div class="brand">
-            <div class="brand-mark">C</div>
-            <div><strong>CliniBox</strong><small>Panel paciente</small></div>
-        </div>
-        <div class="nav-list">
-            <a href="consultas" class="active">Consultas</a>
-            <a href="medicamentos">Medicamentos</a>
-            <a href="mensajes">Mensajes</a>
-            <a href="recetas">Recetas</a>
-            <a href="perfil">Perfil</a>
-            <a href="../dashboard/">Volver al panel</a>
-        </div>
+<body class="patient-dashboard-page">
+<div class="app-shell patient-shell">
+  <aside class="patient-sidebar" id="patientSidebar">
+    <a class="patient-brand" href="../../../index.html" title="Volver al Paseo Virtual 360°">
+      <span class="patient-brand-mark">+</span>
+      <div class="patient-brand-text">
+        <strong>CliniBox</strong>
+        <small>Portal del Paciente</small>
+      </div>
+    </a>
+
+    <div class="sidebar-patient-info">
+      <div class="sp-avatar">
+        <span>CM</span>
+        <span class="sp-online-dot"></span>
+      </div>
+      <div class="sp-details">
+        <span class="sp-name">Carlos Mendoza</span>
+        <span class="sp-role">ID: CLB-8834 • Activo</span>
+      </div>
+    </div>
+
+    <div class="nav-section-title">Menú del Paciente</div>
+    <nav class="nav-list" aria-label="Navegación principal">
+      <a href="perfil.html#inicio">
+        <span class="ni-icon">🏠</span>
+        <span>Inicio</span>
+      </a>
+      <a href="consultas.html" class="active">
+        <span class="ni-icon">📅</span>
+        <span>Citas Médicas</span>
+        <span class="nav-badge">1</span>
+      </a>
+      <a href="perfil.html#recetas">
+        <span class="ni-icon">💊</span>
+        <span>Farmacia y Recetas</span>
+        <span class="nav-badge">2</span>
+      </a>
+      <a href="mensajes.html">
+        <span class="ni-icon">💬</span>
+        <span>Mensajes</span>
+      </a>
+      <a href="perfil.html">
+        <span class="ni-icon">👤</span>
+        <span>Mi Perfil</span>
+      </a>
     </nav>
-    <main class="main-content">
-        <section class="section-header">
-            <p class="eyebrow">Módulo paciente</p>
-            <h2>Mis consultas</h2>
-            <p>Citas próximas e historial de atención médica.</p>
-        </section>
-        <div class="table-wrapper">
-            <table>
-                <thead><tr><th>Fecha</th><th>Hora</th><th>Médico</th><th>Motivo</th><th>Estado</th></tr></thead>
-                <tbody>
-                    <tr><td>12/09/2026</td><td>10:00</td><td>Dra. Sofía Ramírez</td><td>Consulta general</td><td><span class="pill">Confirmada</span></td></tr>
-                </tbody>
-            </table>
+
+    <div class="patient-sidebar-footer">
+      <a class="btn-sidebar-link" href="../../../index.html">
+        <span>🏥</span>
+        <span>Regresar al Paseo Virtual</span>
+      </a>
+      <a class="btn-sidebar-link logout" href="../auth/login.html" onclick="handlePatientLogout(event)">
+        <span>🚪</span>
+        <span>Cerrar sesión</span>
+      </a>
+    </div>
+  </aside>
+
+  <main class="patient-main">
+    <header class="patient-topbar">
+      <div class="topbar-left">
+        <h1 class="topbar-section-title">📅 Mis Consultas y Citas Médicas</h1>
+      </div>
+      <div class="patient-top-actions">
+        <a class="btn btn-primary btn-sm" href="agendarCita.html">
+          <span>+ Agendar Nueva Cita</span>
+        </a>
+      </div>
+    </header>
+
+    <div class="glass-panel" style="padding: 24px;">
+      <div class="card-title-bar">
+        <h3><span>📑</span> Historial y Citas Activas</h3>
+        <span class="status-tag confirmed">Sincronizado con Expediente</span>
+      </div>
+
+      <div class="appointment-items-list" style="margin-top: 16px;">
+        <div class="appointment-entry">
+          <div class="ae-date-col">
+            <small>Mañana</small>
+            <strong>10:30</strong>
+          </div>
+          <div class="ae-info-col">
+            <strong>Dr. Carlos Mendoza</strong>
+            <p>Medicina General • Consultorio 03 CliniBox</p>
+          </div>
+          <span class="status-tag confirmed">Confirmada</span>
         </div>
-    </main>
+
+        <div class="appointment-entry">
+          <div class="ae-date-col completed">
+            <small>12 Ago</small>
+            <strong>10:00</strong>
+          </div>
+          <div class="ae-info-col">
+            <strong>Dra. Sofía Ramírez</strong>
+            <p>Revisión Preventiva General</p>
+          </div>
+          <span class="status-tag completed">Completada</span>
+        </div>
+
+        <div class="appointment-entry">
+          <div class="ae-date-col completed">
+            <small>05 Jul</small>
+            <strong>11:30</strong>
+          </div>
+          <div class="ae-info-col">
+            <strong>Laboratorio Central CliniBox</strong>
+            <p>Perfil Bioquímico y Hemograma</p>
+          </div>
+          <span class="status-tag completed">Completada</span>
+        </div>
+      </div>
+    </div>
+  </main>
 </div>
+<script>
+  function handlePatientLogout(e) {
+    if (e) e.preventDefault();
+    if (confirm('¿Deseas cerrar tu sesión del portal de paciente?')) {
+      try {
+        sessionStorage.clear();
+        localStorage.removeItem('clinibox_user');
+        localStorage.removeItem('patient_session');
+      } catch (err) {}
+      window.location.href = '../auth/login.html';
+    }
+  }
+</script>
 </body>
 </html>
+

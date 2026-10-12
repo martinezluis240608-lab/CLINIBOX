@@ -1,0 +1,1229 @@
+/* ========================================
+   RESET
+======================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+}
+
+
+body {
+    font-family:
+        "Segoe UI",
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    background: #f2f7f8;
+
+    color: #132447;
+
+    overflow-x: hidden;
+}
+
+
+/* ========================================
+   CONTENEDOR PRINCIPAL
+======================================== */
+
+.login-page {
+
+    width: 100%;
+
+    min-height: 100vh;
+
+    display: flex;
+
+}
+
+
+/* ========================================
+   PANEL IZQUIERDO
+======================================== */
+
+.login-cover {
+
+    position: relative;
+
+    width: 55%;
+
+    min-height: 100vh;
+
+    overflow: hidden;
+
+    background: #dff4f4;
+
+}
+
+
+.cover-image {
+
+    position: absolute;
+
+    inset: 0;
+
+    background-image:
+        url("../img/login-clinic.jpg");
+
+    background-size: cover;
+
+    background-position: center;
+
+    transform: scale(1.02);
+
+}
+
+
+.cover-overlay {
+
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(232, 247, 249, .94) 0%,
+            rgba(232, 247, 249, .70) 45%,
+            rgba(232, 247, 249, .20) 100%
+        );
+
+}
+
+
+.cover-content {
+
+    position: relative;
+
+    z-index: 2;
+
+    min-height: 100vh;
+
+    padding:
+        58px
+        72px
+        48px;
+
+    display: flex;
+
+    flex-direction: column;
+
+}
+
+
+/* ========================================
+   LOGO
+======================================== */
+
+.brand {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+
+}
+
+
+.brand-icon {
+
+    position: relative;
+
+    width: 50px;
+    height: 50px;
+
+    border-radius: 50%;
+
+    background:
+        linear-gradient(
+            135deg,
+            #63d9d4,
+            #0caaa7
+        );
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    color: white;
+
+    overflow: hidden;
+
+}
+
+
+.heart-left {
+
+    position: absolute;
+
+    left: 11px;
+
+    top: 11px;
+
+    font-size: 21px;
+
+    transform: rotate(-25deg);
+
+}
+
+
+.heart-right {
+
+    position: absolute;
+
+    right: 10px;
+
+    top: 13px;
+
+    font-size: 20px;
+
+    transform: rotate(25deg);
+
+}
+
+
+.brand-name {
+
+    font-size: 31px;
+
+    font-weight: 700;
+
+    letter-spacing: -1px;
+
+    color: #10233e;
+
+}
+
+
+.brand-name span {
+
+    color: #0da9a6;
+
+}
+
+
+/* ========================================
+   TEXTO
+======================================== */
+
+.cover-text {
+
+    margin-top: 104px;
+
+    max-width: 520px;
+
+}
+
+
+.cover-text h1 {
+
+    font-size: clamp(39px, 4vw, 58px);
+
+    line-height: 1.08;
+
+    letter-spacing: -2px;
+
+    font-weight: 700;
+
+    color: #10234b;
+
+}
+
+
+.cover-text h1 span {
+
+    color: #079d9a;
+
+}
+
+
+.cover-text p {
+
+    margin-top: 28px;
+
+    max-width: 350px;
+
+    font-size: 18px;
+
+    line-height: 1.55;
+
+    color: #4f6078;
+
+}
+
+
+/* ========================================
+   BENEFICIOS
+======================================== */
+
+.benefits {
+
+    display: flex;
+
+    gap: 32px;
+
+    margin-top: auto;
+
+    padding-top: 65px;
+
+}
+
+
+.benefit {
+
+    width: 145px;
+
+    text-align: center;
+
+}
+
+
+.benefit-icon {
+
+    width: 61px;
+    height: 61px;
+
+    margin: 0 auto 14px;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: rgba(227, 250, 249, .95);
+
+    color: #079d9a;
+
+    border: 1px solid rgba(12, 169, 165, .10);
+
+    font-size: 26px;
+
+}
+
+
+.benefit h3 {
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+    color: #152547;
+
+}
+
+
+.benefit p {
+
+    margin-top: 7px;
+
+    font-size: 12px;
+
+    line-height: 1.45;
+
+    color: #53637a;
+
+}
+
+
+/* ========================================
+   FRASE
+======================================== */
+
+.quote {
+
+    margin-top: 55px;
+
+    max-width: 270px;
+
+}
+
+
+.quote-mark {
+
+    display: block;
+
+    font-size: 48px;
+
+    font-weight: 700;
+
+    line-height: .6;
+
+    color: #08a7a3;
+
+}
+
+
+.quote p {
+
+    padding-left: 14px;
+
+    font-size: 15px;
+
+    line-height: 1.55;
+
+    color: #334862;
+
+}
+
+
+/* ========================================
+   PANEL DERECHO
+======================================== */
+
+.login-panel {
+
+    width: 45%;
+
+    min-height: 100vh;
+
+    background: #ffffff;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+}
+
+
+.login-box {
+
+    width: min(84%, 545px);
+
+    padding: 38px 0 25px;
+
+}
+
+
+/* ========================================
+   OPCIONES
+======================================== */
+
+.top-actions {
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 14px;
+
+    margin-bottom: 68px;
+
+}
+
+
+.icon-button,
+.language-button {
+
+    height: 49px;
+
+    border: 1px solid #e4e8ed;
+
+    border-radius: 12px;
+
+    background: #ffffff;
+
+    color: #263550;
+
+    cursor: pointer;
+
+    font-family: inherit;
+
+}
+
+
+.icon-button {
+
+    width: 49px;
+
+    font-size: 20px;
+
+}
+
+
+.language-button {
+
+    padding: 0 18px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    font-size: 14px;
+
+}
+
+
+/* ========================================
+   ENCABEZADO
+======================================== */
+
+.login-header {
+
+    text-align: center;
+
+    margin-bottom: 38px;
+
+}
+
+
+.login-header h2 {
+
+    color: #122347;
+
+    font-size: 39px;
+
+    line-height: 1.1;
+
+    letter-spacing: -1px;
+
+}
+
+
+.login-header p {
+
+    margin-top: 10px;
+
+    color: #647186;
+
+    font-size: 17px;
+
+}
+
+
+.login-header strong {
+
+    color: #0b9e9b;
+
+}
+
+
+/* ========================================
+   ROLES
+======================================== */
+
+.role-selector {
+
+    display: flex;
+
+    width: 100%;
+
+    border: 1px solid #e0e5ea;
+
+    border-radius: 13px;
+
+    overflow: hidden;
+
+    margin-bottom: 34px;
+
+}
+
+
+.role-button {
+
+    position: relative;
+
+    flex: 1;
+
+    min-height: 58px;
+
+    border: 0;
+
+    background: #ffffff;
+
+    color: #5a667a;
+
+    cursor: pointer;
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 9px;
+
+    transition: .2s ease;
+
+}
+
+
+.role-button:hover {
+
+    background: #f7fbfb;
+
+}
+
+
+.role-button.active {
+
+    color: #0a9997;
+
+    font-weight: 600;
+
+}
+
+
+.role-button.active::after {
+
+    content: "";
+
+    position: absolute;
+
+    left: 20px;
+
+    right: 20px;
+
+    bottom: 0;
+
+    height: 3px;
+
+    border-radius: 5px 5px 0 0;
+
+    background: #0b9f9c;
+
+}
+
+
+.role-icon {
+
+    font-size: 21px;
+
+}
+
+
+/* ========================================
+   FORMULARIO
+======================================== */
+
+.login-form {
+
+    width: 100%;
+
+}
+
+
+.form-group {
+
+    margin-bottom: 23px;
+
+}
+
+
+.form-group label {
+
+    display: block;
+
+    margin-bottom: 9px;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    color: #17233d;
+
+}
+
+
+.input-wrapper {
+
+    position: relative;
+
+}
+
+
+.input-wrapper input {
+
+    width: 100%;
+
+    height: 58px;
+
+    border: 1px solid #dce2e7;
+
+    border-radius: 12px;
+
+    outline: none;
+
+    background: #ffffff;
+
+    font-family: inherit;
+
+    font-size: 15px;
+
+    color: #27354d;
+
+    padding:
+        0 50px
+        0 63px;
+
+    transition: .2s ease;
+
+}
+
+
+.input-wrapper input::placeholder {
+
+    color: #a8b0bc;
+
+}
+
+
+.input-wrapper input:focus {
+
+    border-color: #0aa4a0;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(10, 164, 160, .08);
+
+}
+
+
+.input-icon {
+
+    position: absolute;
+
+    left: 20px;
+
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    z-index: 2;
+
+    color: #34455f;
+
+    font-size: 19px;
+
+}
+
+
+.password-toggle {
+
+    position: absolute;
+
+    right: 17px;
+
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    border: 0;
+
+    background: none;
+
+    cursor: pointer;
+
+    color: #4b5870;
+
+    font-size: 18px;
+
+}
+
+
+/* ========================================
+   OPCIONES DEL LOGIN
+======================================== */
+
+.form-options {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin: 2px 0 27px;
+
+    font-size: 14px;
+
+}
+
+
+.remember {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    color: #556176;
+
+    cursor: pointer;
+
+}
+
+
+.remember input {
+
+    width: 19px;
+    height: 19px;
+
+    accent-color: #0c9e9b;
+
+    cursor: pointer;
+
+}
+
+
+.forgot-password {
+
+    text-decoration: none;
+
+    color: #0b9997;
+
+    font-weight: 500;
+
+}
+
+
+/* ========================================
+   MENSAJE
+======================================== */
+
+.login-message {
+
+    display: none;
+
+    padding: 11px 14px;
+
+    margin-bottom: 16px;
+
+    border-radius: 10px;
+
+    font-size: 13px;
+
+}
+
+
+.login-message.show {
+
+    display: block;
+
+}
+
+
+/* ========================================
+   BOTÓN PRINCIPAL
+======================================== */
+
+.login-button {
+
+    width: 100%;
+
+    height: 58px;
+
+    border: 0;
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #0a9997,
+            #0daba7
+        );
+
+    color: white;
+
+    font-family: inherit;
+
+    font-size: 16px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 30px;
+
+    box-shadow:
+        0 7px 18px
+        rgba(9, 157, 153, .16);
+
+    transition: .2s ease;
+
+}
+
+
+.login-button:hover {
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 10px 20px
+        rgba(9, 157, 153, .20);
+
+}
+
+
+.arrow {
+
+    font-size: 23px;
+
+}
+
+
+/* ========================================
+   DIVISOR
+======================================== */
+
+.divider {
+
+    margin: 31px 0 24px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 16px;
+
+}
+
+
+.divider span {
+
+    flex: 1;
+
+    height: 1px;
+
+    background: #e4e7eb;
+
+}
+
+
+.divider p {
+
+    color: #6a7484;
+
+    font-size: 13px;
+
+    white-space: nowrap;
+
+}
+
+
+/* ========================================
+   REDES
+======================================== */
+
+.social-login {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 12px;
+
+}
+
+
+.social-button {
+
+    height: 51px;
+
+    border: 1px solid #e1e5e9;
+
+    background: #ffffff;
+
+    border-radius: 11px;
+
+    cursor: pointer;
+
+    color: #253249;
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 9px;
+
+}
+
+
+.social-button:hover {
+
+    background: #fafcfc;
+
+}
+
+
+.google {
+
+    font-weight: 700;
+
+    font-size: 19px;
+
+}
+
+
+.microsoft {
+
+    font-size: 17px;
+
+}
+
+
+.apple {
+
+    font-size: 17px;
+
+}
+
+
+/* ========================================
+   REGISTRO
+======================================== */
+
+.register {
+
+    text-align: center;
+
+    margin-top: 34px;
+
+    color: #657185;
+
+    font-size: 14px;
+
+}
+
+
+.register a {
+
+    color: #079b98;
+
+    font-weight: 600;
+
+    text-decoration: none;
+
+    margin-left: 6px;
+
+}
+
+
+/* ========================================
+   SEGURIDAD
+======================================== */
+
+.security {
+
+    margin-top: 64px;
+
+    text-align: center;
+
+    color: #8a94a2;
+
+    font-size: 12px;
+
+}
+
+
+.security b {
+
+    margin: 0 8px;
+
+    font-weight: 400;
+
+}
+
+
+/* ========================================
+   MODO OSCURO
+======================================== */
+
+body.dark {
+
+    background: #111923;
+
+}
+
+
+body.dark .login-panel {
+
+    background: #16202b;
+
+}
+
+
+body.dark .login-header h2,
+body.dark .form-group label {
+
+    color: #f0f5f7;
+
+}
+
+
+body.dark .login-header p,
+body.dark .register,
+body.dark .security {
+
+    color: #9aa8b8;
+
+}
+
+
+body.dark .role-selector,
+body.dark .role-button,
+body.dark .input-wrapper input,
+body.dark .icon-button,
+body.dark .language-button,
+body.dark .social-button {
+
+    background: #192531;
+
+    border-color: #30404e;
+
+    color: #dce6ed;
+
+}
+
+
+/* ========================================
+   RESPONSIVE
+======================================== */
+
+@media (max-width: 1100px) {
+
+    .login-cover {
+
+        width: 48%;
+
+    }
+
+    .login-panel {
+
+        width: 52%;
+
+    }
+
+    .cover-content {
+
+        padding:
+            45px
+            40px
+            35px;
+
+    }
+
+    .benefits {
+
+        gap: 14px;
+
+    }
+
+}
+
+
+@media (max-width: 850px) {
+
+    .login-cover {
+
+        display: none;
+
+    }
+
+    .login-panel {
+
+        width: 100%;
+
+    }
+
+    .login-box {
+
+        width: min(90%, 550px);
+
+    }
+
+}
+
+
+@media (max-width: 520px) {
+
+    .login-box {
+
+        width: 92%;
+
+    }
+
+    .top-actions {
+
+        margin-bottom: 45px;
+
+    }
+
+    .login-header h2 {
+
+        font-size: 31px;
+
+    }
+
+    .login-header p {
+
+        font-size: 15px;
+
+    }
+
+    .role-button {
+
+        font-size: 12px;
+
+    }
+
+    .role-icon {
+
+        display: none;
+
+    }
+
+    .form-options {
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 13px;
+
+    }
+
+    .social-login {
+
+        grid-template-columns: 1fr;
+
+    }
+
+}
