@@ -4,6 +4,7 @@ namespace App\Core;
 
 abstract class Controller
 {
+    // Renderiza la vista solicitada; las vistas viven separadas de la logica PHP.
     protected function view(string $view, array $data = [], ?string $layout = null): void
     {
         $viewPath = APP_PATH . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $view) . '.html';
@@ -18,12 +19,14 @@ abstract class Controller
 
     protected function redirect(string $path): void
     {
+        // Construye una URL local y termina la peticion despues de redirigir.
         header('Location: ' . \url($path));
         exit;
     }
 
     protected function requireAuth(): void
     {
+        // Impide continuar cuando no hay una sesion autenticada.
         if (!\auth_user()) {
             $this->redirect('/login');
         }
@@ -31,6 +34,7 @@ abstract class Controller
 
     protected function requireRole(array $roles): void
     {
+        // Verifica autenticacion y autorizacion antes de mostrar una pantalla protegida.
         $this->requireAuth();
 
         $role = \auth_role();

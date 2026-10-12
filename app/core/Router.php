@@ -4,6 +4,7 @@ namespace App\Core;
 
 class Router
 {
+    // Guarda controladores por metodo HTTP y ruta normalizada.
     private array $routes = [
         'GET' => [],
         'POST' => [],
@@ -21,6 +22,7 @@ class Router
 
     public function dispatch(string $method, string $uri): void
     {
+        // Normaliza la solicitud, encuentra su destino y responde con 404 si no existe.
         $method = strtoupper($method);
         $path = $this->normalizePath($uri);
         $handler = $this->routes[$method][$path] ?? null;
@@ -36,12 +38,14 @@ class Router
 
     private function add(string $method, string $path, $handler): void
     {
+        // Registra la pareja metodo/ruta que se ejecutara cuando llegue una solicitud.
         $path = '/' . trim($path, '/');
         $this->routes[$method][$path === '//' ? '/' : $path] = $handler;
     }
 
     private function normalizePath(string $uri): string
     {
+        // Quita query string y prefijo del proyecto para comparar rutas consistentes.
         $path = parse_url($uri, PHP_URL_PATH) ?: '/';
         $base = str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'] ?? ''));
         $base = rtrim($base, '/');
@@ -57,6 +61,7 @@ class Router
 
     private function call($handler): void
     {
+        // Ejecuta acciones de controlador o funciones registradas como manejadores.
         if (is_array($handler)) {
             [$class, $method] = $handler;
             $controller = new $class();
