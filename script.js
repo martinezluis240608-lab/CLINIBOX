@@ -210,10 +210,87 @@ function updateProgressUI() {
 // ------------------------------------------------------------------------------
 
 /**
- * Muestra la pantalla de inicio de sesión del paciente.
+ * Muestra la pantalla de inicio de sesión del paciente o navega al portal.
  */
 function showLoginScreen() {
-  window.location.assign("public/login");
+  const loginStage = document.getElementById("stage-login");
+  if (loginStage) {
+    document.querySelectorAll(".tour-stage").forEach(stage => stage.classList.remove("active"));
+    loginStage.classList.add("active");
+    if (tourProgressContainer) tourProgressContainer.style.display = "none";
+    if (hudBottomNav) hudBottomNav.style.display = "none";
+    playFeedbackTone(480, "sine", 0.08);
+  } else {
+    window.location.assign("public/login");
+  }
+}
+
+/**
+ * Controla el inicio de sesión del paciente en el panel interactivo.
+ */
+function handleLogin(event) {
+  if (event) event.preventDefault();
+
+  const email = document.getElementById("loginEmail")?.value || "";
+  const pwd = document.getElementById("loginPassword")?.value || "";
+  const alertBox = document.getElementById("loginAlert");
+
+  if (!email || !pwd) {
+    if (alertBox) {
+      alertBox.style.display = "block";
+      alertBox.textContent = "Por favor ingresa correo y contraseña.";
+    }
+    return;
+  }
+
+  // Animación de éxito
+  playFeedbackTone(620, "sine", 0.15);
+
+  // Ocultar stages y mostrar el panel del paciente
+  document.querySelectorAll(".tour-stage").forEach(stage => stage.classList.remove("active"));
+  const dashStage = document.getElementById("stage-dashboard");
+  if (dashStage) {
+    dashStage.classList.add("active");
+  }
+
+  if (tourProgressContainer) tourProgressContainer.style.display = "none";
+  if (hudBottomNav) hudBottomNav.style.display = "none";
+}
+
+/**
+ * Cierra la sesión del paciente y regresa a la bienvenida del recorrido.
+ */
+function handleLogout() {
+  playFeedbackTone(350, "sine", 0.08);
+  goToStep(0);
+}
+
+/**
+ * Cambia entre las 5 opciones simplificadas del paciente en el tour.
+ */
+function switchTourPatientTab(tabId, btn) {
+  document.querySelectorAll(".tour-patient-tab-content").forEach(el => {
+    el.style.display = "none";
+    el.classList.remove("active");
+  });
+
+  const target = document.getElementById(tabId);
+  if (target) {
+    target.style.display = "block";
+    target.classList.add("active");
+  }
+
+  document.querySelectorAll(".tab-patient-btn").forEach(b => {
+    b.classList.remove("btn-primary", "active");
+    b.classList.add("btn-outline");
+  });
+
+  if (btn) {
+    btn.classList.remove("btn-outline");
+    btn.classList.add("btn-primary", "active");
+  }
+
+  playFeedbackTone(450, "sine", 0.05);
 }
 
 /**
@@ -225,10 +302,10 @@ function togglePasswordVisibility() {
 
   if (pwdInput.type === "password") {
     pwdInput.type = "text";
-    btnTogglePassword.textContent = "🙈";
+    if (btnTogglePassword) btnTogglePassword.textContent = "🙈";
   } else {
     pwdInput.type = "password";
-    btnTogglePassword.textContent = "👁️";
+    if (btnTogglePassword) btnTogglePassword.textContent = "👁️";
   }
 }
 

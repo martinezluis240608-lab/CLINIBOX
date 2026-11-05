@@ -1,0 +1,1125 @@
+/* ==========================================================================
+   CLINIBOX – PANEL DEL PACIENTE (PATIENT DASHBOARD)
+   Tema: Estética oficial del Paseo Virtual 360° (Glassmorphism & Brillo Clínico)
+   Fondo: Recepción Clínica CliniBox con overlay profesional
+   Tipografía: system-ui / Segoe UI
+   Colores: Azul médico #0284c7, Azul ultramar #0369a1, Verde salud #10b981
+   ========================================================================== */
+
+/* ── 1. TOKENS Y VARIABLES DE DISEÑO (IDÉNTICAS AL PASEO VIRTUAL) ────────── */
+:root {
+  /* Paleta Médica Oficial del Paseo Virtual */
+  --primary:        #0284c7;  /* Azul médico vibrante */
+  --primary-dark:   #0369a1;  /* Azul ultramar clínico */
+  --primary-light:  #e0f2fe;  /* Azul cielo pastel */
+  --accent:         #10b981;  /* Verde esmeralda salud */
+  --accent-light:   #d1fae5;  /* Verde suave de éxito */
+  --accent-dark:    #059669;  /* Verde oscuro */
+  --danger:         #ef4444;  /* Rojo alerta */
+  --danger-light:   #fee2e2;  /* Rojo suave */
+  --warning:        #f59e0b;  /* Ámbar aviso */
+  --warning-light:  #fef3c7;  /* Ámbar suave */
+
+  /* Textos y Superficies */
+  --text-main:      #0f172a;  /* Slate 900 oscuro alto contraste */
+  --text-muted:     #64748b;  /* Slate 500 neutro */
+  --text-light:     #f8fafc;  /* Blanco suave */
+  --bg-surface:     rgba(255, 255, 255, 0.92);
+  --bg-card:        rgba(255, 255, 255, 0.88);
+  --border-glass:   rgba(255, 255, 255, 0.65);
+  --border-light:   rgba(148, 163, 184, 0.22);
+
+  /* Sombras y Glassmorphism */
+  --shadow-sm:      0 2px 8px rgba(2, 132, 199, 0.08);
+  --shadow-md:      0 8px 24px rgba(15, 23, 42, 0.10);
+  --shadow-lg:      0 16px 40px rgba(15, 23, 42, 0.16);
+  --shadow-glow:    0 0 25px rgba(2, 132, 199, 0.35);
+
+  /* Geometría */
+  --radius-sm:      8px;
+  --radius-md:      14px;
+  --radius-lg:      22px;
+  --radius-pill:    9999px;
+  --sidebar-w:      270px;
+  --topbar-h:       68px;
+
+  /* Transición */
+  --transition:     all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── 2. REINICIO Y ESTILOS BASE ───────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  min-height: 100%;
+}
+
+body.patient-dashboard-page,
+body.patient-page {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  color: var(--text-main);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  background:
+    linear-gradient(180deg, rgba(8, 21, 35, 0.22) 0%, rgba(8, 21, 35, 0.16) 100%),
+    url('clinic-tour-bg.jpg') center/cover fixed no-repeat,
+    url('WhatsApp Image 2026-09-16 at 6.15.26 PM.jpeg') center/cover fixed no-repeat,
+    url('../../../WhatsApp Image 2026-09-16 at 6.15.26 PM.jpeg') center/cover fixed no-repeat,
+    radial-gradient(circle at 50% 20%, #ffffff 0%, #e0f2fe 100%);
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: center;
+}
+
+/* ── 3. ESTRUCTURA GENERAL (SHELL) ────────────────────────────────────────── */
+.app-shell.patient-shell {
+  display: grid;
+  grid-template-columns: var(--sidebar-w) minmax(0, 1fr);
+  min-height: 100vh;
+}
+
+/* ── 4. BARRA LATERAL (SIDEBAR DE CRISTAL CLÍNICO) ────────────────────────── */
+.patient-sidebar {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(180deg, rgba(10, 28, 48, 0.92) 0%, rgba(8, 22, 38, 0.95) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-right: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--text-light);
+  overflow-y: auto;
+  z-index: 60;
+  box-shadow: 4px 0 24px rgba(8, 21, 35, 0.15);
+  transition: var(--transition);
+}
+
+/* Marca de la clínica */
+.patient-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 22px 20px;
+  text-decoration: none;
+  color: #fff;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.patient-brand-mark {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  font-size: 22px;
+  font-weight: 900;
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(2, 132, 199, 0.4);
+  flex-shrink: 0;
+}
+
+.patient-brand-text strong {
+  display: block;
+  font-size: 1.15rem;
+  letter-spacing: -0.02em;
+}
+
+.patient-brand-text small {
+  display: block;
+  font-size: 0.74rem;
+  color: rgba(224, 242, 254, 0.75);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* Ficha del paciente en la barra lateral */
+.sidebar-patient-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  margin: 12px 14px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: var(--radius-md);
+}
+
+.sp-avatar {
+  position: relative;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  color: #fff;
+  font-size: 0.95rem;
+  flex-shrink: 0;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.sp-online-dot {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid #081523;
+}
+
+.sp-details {
+  overflow: hidden;
+}
+
+.sp-name {
+  display: block;
+  font-size: 0.92rem;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sp-role {
+  display: inline-block;
+  font-size: 0.72rem;
+  color: #7dd3fc;
+  font-weight: 600;
+}
+
+/* Título de sección de navegación */
+.nav-section-title {
+  padding: 14px 20px 6px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(148, 163, 184, 0.8);
+}
+
+/* Lista simplificada de 5 opciones principales */
+.nav-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 0 12px;
+}
+
+.nav-list a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  color: rgba(241, 245, 249, 0.85);
+  font-size: 0.92rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: var(--transition);
+  position: relative;
+}
+
+.nav-list a .ni-icon {
+  font-size: 1.15rem;
+  line-height: 1;
+  display: grid;
+  place-items: center;
+  width: 24px;
+}
+
+.nav-list a:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  transform: translateX(3px);
+}
+
+.nav-list a.active {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #fff;
+  font-weight: 700;
+  box-shadow: 0 4px 16px rgba(2, 132, 199, 0.45);
+}
+
+.nav-badge {
+  margin-left: auto;
+  font-size: 0.72rem;
+  font-weight: 800;
+  background: var(--accent);
+  color: #fff;
+  padding: 2px 7px;
+  border-radius: var(--radius-pill);
+}
+
+/* Pie de barra lateral (Cerrar sesión & Volver al paseo) */
+.patient-sidebar-footer {
+  margin-top: auto;
+  padding: 16px 14px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.btn-sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #e0f2fe;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn-sidebar-link:hover {
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+}
+
+.btn-sidebar-link.logout {
+  color: #fca5a5;
+  border-color: rgba(239, 68, 68, 0.25);
+  background: rgba(239, 68, 68, 0.08);
+}
+
+.btn-sidebar-link.logout:hover {
+  background: rgba(239, 68, 68, 0.22);
+  color: #fff;
+}
+
+/* ── 5. ÁREA DE CONTENIDO PRINCIPAL ───────────────────────────────────────── */
+.patient-main {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  position: relative;
+  z-index: 10;
+  padding: 24px clamp(16px, 3.5vw, 42px);
+  gap: 24px;
+}
+
+/* Cabecera superior */
+.patient-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 22px;
+  background: rgba(255, 255, 255, 0.90);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+}
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.topbar-section-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--text-main);
+  letter-spacing: -0.02em;
+}
+
+.topbar-badge-tour {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  background: var(--primary-light);
+  color: var(--primary-dark);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.patient-top-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Paneles de Cristal (Glassmorphism oficial) */
+.glass-panel {
+  background: var(--bg-surface);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Secciones del paciente (alternancia limpia) */
+.patient-panel-section {
+  display: none;
+  animation: fadeInPanel 0.3s ease;
+}
+
+.patient-panel-section.active {
+  display: block;
+}
+
+@keyframes fadeInPanel {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── 6. SECCIÓN 1: INICIO (RESUMEN DE SALUD) ──────────────────────────────── */
+.welcome-hero-banner {
+  padding: 28px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  background:
+    linear-gradient(135deg, rgba(2, 132, 199, 0.95), rgba(3, 105, 161, 0.92)),
+    url('clinic-tour-bg.jpg') center/cover no-repeat;
+  color: #fff;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg), var(--shadow-glow);
+  position: relative;
+  overflow: hidden;
+}
+
+.welcome-hero-banner::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  right: -10%;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.22) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.welcome-hero-copy {
+  position: relative;
+  z-index: 2;
+  max-width: 580px;
+}
+
+.welcome-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 3px 12px;
+  border-radius: var(--radius-pill);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+}
+
+.welcome-hero-copy h2 {
+  font-size: clamp(1.4rem, 2.8vw, 2.1rem);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  margin-bottom: 6px;
+}
+
+.welcome-hero-copy p {
+  font-size: 0.96rem;
+  color: rgba(240, 249, 255, 0.9);
+  line-height: 1.45;
+}
+
+.welcome-hero-actions {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* Tarjetas métricas rápidas */
+.patient-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 18px;
+  margin: 20px 0;
+}
+
+.stat-metric-card {
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: var(--transition);
+  cursor: pointer;
+}
+
+.stat-metric-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+  border-color: rgba(2, 132, 199, 0.4);
+}
+
+.stat-metric-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: var(--radius-md);
+  display: grid;
+  place-items: center;
+  font-size: 1.6rem;
+  flex-shrink: 0;
+}
+
+.stat-blue   { background: var(--primary-light); color: var(--primary); }
+.stat-green  { background: var(--accent-light);  color: var(--accent);  }
+.stat-amber  { background: var(--warning-light); color: var(--warning); }
+
+.stat-metric-info small {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+
+.stat-metric-info strong {
+  display: block;
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--text-main);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.stat-metric-info p {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+/* Tarjetas dobles en Inicio */
+.home-cards-dual {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+.home-summary-card {
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.hsc-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.hsc-header h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--text-main);
+}
+
+/* Pastillas de estado */
+.status-tag {
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+}
+
+.status-tag.confirmed {
+  background: var(--accent-light);
+  color: var(--accent-dark);
+}
+
+.status-tag.pending {
+  background: var(--warning-light);
+  color: #b45309;
+}
+
+.status-tag.completed {
+  background: #f1f5f9;
+  color: #64748b;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+}
+
+/* Detalle cita destacada */
+.doctor-lead-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px;
+  background: rgba(2, 132, 199, 0.04);
+  border: 1px solid rgba(2, 132, 199, 0.15);
+  border-radius: var(--radius-md);
+}
+
+.doctor-lead-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--primary-light);
+  border: 2px solid var(--primary);
+  display: grid;
+  place-items: center;
+  font-size: 1.4rem;
+  flex-shrink: 0;
+}
+
+.doctor-lead-text strong {
+  display: block;
+  font-size: 0.95rem;
+  color: var(--text-main);
+}
+
+.doctor-lead-text p {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.appointment-time-badge {
+  margin-left: auto;
+  text-align: right;
+  font-weight: 800;
+  color: var(--primary);
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+/* ── 7. SECCIÓN 2: CITAS MÉDICAS (SIMPLIFICADA) ────────────────────────────── */
+.appointments-grid-layout {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 22px;
+}
+
+@media (max-width: 900px) {
+  .appointments-grid-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.appointment-book-card,
+.appointment-list-card {
+  padding: 24px;
+}
+
+.card-title-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.card-title-bar h3 {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.form-group-clean {
+  margin-bottom: 16px;
+}
+
+.form-group-clean label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 6px;
+}
+
+.form-group-clean select,
+.form-group-clean input {
+  width: 100%;
+  padding: 11px 14px;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(148, 163, 184, 0.4);
+  background: #ffffff;
+  color: var(--text-main);
+  font-size: 0.92rem;
+  font-family: inherit;
+  outline: none;
+  transition: var(--transition);
+}
+
+.form-group-clean select:focus,
+.form-group-clean input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.2);
+}
+
+/* Selector interactivo de horarios */
+.slot-chips-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.slot-chip {
+  padding: 7px 14px;
+  border-radius: var(--radius-pill);
+  background: rgba(2, 132, 199, 0.08);
+  border: 1px solid rgba(2, 132, 199, 0.2);
+  color: var(--primary-dark);
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.slot-chip:hover {
+  background: rgba(2, 132, 199, 0.16);
+  border-color: var(--primary);
+}
+
+.slot-chip.selected {
+  background: var(--primary);
+  border-color: var(--primary-dark);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(2, 132, 199, 0.35);
+}
+
+/* Lista de citas existentes */
+.appointment-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.appointment-entry {
+  padding: 14px 16px;
+  border-radius: var(--radius-md);
+  background: #ffffff;
+  border: 1px solid var(--border-light);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: var(--transition);
+}
+
+.appointment-entry:hover {
+  border-color: var(--primary);
+  box-shadow: var(--shadow-sm);
+}
+
+.ae-date-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-sm);
+  background: var(--primary-light);
+  color: var(--primary-dark);
+  font-weight: 800;
+  line-height: 1.1;
+  flex-shrink: 0;
+}
+
+.ae-date-col strong { font-size: 1.1rem; }
+.ae-date-col small  { font-size: 0.68rem; text-transform: uppercase; }
+
+.ae-date-col.completed {
+  background: #f1f5f9;
+  color: #64748b;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+}
+
+.ae-info-col {
+  flex: 1;
+  padding: 0 14px;
+}
+
+.ae-info-col strong {
+  display: block;
+  font-size: 0.92rem;
+  color: var(--text-main);
+}
+
+.ae-info-col p {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+/* ── 8. SECCIÓN 3: FARMACIA Y RECETAS (SIMPLIFICADA) ───────────────────────── */
+.pharmacy-rx-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+}
+
+@media (max-width: 900px) {
+  .pharmacy-rx-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Receta Médica Digital con papel de alta fidelidad */
+.prescription-paper-card {
+  padding: 24px;
+  border: 2px dashed rgba(2, 132, 199, 0.35);
+  background: rgba(255, 255, 255, 0.95);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.rx-folio-band {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.rx-clinic-tag {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.rx-med-item {
+  padding: 12px 14px;
+  background: #f8fafc;
+  border-left: 3px solid var(--primary);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  margin-bottom: 8px;
+}
+
+.rx-med-item strong {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--text-main);
+}
+
+.rx-med-item p {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+/* Bitácora de toma de medicamentos del día */
+.daily-dose-tracker {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.dose-track-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  background: #ffffff;
+  border: 1px solid var(--border-light);
+  transition: var(--transition);
+}
+
+.dose-track-row.taken {
+  background: rgba(16, 185, 129, 0.05);
+  border-color: rgba(16, 185, 129, 0.25);
+}
+
+.dose-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.dose-time {
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: var(--primary);
+  background: var(--primary-light);
+  padding: 3px 8px;
+  border-radius: var(--radius-pill);
+}
+
+/* ── 9. SECCIÓN 4: MENSAJES CON EL MÉDICO (CHAT DIRECTO) ──────────────────── */
+.chat-unified-container {
+  display: flex;
+  flex-direction: column;
+  height: min(620px, calc(100vh - 200px));
+}
+
+.chat-doctor-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 22px;
+  background: rgba(255, 255, 255, 0.95);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.doctor-chat-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--accent-light);
+  border: 2px solid var(--accent);
+  display: grid;
+  place-items: center;
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+
+.chat-conversation-area {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  background: rgba(248, 250, 252, 0.7);
+}
+
+.chat-bubble {
+  max-width: 75%;
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  font-size: 0.9rem;
+  line-height: 1.45;
+  box-shadow: var(--shadow-sm);
+  position: relative;
+}
+
+.chat-bubble.doctor {
+  align-self: flex-start;
+  background: #ffffff;
+  color: var(--text-main);
+  border-bottom-left-radius: 2px;
+}
+
+.chat-bubble.patient {
+  align-self: flex-end;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #ffffff;
+  border-bottom-right-radius: 2px;
+}
+
+.chat-time {
+  display: block;
+  font-size: 0.68rem;
+  margin-top: 4px;
+  opacity: 0.75;
+}
+
+.chat-input-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 18px;
+  background: #ffffff;
+  border-top: 1px solid var(--border-light);
+}
+
+.chat-input-bar input {
+  flex: 1;
+  padding: 12px 16px;
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(148, 163, 184, 0.4);
+  font-size: 0.92rem;
+  font-family: inherit;
+  outline: none;
+}
+
+.chat-input-bar input:focus {
+  border-color: var(--primary);
+}
+
+/* ── 10. SECCIÓN 5: MI PERFIL (EXPEDIENTE CLÍNICO) ────────────────────────── */
+.profile-unified-grid {
+  display: grid;
+  grid-template-columns: 0.85fr 1.15fr;
+  gap: 22px;
+}
+
+@media (max-width: 860px) {
+  .profile-unified-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.profile-badge-card {
+  padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+}
+
+.profile-big-avatar {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-size: 2.2rem;
+  font-weight: 800;
+  box-shadow: 0 8px 24px rgba(2, 132, 199, 0.35);
+}
+
+.profile-data-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 14px;
+}
+
+.profile-field-box {
+  padding: 14px;
+  background: #ffffff;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+}
+
+.profile-field-box small {
+  display: block;
+  font-size: 0.74rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.profile-field-box strong {
+  display: block;
+  font-size: 0.95rem;
+  color: var(--text-main);
+  margin-top: 2px;
+}
+
+/* ── 11. BOTONES Y CONTROLES CLÍNICOS ─────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: var(--radius-pill);
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  transition: var(--transition);
+  text-decoration: none;
+}
+
+.btn-sm {
+  padding: 7px 14px;
+  font-size: 0.8rem;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(2, 132, 199, 0.35);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(2, 132, 199, 0.5);
+}
+
+.btn-accent {
+  background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);
+}
+
+.btn-accent:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.45);
+}
+
+.btn-outline {
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(148, 163, 184, 0.4);
+  color: var(--text-main);
+}
+
+.btn-outline:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+  background: #ffffff;
+  transform: translateY(-1px);
+}
+
+.btn-danger {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  color: var(--danger);
+}
+
+.btn-danger:hover {
+  background: var(--danger);
+  color: #ffffff;
+}
+
+/* ── 12. RESPONSIVE DESIGN ────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .app-shell.patient-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .patient-sidebar {
+    position: fixed;
+    top: 0;
+    left: -280px;
+    width: 270px;
+    height: 100vh;
+    transition: left 0.3s ease;
+  }
+
+  .patient-sidebar.mobile-open {
+    left: 0;
+  }
+
+  .btn-mobile-menu {
+    display: inline-flex !important;
+  }
+}
+

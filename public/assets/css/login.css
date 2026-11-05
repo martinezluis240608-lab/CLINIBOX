@@ -41,7 +41,7 @@ body {
             rgba(227, 242, 252, .38),
             rgba(241, 248, 255, .65)
         ),
-        url("../../../../assets/img/hospital.jpg");
+        url("img/fondo-clinica.png");
 
     background-size: cover;
     background-position: center;
