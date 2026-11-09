@@ -94,6 +94,13 @@
   let currentDoor = "tienda";
   let started = false;
 
+  // Abre la tienda existente conservando el prefijo publico del proyecto.
+  function goToStore() {
+    window.location.assign(new URL("../tienda", window.location.href));
+  }
+
+  window.goToStore = goToStore;
+
   /* ── Switch Active Door ────────────────────────────────────────── */
   function setDoor(key) {
     document.querySelectorAll(".door-card-unit").forEach(el => {
@@ -172,6 +179,12 @@
     const key = doorKey || currentDoor;
     const data = doorData[key];
     if (!data) return;
+
+    // La accion de continuar en la puerta de tienda abre el catalogo real.
+    if (key === "tienda" && (defaultTab || "continue") === "continue") {
+      goToStore();
+      return;
+    }
 
     modalAreaIcon.textContent  = data.icon;
     modalAreaTitle.textContent = data.title;
@@ -328,6 +341,11 @@
   }
 
   window.startTourAndGo = function(doorKey) {
+    if (doorKey === "tienda") {
+      goToStore();
+      return;
+    }
+
     startTour();
     setDoorScene(doorKey);
   };

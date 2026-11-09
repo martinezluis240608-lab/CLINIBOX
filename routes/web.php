@@ -10,7 +10,6 @@ use App\Controllers\TiendaController;
 use App\Core\Router;
 
 return function (Router $router): void {
-    // Principal (Index Entrada)
     $router->get('/', [HomeController::class, 'index']);
 
     // Tienda
