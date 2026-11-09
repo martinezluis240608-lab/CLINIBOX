@@ -6,6 +6,11 @@ use App\Core\Controller;
 
 class PacienteController extends Controller
 {
+    public function agendarCita(): void
+    {
+        $this->view('paciente/agendarCita', ['title' => 'Agendar Cita']);
+    }
+
     public function recorrido(): void
     {
         $this->view('paciente/recorrido', ['title' => 'Recorrido virtual']);

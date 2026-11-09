@@ -4,7 +4,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>CliniBox | Producto</title>
-	<link rel="stylesheet" href="/CLINIBOX/CLINIBOX/public/assets/css/tienda.css?v=20260928.2">
+	<link rel="stylesheet" href="/CLINIBOX/public/assets/css/tienda.css?v=20260928.2">
 	<style>
 		.product-page { min-height: calc(100vh - 100px); padding: 38px 24px 70px; }
 		.product-container { width: min(1200px, 100%); margin: 0 auto; }
@@ -40,27 +40,27 @@
 	<div class="shop-background-overlay"></div>
 	<header class="shop-header">
 		<div class="shop-header-inner">
-			<a href="/CLINIBOX/CLINIBOX/public/tienda" class="shop-logo">
+			<a href="/CLINIBOX/public/tienda" class="shop-logo">
 				<div class="shop-logo-icon"><i data-lucide="heart-pulse"></i></div>
 				<div class="shop-logo-text"><span>Clini</span>Box</div>
 			</a>
 			<div class="shop-actions">
-				<a href="/CLINIBOX/CLINIBOX/public/favoritos" class="shop-circle-button" title="Favoritos" aria-label="Favoritos"><i data-lucide="heart"></i></a>
-				<a href="/CLINIBOX/CLINIBOX/public/carrito" class="shop-circle-button cart-button" title="Carrito" aria-label="Carrito"><i data-lucide="shopping-cart"></i><span class="cart-badge" id="cartCount">0</span></a>
-				<a href="/CLINIBOX/CLINIBOX/public/login" class="shop-circle-button" title="Mi cuenta" aria-label="Mi cuenta"><i data-lucide="user-round"></i></a>
+				<a href="/CLINIBOX/public/favoritos" class="shop-circle-button" title="Favoritos" aria-label="Favoritos"><i data-lucide="heart"></i></a>
+				<a href="/CLINIBOX/public/carrito" class="shop-circle-button cart-button" title="Carrito" aria-label="Carrito"><i data-lucide="shopping-cart"></i><span class="cart-badge" id="cartCount">0</span></a>
+				<a href="/CLINIBOX/public/login" class="shop-circle-button" title="Mi cuenta" aria-label="Mi cuenta"><i data-lucide="user-round"></i></a>
 			</div>
 		</div>
 	</header>
 
 	<main class="product-page">
 		<div class="product-container">
-			<a href="/CLINIBOX/CLINIBOX/public/tienda" class="product-back"><i data-lucide="arrow-left"></i> Volver a la tienda</a>
+			<a href="/CLINIBOX/public/tienda" class="product-back"><i data-lucide="arrow-left"></i> Volver a la tienda</a>
 			<div id="productDetail" class="product-detail"></div>
 		</div>
 	</main>
 
 	<script src="https://unpkg.com/lucide@latest"></script>
-	<script src="/CLINIBOX/CLINIBOX/public/assets/js/carrito.js?v=20260928.2"></script>
+	<script src="/CLINIBOX/public/assets/js/carrito.js?v=20260928.2"></script>
 	<script>
 		const productos = {
 			1: { id: 1, nombre: "Paracetamol 500 mg", categoria: "Medicamentos", precio: 89, imagen: "💊", descripcion: "Analgésico de uso común para el cuidado diario.", caracteristicas: { Presentación: "Caja", Contenido: "20 tabletas", Marca: "CliniBox" } },
@@ -101,7 +101,7 @@
 		const contenedor = document.getElementById("productDetail");
 
 		if (!producto) {
-			contenedor.innerHTML = '<div class="product-not-found"><h2>Producto no encontrado</h2><a href="/CLINIBOX/CLINIBOX/public/tienda">Volver a la tienda</a></div>';
+			contenedor.innerHTML = '<div class="product-not-found"><h2>Producto no encontrado</h2><a href="/CLINIBOX/public/tienda">Volver a la tienda</a></div>';
 		} else {
 			const caracteristicas = Object.entries(producto.caracteristicas || {}).map(([nombre, valor]) => `<div class="product-feature"><span>${nombre}</span><strong>${valor}</strong></div>`).join("");
 			contenedor.innerHTML = `<div class="product-image"><span>${producto.imagen}</span></div><div class="product-information"><small>${producto.categoria}</small><h1>${producto.nombre}</h1><div class="product-price">$${producto.precio.toFixed(2)}</div><p class="product-description">${producto.descripcion}</p><div class="product-features"><h3>Características</h3>${caracteristicas}</div><div class="product-option"><label for="cantidadProducto">Cantidad</label><input id="cantidadProducto" type="number" min="1" value="1"></div><button class="product-add" id="btnAgregarProducto">AGREGAR AL CARRITO</button></div>`;

@@ -4,7 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Iniciar Sesión | CliniBox</title>
-<link rel="stylesheet" href="/clinibox/public/assets/css/login_medico.css">
+<link rel="stylesheet" href="/CLINIBOX/public/assets/css/login_medico.css?v=20261108">
+<link rel="stylesheet" href="../../../public/assets/css/login_medico.css?v=20261108">
 </head>
 <body class="auth-page">
 
@@ -13,13 +14,13 @@
     <!-- LADO IZQUIERDO: BRANDING -->
     <aside class="auth-brand">
         <div class="auth-brand-content">
-            <div class="auth-logo">
-                <div class="brand-mark">C</div>
+            <a href="/CLINIBOX/" class="auth-logo" style="text-decoration:none;color:inherit;" title="Volver al inicio">
+                <div class="brand-mark" style="background: linear-gradient(135deg, #278dd1, #54bce8); color: white;">✚</div>
                 <div>
                     <strong>CliniBox</strong>
-                    <small>Panel médico</small>
+                    <small>Centro Médico Digital</small>
                 </div>
-            </div>
+            </a>
 
             <!-- 👇 NUEVO RECUADRO -->
     <div class="brand-card">
@@ -210,10 +211,12 @@
             return;
         }
 
-        // Usuarios demo (reemplaza con tu backend)
+        // Usuarios autorizados
         const users = {
-            'paciente@demo.com': { pass: '123456', role: 'paciente', redirect: '/clinibox/app/views/paciente/inicio.html' },
-            'medico@demo.com':   { pass: '123456', role: 'medico',   redirect: '/clinibox/app/views/medico/consultas.html' }
+            'paciente@demo.com': { pass: '123456', role: 'paciente', redirect: '/CLINIBOX/app/views/paciente/agendarCita.html' },
+            'medico@demo.com':   { pass: '123456', role: 'medico',   redirect: '/CLINIBOX/app/views/medico/consultas.html' },
+            'paciente@clinibox.test': { pass: '123456', role: 'paciente', redirect: '/CLINIBOX/app/views/paciente/agendarCita.html' },
+            'medico@clinibox.test':   { pass: '123456', role: 'medico',   redirect: '/CLINIBOX/app/views/medico/consultas.html' }
         };
 
         const user = users[email];

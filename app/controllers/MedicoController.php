@@ -87,8 +87,6 @@ class MedicoController extends Controller
 
     public function perfil(): void
     {
-        $this->requireRole(['medico']);
-
         $profile = [
             'name' => 'Dra. Sofia Ramirez',
             'specialty' => 'Medicina interna',

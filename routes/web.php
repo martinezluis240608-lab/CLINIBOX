@@ -10,7 +10,10 @@ use App\Controllers\TiendaController;
 use App\Core\Router;
 
 return function (Router $router): void {
+    // Principal (Index Entrada)
     $router->get('/', [HomeController::class, 'index']);
+
+    // Tienda
     $router->get('/tienda', [TiendaController::class, 'index']);
     $router->get('/tienda/categoria', [TiendaController::class, 'categoria']);
     $router->get('/categoria.html', [TiendaController::class, 'categoria']);
@@ -22,27 +25,34 @@ return function (Router $router): void {
     $router->get('/ayuda', [TiendaController::class, 'ayuda']);
     $router->get('/carrito', [TiendaController::class, 'carrito']);
 
+    // Autenticación
     $router->get('/login', [AuthController::class, 'login']);
+    $router->get('/login.html', [AuthController::class, 'login']);
     $router->post('/login', [AuthController::class, 'attempt']);
     $router->post('/logout', [AuthController::class, 'logout']);
 
-    $router->get('/dashboard', [DashboardController::class, 'index']);
-
-    $router->get('/paciente/recorrido', [PacienteController::class, 'recorrido']);
-
+    // Médico
+    $router->get('/medico', [MedicoController::class, 'perfil']);
+    $router->get('/medico/perfil', [MedicoController::class, 'perfil']);
     $router->get('/medico/pacientes', [MedicoController::class, 'pacientes']);
     $router->get('/medico/consultas', [MedicoController::class, 'consultas']);
     $router->get('/medico/recetas', [MedicoController::class, 'recetas']);
     $router->get('/medico/expedientes', [MedicoController::class, 'expedientes']);
     $router->get('/medico/agenda', [MedicoController::class, 'agenda']);
     $router->get('/medico/mensajes', [MedicoController::class, 'mensajes']);
-    $router->get('/medico/perfil', [MedicoController::class, 'perfil']);
 
+    // Paciente & Citas
+    $router->get('/citas', [PacienteController::class, 'agendarCita']);
+    $router->get('/paciente/citas', [PacienteController::class, 'agendarCita']);
+    $router->get('/paciente/agendar-cita', [PacienteController::class, 'agendarCita']);
+    $router->get('/paciente/recorrido', [PacienteController::class, 'recorrido']);
     $router->get('/paciente/consultas', [PacienteController::class, 'consultas']);
     $router->get('/paciente/medicamentos', [PacienteController::class, 'medicamentos']);
     $router->get('/paciente/mensajes', [PacienteController::class, 'mensajes']);
     $router->get('/paciente/recetas', [PacienteController::class, 'recetas']);
     $router->get('/paciente/perfil', [PacienteController::class, 'perfil']);
 
+    // Dashboard & Admin
+    $router->get('/dashboard', [DashboardController::class, 'index']);
     $router->get('/admin', [AdminController::class, 'index']);
 };

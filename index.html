@@ -6,19 +6,19 @@
 
     <title>CliniBox | Tu salud, nuestra prioridad</title>
 
-    <link rel="stylesheet" href="../public/assets/css/login.css">
+    <link rel="stylesheet" href="public/assets/css/login.css?v=20261108">
+    <link rel="stylesheet" href="/CLINIBOX/public/assets/css/login.css?v=20261108">
 </head>
 
 <body>
 
-    <!-- FONDO GENERAL -->
+    <!-- FONDO GENERAL DE LA CLÍNICA -->
     <main class="hospital" id="hospital">
 
         <div class="background-overlay"></div>
 
         <!-- LOGO SUPERIOR -->
         <header class="top-header">
-
             <div class="brand">
                 <div class="brand-icon">
                     <svg viewBox="0 0 80 80" aria-hidden="true">
@@ -32,11 +32,10 @@
                     <p>Tu salud, nuestra prioridad</p>
                 </div>
             </div>
-
         </header>
 
 
-        <!-- CONTENEDOR PRINCIPAL -->
+        <!-- CONTENEDOR PRINCIPAL CON PUERTAS CORREDIZAS -->
         <section class="entrance">
 
             <!-- CONTENIDO DETRÁS DE LAS PUERTAS -->
@@ -50,132 +49,94 @@
                 </div>
             </div>
 
-
-            <!-- ZONA QUE MANTIENE EL HOVER -->
+            <!-- ZONA DE PUERTAS CON EFECTO INTERACTIVO -->
             <div class="door-area" id="doorArea" aria-hidden="true">
 
                 <!-- PUERTA IZQUIERDA -->
                 <div class="door door-left">
-
                     <div class="door-glass"></div>
                     <div class="door-frame"></div>
-
                     <div class="door-handle"></div>
-
                     <div class="door-content">
-
                         <span class="door-mark">+</span>
                         <span>ACCESO CLINIBOX</span>
-
                     </div>
-
                 </div>
-
 
                 <!-- PUERTA DERECHA -->
                 <div class="door door-right">
-
                     <div class="door-glass"></div>
                     <div class="door-frame"></div>
-
                     <div class="door-handle"></div>
-
                     <div class="door-content">
-
                         <span class="door-mark">+</span>
                         <span>ACCESO CLINIBOX</span>
-
                     </div>
-
                 </div>
-
 
             </div>
 
         </section>
 
 
-        <!-- ACCESOS PRINCIPALES -->
+        <!-- LOS 4 ACCESOS PRINCIPALES -->
         <nav class="quick-access">
 
-            <a href="views/medico/perfil.html"
-               class="quick-button">
-
+            <!-- 1. MÉDICO -->
+            <a href="public/medico" class="quick-button" title="Conoce a nuestros médicos">
                 <div class="quick-icon" aria-hidden="true"><span>✚</span></div>
-
                 <div>
                     <strong>Conoce a nuestros médicos</strong>
                     <small>Especialistas y profesionales</small>
                 </div>
-
                 <span class="arrow">→</span>
-
             </a>
 
-
-            <a href="../public/tienda"
-               class="quick-button">
-
+            <!-- 2. TIENDA VIRTUAL -->
+            <a href="public/tienda" class="quick-button" title="Tienda virtual">
                 <div class="quick-icon" aria-hidden="true"><span>＋</span></div>
-
                 <div>
                     <strong>Tienda virtual</strong>
                     <small>Productos para tu salud</small>
                 </div>
-
                 <span class="arrow">→</span>
-
             </a>
 
-
-            <a href="/views/paciente/agendarCita.html"
-               class="quick-button">
-
+            <!-- 3. AGENDAR CITA -->
+            <a href="public/citas" class="quick-button" title="Agendar cita">
                 <div class="quick-icon" aria-hidden="true"><span>□</span></div>
-
                 <div>
                     <strong>Agendar cita</strong>
                     <small>Agenda tu consulta</small>
                 </div>
-
                 <span class="arrow">→</span>
-
             </a>
 
-
-            <a class="quick-button login-access" href="../public/login">
-
+            <!-- 4. INICIAR SESIÓN -->
+            <a href="public/login" class="quick-button login-access" title="Iniciar sesión">
                 <div class="quick-icon" aria-hidden="true"><span>↗</span></div>
-
                 <div>
                     <strong>Iniciar sesión</strong>
                     <small>Accede a tu cuenta</small>
                 </div>
-
                 <span class="arrow">→</span>
-
             </a>
 
         </nav>
 
 
-        <!-- INDICADOR -->
+        <!-- INDICADOR INFERIOR -->
         <div class="bottom-info">
-
             <span class="status-dot"></span>
-
             Plataforma médica digital
-
             <span class="separator">•</span>
-
             Atención segura y confiable
-
         </div>
 
     </main>
 
-
-    <script src="../public/assets/js/doors.js?v=20260930-9" defer></script>
+    <script src="public/assets/js/doors.js?v=20261108" defer></script>
+    <script src="/CLINIBOX/public/assets/js/doors.js?v=20261108" defer></script>
 
 </body>
 </html>

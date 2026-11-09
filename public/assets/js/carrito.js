@@ -322,7 +322,7 @@ function renderizarCarrito() {
 
 
                 <a
-                    href="/CLINIBOX/CLINIBOX/public/tienda"
+                    href="/CLINIBOX/public/tienda"
                     class="checkout-button cart-empty-button"
                 >
 
@@ -797,7 +797,7 @@ if (favoritesButton) {
         () => {
 
             window.location.href =
-                "/CLINIBOX/CLINIBOX/public/favoritos";
+                "/CLINIBOX/public/favoritos";
 
         }
     );
@@ -826,7 +826,7 @@ if (cartButton) {
         () => {
 
             window.location.href =
-                "/CLINIBOX/CLINIBOX/public/carrito";
+                "/CLINIBOX/public/carrito";
 
         }
     );

@@ -619,7 +619,7 @@ function getProductDetailUrl(product) {
         descripcion: getProductDescription(product)
     });
 
-    return `/CLINIBOX/CLINIBOX/public/producto?${params.toString()}`;
+    return `/CLINIBOX/public/producto?${params.toString()}`;
 
 }
 

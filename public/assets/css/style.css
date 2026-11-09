@@ -1,14 +1,15 @@
 :root {
-    --primary-color: #0B9F9A;
-    --primary-hover: #08807C;
-    --secondary-color: #12233F;
-    --bg-light: #F6FAFA;
-    --text-dark: #333333;
-    --text-muted: #667085;
+    --primary-color: #278dd1;
+    --primary-hover: #1e75b0;
+    --cyan-color: #54bce8;
+    --secondary-color: #143d56;
+    --bg-light: #eef7fc;
+    --text-dark: #143d56;
+    --text-muted: #638096;
     --white: #FFFFFF;
-    --shadow-soft: 0 4px 6px rgba(0,0,0,0.05);
-    --shadow-hover: 0 10px 15px rgba(0,0,0,0.1);
-    --border-radius: 12px;
+    --shadow-soft: 0 4px 14px rgba(10, 35, 60, 0.08);
+    --shadow-hover: 0 10px 24px rgba(10, 35, 60, 0.15);
+    --border-radius: 14px;
     --transition: all 0.3s ease;
 }
 

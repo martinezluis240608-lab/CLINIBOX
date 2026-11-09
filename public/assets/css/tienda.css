@@ -10,30 +10,30 @@
 
 :root {
 
-    --blue: #087fe8;
-    --blue-dark: #0758a8;
-    --blue-light: #43c9f5;
+    --blue: #278dd1;
+    --blue-dark: #143d56;
+    --blue-light: #54bce8;
 
-    --cyan: #72e8ff;
-    --cyan-soft: #b8f5ff;
+    --cyan: #54bce8;
+    --cyan-soft: #b8f0ff;
 
-    --navy: #082b55;
-    --text: #092d59;
-    --text-soft: #477092;
+    --navy: #143d56;
+    --text: #204a65;
+    --text-soft: #638096;
 
     --white: #ffffff;
 
-    --glass: rgba(255,255,255,.68);
-    --glass-light: rgba(255,255,255,.48);
-    --glass-strong: rgba(255,255,255,.82);
+    --glass: rgba(255,255,255,.84);
+    --glass-light: rgba(255,255,255,.62);
+    --glass-strong: rgba(255,255,255,.94);
 
-    --border: rgba(255,255,255,.78);
+    --border: rgba(255,255,255,.88);
 
     --shadow:
-        0 18px 45px rgba(4,68,118,.18);
+        0 16px 36px rgba(10,35,60,.14);
 
     --shadow-soft:
-        0 8px 25px rgba(4,68,118,.12);
+        0 8px 24px rgba(10,35,60,.09);
 
     --radius-xl: 28px;
     --radius-lg: 22px;
@@ -123,7 +123,8 @@ a {
 
     background-image:
 
-        url("/CLINIBOX/fondo-clinibox.png");
+        url("img/fondo-clinica.png"),
+        url("/CLINIBOX/public/assets/css/img/fondo-clinica.png");
 
     background-size: cover;
 

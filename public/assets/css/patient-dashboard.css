@@ -8,11 +8,13 @@
 
 /* ── 1. TOKENS Y VARIABLES DE DISEÑO (IDÉNTICAS AL PASEO VIRTUAL) ────────── */
 :root {
-  /* Paleta Médica Oficial del Paseo Virtual */
-  --primary:        #0284c7;  /* Azul médico vibrante */
-  --primary-dark:   #0369a1;  /* Azul ultramar clínico */
-  --primary-light:  #e0f2fe;  /* Azul cielo pastel */
-  --accent:         #10b981;  /* Verde esmeralda salud */
+  /* Paleta Médica Oficial CliniBox */
+  --primary:        #278dd1;  /* Azul médico vibrante */
+  --primary-dark:   #143d56;  /* Azul ultramar clínico / Navy */
+  --primary-light:  #e1f5ff;  /* Azul cielo pastel */
+  --cyan:           #54bce8;  /* Cyan médico */
+  --cyan-soft:      #b8f0ff;  /* Cyan pastel suave */
+  --accent:         #50c8a4;  /* Verde esmeralda salud / Menta */
   --accent-light:   #d1fae5;  /* Verde suave de éxito */
   --accent-dark:    #059669;  /* Verde oscuro */
   --danger:         #ef4444;  /* Rojo alerta */
@@ -21,19 +23,19 @@
   --warning-light:  #fef3c7;  /* Ámbar suave */
 
   /* Textos y Superficies */
-  --text-main:      #0f172a;  /* Slate 900 oscuro alto contraste */
-  --text-muted:     #64748b;  /* Slate 500 neutro */
+  --text-main:      #143d56;  /* Navy oscuro de alto contraste */
+  --text-muted:     #638096;  /* Gris clínico neutro */
   --text-light:     #f8fafc;  /* Blanco suave */
-  --bg-surface:     rgba(255, 255, 255, 0.92);
-  --bg-card:        rgba(255, 255, 255, 0.88);
-  --border-glass:   rgba(255, 255, 255, 0.65);
-  --border-light:   rgba(148, 163, 184, 0.22);
+  --bg-surface:     rgba(255, 255, 255, 0.94);
+  --bg-card:        rgba(255, 255, 255, 0.90);
+  --border-glass:   rgba(255, 255, 255, 0.85);
+  --border-light:   rgba(217, 233, 245, 0.85);
 
   /* Sombras y Glassmorphism */
-  --shadow-sm:      0 2px 8px rgba(2, 132, 199, 0.08);
-  --shadow-md:      0 8px 24px rgba(15, 23, 42, 0.10);
-  --shadow-lg:      0 16px 40px rgba(15, 23, 42, 0.16);
-  --shadow-glow:    0 0 25px rgba(2, 132, 199, 0.35);
+  --shadow-sm:      0 2px 8px rgba(39, 141, 209, 0.08);
+  --shadow-md:      0 8px 24px rgba(10, 35, 60, 0.10);
+  --shadow-lg:      0 16px 40px rgba(10, 35, 60, 0.16);
+  --shadow-glow:    0 0 25px rgba(84, 188, 232, 0.35);
 
   /* Geometría */
   --radius-sm:      8px;
@@ -64,12 +66,11 @@ body.patient-page {
   color: var(--text-main);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
-  background:
-    linear-gradient(180deg, rgba(8, 21, 35, 0.22) 0%, rgba(8, 21, 35, 0.16) 100%),
-    url('clinic-tour-bg.jpg') center/cover fixed no-repeat,
-    url('WhatsApp Image 2026-09-16 at 6.15.26 PM.jpeg') center/cover fixed no-repeat,
-    url('../../../WhatsApp Image 2026-09-16 at 6.15.26 PM.jpeg') center/cover fixed no-repeat,
-    radial-gradient(circle at 50% 20%, #ffffff 0%, #e0f2fe 100%);
+  background-color: #f0f7fd;
+  background-image:
+    linear-gradient(180deg, rgba(240, 247, 253, 0.85) 0%, rgba(240, 247, 253, 0.94) 100%),
+    url('img/fondo-clinica.png'),
+    url('/CLINIBOX/public/assets/css/img/fondo-clinica.png');
   background-attachment: fixed;
   background-size: cover;
   background-position: center;
@@ -89,10 +90,10 @@ body.patient-page {
   height: 100vh;
   display: flex;
   flex-direction: column;
-  background: linear-gradient(180deg, rgba(10, 28, 48, 0.92) 0%, rgba(8, 22, 38, 0.95) 100%);
+  background: linear-gradient(180deg, rgba(20, 61, 86, 0.96) 0%, rgba(10, 35, 60, 0.98) 100%);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border-right: 1px solid rgba(255, 255, 255, 0.12);
+  border-right: 1px solid rgba(255, 255, 255, 0.15);
   color: var(--text-light);
   overflow-y: auto;
   z-index: 60;
@@ -117,7 +118,12 @@ body.patient-page {
   width: 42px;
   height: 42px;
   border-radius: var(--radius-md);
-  background: linear-gradient(135deg, var(--primary), var(--accent));
+  background: linear-gradient(135deg, var(--primary), var(--cyan));
+  color: #fff;
+  font-size: 20px;
+  font-weight: 700;
+  box-shadow: 0 4px 14px rgba(84, 188, 232, 0.35);
+}
   font-size: 22px;
   font-weight: 900;
   color: #fff;

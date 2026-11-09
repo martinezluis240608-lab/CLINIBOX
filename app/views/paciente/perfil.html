@@ -4,11 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Portal del Paciente | CliniBox</title>
-  <link rel="stylesheet" href="patient-dashboard.css">
-  <link rel="stylesheet" href="../../../public/assets/css/patient-dashboard.css">
-  <link rel="stylesheet" href="../../../assets/css/patient-dashboard.css">
-  <link rel="stylesheet" href="/CLINIBOX/public/assets/css/patient-dashboard.css">
-  <link rel="stylesheet" href="/CLINIBOX/assets/css/patient-dashboard.css">
+  <link rel="stylesheet" href="/CLINIBOX/public/assets/css/patient-dashboard.css?v=20261108">
+  <link rel="stylesheet" href="../../../public/assets/css/patient-dashboard.css?v=20261108">
 </head>
 <body class="patient-dashboard-page">
 
@@ -20,7 +17,7 @@
   <aside class="patient-sidebar" id="patientSidebar">
 
     <!-- Marca de CliniBox con enlace al Paseo Virtual -->
-    <a class="patient-brand" href="../../../index.html" title="Volver al Paseo Virtual 360°">
+    <a class="patient-brand" href="/CLINIBOX/" title="Volver al Paseo Virtual 360°">
       <span class="patient-brand-mark">+</span>
       <div class="patient-brand-text">
         <strong>CliniBox</strong>
@@ -69,9 +66,9 @@
 
     <!-- Acciones al pie de la barra lateral -->
     <div class="patient-sidebar-footer">
-      <a class="btn-sidebar-link" href="../../../index.html" title="Regresar al escenario 360°">
+      <a class="btn-sidebar-link" href="/CLINIBOX/" title="Regresar al escenario 360°">
         <span>🏥</span>
-        <span>Regresar al Paseo Virtual</span>
+        <span>Regresar al Inicio</span>
       </a>
       <a class="btn-sidebar-link logout" href="../auth/login.html" onclick="handlePatientLogout(event)" title="Finalizar sesión actual">
         <span>🚪</span>
@@ -93,7 +90,7 @@
       </div>
       <div class="patient-top-actions">
         <span class="topbar-badge-tour">🏥 Clínica Virtual Activa</span>
-        <a class="btn btn-primary btn-sm" href="../../../index.html">
+        <a class="btn btn-primary btn-sm" href="/CLINIBOX/">
           <span>Explorar Clínica 360°</span>
         </a>
       </div>
@@ -478,8 +475,8 @@
           </p>
 
           <div style="width: 100%; border-top: 1px solid var(--border-light); padding-top: 18px; margin-top: 6px; display:flex; flex-direction:column; gap:10px;">
-            <a class="btn btn-outline" href="../../../index.html" style="width:100%;">
-              <span>🏠 Regresar al Paseo Virtual</span>
+            <a class="btn btn-outline" href="/CLINIBOX/" style="width:100%;">
+              <span>🏠 Regresar al Inicio</span>
             </a>
             <button type="button" class="btn btn-danger" style="width:100%;" onclick="handlePatientLogout(event)">
               <span>🚪 Cerrar Sesión del Paciente</span>

@@ -4,7 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Perfil Médico | CliniBox</title>
-<link rel="stylesheet" href="/clinibox/public/assets/css/perfil.css">
+<link rel="stylesheet" href="/CLINIBOX/public/assets/css/perfil.css">
+<link rel="stylesheet" href="../../../public/assets/css/perfil.css">
 
 </head>
 <body>
@@ -21,6 +22,9 @@
         <div class="dropdown-header">
             <strong>Mi cuenta</strong>
         </div>
+        <a href="/CLINIBOX/" class="dropdown-item">
+            <span>??</span> Ir al Inicio
+        </a>
         <a href="perfil.html" class="dropdown-item">
             <span>👤</span> Perfil
         </a>
@@ -339,7 +343,7 @@
     const confirmar = confirm("¿Desea cerrar sesión?");
 
     if (confirmar) {
-        window.location.href = "/clinibox/app/index.html";
+        window.location.href = "/CLINIBOX/";
     }
 }
 // MENU DE LA C
@@ -395,7 +399,7 @@ function cerrarModalSesion() {
 }
 
 function confirmarCerrarSesion() {
-    window.location.href = "../../../index.html";
+    window.location.href = "../../..//CLINIBOX/";
 }
 </script>
 </body>

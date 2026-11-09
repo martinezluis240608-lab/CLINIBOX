@@ -2,20 +2,20 @@
        ESTILOS DEL MÓDULO DE CONSULTAS - CLINIBOX MÉDICO
     ========================================================== */
     :root {
-        --primary: #0284c7;
-        --primary-hover: #0369a1;
-        --primary-light: #e0f2fe;
-        --success: #10b981;
+        --primary: #278dd1;
+        --primary-hover: #1e75b0;
+        --primary-light: #e1f5ff;
+        --success: #50c8a4;
         --success-light: #ecfdf5;
         --warning: #f59e0b;
         --warning-light: #fffbeb;
         --danger: #ef4444;
         --danger-light: #fef2f2;
-        --text-dark: #0f172a;
-        --text-muted: #080808;
+        --text-dark: #143d56;
+        --text-muted: #638096;
         --bg-page: #f8fafc;
         --bg-card: #ffffff;
-        --border: #e2e8f0;
+        --border: #d9e9f5;
         --radius: 14px;
     }
 
@@ -29,8 +29,8 @@
     /* Fondo con imagen clínica */
     background-color: var(--bg-page);
     background-image:
-        linear-gradient(rgba(248, 250, 252, 0), rgba(248, 250, 252, 0)),
-        url("/CLINIBOX/public/assets/css/img/fondo-clinica.png");
+        linear-gradient(rgba(240, 247, 253, 0.86), rgba(240, 247, 253, 0.86)),
+        url("img/fondo-clinica.png"), url("/CLINIBOX/public/assets/css/img/fondo-clinica.png");
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
