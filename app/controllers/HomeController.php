@@ -12,4 +12,9 @@ class HomeController extends Controller
         header('Location: /CLINIBOX/');
         exit;
     }
+
+    public function medicos(): void
+    {
+        $this->view('presentaciones/medicos');
+    }
 }

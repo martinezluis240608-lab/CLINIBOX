@@ -30,6 +30,9 @@ return function (Router $router): void {
     $router->post('/login', [AuthController::class, 'attempt']);
     $router->post('/logout', [AuthController::class, 'logout']);
 
+    // Presentaciones públicas de médicos
+    $router->get('/medicos', [HomeController::class, 'medicos']);
+
     // Médico
     $router->get('/medico', [MedicoController::class, 'perfil']);
     $router->get('/medico/perfil', [MedicoController::class, 'perfil']);

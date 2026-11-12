@@ -214,9 +214,9 @@
         // Usuarios autorizados
         const users = {
             'paciente@demo.com': { pass: '123456', role: 'paciente', redirect: '/CLINIBOX/app/views/paciente/agendarCita.html' },
-            'medico@demo.com':   { pass: '123456', role: 'medico',   redirect: '/CLINIBOX/app/views/medico/consultas.html' },
+            'medico@demo.com':   { pass: '123456', role: 'medico',   redirect: '/CLINIBOX/app/views/medico/pacientes.html' },
             'paciente@clinibox.test': { pass: '123456', role: 'paciente', redirect: '/CLINIBOX/app/views/paciente/agendarCita.html' },
-            'medico@clinibox.test':   { pass: '123456', role: 'medico',   redirect: '/CLINIBOX/app/views/medico/consultas.html' }
+            'medico@clinibox.test':   { pass: '123456', role: 'medico',   redirect: '/CLINIBOX/app/views/medico/pacientes.html' }
         };
 
         const user = users[email];
