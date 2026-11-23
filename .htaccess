@@ -1,0 +1,4 @@
+...<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^(?:app|database|routes|\.git|\.vscode)(?:/|$) - [F,L,NC]
+</IfModule>
