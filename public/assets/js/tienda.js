@@ -1480,6 +1480,12 @@ if (offerPrev) {
    INICIALIZAR
 ========================================================= */
 
+window.addEventListener("clinibox:cart-updated", () => {
+    cart = window.cliniboxCart.all();
+    updateCartCounter();
+    renderCart();
+});
+
 renderOffers();
 
 renderProducts();

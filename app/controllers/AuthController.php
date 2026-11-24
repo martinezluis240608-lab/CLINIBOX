@@ -14,7 +14,12 @@ class AuthController extends Controller
             $this->redirect($this->destinationFor((string) \auth_role()));
         }
 
-        $this->view('auth/login', ['title' => 'Iniciar sesion']);
+        $this->view('auth/login', [
+            'title' => 'Iniciar sesión',
+            'csrfToken' => $this->csrfToken(),
+            'error' => \flash('error'),
+            'success' => \flash('success'),
+        ]);
     }
 
     public function attempt(): void

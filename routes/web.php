@@ -104,4 +104,17 @@ return function (Router $router): void {
     // Dashboard & Admin
     $router->get('/dashboard', [DashboardController::class, 'index']);
     $router->get('/admin', [AdminController::class, 'index']);
+    $router->get('/admin/api/resumen', [AdminController::class, 'summary']);
+    $router->get('/admin/api/productos', [AdminController::class, 'productsData']);
+    $router->get('/admin/api/inventario', [AdminController::class, 'inventoryData']);
+    $router->get('/admin/api/administradores', [AdminController::class, 'administratorsData']);
+    $router->get('/admin/api/configurar', [AdminController::class, 'setupData']);
+    $router->get('/admin/productos', [AdminController::class, 'products']);
+    $router->post('/admin/productos/guardar', [AdminController::class, 'saveProduct']);
+    $router->get('/admin/inventario', [AdminController::class, 'inventory']);
+    $router->post('/admin/inventario/ajustar', [AdminController::class, 'adjustStock']);
+    $router->get('/admin/administradores', [AdminController::class, 'administrators']);
+    $router->post('/admin/administradores', [AdminController::class, 'createAdministrator']);
+    $router->get('/admin/configurar', [AdminController::class, 'setup']);
+    $router->post('/admin/configurar', [AdminController::class, 'createFirstAdministrator']);
 };

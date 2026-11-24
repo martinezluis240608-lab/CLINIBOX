@@ -560,3 +560,38 @@
     }
 
 }
+
+
+@media (max-width: 420px) {
+
+    .favorites-page {
+
+        padding: 24px 12px 40px;
+
+    }
+
+    .favorite-card {
+
+        padding: 12px;
+
+    }
+
+    .favorite-card-image {
+
+        height: 120px;
+
+    }
+
+    .favorite-card h3 {
+
+        font-size: 15px;
+
+    }
+
+    .favorite-card-price {
+
+        font-size: 16px;
+
+    }
+
+}

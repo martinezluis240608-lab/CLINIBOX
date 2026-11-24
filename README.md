@@ -25,7 +25,7 @@ app/
   controllers/    Controladores por modulo y rol
   core/           Router, controlador base, autoload y helpers
   models/         Modelos para tablas principales
-  views/          Vistas HTML separadas por modulo
+  views/          Vistas separadas por modulo, incluida administador_tienda/
 database/
   schema.sql      Tablas iniciales para MySQL
 public/
@@ -40,6 +40,7 @@ routes/
 - Medico: pacientes, consultas, recetas, expedientes clinicos, agenda, consultas virtuales y perfil.
 - Paciente: consultas, bitacora de medicamentos, mensajes con su medico, recetas y perfil.
 - Administrador: acceso general a usuarios, roles y modulos del sistema.
+- Administrador de tienda: catalogo, ventas, clientes, inventario, compras y gastos, reportes y comprobantes locales; los datos de estos modulos se guardan en IndexedDB del navegador.
 
 ## Base de datos
 
@@ -54,6 +55,8 @@ El archivo `database/schema.sql` crea la base `clinibox` y las tablas iniciales:
 - `agenda_medica`
 - `mensajes`
 - `bitacora_medicamentos`
+- `productos`
+- `movimientos_inventario`
 
 Para activar el modo de demostración en una instalación local, configura la variable de entorno `CLINIBOX_DEMO_AUTH=1` en PHP. Permite iniciar sesión sin MySQL con `paciente@demo.com` o `medico@demo.com` y la contraseña `123456`. También admite los correos equivalentes terminados en `@clinibox.test`. El registro temporal de paciente solo dura hasta el cierre de sesión. Para usar cuentas de MySQL, crea cuentas activas con contraseñas almacenadas como hash generado por `password_hash` de PHP.
 

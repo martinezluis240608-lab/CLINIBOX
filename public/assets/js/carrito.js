@@ -58,6 +58,8 @@ function guardarCarrito(
 
     renderizarCarrito();
 
+    window.dispatchEvent(new Event("clinibox:cart-updated"));
+
 }
 
 function agregarProductoAlCarrito(producto) {
@@ -991,6 +993,7 @@ document.addEventListener(
 
         renderizarCarrito();
 
+        // Las recetas usan el mismo almacenamiento y API que el resto de la tienda.
         document.querySelectorAll(".recipe-add").forEach(button => {
 
             let resetTimer;

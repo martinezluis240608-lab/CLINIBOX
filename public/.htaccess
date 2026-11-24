@@ -1,5 +1,8 @@
 RewriteEngine On
 
+# La ruta MVC /admin coincide con la carpeta fisica public/admin.
+RewriteRule ^admin/?$ index.php [QSA,L]
+
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^ index.php [QSA,L]

@@ -81,6 +81,16 @@ body {
 
 }
 
+#storeScaleWrapper {
+
+    width: 100%;
+    transform: scale(var(--store-zoom));
+    transform-origin: top center;
+    /* El ancho compensado debe permanecer centrado durante el escalado. */
+    transition: transform .2s ease;
+
+}
+
 
 button,
 input {
@@ -499,6 +509,144 @@ a {
 
 }
 
+
+.store-accessibility {
+
+    position: fixed;
+    right: 18px;
+    bottom: 22px;
+    z-index: 220;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+
+}
+
+.store-accessibility-panel {
+
+    position: absolute;
+    right: 0;
+    bottom: 58px;
+    width: 170px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px;
+    border-radius: 18px;
+    background: rgba(255,255,255,.85);
+    border: 1px solid rgba(255,255,255,.9);
+    box-shadow: 0 18px 40px rgba(3,79,131,.18);
+    backdrop-filter: blur(12px);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: .2s ease;
+
+}
+
+.store-accessibility.open .store-accessibility-panel {
+
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+
+}
+
+.store-accessibility-action {
+
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: 12px;
+    background: #f1fbff;
+    border: 1px solid rgba(16,130,220,.08);
+    color: var(--navy);
+    font-size: 12px;
+    font-weight: 700;
+    text-align: left;
+    transition: .2s ease;
+
+}
+
+.store-accessibility-action:hover {
+
+    background: #dff8ff;
+    transform: translateX(-2px);
+
+}
+
+.store-accessibility-action span {
+
+    display: inline-grid;
+    place-items: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 8px;
+    background: var(--blue);
+    color: white;
+    font-size: 16px;
+    font-weight: 800;
+
+}
+
+.store-accessibility-toggle {
+
+    position: relative;
+    z-index: 2;
+    width: 48px;
+    height: 48px;
+    display: grid;
+    place-items: center;
+    border: 0;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #0a90ea, #67d9ff);
+    color: white;
+    box-shadow: 0 14px 30px rgba(8,127,232,.28);
+    transition: .2s ease;
+
+}
+
+.store-accessibility-toggle:hover {
+
+    transform: translateY(-2px) scale(1.03);
+
+}
+
+.store-accessibility-toggle svg {
+
+    width: 22px;
+    height: 22px;
+
+}
+
+@media (max-width: 560px) {
+
+    .store-accessibility {
+
+        right: 12px;
+        bottom: 14px;
+
+    }
+
+    .store-accessibility-panel {
+
+        width: 150px;
+        padding: 9px;
+        bottom: 52px;
+
+    }
+
+    .store-accessibility-toggle {
+
+        width: 44px;
+        height: 44px;
+
+    }
+
+}
 
 
 /* CUENTA */
@@ -2492,10 +2640,14 @@ a {
 
     }
 
+    /* Las recetas siguen disponibles en pantallas compactas; la canasta lateral se reserva para escritorio. */
     .shop-right {
+        display: flex;
+        grid-column: 1 / -1;
+    }
 
+    .basket-panel {
         display: none;
-
     }
 
     .shop-header-inner {
@@ -2511,7 +2663,9 @@ a {
 
     .shop-header {
 
-        width: calc(100% - 20px);
+        width: calc(100% - 18px);
+
+        top: 8px;
 
     }
 
@@ -2519,12 +2673,17 @@ a {
 
         height: auto;
 
-        min-height: 75px;
+        min-height: 74px;
 
-        padding: 10px;
+        padding: 10px 12px;
 
-        grid-template-columns:
-            1fr auto;
+        grid-template-columns: 1fr auto;
+
+    }
+
+    .shop-logo {
+
+        min-width: 0;
 
     }
 
@@ -2536,24 +2695,28 @@ a {
 
     .shop-actions {
 
-        grid-column: 2;
+        gap: 8px;
 
-        gap: 6px;
+    }
+
+    .shop-search {
+
+        width: auto;
 
     }
 
     .shop-search.is-open {
 
         position: absolute;
-        right: 10px;
+        right: 12px;
         top: 10px;
-        width: min(260px, calc(100vw - 40px));
+        width: min(260px, calc(100vw - 70px));
 
     }
 
     .shop-layout {
 
-        width: calc(100% - 20px);
+        width: calc(100% - 18px);
 
         grid-template-columns: 1fr;
 
@@ -2565,24 +2728,64 @@ a {
 
     }
 
+    .shop-main {
+
+        gap: 14px;
+
+    }
+
+    .shop-panel {
+
+        border-radius: 22px;
+
+    }
+
     .offers-grid {
 
         grid-template-columns:
-            repeat(2,1fr);
+            repeat(2, minmax(0, 1fr));
 
     }
 
     .popular-products {
 
         grid-template-columns:
-            repeat(2,1fr);
+            repeat(2, minmax(0, 1fr));
 
     }
 
 }
 
 
-@media (max-width: 500px) {
+@media (max-width: 560px) {
+
+    .shop-header-inner {
+
+        min-height: 70px;
+
+        padding: 9px 10px;
+
+    }
+
+    .shop-logo-icon {
+
+        width: 42px;
+        height: 42px;
+
+    }
+
+    .shop-circle-button {
+
+        width: 46px;
+        height: 46px;
+
+    }
+
+    .shop-search.is-open {
+
+        width: min(210px, calc(100vw - 70px));
+
+    }
 
     .offers-grid {
 
@@ -2592,15 +2795,69 @@ a {
 
     .popular-products {
 
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    }
+
+    .offer-card,
+    .popular-product {
+
+        min-height: 220px;
+
+    }
+
+}
+
+
+@media (max-width: 420px) {
+
+    .shop-header {
+
+        width: calc(100% - 12px);
+
+    }
+
+    .shop-header-inner {
+
+        gap: 8px;
+
+    }
+
+    .shop-actions {
+
+        gap: 6px;
+
+    }
+
+    .shop-search.is-open {
+
+        width: min(180px, calc(100vw - 72px));
+
+    }
+
+    .offers-grid,
+    .popular-products {
+
+        grid-template-columns: 1fr;
 
     }
 
     .shop-circle-button {
 
         width: 43px;
-
         height: 43px;
+
+    }
+
+    .offer-name {
+
+        font-size: 14px;
+
+    }
+
+    .offer-price strong {
+
+        font-size: 17px;
 
     }
 
@@ -2897,6 +3154,318 @@ button {
 .category-filter {
     font-size: 15px !important;
     font-weight: 650 !important;
+}
+
+/* =========================================================
+   TIENDA - DISTRIBUCIÓN Y PALETA DEL PANEL CLÍNICO
+   ========================================================= */
+
+body {
+    color: #24465b;
+}
+
+.shop-background-overlay {
+    background: linear-gradient(
+        120deg,
+        rgba(229, 241, 250, .78),
+        rgba(219, 236, 248, .68),
+        rgba(239, 246, 251, .78)
+    );
+}
+
+.shop-header {
+    position: relative !important;
+    top: auto !important;
+    width: calc(100% - 48px) !important;
+    max-width: 1500px;
+    margin: 12px auto 18px;
+}
+
+.shop-header-inner {
+    height: 84px;
+    padding: 0 22px;
+    border: 1px solid rgba(255, 255, 255, .88);
+    border-radius: 28px;
+    background: rgba(235, 248, 255, .82);
+    box-shadow: 0 12px 30px rgba(37, 76, 100, .08);
+    backdrop-filter: blur(18px);
+}
+
+.shop-header .shop-logo {
+    gap: 12px;
+    padding: 0;
+    border: 0;
+    color: #123f65;
+    font-size: 25px;
+}
+
+.shop-actions {
+    gap: 9px;
+}
+
+.shop-circle-button,
+.search-toggle {
+    color: #39708c;
+    background: #f3f8fb;
+    border: 1px solid #e3edf2;
+    box-shadow: none;
+}
+
+.shop-circle-button:hover {
+    color: #208bc0;
+    background: #e8f6fc;
+    box-shadow: none;
+}
+
+.shop-search.is-open {
+    border-color: #d7e8f0;
+    background: #f8fbfd;
+    box-shadow: none;
+}
+
+.shop-layout {
+    width: calc(100% - 48px);
+    max-width: 1500px;
+    margin: 0 auto 35px;
+    grid-template-columns: 285px minmax(0, 1fr) 300px;
+    gap: 18px;
+}
+
+.shop-sidebar {
+    position: static;
+    width: auto;
+    padding: 14px;
+    border: 1px solid #e0eaf0;
+    border-radius: 24px;
+    background: rgba(255, 255, 255, .93);
+    box-shadow: 0 8px 22px rgba(37, 76, 100, .07);
+    backdrop-filter: blur(12px);
+}
+
+.shop-logo {
+    gap: 11px;
+    padding: 4px 0 20px;
+    border-bottom: 1px solid #e3edf2;
+    color: #23465d;
+    font-size: 21px;
+}
+
+.shop-logo-icon {
+    width: 44px;
+    height: 44px;
+    border: 0;
+    border-radius: 12px;
+    color: white;
+    background: #278fc2;
+    box-shadow: none;
+}
+
+.shop-logo-icon svg {
+    width: 24px;
+    height: 24px;
+}
+
+.shop-logo-text span {
+    color: #23465d;
+}
+
+.shop-logo-text small {
+    display: block;
+    margin-top: 3px;
+    color: #7b909d;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.shop-category-menu {
+    gap: 5px;
+    margin-top: 0;
+}
+
+.shop-category {
+    min-height: 55px;
+    gap: 14px;
+    padding: 0 15px;
+    border-radius: 16px;
+    color: #315671;
+    font-size: 16px;
+}
+
+.shop-category:hover {
+    transform: none;
+    background: #f3f8fb;
+}
+
+.shop-category.active {
+    color: #123f65;
+    background: linear-gradient(110deg, #a5eafb, #81d8f4);
+    box-shadow: none;
+}
+
+.category-icon {
+    width: 30px;
+    height: 30px;
+}
+
+.category-icon svg {
+    width: 19px;
+    height: 19px;
+}
+
+.shipping-box {
+    margin-top: 16px;
+    padding: 12px;
+    min-height: 66px;
+    border: 1px solid #dcecf3;
+    border-radius: 12px;
+    color: #39708c;
+    background: #f1f8fb;
+    box-shadow: none;
+}
+
+.shipping-box-icon svg {
+    width: 24px;
+    height: 24px;
+}
+
+.shipping-arrow {
+    background: white;
+}
+
+.shop-panel,
+.right-panel {
+    border: 1px solid #e0eaf0;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, .96);
+    box-shadow: 0 8px 22px rgba(37, 76, 100, .07);
+    backdrop-filter: blur(12px);
+}
+
+.shop-panel h2,
+.right-panel h2 {
+    color: #25485d;
+    font-size: 19px !important;
+    line-height: 1.3 !important;
+}
+
+.panel-header {
+    padding: 14px 16px 10px;
+}
+
+.panel-title-icon {
+    border-radius: 10px;
+    color: #278fc2;
+    background: #e8f5fb;
+}
+
+.arrow-button,
+.see-all-button {
+    border: 1px solid #e1ebf0;
+    border-radius: 10px;
+    color: #4a6879;
+    background: #f5f9fb;
+}
+
+.offer-card,
+.popular-product {
+    border: 1px solid #e3edf2;
+    border-radius: 13px;
+    background: #fff;
+    box-shadow: 0 3px 12px rgba(37, 76, 100, .05);
+}
+
+.offer-card::before {
+    background: rgba(198, 231, 245, .3);
+}
+
+.offer-tag,
+.quick-filter.active {
+    color: #2786b3;
+    background: #e7f5fa;
+    border-color: #d8edf5;
+}
+
+.offer-cart,
+.popular-add,
+.basket-button {
+    background: #278fc2;
+    box-shadow: 0 5px 12px rgba(39, 143, 194, .18);
+}
+
+.popular-product:hover {
+    background: #f9fcfd;
+}
+
+.right-panel-header {
+    border-bottom-color: #e5edf1;
+}
+
+.basket-number {
+    background: #278fc2;
+}
+
+.basket-button {
+    border-radius: 10px;
+}
+
+.recipes-panel {
+    background: rgba(255, 255, 255, .96);
+}
+
+.recipe-item {
+    border-bottom-color: #e6eef2;
+}
+
+.recipe-check {
+    background: #54a6c8;
+}
+
+@media (max-width: 1250px) {
+    .shop-layout {
+        grid-template-columns: 240px minmax(0, 1fr) 270px;
+    }
+}
+
+@media (max-width: 1050px) {
+    .shop-layout {
+        grid-template-columns: 210px minmax(0, 1fr);
+    }
+
+    .shop-right {
+        display: flex;
+        grid-column: 1 / -1;
+    }
+
+    .basket-panel {
+        display: none;
+    }
+}
+
+@media (max-width: 800px) {
+    .shop-header {
+        width: calc(100% - 20px) !important;
+        margin: 12px auto 18px;
+    }
+
+    .shop-header-inner {
+        height: auto;
+        min-height: 75px;
+        padding: 10px;
+    }
+
+    .shop-layout {
+        width: calc(100% - 20px) !important;
+        margin: 0 auto 25px;
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .shop-sidebar {
+        display: none;
+    }
+
+    .shipping-box {
+        display: none;
+    }
 }
 
 

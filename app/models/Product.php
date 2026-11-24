@@ -1,0 +1,177 @@
+<?php
+
+namespace App\Models;
+
+use DomainException;
+use Throwable;
+
+class Product extends Model
+{
+    protected string $table = 'productos';
+
+    public function summary(): array
+    {
+        $statement = $this->db->query(
+            'SELECT COUNT(*) AS product_count,
+                    COALESCE(SUM(stock), 0) AS stock_units,
+                    COALESCE(SUM(stock <= stock_minimo), 0) AS low_stock_count
+             FROM productos WHERE activo = 1'
+        );
+
+        return $statement->fetch();
+    }
+
+    public function allWithStock(string $search = ''): array
+    {
+        $statement = $this->db->prepare(
+            'SELECT id, sku, nombre, categoria, precio, stock, stock_minimo, activo
+             FROM productos
+             WHERE (:search = "" OR nombre LIKE :name_pattern OR sku LIKE :sku_pattern OR categoria LIKE :category_pattern)
+             ORDER BY nombre'
+        );
+        $statement->execute([
+            'search' => $search,
+            'name_pattern' => '%' . $search . '%',
+            'sku_pattern' => '%' . $search . '%',
+            'category_pattern' => '%' . $search . '%',
+        ]);
+
+        return $statement->fetchAll();
+    }
+
+    public function lowStock(int $limit = 8): array
+    {
+        $statement = $this->db->prepare(
+            'SELECT id, sku, nombre, stock, stock_minimo FROM productos
+             WHERE activo = 1 AND stock <= stock_minimo ORDER BY stock ASC, nombre ASC LIMIT :limit'
+        );
+        $statement->bindValue('limit', $limit, \PDO::PARAM_INT);
+        $statement->execute();
+
+        return $statement->fetchAll();
+    }
+
+    public function movements(int $limit = 50): array
+    {
+        $statement = $this->db->prepare(
+            'SELECT m.tipo, m.cantidad, m.motivo, m.created_at, p.nombre AS producto,
+                    u.nombre AS usuario
+             FROM movimientos_inventario m
+             INNER JOIN productos p ON p.id = m.producto_id
+             INNER JOIN usuarios u ON u.id = m.usuario_id
+             ORDER BY m.id DESC LIMIT :limit'
+        );
+        $statement->bindValue('limit', $limit, \PDO::PARAM_INT);
+        $statement->execute();
+
+        return $statement->fetchAll();
+    }
+
+    public function save(array $product): void
+    {
+        $statement = $this->db->prepare(
+            'UPDATE productos
+             SET sku = :sku, nombre = :nombre, categoria = :categoria, descripcion = :descripcion,
+                 precio = :precio, stock_minimo = :stock_minimo, activo = :activo
+             WHERE id = :id'
+        );
+        $statement->execute([
+            'id' => $product['id'],
+            'sku' => $product['sku'],
+            'nombre' => $product['nombre'],
+            'categoria' => $product['categoria'],
+            'descripcion' => $product['descripcion'],
+            'precio' => $product['precio'],
+            'stock_minimo' => $product['stock_minimo'],
+            'activo' => $product['activo'],
+        ]);
+    }
+
+    public function createWithStock(array $product, int $initialStock, int $userId): void
+    {
+        $this->db->beginTransaction();
+
+        try {
+            $statement = $this->db->prepare(
+                'INSERT INTO productos (sku, nombre, categoria, descripcion, precio, stock, stock_minimo, activo)
+                 VALUES (:sku, :nombre, :categoria, :descripcion, :precio, :stock, :stock_minimo, :activo)'
+            );
+            $statement->execute([
+                'sku' => $product['sku'],
+                'nombre' => $product['nombre'],
+                'categoria' => $product['categoria'],
+                'descripcion' => $product['descripcion'],
+                'precio' => $product['precio'],
+                'stock' => $initialStock,
+                'stock_minimo' => $product['stock_minimo'],
+                'activo' => $product['activo'],
+            ]);
+
+            $productId = (int) $this->db->lastInsertId();
+
+            if ($initialStock > 0) {
+                $this->recordMovement($productId, $initialStock, 'entrada', 'Stock inicial', $userId);
+            }
+
+            $this->db->commit();
+        } catch (Throwable $exception) {
+            if ($this->db->inTransaction()) {
+                $this->db->rollBack();
+            }
+
+            throw $exception;
+        }
+    }
+
+    public function adjustStock(int $productId, int $quantity, string $type, string $reason, int $userId): void
+    {
+        $this->db->beginTransaction();
+
+        try {
+            $statement = $this->db->prepare('SELECT stock FROM productos WHERE id = :id FOR UPDATE');
+            $statement->execute(['id' => $productId]);
+            $currentStock = $statement->fetchColumn();
+
+            if ($currentStock === false) {
+                throw new DomainException('El producto seleccionado ya no existe.');
+            }
+
+            $delta = $type === 'salida' ? -$quantity : $quantity;
+            $newStock = $type === 'ajuste' ? $quantity : (int) $currentStock + $delta;
+
+            if ($type === 'ajuste') {
+                $delta = $newStock - (int) $currentStock;
+            }
+
+            if ($newStock < 0) {
+                throw new DomainException('La salida no puede ser mayor que el stock disponible.');
+            }
+
+            $update = $this->db->prepare('UPDATE productos SET stock = :stock WHERE id = :id');
+            $update->execute(['stock' => $newStock, 'id' => $productId]);
+            $this->recordMovement($productId, $delta, $type, $reason, $userId);
+            $this->db->commit();
+        } catch (Throwable $exception) {
+            if ($this->db->inTransaction()) {
+                $this->db->rollBack();
+            }
+
+            throw $exception;
+        }
+    }
+
+    private function recordMovement(int $productId, int $quantity, string $type, string $reason, int $userId): void
+    {
+        $statement = $this->db->prepare(
+            'INSERT INTO movimientos_inventario (producto_id, usuario_id, tipo, cantidad, motivo)
+             VALUES (:producto_id, :usuario_id, :tipo, :cantidad, :motivo)'
+        );
+        $statement->execute([
+            'producto_id' => $productId,
+            'usuario_id' => $userId,
+            'tipo' => $type,
+            'cantidad' => $quantity,
+            'motivo' => $reason,
+        ]);
+    }
+}
