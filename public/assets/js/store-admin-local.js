@@ -2,12 +2,13 @@
     'use strict';
 
     const databaseName = 'cliniboxStoreLocal';
-    const databaseVersion = 2;
+    const databaseVersion = 3;
     const root = document.querySelector('[data-module-root]');
     const nav = document.querySelector('[data-store-nav]');
     const pageTitle = document.querySelector('[data-page-breadcrumb]');
     const titles = {
         home: 'Inicio',
+        administrators: 'Administradores',
         products: 'Productos',
         sales: 'Ventas',
         customers: 'Clientes',
@@ -32,8 +33,6 @@
             ['invoices', 'Facturación'],
             ['employees', 'Empleados IA'],
             ['inventory', 'Inventario'],
-        ]],
-        ['ADMINISTRACIÓN', [
             ['administrators', 'Administradores'],
         ]],
         ['CANALES DE VENTA', [
@@ -136,6 +135,7 @@
                 ['transactions', { keyPath: 'id' }],
                 ['invoices', { keyPath: 'saleId' }],
                 ['employees', { keyPath: 'id' }],
+                ['administrators', { keyPath: 'id' }],
                 ['announcements', { keyPath: 'id' }],
                 ['tickets', { keyPath: 'id' }],
                 ['settings', { keyPath: 'key' }],
@@ -404,8 +404,6 @@
                 <span class="admin-local-nav-caption">${caption}</span>
                 ${items.map(([page, label]) => page === 'catalog'
                     ? `<a href="/CLINIBOX/CLINIBOX/app/views/tienda/tienda.html" target="_blank" rel="noopener"><span class="admin-local-icon">${navIcons[page]}</span><span>${label}</span></a>`
-                    : page === 'administrators'
-                        ? `<a href="/CLINIBOX/CLINIBOX/public/admin/administradores"><span class="admin-local-icon">${navIcons[page]}</span><span>${label}</span></a>`
                     : `<a class="${page === activePage ? 'active' : ''}" href="#${page}" ${page === activePage ? 'aria-current="page"' : ''}><span class="admin-local-icon">${navIcons[page]}</span><span>${label}</span><span class="admin-nav-indicator"></span></a>`
                 ).join('')}
             </div>
@@ -980,6 +978,79 @@
         output.scrollIntoView({ behavior: 'smooth', block: 'start' });
     };
 
+    const renderAdministrators = async () => {
+        root.innerHTML = `
+            <header class="admin-page-heading"><div><p class="admin-eyebrow">Administración</p><h1>Administradores</h1><p class="admin-page-description">Mantén un directorio de las personas responsables de la tienda.</p></div></header>
+            <div class="admin-team-banner"><span class="admin-team-icon" aria-hidden="true">i</span><span><strong>Directorio local</strong><small>Estos registros se guardan en este navegador; no crean credenciales ni conceden acceso al sistema.</small></span></div>
+            <section class="admin-panel admin-form-panel"><div class="admin-panel-heading"><div><span class="admin-section-kicker">EQUIPO ADMINISTRADOR</span><h2>Agregar administrador</h2><p>Registra el nombre y correo de una persona responsable.</p></div></div>
+                <form class="admin-form-grid admin-user-form" data-administrator-form>
+                    <label class="admin-field"><span>Nombre completo <i>*</i></span><input name="nombre" maxlength="120" autocomplete="name" required></label>
+                    <label class="admin-field"><span>Correo electrónico <i>*</i></span><input name="email" type="email" maxlength="160" autocomplete="email" required></label>
+                    <div class="admin-form-actions"><button class="admin-button" type="submit">Guardar administrador</button></div>
+                </form>
+            </section>
+            <section class="admin-panel"><div class="admin-panel-heading"><div><span class="admin-section-kicker">DIRECTORIO DE TIENDA</span><h2>Administradores registrados <span class="admin-count" data-administrator-count>0</span></h2><p>Estado y fecha de registro local.</p></div></div>
+                <div class="admin-table-scroll"><table class="admin-table"><thead><tr><th>Administrador</th><th>Correo electrónico</th><th>Fecha de alta</th><th>Estado</th><th></th></tr></thead><tbody data-administrator-rows></tbody></table></div>
+                <div class="admin-table-footer">Mostrando <strong data-administrator-count>0</strong> administradores</div>
+            </section>`;
+        try {
+            const administrators = await getAll('administrators');
+            const rows = root.querySelector('[data-administrator-rows]');
+            const draw = () => {
+                const activeCount = administrators.filter((administrator) => administrator.activo).length;
+                root.querySelectorAll('[data-administrator-count]').forEach((counter) => {
+                    counter.textContent = String(administrators.length);
+                });
+                rows.innerHTML = administrators.length ? administrators.map((administrator) => `<tr>
+                    <td><span class="admin-user-cell"><span class="admin-avatar admin-avatar-table">${escapeHtml(administrator.nombre.charAt(0).toUpperCase())}</span><strong>${escapeHtml(administrator.nombre)}</strong></span></td>
+                    <td>${escapeHtml(administrator.email)}</td><td>${escapeHtml(dateLabel(administrator.createdAt))}</td>
+                    <td><span class="admin-badge ${administrator.activo ? 'badge-success' : 'badge-neutral'}">${administrator.activo ? 'Activo' : 'Inactivo'}</span></td>
+                    <td><button class="admin-row-link" type="button" data-administrator="${escapeHtml(administrator.id)}">${administrator.activo ? 'Desactivar' : 'Activar'}</button></td>
+                </tr>`).join('') : makeEmptyRow(5, 'Sin administradores registrados', 'Agrega a las personas responsables de la tienda.');
+                root.querySelector('.admin-table-footer').innerHTML = `Mostrando <strong>${administrators.length}</strong> administradores · <strong>${activeCount}</strong> activos`;
+                for (const button of rows.querySelectorAll('[data-administrator]')) {
+                    button.addEventListener('click', async () => {
+                        const administrator = administrators.find((item) => item.id === button.dataset.administrator);
+                        if (!administrator) return;
+                        administrator.activo = administrator.activo ? 0 : 1;
+                        try {
+                            await putRecord('administrators', administrator);
+                            await renderAdministrators();
+                        } catch (error) {
+                            feedback(error.message, true);
+                        }
+                    });
+                }
+            };
+            root.querySelector('[data-administrator-form]').addEventListener('submit', async (event) => {
+                event.preventDefault();
+                const values = new FormData(event.currentTarget);
+                const nombre = String(values.get('nombre')).trim();
+                const email = String(values.get('email')).trim();
+                if (!nombre || !email) {
+                    feedback('Escribe el nombre y el correo electrónico del administrador.', true);
+                    return;
+                }
+                if (administrators.some((administrator) => administrator.email.toLocaleLowerCase('es-MX') === email.toLocaleLowerCase('es-MX'))) {
+                    feedback('Ya existe un administrador registrado con ese correo.', true);
+                    return;
+                }
+                try {
+                    await putRecord('administrators', {
+                        id: newId(), nombre, email, activo: 1, createdAt: new Date().toISOString(),
+                    });
+                    feedback('Administrador guardado en este navegador.');
+                    await renderAdministrators();
+                } catch (error) {
+                    feedback(error.message, true);
+                }
+            });
+            draw();
+        } catch (error) {
+            feedback(error.message, true);
+        }
+    };
+
     const renderEmployees = async () => {
         root.innerHTML = `
             <header class="admin-page-heading"><div><p class="admin-eyebrow">Equipo de tienda</p><h1>Empleados IA</h1><p class="admin-page-description">Gestiona el directorio y estado del equipo en este navegador.</p></div></header>
@@ -1140,6 +1211,7 @@
         const page = location.hash.slice(1) || 'home';
         const handlers = {
             home: renderHome,
+            administrators: renderAdministrators,
             products: renderProducts,
             sales: renderSales,
             customers: renderCustomers,
