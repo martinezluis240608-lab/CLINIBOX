@@ -14,7 +14,7 @@
     <!-- LADO IZQUIERDO: BRANDING -->
     <aside class="auth-brand">
         <div class="auth-brand-content">
-            <a href="/CLINIBOX/public/" class="auth-logo" style="text-decoration:none;color:inherit;" title="Volver al inicio">
+            <a href="/CLINIBOX/" class="auth-logo" style="text-decoration:none;color:inherit;" title="Volver al inicio">
                 <div class="brand-mark" style="background: linear-gradient(135deg, #278dd1, #54bce8); color: white;">✚</div>
                 <div>
                     <strong>CliniBox</strong>
@@ -114,29 +114,19 @@
 <div class="modal-overlay" id="registerModal">
     <div class="modal-card">
         <div class="modal-header">
-            <h3>Crear cuenta en CliniBox</h3>
+            <h3>Registro temporal de paciente</h3>
             <button class="close-btn" onclick="closeRegister()">&times;</button>
         </div>
-        <form onsubmit="handleRegister(event)">
+        <form method="post" action="/CLINIBOX/public/registro-demo">
             <div class="modal-body">
+                <p>El registro de demostración dura hasta que cierres sesión. Para volver a entrar, puedes usar paciente@demo.com con la contraseña 123456.</p>
                 <div class="form-group">
                     <label for="regName">Nombre completo *</label>
-                    <input type="text" id="regName" class="form-control" placeholder="Ej. Carlos Mendoza" required>
+                    <input type="text" id="regName" name="name" class="form-control" maxlength="120" required>
                 </div>
                 <div class="form-group">
                     <label for="regEmail">Correo electrónico *</label>
-                    <input type="email" id="regEmail" class="form-control" placeholder="tucorreo@clinica.com" required>
-                </div>
-                <div class="form-group">
-                    <label for="regPass">Contraseña *</label>
-                    <input type="password" id="regPass" class="form-control" placeholder="Mínimo 6 caracteres" minlength="6" required>
-                </div>
-                <div class="form-group">
-                    <label for="regRole">Tipo de cuenta</label>
-                    <select id="regRole" class="form-control">
-                        <option value="paciente">Paciente</option>
-                        <option value="medico">Médico</option>
-                    </select>
+                    <input type="email" id="regEmail" name="email" class="form-control" maxlength="160" required>
                 </div>
             </div>
             <div class="modal-footer">
@@ -156,10 +146,6 @@
         input.type = input.type === 'password' ? 'text' : 'password';
     }
 
-    const loginError = new URLSearchParams(window.location.search).get('error');
-    if (loginError === '1') {
-        showToast('No se pudo iniciar sesión. Revisa tus datos o intenta más tarde.', 'error');
-    }
     function openForgot(e) {
         e.preventDefault();
         document.getElementById('forgotModal').classList.add('active');
@@ -176,20 +162,12 @@
     }
 
     function openRegister(e) {
-        e.preventDefault();
+        if (e) e.preventDefault();
         document.getElementById('registerModal').classList.add('active');
     }
     function closeRegister() {
         document.getElementById('registerModal').classList.remove('active');
     }
-    function handleRegister(e) {
-        e.preventDefault();
-        const name = document.getElementById('regName').value.trim();
-        showToast(`Cuenta creada para ${name}. Ya puedes iniciar sesión.`, 'success');
-        closeRegister();
-        e.target.reset();
-    }
-
     let toastTimer;
     function showToast(msg, type = 'info') {
         const t = document.getElementById('toast');
@@ -198,6 +176,13 @@
         clearTimeout(toastTimer);
         toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
     }
+
+    const loginParams = new URLSearchParams(window.location.search);
+    const loginError = loginParams.get("error");
+    if (loginError === "1" || loginError === "credenciales") showToast("Correo o contraseña incorrectos.", "error");
+    if (loginError === "servicio") showToast("El servicio de acceso no está disponible.", "error");
+    if (loginError === "registro") showToast("No se pudo completar el registro temporal.", "error");
+    if (loginParams.get("registro") === "1") openRegister();
 
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {

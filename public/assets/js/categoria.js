@@ -518,6 +518,18 @@ let listaProductos =
     productos[categoriaURL] ||
     productos["medicamentos"];
 
+const productoURL = params.get("producto");
+if (categoriaURL === "medicamentos" && productoURL) {
+    listaProductos = listaProductos.filter(
+        producto => getCategoryFavoriteId(producto) === `medicamentos:${productoURL}`
+    );
+}
+
+const pharmacyReturnLink = document.getElementById("pharmacyReturnLink");
+if (pharmacyReturnLink && params.get("origen") === "farmacia") {
+    pharmacyReturnLink.hidden = false;
+}
+
 const todosLosProductos =
     Object.entries(productos).flatMap(
         ([categoryKey, categoryProducts]) =>

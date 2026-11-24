@@ -28,7 +28,16 @@
 html { scroll-behavior: smooth; }
 body {
     font-family: var(--font);
-    background: var(--bg-page);
+    background-color: #f0f7fd;
+    background-image:
+        linear-gradient(rgba(240, 247, 253, 0.88), rgba(240, 247, 253, 0.94)),
+        url("img/fondo-clinica.png"),
+        url("/CLINIBOX/public/assets/css/img/fondo-clinica.png"),
+        url("/CLINIBOX/public/assets/img/fondo-clinica.png");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
     color: var(--text-dark);
     line-height: 1.6;
     min-height: 100vh;

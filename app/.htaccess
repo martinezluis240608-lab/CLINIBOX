@@ -1,2 +1,3 @@
 RewriteEngine On
+RewriteRule ^views/paciente(?:/|$) - [F,L]
 RewriteRule ^(index\.html)?$ /CLINIBOX/ [R=301,L]

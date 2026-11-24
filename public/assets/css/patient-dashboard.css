@@ -42,8 +42,7 @@
   --radius-md:      14px;
   --radius-lg:      22px;
   --radius-pill:    9999px;
-  --sidebar-w:      270px;
-  --topbar-h:       68px;
+  --sidebar-w:      clamp(235px, 17vw, 290px);
 
   /* Transición */
   --transition:     all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
@@ -84,288 +83,175 @@ body.patient-page {
 }
 
 /* ── 4. BARRA LATERAL (SIDEBAR DE CRISTAL CLÍNICO) ────────────────────────── */
+/* Barra lateral del portal */
 .patient-sidebar {
   position: sticky;
   top: 0;
+  z-index: 5;
   height: 100vh;
-  display: flex;
-  flex-direction: column;
-  background: linear-gradient(180deg, rgba(20, 61, 86, 0.96) 0%, rgba(10, 35, 60, 0.98) 100%);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-right: 1px solid rgba(255, 255, 255, 0.15);
-  color: var(--text-light);
+  padding: 24px 16px;
   overflow-y: auto;
-  z-index: 60;
-  box-shadow: 4px 0 24px rgba(8, 21, 35, 0.15);
-  transition: var(--transition);
+  background: #fff;
+  border-right: 1px solid var(--border-light);
 }
 
-/* Marca de la clínica */
 .patient-brand {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 22px 20px;
+  padding: 0 0 24px;
+  margin-bottom: 28px;
+  border-bottom: 1px solid var(--border-light);
+  color: var(--text-main);
   text-decoration: none;
-  color: #fff;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+  list-style: none;
+}
+
+.patient-brand::-webkit-details-marker {
+  display: none;
+}
+
+.patient-brand:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+}
+
+.patient-account-menu {
+  position: relative;
+}
+
+.patient-account-chevron {
+  width: 8px;
+  height: 8px;
+  margin: 0 5px 4px auto;
+  border: solid var(--text-muted);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.patient-account-menu[open] .patient-account-chevron {
+  margin-bottom: 0;
+  transform: rotate(225deg);
 }
 
 .patient-brand-mark {
   display: grid;
   place-items: center;
-  width: 42px;
-  height: 42px;
-  border-radius: var(--radius-md);
-  background: linear-gradient(135deg, var(--primary), var(--cyan));
+  flex: 0 0 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--primary);
   color: #fff;
-  font-size: 20px;
-  font-weight: 700;
-  box-shadow: 0 4px 14px rgba(84, 188, 232, 0.35);
+  font-size: 1.4rem;
+  font-weight: 800;
 }
-  font-size: 22px;
-  font-weight: 900;
-  color: #fff;
-  box-shadow: 0 4px 14px rgba(2, 132, 199, 0.4);
-  flex-shrink: 0;
+
+.patient-brand-text strong,
+.patient-brand-text small {
+  display: block;
 }
 
 .patient-brand-text strong {
-  display: block;
   font-size: 1.15rem;
-  letter-spacing: -0.02em;
 }
 
 .patient-brand-text small {
-  display: block;
-  font-size: 0.74rem;
-  color: rgba(224, 242, 254, 0.75);
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  color: var(--text-muted);
+  font-size: 0.82rem;
 }
 
-/* Ficha del paciente en la barra lateral */
-.sidebar-patient-info {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 16px 20px;
-  margin: 12px 14px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.09);
-  border-radius: var(--radius-md);
-}
-
-.sp-avatar {
-  position: relative;
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--primary), var(--accent));
-  display: grid;
-  place-items: center;
-  font-weight: 800;
-  color: #fff;
-  font-size: 0.95rem;
-  flex-shrink: 0;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-}
-
-.sp-online-dot {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  width: 11px;
-  height: 11px;
-  border-radius: 50%;
-  background: var(--accent);
-  border: 2px solid #081523;
-}
-
-.sp-details {
-  overflow: hidden;
-}
-
-.sp-name {
-  display: block;
-  font-size: 0.92rem;
-  font-weight: 700;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.sp-role {
-  display: inline-block;
-  font-size: 0.72rem;
-  color: #7dd3fc;
-  font-weight: 600;
-}
-
-/* Título de sección de navegación */
-.nav-section-title {
-  padding: 14px 20px 6px;
-  font-size: 0.72rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: rgba(148, 163, 184, 0.8);
-}
-
-/* Lista simplificada de 5 opciones principales */
 .nav-list {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  padding: 0 12px;
+  gap: 3px;
+}
+
+.patient-account {
+  position: absolute;
+  top: calc(100% + 12px);
+  inset-inline: 0;
+  z-index: 1;
+  padding: 8px;
+  background: #fff;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+}
+
+.patient-account p {
+  padding: 5px 10px 8px;
+  border-bottom: 1px solid var(--border-light);
+  color: var(--text-muted);
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 .nav-list a {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px 16px;
-  border-radius: var(--radius-md);
-  color: rgba(241, 245, 249, 0.85);
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  color: var(--text-main);
   font-size: 0.92rem;
   font-weight: 600;
   text-decoration: none;
-  transition: var(--transition);
-  position: relative;
 }
 
-.nav-list a .ni-icon {
-  font-size: 1.15rem;
-  line-height: 1;
-  display: grid;
-  place-items: center;
-  width: 24px;
-}
-
-.nav-list a:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: #fff;
-  transform: translateX(3px);
+.nav-list a:hover,
+.nav-list a.active {
+  background: var(--primary-light);
 }
 
 .nav-list a.active {
-  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-  color: #fff;
-  font-weight: 700;
-  box-shadow: 0 4px 16px rgba(2, 132, 199, 0.45);
+  color: #17679c;
 }
 
-.nav-badge {
-  margin-left: auto;
-  font-size: 0.72rem;
-  font-weight: 800;
-  background: var(--accent);
-  color: #fff;
-  padding: 2px 7px;
-  border-radius: var(--radius-pill);
+.nav-list a.logout {
+  color: #b42318;
 }
 
-/* Pie de barra lateral (Cerrar sesión & Volver al paseo) */
-.patient-sidebar-footer {
-  margin-top: auto;
-  padding: 16px 14px 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+.appointment-form-layout {
+  width: min(100%, 680px);
 }
 
-.btn-sidebar-link {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  width: 100%;
-  padding: 10px 14px;
-  border-radius: var(--radius-md);
-  background: rgba(255, 255, 255, 0.07);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #e0f2fe;
-  font-size: 0.85rem;
-  font-weight: 600;
-  text-decoration: none;
-  cursor: pointer;
-  transition: var(--transition);
+.glass-panel.appointment-auth-dialog {
+  position: fixed;
+  inset: 0;
+  height: fit-content;
+  width: min(440px, calc(100% - 32px));
+  margin: auto;
+  padding: 24px;
 }
 
-.btn-sidebar-link:hover {
-  background: rgba(255, 255, 255, 0.14);
-  color: #fff;
+.appointment-auth-dialog p {
+  margin: 12px 0 16px;
 }
 
-.btn-sidebar-link.logout {
-  color: #fca5a5;
-  border-color: rgba(239, 68, 68, 0.25);
-  background: rgba(239, 68, 68, 0.08);
+.appointment-auth-dialog::backdrop {
+  background: rgba(20, 61, 86, 0.45);
 }
 
-.btn-sidebar-link.logout:hover {
-  background: rgba(239, 68, 68, 0.22);
-  color: #fff;
-}
-
-/* ── 5. ÁREA DE CONTENIDO PRINCIPAL ───────────────────────────────────────── */
 .patient-main {
   display: flex;
   flex-direction: column;
+  min-width: 0;
   min-height: 100vh;
-  position: relative;
-  z-index: 10;
-  padding: 24px clamp(16px, 3.5vw, 42px);
-  gap: 24px;
-}
-
-/* Cabecera superior */
-.patient-topbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 14px 22px;
-  background: rgba(255, 255, 255, 0.90);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid var(--border-glass);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-md);
-}
-
-.topbar-left {
-  display: flex;
-  align-items: center;
-  gap: 14px;
+  padding: clamp(22px, 3vw, 36px) clamp(16px, 3vw, 46px);
+  gap: 20px;
 }
 
 .topbar-section-title {
-  font-size: 1.15rem;
-  font-weight: 800;
   color: var(--text-main);
-  letter-spacing: -0.02em;
+  font-size: clamp(1.45rem, 2.2vw, 2rem);
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
 }
 
-.topbar-badge-tour {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 4px 10px;
-  border-radius: var(--radius-pill);
-  background: var(--primary-light);
-  color: var(--primary-dark);
-  font-size: 0.75rem;
-  font-weight: 700;
-}
-
-.patient-top-actions {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-/* Paneles de Cristal (Glassmorphism oficial) */
 .glass-panel {
   background: var(--bg-surface);
   backdrop-filter: blur(16px);
@@ -689,36 +575,211 @@ body.patient-page {
   box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.2);
 }
 
-/* Selector interactivo de horarios */
-.slot-chips-wrap {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 8px;
+/* Calendario y disponibilidad de citas */
+.appointment-calendar-section[hidden] {
+  display: none;
 }
 
-.slot-chip {
-  padding: 7px 14px;
-  border-radius: var(--radius-pill);
-  background: rgba(2, 132, 199, 0.08);
-  border: 1px solid rgba(2, 132, 199, 0.2);
+.appointment-calendar {
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  background: #ffffff;
+  padding: 12px;
+}
+
+.appointment-calendar-header {
+  display: grid;
+  grid-template-columns: 36px 1fr 36px;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 10px;
+  color: var(--text-main);
+}
+
+.appointment-calendar-nav {
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--border-light);
+  border-radius: 50%;
+  background: #fff;
   color: var(--primary-dark);
+  font-size: 1.35rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.appointment-calendar-nav:hover:not(:disabled) {
+  border-color: var(--primary);
+  background: var(--primary-light);
+}
+
+.appointment-calendar-nav:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.appointment-calendar-weekdays,
+.appointment-calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: clamp(2px, 0.7vw, 6px);
+  text-align: center;
+}
+
+.appointment-calendar-weekdays {
+  margin-bottom: 5px;
+  color: #6b8fa6;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.appointment-calendar-day {
+  min-height: 40px;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: #f8fafc;
+  color: var(--text-main);
+  font: inherit;
   font-size: 0.82rem;
   font-weight: 700;
   cursor: pointer;
-  transition: var(--transition);
 }
 
-.slot-chip:hover {
-  background: rgba(2, 132, 199, 0.16);
+.appointment-calendar-day:hover:not(:disabled) {
+  border-color: var(--primary);
+  background: var(--primary-light);
+}
+
+.appointment-calendar-day[aria-current="date"]:not(:disabled) {
   border-color: var(--primary);
 }
 
-.slot-chip.selected {
-  background: var(--primary);
+.appointment-calendar-day.selected,
+.appointment-calendar-day.selected:hover:not(:disabled) {
+  border-color: var(--primary-dark);
+  background: var(--primary-dark);
+  color: #ffffff;
+}
+
+.appointment-calendar-day:disabled,
+.appointment-calendar-day.empty {
+  background: transparent;
+  color: #cbd5e1;
+  cursor: not-allowed;
+}
+
+.appointment-calendar-day.empty {
+  border: 0;
+}
+
+/* Selector interactivo de horarios */
+.appointment-clock {
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.appointment-clock:empty {
+  display: none;
+}
+
+.appointment-clock-face {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: min(100%, 250px);
+  aspect-ratio: 1;
+  border: 1px solid var(--border-light);
+  border-radius: 50%;
+  background: var(--primary-light);
+}
+
+.appointment-clock-display {
+  color: var(--text-main);
+  font-size: 1rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.appointment-clock-options {
+  display: flex;
+  gap: 8px;
+}
+
+.appointment-clock-hour,
+.appointment-clock-option {
+  min-height: 36px;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-pill);
+  background: var(--bg-card);
+  color: var(--primary-dark);
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.appointment-clock-hour {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: min(17%, 40px);
+  aspect-ratio: 1;
+  min-height: 0;
+  padding: 0;
+}
+
+.appointment-clock-option {
+  min-width: 52px;
+}
+
+.appointment-clock button:hover:not(:disabled) {
+  border-color: var(--primary);
+}
+
+.appointment-clock button[aria-pressed="true"] {
+  background: var(--primary-dark);
   border-color: var(--primary-dark);
   color: #fff;
-  box-shadow: 0 2px 8px rgba(2, 132, 199, 0.35);
+}
+
+.appointment-clock button:disabled {
+  background: transparent;
+  color: var(--text-muted);
+  opacity: 0.65;
+  cursor: default;
+}
+
+.appointment-schedule-hint,
+.appointment-availability-message {
+  margin-top: 7px;
+  color: #6b8fa6;
+  font-size: 0.82rem;
+}
+
+.appointment-booking-form .form-group-clean input:disabled {
+  background: #f1f5f9;
+  color: #6b8fa6;
+  cursor: not-allowed;
+}
+
+.appointment-booking-form [data-appointment-submit]:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+  box-shadow: none;
+}
+
+.appointment-feedback {
+  margin-bottom: 14px;
+  padding: 10px 14px;
+  border: 1px solid #10b981;
+  border-radius: var(--radius-sm);
+  background: #d1fae5;
+  color: #065f46;
+  font-size: 0.85rem;
+  font-weight: 700;
 }
 
 /* Lista de citas existentes */
@@ -974,67 +1035,383 @@ body.patient-page {
   border-color: var(--primary);
 }
 
-/* ── 10. SECCIÓN 5: MI PERFIL (EXPEDIENTE CLÍNICO) ────────────────────────── */
+/* ── 10. SECCIÓN 5: MI PERFIL (EXPEDIENTE Y CARNET DE SALUD) ──────────────── */
 .profile-unified-grid {
   display: grid;
-  grid-template-columns: 0.85fr 1.15fr;
+  grid-template-columns: 0.9fr 1.1fr;
   gap: 22px;
+  align-items: start;
 }
 
-@media (max-width: 860px) {
+@media (max-width: 900px) {
   .profile-unified-grid {
     grid-template-columns: 1fr;
   }
 }
 
+/* Ficha del Paciente (Tarjeta Izquierda) */
 .profile-badge-card {
-  padding: 28px 24px;
+  padding: 24px;
+}
+
+.profile-avatar-banner {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  text-align: center;
-  gap: 12px;
+  gap: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border-light);
+  margin-bottom: 16px;
 }
 
 .profile-big-avatar {
-  width: 90px;
-  height: 90px;
+  width: 64px;
+  height: 64px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--primary), var(--accent));
-  color: #fff;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #ffffff;
   display: grid;
   place-items: center;
-  font-size: 2.2rem;
+  font-size: 1.5rem;
   font-weight: 800;
-  box-shadow: 0 8px 24px rgba(2, 132, 199, 0.35);
+  box-shadow: 0 4px 14px rgba(2, 132, 199, 0.35);
+  flex-shrink: 0;
 }
 
-.profile-data-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 14px;
+.profile-avatar-info h2 {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin: 0 0 2px 0;
 }
 
-.profile-field-box {
-  padding: 14px;
-  background: #ffffff;
+.profile-avatar-info p {
+  font-size: 0.82rem;
+  color: var(--primary);
+  font-weight: 700;
+  margin: 0;
+}
+
+.profile-avatar-info small {
+  font-size: 0.74rem;
+  color: var(--text-muted);
+}
+
+.profile-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.profile-details {
+  margin-top: 10px;
   border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  background: var(--bg-card);
+}
+
+.profile-details > summary {
+  padding: 12px 14px;
+  color: var(--primary-dark);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.profile-details > summary:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
   border-radius: var(--radius-md);
 }
 
+.profile-details > :not(summary) {
+  margin: 0 14px 14px;
+}
+
+.profile-field-box.profile-field-alert {
+  border-left: 3px solid var(--danger);
+}
+
+.profile-field-box.profile-field-alert strong {
+  color: var(--danger);
+  font-size: 1.05rem;
+}
+
+.profile-data-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.profile-field-box {
+  padding: 12px 14px;
+  background: #ffffff;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  transition: var(--transition);
+}
+
+.profile-field-box:hover {
+  border-color: var(--primary);
+  box-shadow: var(--shadow-sm);
+}
+
 .profile-field-box small {
-  display: block;
-  font-size: 0.74rem;
+  font-size: 0.72rem;
   font-weight: 700;
   text-transform: uppercase;
+  letter-spacing: 0.04em;
   color: var(--text-muted);
 }
 
 .profile-field-box strong {
-  display: block;
   font-size: 0.95rem;
   color: var(--text-main);
-  margin-top: 2px;
+  word-break: break-word;
+}
+
+.profile-field-box p {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin: 0;
+  line-height: 1.35;
+}
+
+/* Grillas de Métricas y Datos Médicos (Tarjeta Derecha) */
+.profile-field-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+@media (max-width: 600px) {
+  .profile-field-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.profile-notice-box {
+  padding: 14px 16px;
+  background: rgba(2, 132, 199, 0.05);
+  border: 1px solid rgba(2, 132, 199, 0.15);
+  border-radius: var(--radius-md);
+  margin-top: 18px;
+}
+
+.profile-notice-box strong {
+  font-size: 0.88rem;
+  color: var(--primary-dark);
+  display: block;
+  margin-bottom: 4px;
+}
+
+.profile-notice-box p {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* 9. Modal de Edición del Perfil (Exclusivo de Mi Perfil) */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: none !important;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.modal-overlay.active {
+  display: flex !important;
+}
+
+.modal-card {
+  background: #ffffff;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.25);
+  width: 100%;
+  max-width: 560px;
+  max-height: 90vh;
+  overflow-y: auto;
+  border: 1px solid #e2e8f0;
+  animation: modalFadeIn 0.25s ease-out;
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; transform: scale(0.96) translateY(8px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.modal-header h3 {
+  font-size: 1.2rem;
+  color: var(--text-main);
+  font-weight: 800;
+  margin: 0;
+}
+
+.modal-header .close-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  line-height: 1;
+}
+
+.modal-body {
+  padding: 20px 24px;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 16px 24px;
+  background: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+}
+
+.edit-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+@media (max-width: 540px) {
+  .edit-form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.edit-form-full {
+  grid-column: 1 / -1;
+}
+
+.edit-form-section-title {
+  grid-column: 1 / -1;
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--primary);
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 4px;
+  margin-top: 8px;
+}
+
+.form-group-modal {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.form-group-modal label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.form-group-modal input,
+.form-group-modal select {
+  padding: 10px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.form-group-modal input:focus,
+.form-group-modal select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(39, 141, 209, 0.15);
+}
+
+/* 10. Toast de Mensajes */
+.patient-toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 1200;
+  padding: 14px 20px;
+  background: #143d56;
+  color: #ffffff;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+.patient-toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.patient-toast.success {
+  background: #065f46;
+  border-left: 4px solid #10b981;
+}
+
+/* 11. Estilos de Impresión (@media print) */
+@media print {
+  .patient-sidebar,
+  .patient-topbar,
+  .btn,
+  .modal-overlay,
+  .patient-toast {
+    display: none !important;
+  }
+
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+
+  .app-shell.patient-shell {
+    display: block !important;
+  }
+
+  .patient-main {
+    padding: 0 !important;
+  }
+
+  .patient-panel-section {
+    display: block !important;
+  }
+
+  .profile-unified-grid {
+    display: block !important;
+  }
+
+  .glass-panel {
+    border: 1px solid #ccc !important;
+    box-shadow: none !important;
+    margin-bottom: 15px !important;
+    page-break-inside: avoid;
+  }
 }
 
 /* ── 11. BOTONES Y CONTROLES CLÍNICOS ─────────────────────────────────────── */
@@ -1112,20 +1489,24 @@ body.patient-page {
   }
 
   .patient-sidebar {
-    position: fixed;
-    top: 0;
-    left: -280px;
-    width: 270px;
-    height: 100vh;
-    transition: left 0.3s ease;
+    position: static;
+    height: auto;
+    overflow: visible;
+    padding: 16px;
+    border-right: 0;
+    border-bottom: 1px solid var(--border-light);
   }
 
-  .patient-sidebar.mobile-open {
-    left: 0;
+  .patient-brand {
+    padding-bottom: 12px;
+    margin-bottom: 12px;
   }
 
-  .btn-mobile-menu {
-    display: inline-flex !important;
+  .patient-sidebar nav .nav-list {
+    flex-flow: row wrap;
+  }
+
+  .patient-account {
+    max-width: 320px;
   }
 }
-

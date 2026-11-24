@@ -4,79 +4,40 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Mensajes con Médico | CliniBox Paciente</title>
-  <link rel="stylesheet" href="/CLINIBOX/public/assets/css/patient-dashboard.css?v=20261108">
-  <link rel="stylesheet" href="../../../public/assets/css/patient-dashboard.css?v=20261108">
+  <link rel="stylesheet" href="/CLINIBOX/public/assets/css/patient-dashboard.css?v=patient-layout-4">
+  <link rel="stylesheet" href="../../../public/assets/css/patient-dashboard.css?v=patient-layout-4">
 </head>
 <body class="patient-dashboard-page">
 <div class="app-shell patient-shell">
-  <aside class="patient-sidebar" id="patientSidebar">
-    <a class="patient-brand" href="/CLINIBOX/" title="Volver al Paseo Virtual 360°">
-      <span class="patient-brand-mark">+</span>
-      <div class="patient-brand-text">
-        <strong>CliniBox</strong>
-        <small>Portal del Paciente</small>
+  <aside class="patient-sidebar">
+    <details class="patient-account-menu">
+      <summary class="patient-brand" aria-label="CliniBox, Portal del paciente, Mi cuenta">
+        <span class="patient-brand-mark" aria-hidden="true">C</span>
+        <span class="patient-brand-text"><strong>CliniBox</strong><small>Portal del paciente</small></span>
+        <span class="patient-account-chevron" aria-hidden="true"></span>
+      </summary>
+      <div class="patient-account nav-list" aria-labelledby="patientAccountTitle">
+        <p id="patientAccountTitle">Mi cuenta</p>
+        <a href="/CLINIBOX/">Ir al Inicio</a>
+        <a href="/CLINIBOX/public/paciente/perfil">Mi Perfil</a>
+        <a class="logout" href="/CLINIBOX/public/login" onclick="handlePatientLogout(event)">Cerrar sesión</a>
       </div>
-    </a>
-
-    <div class="sidebar-patient-info">
-      <div class="sp-avatar">
-        <span>CM</span>
-        <span class="sp-online-dot"></span>
+    </details>
+    <nav aria-label="Navegación del paciente">
+      <div class="nav-list">
+        <a href="/CLINIBOX/public/paciente/inicio">Resumen del paciente</a>
+        <a href="/CLINIBOX/public/citas">Agendar cita</a>
+        <a href="/CLINIBOX/public/paciente/consultas">Citas agendadas</a>
+        <a href="/CLINIBOX/public/paciente/medicamentos">Farmacia</a>
+        <a href="/CLINIBOX/public/paciente/recetas">Recetas</a>
+        <a href="/CLINIBOX/public/paciente/mensajes" class="active" aria-current="page">Mensajes</a>
       </div>
-      <div class="sp-details">
-        <span class="sp-name">Carlos Mendoza</span>
-        <span class="sp-role">ID: CLB-8834 • Activo</span>
-      </div>
-    </div>
-
-    <div class="nav-section-title">Menú del Paciente</div>
-    <nav class="nav-list" aria-label="Navegación principal">
-      <a href="perfil.html#inicio">
-        <span class="ni-icon">🏠</span>
-        <span>Inicio</span>
-      </a>
-      <a href="agendarCita.html">
-        <span class="ni-icon">📅</span>
-        <span>Citas Médicas</span>
-        <span class="nav-badge">1</span>
-      </a>
-      <a href="perfil.html#recetas">
-        <span class="ni-icon">💊</span>
-        <span>Farmacia y Recetas</span>
-        <span class="nav-badge">2</span>
-      </a>
-      <a href="mensajes.html" class="active">
-        <span class="ni-icon">💬</span>
-        <span>Mensajes</span>
-      </a>
-      <a href="perfil.html">
-        <span class="ni-icon">👤</span>
-        <span>Mi Perfil</span>
-      </a>
     </nav>
-
-    <div class="patient-sidebar-footer">
-      <a class="btn-sidebar-link" href="/CLINIBOX/">
-        <span>🏥</span>
-        <span>Regresar al Inicio</span>
-      </a>
-      <a class="btn-sidebar-link logout" href="../auth/login.html" onclick="handlePatientLogout(event)">
-        <span>🚪</span>
-        <span>Cerrar sesión</span>
-      </a>
-    </div>
   </aside>
 
   <main class="patient-main">
     <header class="patient-topbar">
-      <div class="topbar-left">
-        <h1 class="topbar-section-title">💬 Consulta Rápida con Médico</h1>
-      </div>
-      <div class="patient-top-actions">
-        <a class="btn btn-outline btn-sm" href="perfil.html">
-          <span>Ver Mi Portal Completo</span>
-        </a>
-      </div>
+      <h1 class="topbar-section-title">Consulta Rápida con Médico</h1>
     </header>
 
     <div class="glass-panel chat-unified-container">
@@ -84,7 +45,7 @@
         <div class="doctor-chat-avatar">👩‍⚕️</div>
         <div>
           <h3 style="font-size: 1.05rem; font-weight:800; color:var(--text-main);">Dra. Sofía Ramírez</h3>
-          <p style="font-size: 0.8rem; color: var(--accent); font-weight:700;">🟢 En línea • Medicina Preventiva CliniBox</p>
+          <p style="font-size: 0.8rem; color: var(--accent); font-weight:700;">En línea • Medicina Preventiva CliniBox</p>
         </div>
       </div>
 
@@ -105,10 +66,11 @@
         </div>
       </div>
 
+      <p>Conversación de demostración. Los mensajes de prueba se muestran solo en esta pantalla.</p>
       <form class="chat-input-bar" onsubmit="enviarMensaje(event)">
         <input type="text" id="inputChat" placeholder="Escribe tu consulta médica..." required autocomplete="off">
         <button type="submit" class="btn btn-primary">
-          <span>Enviar</span>
+          <span>Probar mensaje</span>
         </button>
       </form>
     </div>
@@ -124,18 +86,16 @@
     const area = document.getElementById('chatArea');
     const msg = document.createElement('div');
     msg.className = 'chat-bubble patient';
-    msg.innerHTML = `<p>${txt}</p><span class="chat-time">Ahora • Tú</span>`;
+    const body = document.createElement('p');
+    body.textContent = txt;
+    const time = document.createElement('span');
+    time.className = 'chat-time';
+    time.textContent = 'Ahora • Tú';
+    msg.append(body, time);
     area.appendChild(msg);
     input.value = '';
     area.scrollTop = area.scrollHeight;
 
-    setTimeout(() => {
-      const resp = document.createElement('div');
-      resp.className = 'chat-bubble doctor';
-      resp.innerHTML = `<p>Recibido Carlos: "${txt}". Cualquier síntoma adicional me indicas.</p><span class="chat-time">Ahora • Dra. Sofía</span>`;
-      area.appendChild(resp);
-      area.scrollTop = area.scrollHeight;
-    }, 1000);
   }
 
   function handlePatientLogout(e) {
@@ -145,8 +105,13 @@
         sessionStorage.clear();
         localStorage.removeItem('clinibox_user');
         localStorage.removeItem('patient_session');
+        localStorage.removeItem('clinibox_session');
       } catch (err) {}
-      window.location.href = '../auth/login.html';
+      const form = document.createElement('form');
+      form.method = 'POST';
+      form.action = '/CLINIBOX/public/logout';
+      document.body.appendChild(form);
+      form.submit();
     }
   }
 </script>

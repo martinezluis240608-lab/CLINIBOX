@@ -55,4 +55,6 @@ El archivo `database/schema.sql` crea la base `clinibox` y las tablas iniciales:
 - `mensajes`
 - `bitacora_medicamentos`
 
-La pantalla de login todavia usa datos de demostracion para navegar por roles. El siguiente paso natural es conectar `AuthController` con la tabla `usuarios` y crear los CRUD reales de cada modulo.
+Para activar el modo de demostración en una instalación local, configura la variable de entorno `CLINIBOX_DEMO_AUTH=1` en PHP. Permite iniciar sesión sin MySQL con `paciente@demo.com` o `medico@demo.com` y la contraseña `123456`. También admite los correos equivalentes terminados en `@clinibox.test`. El registro temporal de paciente solo dura hasta el cierre de sesión. Para usar cuentas de MySQL, crea cuentas activas con contraseñas almacenadas como hash generado por `password_hash` de PHP.
+
+Las vistas del paciente todavía contienen datos de demostración. Las reservas, los cambios de perfil y el registro de tomas se guardan en el navegador. La mensajería y el pago en línea requieren integración con el servidor.

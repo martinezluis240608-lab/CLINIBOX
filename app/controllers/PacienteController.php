@@ -6,9 +6,23 @@ use App\Core\Controller;
 
 class PacienteController extends Controller
 {
+    public function inicio(): void
+    {
+        $this->requireRole(['paciente']);
+
+        $this->view('paciente/inicio', ['title' => 'Inicio del Paciente']);
+    }
+
     public function agendarCita(): void
     {
         $this->view('paciente/agendarCita', ['title' => 'Agendar Cita']);
+    }
+
+    public function sesionCita(): void
+    {
+        header('Content-Type: application/json; charset=utf-8');
+        header('Cache-Control: no-store');
+        echo json_encode(['paciente' => \auth_role() === 'paciente']);
     }
 
     public function recorrido(): void
@@ -82,3 +96,4 @@ class PacienteController extends Controller
         $this->view('paciente/perfil', ['title' => 'Mi perfil', 'profile' => $profile]);
     }
 }
+

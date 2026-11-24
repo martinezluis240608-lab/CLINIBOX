@@ -4,212 +4,117 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Agendar Cita | CliniBox</title>
-  <link rel="stylesheet" href="/CLINIBOX/public/assets/css/patient-dashboard.css?v=20261108">
-  <link rel="stylesheet" href="../../../public/assets/css/patient-dashboard.css?v=20261108">
+  <link rel="stylesheet" href="/CLINIBOX/public/assets/css/patient-dashboard.css?v=guest-1">
+  <link rel="stylesheet" href="../../../public/assets/css/patient-dashboard.css?v=guest-1">
 </head>
 <body class="patient-dashboard-page">
 
 <div class="app-shell patient-shell">
   <!-- Barra lateral simplificada (5 opciones) -->
-  <aside class="patient-sidebar" id="patientSidebar">
-    <a class="patient-brand" href="/CLINIBOX/" title="Volver al Inicio">
-      <span class="patient-brand-mark">+</span>
-      <div class="patient-brand-text">
-        <strong>CliniBox</strong>
-        <small>Portal del Paciente</small>
+  <aside class="patient-sidebar">
+    <details class="patient-account-menu">
+      <summary class="patient-brand" aria-label="CliniBox, Portal del paciente, Mi cuenta">
+        <span class="patient-brand-mark" aria-hidden="true">C</span>
+        <span class="patient-brand-text"><strong>CliniBox</strong><small>Portal del paciente</small></span>
+        <span class="patient-account-chevron" aria-hidden="true"></span>
+      </summary>
+      <div class="patient-account nav-list" aria-labelledby="patientAccountTitle">
+        <p id="patientAccountTitle">Mi cuenta</p>
+        <a href="/CLINIBOX/">Ir al Inicio</a>
+        <a href="/CLINIBOX/public/paciente/perfil">Mi Perfil</a>
+        <a class="logout" href="/CLINIBOX/public/login" onclick="handlePatientLogout(event)">Cerrar sesión</a>
       </div>
-    </a>
-
-    <div class="sidebar-patient-info">
-      <div class="sp-avatar">
-        <span>CM</span>
-        <span class="sp-online-dot"></span>
+    </details>
+    <nav aria-label="Navegación del paciente">
+      <div class="nav-list">
+        <a href="/CLINIBOX/public/paciente/inicio">Resumen del paciente</a>
+        <a href="/CLINIBOX/public/citas" class="active" aria-current="page">Agendar cita</a>
+        <a href="/CLINIBOX/public/paciente/consultas">Citas agendadas</a>
+        <a href="/CLINIBOX/public/paciente/medicamentos">Farmacia</a>
+        <a href="/CLINIBOX/public/paciente/recetas">Recetas</a>
+        <a href="/CLINIBOX/public/paciente/mensajes">Mensajes</a>
       </div>
-      <div class="sp-details">
-        <span class="sp-name">Carlos Mendoza</span>
-        <span class="sp-role">ID: CLB-8834 • Activo</span>
-      </div>
-    </div>
-
-    <div class="nav-section-title">Menú del Paciente</div>
-    <nav class="nav-list" aria-label="Navegación principal">
-      <a href="perfil.html#inicio">
-        <span class="ni-icon">🏠</span>
-        <span>Inicio</span>
-      </a>
-      <a href="agendarCita.html" class="active">
-        <span class="ni-icon">📅</span>
-        <span>Citas Médicas</span>
-        <span class="nav-badge">1</span>
-      </a>
-      <a href="perfil.html#recetas">
-        <span class="ni-icon">💊</span>
-        <span>Farmacia y Recetas</span>
-        <span class="nav-badge">2</span>
-      </a>
-      <a href="perfil.html#mensajes">
-        <span class="ni-icon">💬</span>
-        <span>Mensajes</span>
-      </a>
-      <a href="perfil.html#perfil">
-        <span class="ni-icon">👤</span>
-        <span>Mi Perfil</span>
-      </a>
     </nav>
-
-    <div class="patient-sidebar-footer">
-      <a class="btn-sidebar-link" href="/CLINIBOX/">
-        <span>🏥</span>
-        <span>Regresar al Inicio</span>
-      </a>
-      <a class="btn-sidebar-link logout" href="../auth/login.html" onclick="handlePatientLogout(event)">
-        <span>🚪</span>
-        <span>Cerrar sesión</span>
-      </a>
-    </div>
   </aside>
 
   <!-- Contenido principal -->
   <main class="patient-main">
     <header class="patient-topbar">
-      <div class="topbar-left">
-        <h1 class="topbar-section-title">📅 Agendar Cita Médica</h1>
-      </div>
-      <div class="patient-top-actions">
-        <span class="topbar-badge-tour">🏥 Consultorios Disponibles</span>
-        <a class="btn btn-outline btn-sm" href="perfil.html">
-          <span>Ver Mi Portal Completo</span>
-        </a>
-      </div>
+      <h1 class="topbar-section-title">Agendar Cita Médica</h1>
     </header>
 
-    <div class="appointments-grid-layout">
+    <div class="appointment-form-layout">
       <!-- Selector de Cita -->
       <article class="glass-panel appointment-book-card">
         <div class="card-title-bar">
-          <h3><span>📅</span> Selección de Consulta</h3>
-          <span class="status-tag confirmed">Disponibilidad en Tiempo Real</span>
+          <h3>Selección de Consulta</h3>
+          <span class="status-tag confirmed">Agenda por especialista</span>
         </div>
 
-        <form id="formCitaDirecta" onsubmit="confirmarReserva(event)">
+        <form id="formCitaDirecta" class="appointment-booking-form" data-appointment-form>
           <div class="form-group-clean">
-            <label for="selEspecialidad">Especialidad médica</label>
-            <select id="selEspecialidad" required>
-              <option value="Medicina General">Medicina General - Dr. Carlos Mendoza</option>
-              <option value="Cardiología">Cardiología - Dra. Sofía Ramírez</option>
-              <option value="Pediatría">Pediatría - Dr. Daniel Torres</option>
-              <option value="Dermatología">Dermatología - Dra. Elena Ortiz</option>
+            <label for="selEspecialista">Especialista</label>
+            <select id="selEspecialista" data-appointment-specialist required>
+              <option value="">Selecciona un especialista</option>
+              <option value="carlos">Dr. Carlos Mendoza — Medicina General</option>
+              <option value="sofia">Dra. Sofía Ramírez — Cardiología</option>
+              <option value="daniel">Dr. Daniel Torres — Pediatría</option>
+              <option value="elena">Dra. Elena Ortiz — Dermatología</option>
+              <option value="andrea">Lic. Andrea Castro — Nutrición Clínica</option>
             </select>
           </div>
 
-          <div class="form-group-clean">
-            <label for="selModalidad">Modalidad</label>
-            <select id="selModalidad" required>
-              <option value="Presencial (Consultorio 03)">Presencial en Clínica CliniBox</option>
-              <option value="Virtual 3D">Telemedicina en línea</option>
-            </select>
-          </div>
-
-          <div class="form-group-clean">
-            <label for="selFecha">Fecha de consulta</label>
-            <input type="date" id="selFecha" required value="2026-09-25">
-          </div>
-
-          <div class="form-group-clean">
-            <label>Horarios disponibles</label>
-            <div class="slot-chips-wrap">
-              <button type="button" class="slot-chip selected" onclick="marcarHorario(this, '09:00 AM')">09:00 AM</button>
-              <button type="button" class="slot-chip" onclick="marcarHorario(this, '10:30 AM')">10:30 AM</button>
-              <button type="button" class="slot-chip" onclick="marcarHorario(this, '01:00 PM')">01:00 PM</button>
-              <button type="button" class="slot-chip" onclick="marcarHorario(this, '03:30 PM')">03:30 PM</button>
-              <button type="button" class="slot-chip" onclick="marcarHorario(this, '05:00 PM')">05:00 PM</button>
+          <div class="appointment-calendar-section" data-appointment-calendar-section hidden>
+            <div class="form-group-clean">
+              <label>Calendario del especialista</label>
+              <div class="appointment-calendar" data-appointment-calendar></div>
+              <input type="hidden" id="selFecha" data-appointment-date>
+              <p class="appointment-schedule-hint" data-appointment-schedule aria-live="polite"></p>
             </div>
-            <input type="hidden" id="valHorario" value="09:00 AM">
+
+            <div class="form-group-clean">
+              <label id="appointmentClockLabel">Hora de la cita</label>
+              <p class="appointment-availability-message" data-appointment-availability role="status">
+                Selecciona un día para consultar los horarios.
+              </p>
+              <div class="appointment-clock" data-appointment-slots role="group" aria-labelledby="appointmentClockLabel"></div>
+              <input type="hidden" id="valHorario" data-appointment-time>
+            </div>
+
+            <div class="form-group-clean">
+              <label for="selModalidad">Modalidad</label>
+              <select id="selModalidad" data-appointment-modality required>
+                <option value="Presencial (Consultorio 03)">Presencial en Clínica CliniBox</option>
+                <option value="Virtual 3D">Telemedicina en línea</option>
+              </select>
+            </div>
           </div>
 
-          <div id="reservaFeedback" style="display:none; padding:12px; border-radius:8px; margin-bottom:14px; font-weight:700; font-size:0.88rem;"></div>
+          <div class="appointment-feedback" data-appointment-feedback role="status" hidden></div>
 
-          <button type="submit" class="btn btn-primary" style="width:100%;">
-            <span>Confirmar Cita</span>
+          <button type="submit" class="btn btn-primary" style="width:100%;" data-appointment-submit disabled>
+            <span>Agendar cita</span>
           </button>
         </form>
+        <dialog class="glass-panel appointment-auth-dialog" data-appointment-auth aria-labelledby="appointmentAuthTitle">
+          <h2 id="appointmentAuthTitle">Identifícate para agendar la cita</h2>
+          <p>Guardamos tu selección en esta pestaña. Después de identificarte, elige «Continuar mi cita» en el resumen del paciente.</p>
+          <div class="profile-actions">
+            <a class="btn btn-primary btn-sm" href="/CLINIBOX/public/login">Iniciar sesión</a>
+            <a class="btn btn-outline btn-sm" href="/CLINIBOX/public/login?registro=1">Registrarme</a>
+          </div>
+          <form method="dialog">
+            <button type="submit" class="btn btn-outline btn-sm">Seguir editando</button>
+          </form>
+        </dialog>
+        <a class="btn btn-outline btn-sm" style="margin-top: 16px;" href="/CLINIBOX/public/paciente/consultas">Ver citas agendadas</a>
       </article>
 
-      <!-- Lista de Citas Programadas -->
-      <article class="glass-panel appointment-list-card">
-        <div class="card-title-bar">
-          <h3><span>📑</span> Citas Programadas</h3>
-        </div>
-        <div class="appointment-items-list" id="contenedorCitas">
-          <div class="appointment-entry">
-            <div class="ae-date-col">
-              <small>Mañana</small>
-              <strong>10:30</strong>
-            </div>
-            <div class="ae-info-col">
-              <strong>Dr. Carlos Mendoza</strong>
-              <p>Medicina General • Consultorio 03</p>
-            </div>
-            <span class="status-tag confirmed">Confirmada</span>
-          </div>
-
-          <div class="appointment-entry">
-            <div class="ae-date-col" style="background:#f1f5f9; color:#475569;">
-              <small>12 Ago</small>
-              <strong>10:00</strong>
-            </div>
-            <div class="ae-info-col">
-              <strong>Dra. Sofía Ramírez</strong>
-              <p>Revisión Preventiva General</p>
-            </div>
-            <span class="status-tag" style="background:#f1f5f9; color:#64748b;">Completada</span>
-          </div>
-        </div>
-      </article>
     </div>
   </main>
 </div>
 
 <script>
-  function marcarHorario(btn, hora) {
-    document.querySelectorAll('.slot-chip').forEach(b => b.classList.remove('selected'));
-    btn.classList.add('selected');
-    document.getElementById('valHorario').value = hora;
-  }
-
-  function confirmarReserva(e) {
-    e.preventDefault();
-    const esp = document.getElementById('selEspecialidad').value;
-    const mod = document.getElementById('selModalidad').value;
-    const fec = document.getElementById('selFecha').value;
-    const hor = document.getElementById('valHorario').value;
-    const fb = document.getElementById('reservaFeedback');
-
-    fb.style.display = 'block';
-    fb.style.background = '#d1fae5';
-    fb.style.color = '#065f46';
-    fb.style.border = '1px solid #10b981';
-    fb.textContent = `¡Cita agendada con éxito para el ${fec} a las ${hor} (${esp})!`;
-
-    const contenedor = document.getElementById('contenedorCitas');
-    const nuevoItem = document.createElement('div');
-    nuevoItem.className = 'appointment-entry';
-    nuevoItem.innerHTML = `
-      <div class="ae-date-col">
-        <small>${fec.slice(5)}</small>
-        <strong>${hor}</strong>
-      </div>
-      <div class="ae-info-col">
-        <strong>${esp}</strong>
-        <p>${mod}</p>
-      </div>
-      <span class="status-tag confirmed">Nueva</span>
-    `;
-    contenedor.prepend(nuevoItem);
-
-    setTimeout(() => { fb.style.display = 'none'; }, 4500);
-  }
-
   function handlePatientLogout(e) {
     if (e) e.preventDefault();
     if (confirm('¿Deseas cerrar tu sesión del portal de paciente?')) {
@@ -217,10 +122,16 @@
         sessionStorage.clear();
         localStorage.removeItem('clinibox_user');
         localStorage.removeItem('patient_session');
+        localStorage.removeItem('clinibox_session');
       } catch (err) {}
-      window.location.href = '../auth/login.html';
+      const form = document.createElement('form');
+      form.method = 'POST';
+      form.action = '/CLINIBOX/public/logout';
+      document.body.appendChild(form);
+      form.submit();
     }
   }
 </script>
+<script src="/CLINIBOX/public/assets/js/appointment-booking.js?v=guest-1"></script>
 </body>
 </html>

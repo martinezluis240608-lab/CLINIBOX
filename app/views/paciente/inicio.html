@@ -4,97 +4,56 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Inicio | CliniBox Paciente</title>
-  <link rel="stylesheet" href="/CLINIBOX/public/assets/css/patient-dashboard.css?v=20261108">
-  <link rel="stylesheet" href="../../../public/assets/css/patient-dashboard.css?v=20261108">
+  <link rel="stylesheet" href="/CLINIBOX/public/assets/css/patient-dashboard.css?v=patient-layout-4">
+  <link rel="stylesheet" href="../../../public/assets/css/patient-dashboard.css?v=patient-layout-4">
 </head>
 <body class="patient-dashboard-page">
 <div class="app-shell patient-shell">
-  <aside class="patient-sidebar" id="patientSidebar">
-    <a class="patient-brand" href="/CLINIBOX/" title="Volver al Paseo Virtual 360°">
-      <span class="patient-brand-mark">+</span>
-      <div class="patient-brand-text">
-        <strong>CliniBox</strong>
-        <small>Portal del Paciente</small>
+  <aside class="patient-sidebar">
+    <details class="patient-account-menu">
+      <summary class="patient-brand" aria-label="CliniBox, Portal del paciente, Mi cuenta">
+        <span class="patient-brand-mark" aria-hidden="true">C</span>
+        <span class="patient-brand-text"><strong>CliniBox</strong><small>Portal del paciente</small></span>
+        <span class="patient-account-chevron" aria-hidden="true"></span>
+      </summary>
+      <div class="patient-account nav-list" aria-labelledby="patientAccountTitle">
+        <p id="patientAccountTitle">Mi cuenta</p>
+        <a href="/CLINIBOX/">Ir al Inicio</a>
+        <a href="/CLINIBOX/public/paciente/perfil">Mi Perfil</a>
+        <a class="logout" href="/CLINIBOX/public/login" onclick="handlePatientLogout(event)">Cerrar sesión</a>
       </div>
-    </a>
-
-    <div class="sidebar-patient-info">
-      <div class="sp-avatar">
-        <span>CM</span>
-        <span class="sp-online-dot"></span>
+    </details>
+    <nav aria-label="Navegación del paciente">
+      <div class="nav-list">
+        <a href="/CLINIBOX/public/paciente/inicio" class="active" aria-current="page">Resumen del paciente</a>
+        <a href="/CLINIBOX/public/citas">Agendar cita</a>
+        <a href="/CLINIBOX/public/paciente/consultas">Citas agendadas</a>
+        <a href="/CLINIBOX/public/paciente/medicamentos">Farmacia</a>
+        <a href="/CLINIBOX/public/paciente/recetas">Recetas</a>
+        <a href="/CLINIBOX/public/paciente/mensajes">Mensajes</a>
       </div>
-      <div class="sp-details">
-        <span class="sp-name">Carlos Mendoza</span>
-        <span class="sp-role">ID: CLB-8834 • Activo</span>
-      </div>
-    </div>
-
-    <div class="nav-section-title">Menú del Paciente</div>
-    <nav class="nav-list" aria-label="Navegación principal">
-      <a href="inicio.html" class="active">
-        <span class="ni-icon">🏠</span>
-        <span>Inicio</span>
-      </a>
-      <a href="agendarCita.html">
-        <span class="ni-icon">📅</span>
-        <span>Citas Médicas</span>
-        <span class="nav-badge">1</span>
-      </a>
-      <a href="perfil.html#recetas">
-        <span class="ni-icon">💊</span>
-        <span>Farmacia y Recetas</span>
-        <span class="nav-badge">2</span>
-      </a>
-      <a href="mensajes.html">
-        <span class="ni-icon">💬</span>
-        <span>Mensajes</span>
-      </a>
-      <a href="perfil.html">
-        <span class="ni-icon">👤</span>
-        <span>Mi Perfil</span>
-      </a>
     </nav>
-
-    <div class="patient-sidebar-footer">
-      <a class="btn-sidebar-link" href="/CLINIBOX/">
-        <span>🏥</span>
-        <span>Regresar al Inicio</span>
-      </a>
-      <a class="btn-sidebar-link logout" href="../auth/login.html" onclick="handlePatientLogout(event)">
-        <span>🚪</span>
-        <span>Cerrar sesión</span>
-      </a>
-    </div>
   </aside>
 
   <main class="patient-main">
     <header class="patient-topbar">
-      <div class="topbar-left">
-        <h1 class="topbar-section-title">🏠 Resumen del Paciente</h1>
-      </div>
-      <div class="patient-top-actions">
-        <span class="topbar-badge-tour">🏥 Clínica Virtual Conectada</span>
-        <a class="btn btn-primary btn-sm" href="perfil.html">
-          <span>Abrir Portal Completo</span>
-        </a>
-      </div>
+      <h1 class="topbar-section-title">Resumen del Paciente</h1>
     </header>
 
     <div class="welcome-hero-banner">
       <div class="welcome-hero-copy">
-        <span class="welcome-status-pill">✓ Expediente Activo</span>
-        <h2>Hola, Carlos Mendoza 👋</h2>
+        <span class="welcome-status-pill">Expediente Activo</span>
+        <h2>Hola, Carlos Mendoza</h2>
         <p>Resumen de tu actividad clínica reciente, recetas vigentes y citas programadas en CliniBox.</p>
       </div>
       <div class="welcome-hero-actions">
-        <a class="btn btn-accent" href="agendarCita.html">📅 Agendar Cita</a>
-        <a class="btn btn-outline" style="background:#fff; color:#0369a1;" href="perfil.html#recetas">💊 Ver Recetas</a>
+        <a class="btn btn-accent" id="appointmentStartLink" href="/CLINIBOX/public/citas">Agendar Cita</a>
+        <a class="btn btn-outline" style="background:#fff; color:#0369a1;" href="/CLINIBOX/public/paciente/recetas">Ver Recetas</a>
       </div>
     </div>
 
     <div class="patient-stats-grid">
       <div class="glass-panel stat-metric-card">
-        <div class="stat-metric-icon stat-blue">📅</div>
         <div class="stat-metric-info">
           <small>Próxima Consulta</small>
           <strong>Mañana 10:30 AM</strong>
@@ -102,7 +61,6 @@
         </div>
       </div>
       <div class="glass-panel stat-metric-card">
-        <div class="stat-metric-icon stat-green">💊</div>
         <div class="stat-metric-info">
           <small>Medicamentos</small>
           <strong>1 Pendiente</strong>
@@ -110,7 +68,6 @@
         </div>
       </div>
       <div class="glass-panel stat-metric-card">
-        <div class="stat-metric-icon stat-amber">💬</div>
         <div class="stat-metric-info">
           <small>Mensajes</small>
           <strong>Dra. Sofía Ramírez</strong>
@@ -122,7 +79,7 @@
     <div class="home-cards-dual">
       <article class="glass-panel home-summary-card">
         <div class="hsc-header">
-          <h3><span>📅</span> Cita Médica Confirmada</h3>
+          <h3>Cita Médica Confirmada</h3>
           <span class="status-tag confirmed">Confirmada</span>
         </div>
         <div class="doctor-lead-item">
@@ -137,13 +94,13 @@
           </div>
         </div>
         <div style="display:flex; gap:10px; margin-top:auto;">
-          <a class="btn btn-primary btn-sm" href="agendarCita.html">Ver Citas</a>
+          <a class="btn btn-primary btn-sm" href="/CLINIBOX/public/paciente/consultas">Ver Citas</a>
         </div>
       </article>
 
       <article class="glass-panel home-summary-card">
         <div class="hsc-header">
-          <h3><span>💊</span> Tratamiento en Curso</h3>
+          <h3>Tratamiento en Curso</h3>
           <span class="status-tag confirmed">Activo</span>
         </div>
         <div class="rx-med-item" style="margin:0;">
@@ -151,14 +108,25 @@
           <p>1 cápsula cada 8 horas con alimentos</p>
         </div>
         <div style="display:flex; gap:10px; margin-top:auto;">
-          <a class="btn btn-accent btn-sm" href="perfil.html#recetas">Ver Recetas</a>
-          <a class="btn btn-outline btn-sm" href="mensajes.html">Consultar Médico</a>
+          <a class="btn btn-accent btn-sm" href="/CLINIBOX/public/paciente/recetas">Ver Recetas</a>
+          <a class="btn btn-outline btn-sm" href="/CLINIBOX/public/paciente/mensajes">Consultar Médico</a>
         </div>
       </article>
     </div>
   </main>
 </div>
 <script>
+  function actualizarAccesoCita() {
+    let draft;
+    try {
+      draft = JSON.parse(sessionStorage.getItem('clinibox_appointment_draft') || 'null');
+    } catch (error) {}
+    document.getElementById('appointmentStartLink').textContent =
+      draft?.specialistId && draft?.date && draft?.time ? 'Continuar mi cita' : 'Agendar Cita';
+  }
+
+  window.addEventListener('pageshow', actualizarAccesoCita);
+
   function handlePatientLogout(e) {
     if (e) e.preventDefault();
     if (confirm('¿Deseas cerrar tu sesión del portal de paciente?')) {
@@ -166,8 +134,13 @@
         sessionStorage.clear();
         localStorage.removeItem('clinibox_user');
         localStorage.removeItem('patient_session');
+        localStorage.removeItem('clinibox_session');
       } catch (err) {}
-      window.location.href = '../auth/login.html';
+      const form = document.createElement('form');
+      form.method = 'POST';
+      form.action = '/CLINIBOX/public/logout';
+      document.body.appendChild(form);
+      form.submit();
     }
   }
 </script>

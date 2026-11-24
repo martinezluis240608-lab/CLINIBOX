@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Portal del Paciente | CliniBox</title>
-  <link rel="stylesheet" href="/CLINIBOX/public/assets/css/patient-dashboard.css?v=20261108">
-  <link rel="stylesheet" href="../../../public/assets/css/patient-dashboard.css?v=20261108">
+  <link rel="stylesheet" href="/CLINIBOX/public/assets/css/patient-dashboard.css?v=patient-layout-4">
+  <link rel="stylesheet" href="../../../public/assets/css/patient-dashboard.css?v=patient-layout-4">
 </head>
 <body class="patient-dashboard-page">
 
@@ -14,67 +14,30 @@
   <!-- ═══════════════════════════════════════════════════════════════
        BARRA LATERAL DE NAVEGACIÓN SIMPLIFICADA (5 OPCIONES CLAVE)
   ═══════════════════════════════════════════════════════════════ -->
-  <aside class="patient-sidebar" id="patientSidebar">
-
-    <!-- Marca de CliniBox con enlace al Paseo Virtual -->
-    <a class="patient-brand" href="/CLINIBOX/" title="Volver al Paseo Virtual 360°">
-      <span class="patient-brand-mark">+</span>
-      <div class="patient-brand-text">
-        <strong>CliniBox</strong>
-        <small>Portal del Paciente</small>
+  <aside class="patient-sidebar">
+    <details class="patient-account-menu">
+      <summary class="patient-brand" aria-label="CliniBox, Portal del paciente, Mi cuenta">
+        <span class="patient-brand-mark" aria-hidden="true">C</span>
+        <span class="patient-brand-text"><strong>CliniBox</strong><small>Portal del paciente</small></span>
+        <span class="patient-account-chevron" aria-hidden="true"></span>
+      </summary>
+      <div class="patient-account nav-list" aria-labelledby="patientAccountTitle">
+        <p id="patientAccountTitle">Mi cuenta</p>
+        <a href="/CLINIBOX/">Ir al Inicio</a>
+        <a href="/CLINIBOX/public/paciente/perfil" class="active" aria-current="page">Mi Perfil</a>
+        <a class="logout" href="/CLINIBOX/public/login" onclick="handlePatientLogout(event)">Cerrar sesión</a>
       </div>
-    </a>
-
-    <!-- Ficha del paciente conectado -->
-    <div class="sidebar-patient-info">
-      <div class="sp-avatar">
-        <span>CM</span>
-        <span class="sp-online-dot" title="Sesión activa"></span>
+    </details>
+    <nav aria-label="Navegación del paciente">
+      <div class="nav-list">
+        <a href="/CLINIBOX/public/paciente/inicio">Resumen del paciente</a>
+        <a href="/CLINIBOX/public/citas">Agendar cita</a>
+        <a href="/CLINIBOX/public/paciente/consultas">Citas agendadas</a>
+        <a href="/CLINIBOX/public/paciente/medicamentos">Farmacia</a>
+        <a href="/CLINIBOX/public/paciente/recetas">Recetas</a>
+        <a href="/CLINIBOX/public/paciente/mensajes">Mensajes</a>
       </div>
-      <div class="sp-details">
-        <span class="sp-name">Carlos Mendoza</span>
-        <span class="sp-role">ID: CLB-8834 • Activo</span>
-      </div>
-    </div>
-
-    <!-- Menú Simplificado con 5 Opciones Principales -->
-    <div class="nav-section-title">Menú del Paciente</div>
-    <nav class="nav-list" aria-label="Navegación principal">
-      <a href="#inicio" class="active" data-section="inicio" onclick="switchSection('inicio', this, event)">
-        <span class="ni-icon">🏠</span>
-        <span>Inicio</span>
-      </a>
-      <a href="#citas" data-section="citas" onclick="switchSection('citas', this, event)">
-        <span class="ni-icon">📅</span>
-        <span>Citas Médicas</span>
-        <span class="nav-badge">1</span>
-      </a>
-      <a href="#recetas" data-section="recetas" onclick="switchSection('recetas', this, event)">
-        <span class="ni-icon">💊</span>
-        <span>Farmacia y Recetas</span>
-        <span class="nav-badge">2</span>
-      </a>
-      <a href="#mensajes" data-section="mensajes" onclick="switchSection('mensajes', this, event)">
-        <span class="ni-icon">💬</span>
-        <span>Mensajes</span>
-      </a>
-      <a href="#perfil" data-section="perfil" onclick="switchSection('perfil', this, event)">
-        <span class="ni-icon">👤</span>
-        <span>Mi Perfil</span>
-      </a>
     </nav>
-
-    <!-- Acciones al pie de la barra lateral -->
-    <div class="patient-sidebar-footer">
-      <a class="btn-sidebar-link" href="/CLINIBOX/" title="Regresar al escenario 360°">
-        <span>🏥</span>
-        <span>Regresar al Inicio</span>
-      </a>
-      <a class="btn-sidebar-link logout" href="../auth/login.html" onclick="handlePatientLogout(event)" title="Finalizar sesión actual">
-        <span>🚪</span>
-        <span>Cerrar sesión</span>
-      </a>
-    </div>
   </aside>
 
   <!-- ═══════════════════════════════════════════════════════════════
@@ -82,624 +45,368 @@
   ═══════════════════════════════════════════════════════════════ -->
   <main class="patient-main">
 
-    <!-- Barra superior HUD translúcida -->
+    <!-- Título del apartado -->
     <header class="patient-topbar">
-      <div class="topbar-left">
-        <button type="button" class="btn btn-outline btn-sm btn-mobile-menu" onclick="toggleMobileSidebar()" style="display:none;" aria-label="Menú">☰</button>
-        <h1 class="topbar-section-title" id="currentSectionTitle">🏠 Resumen General</h1>
-      </div>
-      <div class="patient-top-actions">
-        <span class="topbar-badge-tour">🏥 Clínica Virtual Activa</span>
-        <a class="btn btn-primary btn-sm" href="/CLINIBOX/">
-          <span>Explorar Clínica 360°</span>
-        </a>
-      </div>
+      <h1 class="topbar-section-title">Mi Perfil y Carnet de Salud</h1>
     </header>
 
-    <!-- ============================================================
-         OPCIÓN 1: INICIO (RESUMEN GENERAL Y ACCESOS RÁPIDOS)
-         ============================================================ -->
-    <section class="patient-panel-section active" id="section-inicio">
-      <!-- Banner de Bienvenida Clínico -->
-      <div class="welcome-hero-banner">
-        <div class="welcome-hero-copy">
-          <span class="welcome-status-pill">✓ Salud en orden</span>
-          <h2>¡Bienvenido, Carlos Mendoza! 👋</h2>
-          <p>Tu expediente digital y servicios de salud están conectados en tiempo real con los consultorios y farmacia de CliniBox.</p>
-        </div>
-        <div class="welcome-hero-actions">
-          <button type="button" class="btn btn-accent" onclick="switchSection('citas', null, event)">
-            <span>📅 Agendar Cita</span>
-          </button>
-          <button type="button" class="btn btn-outline" style="background:#ffffff; color:#0369a1;" onclick="switchSection('recetas', null, event)">
-            <span>💊 Ver Recetas</span>
-          </button>
-        </div>
-      </div>
+    <section id="section-perfil">
+      <div class="profile-unified-grid">
 
-      <!-- Métricas Clave Simplificadas -->
-      <div class="patient-stats-grid">
-        <div class="glass-panel stat-metric-card" onclick="switchSection('citas', null, event)">
-          <div class="stat-metric-icon stat-blue">📅</div>
-          <div class="stat-metric-info">
-            <small>Próxima Consulta</small>
-            <strong>Mañana 10:30 AM</strong>
-            <p>Dr. Carlos Mendoza • Medicina General</p>
-          </div>
-        </div>
-        <div class="glass-panel stat-metric-card" onclick="switchSection('recetas', null, event)">
-          <div class="stat-metric-icon stat-green">💊</div>
-          <div class="stat-metric-info">
-            <small>Receta Vigente</small>
-            <strong>Folio RX-9921</strong>
-            <p>2 medicamentos prescritos</p>
-          </div>
-        </div>
-        <div class="glass-panel stat-metric-card" onclick="switchSection('mensajes', null, event)">
-          <div class="stat-metric-icon stat-amber">💬</div>
-          <div class="stat-metric-info">
-            <small>Médico de Cabecera</small>
-            <strong>Dra. Sofía Ramírez</strong>
-            <p>Canal de consulta directa disponible</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Tarjetas Dobles de Acción Inmediata -->
-      <div class="home-cards-dual">
-        <!-- Próxima Cita -->
-        <article class="glass-panel home-summary-card">
-          <div class="hsc-header">
-            <h3><span>📅</span> Próxima Cita Médica</h3>
-            <span class="status-tag confirmed">Confirmada</span>
-          </div>
-          <div class="doctor-lead-item">
-            <div class="doctor-lead-avatar">👨‍⚕️</div>
-            <div class="doctor-lead-text">
-              <strong>Dr. Carlos Mendoza</strong>
-              <p>Medicina General • Consultorio 03</p>
-            </div>
-            <div class="appointment-time-badge">
-              <span>Mañana</span><br>
-              <strong>10:30 AM</strong>
-            </div>
-          </div>
-          <p style="font-size: 0.88rem; color: var(--text-muted);">
-            📍 Presencial en Sede Principal CLINIBOX o enlazado a telemedicina. Llega 10 minutos antes.
-          </p>
-          <div style="display:flex; gap:10px; margin-top:auto;">
-            <button type="button" class="btn btn-primary btn-sm" onclick="switchSection('citas', null, event)">Ver detalles de la cita</button>
-            <button type="button" class="btn btn-outline btn-sm" onclick="alert('Recordatorio enviado a tu correo: paciente@clinibox.com')">Recordarme por correo</button>
-          </div>
-        </article>
-
-        <!-- Tratamiento Activo -->
-        <article class="glass-panel home-summary-card">
-          <div class="hsc-header">
-            <h3><span>💊</span> Tratamiento en Curso</h3>
-            <span class="status-tag confirmed">Día 4 de 7</span>
-          </div>
-          <div style="display:flex; flex-direction:column; gap:8px;">
-            <div class="rx-med-item" style="margin:0;">
-              <strong>Amoxicilina 500mg</strong>
-              <p>1 cápsula cada 8 horas con alimentos (Próxima: 08:00 PM)</p>
-            </div>
-            <div class="rx-med-item" style="margin:0; border-left-color: var(--accent);">
-              <strong>Paracetamol 500mg</strong>
-              <p>1 tableta cada 8 horas en caso de dolor o malestar general</p>
-            </div>
-          </div>
-          <div style="display:flex; gap:10px; margin-top:auto;">
-            <button type="button" class="btn btn-accent btn-sm" onclick="switchSection('recetas', null, event)">Consultar Receta Completa</button>
-            <button type="button" class="btn btn-outline btn-sm" onclick="switchSection('mensajes', null, event)">Duda con la dosis</button>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <!-- ============================================================
-         OPCIÓN 2: CITAS MÉDICAS (AGENDAR Y CONSULTAR)
-         ============================================================ -->
-    <section class="patient-panel-section" id="section-citas">
-      <div class="appointments-grid-layout">
-        
-        <!-- Formulario simplificado para agendar cita -->
-        <article class="glass-panel appointment-book-card">
+        <!-- ════════ TARJETA IZQUIERDA: DATOS PERSONALES Y AFILIACIÓN ════════ -->
+        <article class="glass-panel profile-badge-card">
           <div class="card-title-bar">
-            <h3><span>📅</span> Agendar Nueva Consulta</h3>
-            <span class="topbar-badge-tour">Reserva Inmediata</span>
+            <h3>Expediente del Paciente</h3>
+            <span class="status-tag confirmed">Afiliado Activo</span>
           </div>
-          <form id="formAgendarCita" onsubmit="handleBookAppointment(event)">
-            <div class="form-group-clean">
-              <label for="citaEspecialidad">Especialidad requerida</label>
-              <select id="citaEspecialidad" required>
-                <option value="Medicina General">Medicina General (Dr. Carlos Mendoza)</option>
-                <option value="Cardiología">Cardiología (Dra. Sofía Ramírez)</option>
-                <option value="Pediatría">Pediatría (Dr. Daniel Torres)</option>
-                <option value="Dermatología">Dermatología (Dra. Elena Ortiz)</option>
-                <option value="Nutrición y Control">Nutrición Clínica (Lic. Andrea Castro)</option>
-              </select>
+
+          <div class="profile-avatar-banner">
+            <div class="profile-avatar-info">
+              <h2 id="lblNombrePaciente">Carlos Mendoza</h2>
+              <p>ID Expediente: <strong id="lblIdExpediente">CLB-8834</strong></p>
+              <small>Afiliado activo desde Enero 2024</small>
             </div>
+          </div>
 
-            <div class="form-group-clean">
-              <label for="citaTipo">Modalidad de Atención</label>
-              <select id="citaTipo" required>
-                <option value="Presencial">Presencial (Consultorios CliniBox)</option>
-                <option value="Virtual">Telemedicina / Videoconsulta 3D</option>
-              </select>
-            </div>
-
-            <div class="form-group-clean">
-              <label for="citaFecha">Fecha preferida</label>
-              <input type="date" id="citaFecha" required value="2026-09-25" min="2026-09-23">
-            </div>
-
-            <div class="form-group-clean">
-              <label>Horarios disponibles para la fecha seleccionada</label>
-              <div class="slot-chips-wrap" id="slotChipsContainer">
-                <button type="button" class="slot-chip selected" onclick="selectSlot(this, '09:00 AM')">09:00 AM</button>
-                <button type="button" class="slot-chip" onclick="selectSlot(this, '10:30 AM')">10:30 AM</button>
-                <button type="button" class="slot-chip" onclick="selectSlot(this, '12:00 PM')">12:00 PM</button>
-                <button type="button" class="slot-chip" onclick="selectSlot(this, '03:30 PM')">03:30 PM</button>
-                <button type="button" class="slot-chip" onclick="selectSlot(this, '05:00 PM')">05:00 PM</button>
-              </div>
-              <input type="hidden" id="citaHorarioSeleccionado" value="09:00 AM">
-            </div>
-
-            <div id="citaFeedbackMsg" style="display:none; padding:10px 14px; border-radius:8px; margin-bottom:14px; font-weight:700; font-size:0.85rem;"></div>
-
-            <button type="submit" class="btn btn-primary" style="width:100%;">
-              <span>Confirmar y Agendar Cita</span>
+          <div class="profile-actions">
+            <button type="button" class="btn btn-primary btn-sm" onclick="abrirModalEditarPerfil()">
+              <span>Modificar mis datos</span>
             </button>
-          </form>
-        </article>
-
-        <!-- Historial y citas activas -->
-        <article class="glass-panel appointment-list-card">
-          <div class="card-title-bar">
-            <h3><span>📑</span> Mis Citas Registradas</h3>
+            <button type="button" class="btn btn-outline btn-sm" onclick="imprimirCarnetSalud()">
+              <span>Imprimir carnet</span>
+            </button>
           </div>
-          <div class="appointment-items-list" id="listaCitasRegistradas">
-            
-            <div class="appointment-entry">
-              <div class="ae-date-col">
-                <small>Mañana</small>
-                <strong>10:30</strong>
-              </div>
-              <div class="ae-info-col">
-                <strong>Dr. Carlos Mendoza</strong>
-                <p>Medicina General • Consultorio 03</p>
-              </div>
-              <span class="status-tag confirmed">Confirmada</span>
-            </div>
 
-            <div class="appointment-entry">
-              <div class="ae-date-col" style="background:#f1f5f9; color:#475569;">
-                <small>12 Ago</small>
-                <strong>10:00</strong>
+          <details class="profile-details">
+            <summary>Datos personales y médica de cabecera</summary>
+            <div class="profile-data-list">
+              <div class="profile-field-box">
+                <small>Estado de Salud General</small>
+                <strong style="color:var(--accent-dark);">Estable y al Día</strong>
+                <p>Consultas preventivas vigentes y tratamientos en orden.</p>
               </div>
-              <div class="ae-info-col">
+
+              <div class="profile-field-box">
+                <small>Fecha de Nacimiento y Edad</small>
+                <strong id="lblEdad">12 de Marzo de 1984 (42 años)</strong>
+                <p>Sexo: Masculino • Nacionalidad: Mexicana</p>
+              </div>
+
+              <div class="profile-field-box">
+                <small>Teléfono Celular</small>
+                <strong id="lblTelefono">+52 55 1234 5678</strong>
+                <p>Notificaciones y recordatorios vía WhatsApp</p>
+              </div>
+
+              <div class="profile-field-box">
+                <small>Correo Electrónico</small>
+                <strong id="lblEmail">paciente@clinibox.com</strong>
+                <p>Envío de recetas digitales y resúmenes médicos</p>
+              </div>
+
+              <div class="profile-field-box">
+                <small>Dirección de Residencia</small>
+                <strong id="lblDireccion">Av. Insurgentes Sur 1450, Col. Actipan, Benito Juárez, CDMX</strong>
+                <p>Para entrega de farmacia y visitas domiciliarias</p>
+              </div>
+
+              <div class="profile-field-box">
+                <small>Médica de Cabecera Asignada</small>
                 <strong>Dra. Sofía Ramírez</strong>
-                <p>Revisión Preventiva General</p>
+                <p>Medicina General • Consultorio 03 CliniBox</p>
               </div>
-              <span class="status-tag" style="background:#f1f5f9; color:#64748b;">Completada</span>
             </div>
+          </details>
+        </article>
 
-            <div class="appointment-entry">
-              <div class="ae-date-col" style="background:#f1f5f9; color:#475569;">
-                <small>05 Jul</small>
-                <strong>11:30</strong>
-              </div>
-              <div class="ae-info-col">
-                <strong>Laboratorio Clínico</strong>
-                <p>Química Sanguínea Completa</p>
-              </div>
-              <span class="status-tag" style="background:#f1f5f9; color:#64748b;">Completada</span>
-            </div>
+        <!-- ════════ TARJETA DERECHA: SIGNOS VITALES, SALUD Y EMERGENCIA ════════ -->
+        <article class="glass-panel" style="padding: 24px;">
 
+          <div class="profile-field-box profile-field-alert">
+            <small>Alergia a Medicamentos</small>
+            <strong id="lblAlergias">Penicilina (Leve)</strong>
+            <p>Avisar al médico antes de recibir antibióticos betalactámicos.</p>
           </div>
+
+          <!-- BLOQUE 3: CONTACTO DE EMERGENCIA DIRECTO -->
+          <div class="card-title-bar" style="margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border-light);">
+            <h3>Contacto de Emergencia</h3>
+            <span class="status-tag confirmed">Verificado</span>
+          </div>
+          <div class="profile-field-box" style="margin-bottom: 12px; background: rgba(2, 132, 199, 0.03);">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+              <div>
+                <small>A quién llamar en caso de urgencia</small>
+                <strong style="font-size:1rem;" id="lblContactoEmergenciaNombre">María Mendoza</strong>
+                <p id="lblContactoEmergenciaParentesco" style="color:var(--primary); font-weight:600;">Esposa / Familiar Directo</p>
+                <p id="lblContactoEmergenciaTel" style="font-weight:700; color:var(--text-main); margin-top:2px;">+52 55 9876 5432</p>
+              </div>
+              <div style="display:flex; gap:8px;">
+                <a href="tel:+525598765432" id="lnkLlamarEmergencia" class="btn btn-primary btn-sm">
+                  <span>Llamar</span>
+                </a>
+                <button type="button" class="btn btn-outline btn-sm" onclick="abrirModalEditarPerfil()">
+                  <span>Editar</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <details class="profile-details">
+            <summary>Signos vitales y mediciones</summary>
+            <div class="profile-field-grid">
+              <div class="profile-field-box">
+                <small>Presión Arterial</small>
+                <strong style="font-size:1.05rem;">118 / 76 mmHg</strong>
+                <p>Normal y saludable. Tu corazón trabaja sin sobreesfuerzo.</p>
+              </div>
+
+              <div class="profile-field-box">
+                <small>Ritmo Cardíaco</small>
+                <strong style="font-size:1.05rem;">72 latidos / min</strong>
+                <p>Óptimo en reposo (Rango saludable: 60 a 100).</p>
+              </div>
+
+              <div class="profile-field-box">
+                <small>Nivel de Glucosa</small>
+                <strong style="font-size:1.05rem;">92 mg/dL</strong>
+                <p>Glucemia en ayunas en rango ideal (70 a 100 mg/dL).</p>
+              </div>
+
+              <div class="profile-field-box">
+                <small>Peso y Estatura</small>
+                <strong style="font-size:1.05rem;">72.5 kg • 1.75 m</strong>
+                <p>IMC 23.6 (Proporción de peso corporal saludable).</p>
+              </div>
+            </div>
+          </details>
+
+          <details class="profile-details">
+            <summary>Otros datos médicos</summary>
+            <div class="profile-field-grid">
+              <div class="profile-field-box">
+                <small>Grupo Sanguíneo y Rh</small>
+                <strong style="font-size:1.05rem;" id="lblGrupoSanguineo">O Positivo (O+)</strong>
+                <p>Receptor compatible de glóbulos rojos O+ y O-.</p>
+              </div>
+
+              <div class="profile-field-box">
+                <small>Otras Alergias</small>
+                <strong style="font-size:1.05rem;">Polen y Ácaros</strong>
+                <p>Rinitis alérgica estacional leve en primavera.</p>
+              </div>
+
+              <div class="profile-field-box">
+                <small>Tratamiento Activo</small>
+                <strong style="font-size:1.05rem;">Amoxicilina 500mg</strong>
+                <p>Día 4 de 7 • Control por faringitis aguda.</p>
+              </div>
+            </div>
+          </details>
+
+          <details class="profile-details">
+            <summary>Privacidad y confidencialidad</summary>
+            <div class="profile-notice-box">
+              <strong>Protección de Datos y Confidencialidad:</strong>
+              <p>
+                Tu información médica está protegida bajo estándares de privacidad de salud. Sólo tú y los médicos facultados de CliniBox que te atienden en consulta tienen acceso a tu expediente.
+              </p>
+            </div>
+          </details>
+
         </article>
       </div>
-    </section>
 
-    <!-- ============================================================
-         OPCIÓN 3: FARMACIA Y RECETAS (SIMPLIFICADA)
-         ============================================================ -->
-    <section class="patient-panel-section" id="section-recetas">
-      <div class="pharmacy-rx-layout">
-        
-        <!-- Receta Oficial Digital -->
-        <article class="glass-panel prescription-paper-card">
-          <div class="rx-folio-band">
-            <div class="rx-clinic-tag">
-              <span>🩺</span>
-              <strong>CLINIBOX RECETA ELECTRÓNICA</strong>
-            </div>
-            <span class="status-tag confirmed">Válida y Activa</span>
+      <!-- ==========================================================
+           MODAL: MODIFICAR DATOS DEL PACIENTE (EXCLUSIVO DE PERFIL)
+      ========================================================== -->
+      <div class="modal-overlay" id="modalEditarPerfil" role="dialog" aria-modal="true" aria-labelledby="profileEditTitle">
+        <div class="modal-card modal-profile-edit">
+          <div class="modal-header">
+            <h3 id="profileEditTitle">Actualizar Mis Datos Personales</h3>
+            <button type="button" class="close-btn" onclick="cerrarModalEditarPerfil()">&times;</button>
           </div>
+          <form onsubmit="guardarEdicionPerfil(event)">
+            <div class="modal-body">
+              <p style="font-size:0.86rem; color:var(--text-muted); margin-bottom:14px; line-height:1.45;">
+                Mantén tus datos de contacto actualizados para que tu médico pueda comunicarse contigo y recibir recordatorios de citas.
+              </p>
 
-          <div style="font-size: 0.86rem; color: var(--text-muted); border-bottom: 1px solid var(--border-light); padding-bottom: 10px;">
-            <p><strong>Folio:</strong> RX-2026-9921 &bull; <strong>Fecha de Emisión:</strong> 20 de Septiembre, 2026</p>
-            <p><strong>Médico Emisor:</strong> Dr. Carlos Mendoza (Cédula Profesional: 55421)</p>
-            <p><strong>Diagnóstico:</strong> Faringitis Aguda / Cuadro respiratorio leve</p>
-          </div>
+              <div class="edit-form-grid">
+                <span class="edit-form-section-title">Datos Personales y Contacto</span>
 
-          <div class="rx-medications-list">
-            <h4 style="font-size: 0.95rem; margin-bottom: 10px; color: var(--text-main);">Prescripción Médica:</h4>
-            
-            <div class="rx-med-item">
-              <strong>1. Amoxicilina 500mg (Caja x 20 cápsulas)</strong>
-              <p>Tomar 1 cápsula por vía oral cada 8 horas durante 7 días consecutivos después de los alimentos.</p>
-            </div>
+                <div class="form-group-modal">
+                  <label for="txtTel">Teléfono Celular</label>
+                  <input type="tel" id="txtTel" required placeholder="+52 55 1234 5678">
+                </div>
 
-            <div class="rx-med-item">
-              <strong>2. Paracetamol 500mg (Caja x 20 tabletas)</strong>
-              <p>Tomar 1 tableta cada 8 horas sólo si manifiesta dolor muscular o fiebre superior a 38°C.</p>
-            </div>
+                <div class="form-group-modal">
+                  <label for="txtEmail">Correo Electrónico</label>
+                  <input type="email" id="txtEmail" required placeholder="tu@correo.com">
+                </div>
 
-            <div class="rx-med-item">
-              <strong>3. Medidas Generales de Soporte</strong>
-              <p>Hidratación constante (2 a 3 litros de agua al día) y reposo relativo en casa.</p>
-            </div>
-          </div>
+                <div class="form-group-modal edit-form-full">
+                  <label for="txtDireccion">Dirección de Domicilio</label>
+                  <input type="text" id="txtDireccion" required placeholder="Calle, número, colonia, alcaldía o municipio">
+                </div>
 
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px; flex-wrap:wrap; gap:10px;">
-            <button type="button" class="btn btn-outline btn-sm" onclick="window.print()">
-              <span>🖨️ Imprimir / Guardar PDF</span>
-            </button>
-            <button type="button" class="btn btn-accent btn-sm" onclick="alert('Solicitud enviada a Farmacia CliniBox. Tu pedido será preparado de inmediato.')">
-              <span>🛒 Solicitar a Farmacia</span>
-            </button>
-          </div>
-        </article>
+                <span class="edit-form-section-title">Contacto de Emergencia (A quién llamar si algo pasa)</span>
 
-        <!-- Bitácora de Toma Diaria de Medicamentos -->
-        <article class="glass-panel" style="padding: 24px;">
-          <div class="card-title-bar">
-            <h3><span>💊</span> Bitácora del Día de Hoy</h3>
-            <span class="status-tag pending" id="trackerStatus">1 Pendiente</span>
-          </div>
-          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 16px;">
-            Marca las dosis que vayas tomando para mantener tu récord médico actualizado.
-          </p>
+                <div class="form-group-modal">
+                  <label for="txtEmergenciaNombre">Nombre Completo</label>
+                  <input type="text" id="txtEmergenciaNombre" required placeholder="Ej. María Mendoza">
+                </div>
 
-          <div class="daily-dose-tracker">
-            <div class="dose-track-row taken">
-              <div class="dose-left">
-                <span class="dose-time">08:00 AM</span>
-                <div>
-                  <strong style="font-size:0.9rem;">Amoxicilina 500mg</strong>
-                  <p style="font-size:0.78rem; color:var(--text-muted);">Dosis matutina tomada con desayuno</p>
+                <div class="form-group-modal">
+                  <label for="txtEmergenciaTel">Teléfono de Emergencia</label>
+                  <input type="tel" id="txtEmergenciaTel" required placeholder="+52 55 9876 5432">
+                </div>
+
+                <div class="form-group-modal edit-form-full">
+                  <label for="txtEmergenciaParentesco">Relación o Parentesco</label>
+                  <select id="txtEmergenciaParentesco" required>
+                    <option value="Esposa / Familiar Directo">Esposa / Esposo / Pareja</option>
+                    <option value="Madre / Padre">Madre / Padre</option>
+                    <option value="Hijo / Hija">Hijo / Hija</option>
+                    <option value="Hermano / Hermana">Hermano / Hermana</option>
+                    <option value="Familiar de Confianza">Familiar de Confianza</option>
+                    <option value="Amigo / Tutor">Amigo / Tutor Legal</option>
+                  </select>
                 </div>
               </div>
-              <span class="status-tag confirmed">✓ Tomado</span>
             </div>
-
-            <div class="dose-track-row taken">
-              <div class="dose-left">
-                <span class="dose-time">02:00 PM</span>
-                <div>
-                  <strong style="font-size:0.9rem;">Paracetamol 500mg</strong>
-                  <p style="font-size:0.78rem; color:var(--text-muted);">Dosis para control de dolor de cabeza</p>
-                </div>
-              </div>
-              <span class="status-tag confirmed">✓ Tomado</span>
-            </div>
-
-            <div class="dose-track-row" id="doseNocturna">
-              <div class="dose-left">
-                <span class="dose-time">08:00 PM</span>
-                <div>
-                  <strong style="font-size:0.9rem;">Amoxicilina 500mg</strong>
-                  <p style="font-size:0.78rem; color:var(--text-muted);">Dosis nocturna después de cenar</p>
-                </div>
-              </div>
-              <button type="button" class="btn btn-primary btn-sm" onclick="marcarDosisTomada(this)">
-                <span>Marcar Tomado</span>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline" onclick="cerrarModalEditarPerfil()">Cancelar</button>
+              <button type="submit" class="btn btn-primary">
+                <span>Guardar Cambios</span>
               </button>
             </div>
-          </div>
-
-          <div style="margin-top: 24px; padding: 14px; background: rgba(2, 132, 199, 0.05); border: 1px solid rgba(2, 132, 199, 0.15); border-radius: var(--radius-md);">
-            <strong style="font-size: 0.88rem; color: var(--primary-dark); display:block; margin-bottom:4px;">💡 Recordatorio Automático:</strong>
-            <p style="font-size: 0.82rem; color: var(--text-muted);">
-              Las notificaciones de toma de medicamento se enviarán 15 minutos antes de la hora estipulada a tu teléfono asociado.
-            </p>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <!-- ============================================================
-         OPCIÓN 4: MENSAJES CON EL MÉDICO (CHAT DIRECTO)
-         ============================================================ -->
-    <section class="patient-panel-section" id="section-mensajes">
-      <div class="glass-panel chat-unified-container">
-        
-        <!-- Cabecera del Chat con Médico Asignado -->
-        <div class="chat-doctor-header">
-          <div class="doctor-chat-avatar">👩‍⚕️</div>
-          <div>
-            <h3 style="font-size: 1.05rem; font-weight:800; color:var(--text-main);">Dra. Sofía Ramírez</h3>
-            <p style="font-size: 0.8rem; color: var(--accent); font-weight:700;">🟢 En línea • Especialista en Medicina Preventiva</p>
-          </div>
-          <div style="margin-left: auto;">
-            <button type="button" class="btn btn-outline btn-sm" onclick="alert('Iniciando llamada de audio/video con Dra. Sofía Ramírez...')">
-              <span>📞 Videollamada</span>
-            </button>
-          </div>
+          </form>
         </div>
-
-        <!-- Historial interactivo de conversación -->
-        <div class="chat-conversation-area" id="chatArea">
-          <div class="chat-bubble doctor">
-            <p>Hola Carlos, ¿cómo has respondido al tratamiento con amoxicilina que iniciaste?</p>
-            <span class="chat-time">09:12 AM • Dra. Sofía</span>
-          </div>
-
-          <div class="chat-bubble patient">
-            <p>Buenos días doctora, mucho mejor. La fiebre ya bajó por completo y el dolor de garganta es casi nulo.</p>
-            <span class="chat-time">09:15 AM • Tú</span>
-          </div>
-
-          <div class="chat-bubble doctor">
-            <p>Excelente noticia Carlos. Recuerda completar rigurosamente los 7 días de amoxicilina aunque ya te sientas al 100%. Si surge cualquier molestia avísame de inmediato.</p>
-            <span class="chat-time">09:18 AM • Dra. Sofía</span>
-          </div>
-        </div>
-
-        <!-- Barra de envío de mensaje -->
-        <form class="chat-input-bar" onsubmit="enviarMensajeChat(event)">
-          <input type="text" id="chatInputMensaje" placeholder="Escribe tu consulta médica a la Dra. Sofía Ramírez..." required autocomplete="off">
-          <button type="submit" class="btn btn-primary">
-            <span>Enviar Mensaje</span>
-          </button>
-        </form>
       </div>
-    </section>
 
-    <!-- ============================================================
-         OPCIÓN 5: MI PERFIL (EXPEDIENTE Y CUENTA)
-         ============================================================ -->
-    <section class="patient-panel-section" id="section-perfil">
-      <div class="profile-unified-grid">
-        
-        <!-- Tarjeta de Identidad del Paciente -->
-        <article class="glass-panel profile-badge-card">
-          <div class="profile-big-avatar">CM</div>
-          <h2 style="font-size: 1.35rem; font-weight: 800; color: var(--text-main);">Carlos Mendoza</h2>
-          <span class="status-tag confirmed">Afiliado CliniBox Activo</span>
-          <p style="font-size: 0.85rem; color: var(--text-muted);">
-            ID de Expediente Digital: <strong>CLB-8834</strong><br>
-            Registrado desde Enero 2024
-          </p>
-
-          <div style="width: 100%; border-top: 1px solid var(--border-light); padding-top: 18px; margin-top: 6px; display:flex; flex-direction:column; gap:10px;">
-            <a class="btn btn-outline" href="/CLINIBOX/" style="width:100%;">
-              <span>🏠 Regresar al Inicio</span>
-            </a>
-            <button type="button" class="btn btn-danger" style="width:100%;" onclick="handlePatientLogout(event)">
-              <span>🚪 Cerrar Sesión del Paciente</span>
-            </button>
-          </div>
-        </article>
-
-        <!-- Ficha de Datos Clínicos y de Contacto -->
-        <article class="glass-panel" style="padding: 24px;">
-          <div class="card-title-bar">
-            <h3><span>📋</span> Datos Clínicos y Expediente</h3>
-            <button type="button" class="btn btn-outline btn-sm" onclick="alert('Tus datos se encuentran validados y sincronizados con el servidor clínico CliniBox.')">
-              <span>Verificado ✓</span>
-            </button>
-          </div>
-
-          <div class="profile-data-list">
-            <div class="profile-field-box">
-              <small>Grupo Sanguíneo</small>
-              <strong>O Positivo (O+)</strong>
-            </div>
-
-            <div class="profile-field-box">
-              <small>Alergias Conocidas</small>
-              <strong style="color:var(--danger);">Penicilina (Leve) &bull; Polen</strong>
-            </div>
-
-            <div class="profile-field-box">
-              <small>Médico de Cabecera</small>
-              <strong>Dra. Sofía Ramírez (Mat. 4481)</strong>
-            </div>
-
-            <div class="profile-field-box">
-              <small>Teléfono de Contacto</small>
-              <strong>+52 55 1234 5678</strong>
-            </div>
-
-            <div class="profile-field-box">
-              <small>Correo Electrónico</small>
-              <strong>paciente@clinibox.com</strong>
-            </div>
-
-            <div class="profile-field-box">
-              <small>Contacto de Emergencia</small>
-              <strong>María Mendoza (+52 55 9876 5432)</strong>
-            </div>
-          </div>
-
-          <div style="margin-top: 22px; padding: 16px; background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: var(--radius-md);">
-            <strong style="font-size: 0.92rem; color: var(--accent-dark); display:block; margin-bottom:4px;">
-              🛡️ Protección de Datos Clínicos
-            </strong>
-            <p style="font-size: 0.82rem; color: var(--text-main);">
-              Tu historial médico cumple con la normativa de privacidad de datos de salud encriptados. Ningún tercero puede acceder sin tu consentimiento biométrico o clave de seguridad.
-            </p>
-          </div>
-        </article>
-      </div>
     </section>
 
   </main>
 </div>
 
+<!-- TOAST FLOTANTE DE NOTIFICACIONES -->
+<div class="patient-toast" id="patientToast"></div>
+
 <!-- ═══════════════════════════════════════════════════════════════
      LÓGICA JAVASCRIPT DEL PANEL SIMPLIFICADO
 ═══════════════════════════════════════════════════════════════ -->
 <script>
-  // Títulos correspondientes a las 5 opciones simplificadas
-  const sectionTitles = {
-    inicio:   "🏠 Resumen General",
-    citas:    "📅 Gestión de Citas Médicas",
-    recetas:  "💊 Farmacia y Recetas Digitales",
-    mensajes: "💬 Mensajes con el Médico",
-    perfil:   "👤 Mi Perfil y Expediente Clínico"
+  const PROFILE_STORAGE_KEY = 'clinibox_patient_profile';
+
+  // Datos por defecto amigables
+  const defaultProfileData = {
+    telefono: '+52 55 1234 5678',
+    email: 'paciente@clinibox.com',
+    direccion: 'Av. Insurgentes Sur 1450, Col. Actipan, Benito Juárez, CDMX',
+    emergenciaNombre: 'María Mendoza',
+    emergenciaTel: '+52 55 9876 5432',
+    emergenciaParentesco: 'Esposa / Familiar Directo'
   };
 
-  /**
-   * Cambia de manera fluida entre las 5 secciones simplificadas
-   */
-  function switchSection(sectionId, linkEl, event) {
-    if (event) event.preventDefault();
-
-    // 1. Ocultar todas las secciones
-    document.querySelectorAll('.patient-panel-section').forEach(sec => {
-      sec.classList.remove('active');
-    });
-
-    // 2. Mostrar la sección elegida
-    const target = document.getElementById('section-' + sectionId);
-    if (target) {
-      target.classList.add('active');
-    }
-
-    // 3. Actualizar enlace activo en la barra lateral
-    document.querySelectorAll('.nav-list a').forEach(a => {
-      a.classList.remove('active');
-      if (a.getAttribute('data-section') === sectionId) {
-        a.classList.add('active');
+  function cargarDatosPerfil() {
+    let data = defaultProfileData;
+    try {
+      const stored = localStorage.getItem(PROFILE_STORAGE_KEY);
+      if (stored) {
+        data = { ...defaultProfileData, ...JSON.parse(stored) };
       }
-    });
+    } catch (e) {}
 
-    // 4. Actualizar título en el HUD
-    const titleEl = document.getElementById('currentSectionTitle');
-    if (titleEl && sectionTitles[sectionId]) {
-      titleEl.textContent = sectionTitles[sectionId];
-    }
+    // Actualizar etiquetas en pantalla
+    const elTel = document.getElementById('lblTelefono');
+    const elEmail = document.getElementById('lblEmail');
+    const elDir = document.getElementById('lblDireccion');
+    const elEmNom = document.getElementById('lblContactoEmergenciaNombre');
+    const elEmTel = document.getElementById('lblContactoEmergenciaTel');
+    const elEmPar = document.getElementById('lblContactoEmergenciaParentesco');
+    const lnkLlamar = document.getElementById('lnkLlamarEmergencia');
 
-    // 5. Cerrar menú móvil si está abierto
-    const sidebar = document.getElementById('patientSidebar');
-    if (sidebar) {
-      sidebar.classList.remove('mobile-open');
-    }
+    if (elTel) elTel.textContent = data.telefono;
+    if (elEmail) elEmail.textContent = data.email;
+    if (elDir) elDir.textContent = data.direccion;
+    if (elEmNom) elEmNom.textContent = data.emergenciaNombre;
+    if (elEmTel) elEmTel.textContent = data.emergenciaTel;
+    if (elEmPar) elEmPar.textContent = data.emergenciaParentesco;
+    if (lnkLlamar) lnkLlamar.href = 'tel:' + data.emergenciaTel.replace(/[^0-9+]/g, '');
 
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    // Poblar inputs del modal
+    if (document.getElementById('txtTel')) document.getElementById('txtTel').value = data.telefono;
+    if (document.getElementById('txtEmail')) document.getElementById('txtEmail').value = data.email;
+    if (document.getElementById('txtDireccion')) document.getElementById('txtDireccion').value = data.direccion;
+    if (document.getElementById('txtEmergenciaNombre')) document.getElementById('txtEmergenciaNombre').value = data.emergenciaNombre;
+    if (document.getElementById('txtEmergenciaTel')) document.getElementById('txtEmergenciaTel').value = data.emergenciaTel;
+    if (document.getElementById('txtEmergenciaParentesco')) document.getElementById('txtEmergenciaParentesco').value = data.emergenciaParentesco;
   }
 
-  /**
-   * Selección de chip de horario para citas
-   */
-  function selectSlot(btn, horario) {
-    document.querySelectorAll('.slot-chip').forEach(c => c.classList.remove('selected'));
-    btn.classList.add('selected');
-    const input = document.getElementById('citaHorarioSeleccionado');
-    if (input) input.value = horario;
+  function abrirModalEditarPerfil() {
+    cargarDatosPerfil();
+    const modal = document.getElementById('modalEditarPerfil');
+    if (modal) modal.classList.add('active');
   }
 
-  /**
-   * Agendamiento interactivo de cita
-   */
-  function handleBookAppointment(e) {
+  function cerrarModalEditarPerfil() {
+    const modal = document.getElementById('modalEditarPerfil');
+    if (modal) modal.classList.remove('active');
+  }
+
+  function guardarEdicionPerfil(e) {
     e.preventDefault();
-    const esp = document.getElementById('citaEspecialidad').value;
-    const tipo = document.getElementById('citaTipo').value;
-    const fecha = document.getElementById('citaFecha').value;
-    const hora = document.getElementById('citaHorarioSeleccionado').value;
-    const feedback = document.getElementById('citaFeedbackMsg');
+    const updatedData = {
+      telefono: document.getElementById('txtTel').value.trim() || defaultProfileData.telefono,
+      email: document.getElementById('txtEmail').value.trim() || defaultProfileData.email,
+      direccion: document.getElementById('txtDireccion').value.trim() || defaultProfileData.direccion,
+      emergenciaNombre: document.getElementById('txtEmergenciaNombre').value.trim() || defaultProfileData.emergenciaNombre,
+      emergenciaTel: document.getElementById('txtEmergenciaTel').value.trim() || defaultProfileData.emergenciaTel,
+      emergenciaParentesco: document.getElementById('txtEmergenciaParentesco').value || defaultProfileData.emergenciaParentesco
+    };
 
-    feedback.style.display = 'block';
-    feedback.style.background = '#d1fae5';
-    feedback.style.color = '#065f46';
-    feedback.style.border = '1px solid #10b981';
-    feedback.textContent = `¡Cita agendada con éxito para el ${fecha} a las ${hora} (${esp} - ${tipo})!`;
+    try {
+      localStorage.setItem(PROFILE_STORAGE_KEY, JSON.stringify(updatedData));
+    } catch (err) {}
 
-    // Agregar dinámicamente a la lista
-    const lista = document.getElementById('listaCitasRegistradas');
-    if (lista) {
-      const nuevaCita = document.createElement('div');
-      nuevaCita.className = 'appointment-entry';
-      nuevaCita.innerHTML = `
-        <div class="ae-date-col">
-          <small>${fecha.slice(5)}</small>
-          <strong>${hora}</strong>
-        </div>
-        <div class="ae-info-col">
-          <strong>${esp}</strong>
-          <p>${tipo} &bull; Agendada recientemente</p>
-        </div>
-        <span class="status-tag confirmed">Nueva</span>
-      `;
-      lista.prepend(nuevaCita);
-    }
-
-    setTimeout(() => {
-      feedback.style.display = 'none';
-    }, 4500);
+    cargarDatosPerfil();
+    cerrarModalEditarPerfil();
+    mostrarPatientToast('¡Tus datos personales y de emergencia se han actualizado con éxito!', 'success');
   }
 
-  /**
-   * Marcar dosis tomada en Farmacia
-   */
-  function marcarDosisTomada(btn) {
-    const row = document.getElementById('doseNocturna');
-    if (row) {
-      row.classList.add('taken');
-      btn.outerHTML = '<span class="status-tag confirmed">✓ Tomado</span>';
-    }
-    const status = document.getElementById('trackerStatus');
-    if (status) {
-      status.textContent = '¡Completado!';
-      status.className = 'status-tag confirmed';
-    }
+  function imprimirCarnetSalud() {
+    window.print();
   }
 
-  /**
-   * Envío de mensaje en el chat médico
-   */
-  function enviarMensajeChat(e) {
-    e.preventDefault();
-    const input = document.getElementById('chatInputMensaje');
-    const texto = input.value.trim();
-    if (!texto) return;
+  let detailsOpenedForPrint = [];
+  window.addEventListener('beforeprint', () => {
+    detailsOpenedForPrint = Array.from(document.querySelectorAll('.profile-details:not([open])'));
+    detailsOpenedForPrint.forEach(details => { details.open = true; });
+  });
+  window.addEventListener('afterprint', () => {
+    detailsOpenedForPrint.forEach(details => { details.open = false; });
+    detailsOpenedForPrint = [];
+  });
 
-    const chatArea = document.getElementById('chatArea');
-    const now = new Date();
-    const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-    // Mensaje del paciente
-    const msgPatient = document.createElement('div');
-    msgPatient.className = 'chat-bubble patient';
-    msgPatient.innerHTML = `<p>${texto}</p><span class="chat-time">${timeStr} • Tú</span>`;
-    chatArea.appendChild(msgPatient);
-    input.value = '';
-    chatArea.scrollTop = chatArea.scrollHeight;
-
-    // Respuesta médica simulada
-    setTimeout(() => {
-      const msgDoctor = document.createElement('div');
-      msgDoctor.className = 'chat-bubble doctor';
-      msgDoctor.innerHTML = `<p>He recibido tu mensaje Carlos: "${texto}". Queda anotado en tu expediente de hoy.</p><span class="chat-time">${timeStr} • Dra. Sofía</span>`;
-      chatArea.appendChild(msgDoctor);
-      chatArea.scrollTop = chatArea.scrollHeight;
-    }, 1000);
+  let toastTimer;
+  function mostrarPatientToast(msg, tipo = 'info') {
+    const t = document.getElementById('patientToast');
+    if (!t) return;
+    t.textContent = msg;
+    t.className = `patient-toast show ${tipo}`;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => {
+      t.classList.remove('show');
+    }, 3500);
   }
 
-  /**
-   * Menú móvil
-   */
-  function toggleMobileSidebar() {
-    const sidebar = document.getElementById('patientSidebar');
-    if (sidebar) {
-      sidebar.classList.toggle('mobile-open');
+  // Cerrar modal con tecla Escape
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      cerrarModalEditarPerfil();
     }
-  }
+  });
 
   /**
    * Cerrar sesión
@@ -711,19 +418,17 @@
         sessionStorage.clear();
         localStorage.removeItem('clinibox_user');
         localStorage.removeItem('patient_session');
+        localStorage.removeItem('clinibox_session');
       } catch (err) {}
-      window.location.href = '../auth/login.html';
+      const form = document.createElement('form');
+      form.method = 'POST';
+      form.action = '/CLINIBOX/public/logout';
+      document.body.appendChild(form);
+      form.submit();
     }
   }
 
-  // Detectar hash en URL si existe (#citas, #recetas, etc.)
-  window.addEventListener('DOMContentLoaded', () => {
-    const hash = window.location.hash.replace('#', '');
-    if (hash && sectionTitles[hash]) {
-      switchSection(hash, null, null);
-    }
-  });
+  window.addEventListener('DOMContentLoaded', cargarDatosPerfil);
 </script>
-
 </body>
 </html>
