@@ -1239,3 +1239,69 @@
     height: 21px;
 
 }
+
+/* La misma presentación aplica a todas las categorías enlazadas desde el menú. */
+.category-panel {
+    background: rgba(224, 243, 251, .88);
+}
+
+.category-heading-icon {
+    color: #1687bb;
+    background: #b7edf9;
+    border: 1px solid rgba(255, 255, 255, .9);
+    box-shadow: none;
+}
+
+.category-count-box {
+    border: 1px solid rgba(255, 255, 255, .9);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, .58);
+    box-shadow: none;
+}
+
+.category-search,
+.category-sort select {
+    border-color: #e0eaf0;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, .78);
+    box-shadow: none;
+}
+
+.category-filter {
+    border-color: #e0eaf0;
+    background: #f5f9fb;
+}
+
+.category-filter.active {
+    color: #217fa8;
+    background: #d7f3fa;
+    border-color: #c1eaf4;
+}
+
+.category-product-card {
+    border: 1px solid #e3edf2;
+    border-radius: 14px;
+    background: #fff;
+    box-shadow: 0 4px 14px rgba(37, 76, 100, .06);
+    backdrop-filter: none;
+}
+
+.category-product-image {
+    background: #f1f8fb;
+}
+
+.category-product-image::before {
+    background: rgba(81, 198, 255, .1);
+}
+
+.category-add-cart,
+.category-main-button {
+    border-radius: 11px;
+    background: #278fc2;
+    box-shadow: 0 5px 12px rgba(39, 143, 194, .18);
+}
+
+.category-empty {
+    border-color: #d5e7ee;
+    background: #f8fbfd;
+}

@@ -7,13 +7,20 @@ abstract class Controller
     // Renderiza la vista solicitada; las vistas viven separadas de la logica PHP.
     protected function view(string $view, array $data = [], ?string $layout = null): void
     {
-        $viewPath = APP_PATH . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $view) . '.html';
+        $viewBase = APP_PATH . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $view);
+        $phpViewPath = $viewBase . '.php';
+        $viewPath = file_exists($phpViewPath) ? $phpViewPath : $viewBase . '.html';
 
         if (!file_exists($viewPath)) {
             throw new \RuntimeException("La vista {$view} no existe.");
         }
 
-        // El controlador decide la ruta y los permisos; la vista es HTML puro.
+        if (substr($viewPath, -4) === '.php') {
+            extract($data, EXTR_SKIP);
+            require $viewPath;
+            return;
+        }
+
         readfile($viewPath);
     }
 
@@ -46,5 +53,24 @@ abstract class Controller
         http_response_code(403);
         $this->view('errors/403', ['title' => 'Acceso restringido']);
         exit;
+    }
+
+    protected function csrfToken(): string
+    {
+        if (!isset($_SESSION['csrf_token'])) {
+            $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+        }
+
+        return $_SESSION['csrf_token'];
+    }
+
+    protected function verifyCsrfToken(): void
+    {
+        $token = $_POST['csrf_token'] ?? '';
+
+        if (!is_string($token) || !hash_equals($this->csrfToken(), $token)) {
+            http_response_code(419);
+            throw new \RuntimeException('La solicitud expiró. Recarga la página e inténtalo de nuevo.');
+        }
     }
 }

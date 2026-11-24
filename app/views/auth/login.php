@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Portal del Paciente | CliniBox</title>
+  <title><?= e($title) ?> | CliniBox</title>
   <link rel="stylesheet" href="../../style.css?v=20260913-3">
   <style>
     .portal-login-page {
@@ -294,7 +294,23 @@
       word-break: break-word;
     }
 
+    .login-card .alert-error,
+    .login-card .alert-success {
+      margin: 0 0 16px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+
+    .login-card .alert-error { background: #fff0f0; color: #a33142; }
+    .login-card .alert-success { background: #e8f7ef; color: #17613c; }
+
     .login-footer {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
       margin-top: 18px;
       text-align: center;
     }
@@ -337,24 +353,26 @@
         <div class="login-logo" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 6v12m-6-6h12"/></svg>
         </div>
-        <h1 id="login-title">Portal del Paciente</h1>
-        <p>Ingresa tus credenciales para acceder a tus servicios de salud</p>
+        <h1 id="login-title">Acceso a CliniBox</h1>
+        <p>Ingresa con la cuenta que te proporcionó la administración</p>
       </header>
 
-      <form class="login-form" action="login" method="post">
-        <input type="hidden" name="role" value="paciente">
+      <?php if (!empty($error)): ?><div class="alert alert-error"><?= e($error) ?></div><?php endif; ?>
+      <?php if (!empty($success)): ?><div class="alert alert-success"><?= e($success) ?></div><?php endif; ?>
+      <form class="login-form" action="<?= e(url('/login')) ?>" method="post">
+        <input type="hidden" name="csrf_token" value="<?= e($csrfToken) ?>">
         <div class="form-group">
-          <label for="loginEmail">Correo Electrónico</label>
+          <label for="loginEmail">Usuario o correo electrónico</label>
           <div class="input-with-icon">
             <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-            <input type="email" id="loginEmail" name="email" value="paciente@clinibox.com" placeholder="ejemplo@clinibox.com" required>
+            <input type="text" id="loginEmail" name="email" autocomplete="username" placeholder="admin o nombre@clinibox.com" required>
           </div>
         </div>
         <div class="form-group">
           <label for="loginPassword">Contraseña</label>
           <div class="input-with-icon">
             <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-            <input type="password" id="loginPassword" name="password" value="123456" placeholder="••••••••" required>
+            <input type="password" id="loginPassword" name="password" autocomplete="current-password" placeholder="••••••••" required>
             <button type="button" class="btn-toggle-pwd" id="btnTogglePassword" aria-label="Mostrar contraseña">👁️</button>
           </div>
         </div>
@@ -368,11 +386,10 @@
         </button>
       </form>
 
-      <aside class="demo-credentials-box">
-        <strong>Credenciales de demostración:</strong>
-        <code>Correo: paciente@clinibox.com | Clave: 123456</code>
-      </aside>
-      <footer class="login-footer"><a class="btn btn-outline btn-sm" href="../../index.html">← Volver al recorrido</a></footer>
+      <footer class="login-footer">
+        <a class="btn btn-outline btn-sm" href="<?= e(url('/admin/configurar')) ?>">Crear el primer administrador</a>
+        <a class="btn btn-outline btn-sm" href="<?= e(url('/')) ?>">← Volver al inicio</a>
+      </footer>
     </section>
   </main>
   <script>

@@ -38,13 +38,13 @@
     <!-- MISMO CSS DE TIENDA -->
 
     <link rel="stylesheet"
-          href="/CLINIBOX/CLINIBOX/public/assets/css/tienda.css?v=20260928">
+          href="/CLINIBOX/CLINIBOX/public/assets/css/tienda.css?v=20261111.5">
 
 
     <!-- CSS ESPECÍFICO DE FAVORITOS -->
 
     <link rel="stylesheet"
-          href="/CLINIBOX/CLINIBOX/public/assets/css/favoritos.css?v=20260928">
+          href="/CLINIBOX/CLINIBOX/public/assets/css/favoritos.css?v=20261111.1">
 
 </head>
 
@@ -252,7 +252,7 @@
 
 <!-- JAVASCRIPT -->
 
-<script src="/CLINIBOX/CLINIBOX/public/assets/js/favoritos.js?v=20260928.1"></script>
+<script src="/CLINIBOX/CLINIBOX/public/assets/js/favoritos.js?v=20261111.1"></script>
 
 
 <script>
@@ -265,6 +265,112 @@
         lucide.createIcons();
 
     }
+
+    (function () {
+        const storageKey = "cliniboxStoreZoomV3";
+        const root = document.documentElement;
+        const panelId = "storeAccessToolbar";
+
+        const existingPanel = document.getElementById(panelId);
+        if (!existingPanel) {
+            const panel = document.createElement("div");
+            panel.id = panelId;
+            panel.className = "store-accessibility";
+            panel.setAttribute("aria-label", "Ajuste de tamaño de la tienda");
+            panel.innerHTML = `
+                <div class="store-accessibility-panel" aria-label="Opciones de visualización">
+                    <button type="button" class="store-accessibility-action" data-zoom="down">
+                        Reducir <span>−</span>
+                    </button>
+                    <button type="button" class="store-accessibility-action" data-zoom="up">
+                        Aumentar <span>+</span>
+                    </button>
+                    <button type="button" class="store-accessibility-action" data-zoom="reset">
+                        Restablecer <span>↺</span>
+                    </button>
+                </div>
+                <button type="button" class="store-accessibility-toggle" aria-label="Abrir ajustes de accesibilidad" aria-expanded="false">
+                    <i data-lucide="eye"></i>
+                </button>
+            `;
+            document.body.appendChild(panel);
+        }
+
+        const panel = document.getElementById(panelId);
+        const shell = document.getElementById("storeScaleWrapper");
+
+        if (!shell) {
+            const wrapper = document.createElement("div");
+            wrapper.id = "storeScaleWrapper";
+
+            Array.from(document.body.children).forEach((child) => {
+                if (
+                    child !== panel &&
+                    !child.classList.contains("store-accessibility") &&
+                    !child.classList.contains("shop-background") &&
+                    !child.classList.contains("shop-background-overlay")
+                ) {
+                    wrapper.appendChild(child);
+                }
+            });
+
+            document.body.appendChild(wrapper);
+        }
+
+        document.querySelectorAll(".shop-category").forEach((category) => {
+            const label = category.querySelector("span:not(.category-icon)")?.textContent.trim();
+            if (label) {
+                category.setAttribute("aria-label", label);
+                category.setAttribute("title", label);
+            }
+        });
+
+        function clampZoom(value) {
+            return Math.min(1.45, Math.max(0.65, Number(value) || 0.85));
+        }
+
+        function applyZoom(value) {
+            const next = clampZoom(value);
+            root.style.setProperty("--store-zoom", next.toFixed(2));
+            const wrapper = document.getElementById("storeScaleWrapper");
+            if (wrapper) {
+                wrapper.style.transform = `scale(${next})`;
+                wrapper.style.width = `calc(100% / ${next})`;
+                wrapper.style.marginLeft = `calc((100% - (100% / ${next})) / 2)`;
+                wrapper.classList.toggle("store-zoom-expanded", next > 1);
+            }
+            localStorage.setItem(storageKey, String(next));
+        }
+
+        const toggle = panel.querySelector(".store-accessibility-toggle");
+        const currentValue = Number(localStorage.getItem(storageKey) || 0.85);
+        let panelCloseTimer;
+        applyZoom(currentValue);
+
+        toggle.addEventListener("click", () => {
+            clearTimeout(panelCloseTimer);
+            const isOpen = panel.classList.toggle("open");
+            toggle.setAttribute("aria-expanded", String(isOpen));
+        });
+
+        panel.querySelectorAll("[data-zoom]").forEach((button) => {
+            button.addEventListener("click", () => {
+                const current = parseFloat(root.style.getPropertyValue("--store-zoom")) || Number(localStorage.getItem(storageKey) || 0.85);
+                const action = button.dataset.zoom;
+                const nextValue = action === "down" ? current - 0.10 : action === "up" ? current + 0.10 : 0.85;
+                applyZoom(nextValue);
+                clearTimeout(panelCloseTimer);
+                panelCloseTimer = setTimeout(() => {
+                    panel.classList.remove("open");
+                    toggle.setAttribute("aria-expanded", "false");
+                }, 2000);
+            });
+        });
+
+        if (typeof lucide !== "undefined" && lucide.createIcons) {
+            lucide.createIcons();
+        }
+    })();
 
 </script>
 

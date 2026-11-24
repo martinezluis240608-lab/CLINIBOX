@@ -738,3 +738,49 @@
     }
 
 }
+
+
+@media (max-width: 420px) {
+
+    .cart-page {
+
+        padding: 24px 12px 40px;
+
+    }
+
+    .cart-item {
+
+        grid-template-columns: 68px 1fr;
+
+        padding: 12px;
+
+    }
+
+    .cart-item-image {
+
+        width: 68px;
+        height: 68px;
+
+    }
+
+    .cart-item-title {
+
+        font-size: 15px;
+
+    }
+
+    .cart-quantity {
+
+        width: 100%;
+
+        justify-content: space-between;
+
+    }
+
+    .cart-summary {
+
+        padding: 18px 15px;
+
+    }
+
+}

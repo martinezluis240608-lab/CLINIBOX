@@ -3,50 +3,48 @@
 namespace App\Controllers;
 
 use App\Core\Controller;
+use App\Models\User;
 
 class AuthController extends Controller
 {
     public function login(): void
     {
         if (\auth_user()) {
-            $this->redirect('/dashboard');
+            $this->redirect(\auth_role() === 'admin' ? '/admin' : '/dashboard');
         }
 
-        $this->view('auth/login', ['title' => 'Iniciar sesion']);
+        $this->view('auth/login', [
+            'title' => 'Iniciar sesión',
+            'csrfToken' => $this->csrfToken(),
+            'error' => \flash('error'),
+            'success' => \flash('success'),
+        ]);
     }
 
     public function attempt(): void
     {
-        $role = $_POST['role'] ?? $_POST['rol'] ?? '';
-        $role = $role === 'administrador' ? 'admin' : $role;
-        $validRoles = ['medico', 'paciente', 'admin'];
+        $this->verifyCsrfToken();
 
-        if (!in_array($role, $validRoles, true)) {
-            \set_flash('error', 'Selecciona un rol valido para ingresar.');
+        $loginInput = $_POST['email'] ?? '';
+        $identifier = is_string($loginInput) ? trim($loginInput) : '';
+        $password = $_POST['password'] ?? '';
+        $user = $identifier !== '' && strlen($identifier) <= 160
+            ? (new User())->findByLogin($identifier)
+            : null;
+
+        if (!$user || $user['estado'] !== 'activo' || !is_string($password) || !password_verify($password, $user['password'])) {
+            \set_flash('error', 'El correo o la contraseña no son válidos.');
             $this->redirect('/login');
         }
 
-        $users = [
-            'medico' => [
-                'name' => 'Dra. Sofia Ramirez',
-                'email' => 'medico@clinibox.test',
-                'role' => 'medico',
-            ],
-            'paciente' => [
-                'name' => 'Carlos Mendoza',
-                'email' => 'paciente@clinibox.test',
-                'role' => 'paciente',
-            ],
-            'admin' => [
-                'name' => 'Administrador CliniBox',
-                'email' => 'admin@clinibox.test',
-                'role' => 'admin',
-            ],
-        ];
-
         session_regenerate_id(true);
-        $_SESSION['user'] = $users[$role];
-        $this->redirect($role === 'paciente' ? '/paciente/perfil' : '/dashboard');
+        $_SESSION['user'] = [
+            'id' => (int) $user['id'],
+            'name' => $user['nombre'],
+            'email' => $user['email'],
+            'role' => $user['rol'],
+        ];
+        $this->redirect($user['rol'] === 'admin' ? '/admin' : ($user['rol'] === 'paciente' ? '/paciente/perfil' : '/dashboard'));
     }
 
     public function logout(): void
