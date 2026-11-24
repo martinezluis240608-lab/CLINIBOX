@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CliniBox | Mis pedidos</title>
-    <link rel="stylesheet" href="/CLINIBOX/public/assets/css/tienda.css">
+    <link rel="stylesheet" href="/CLINIBOX/public/assets/css/tienda.css?v=20261112.1">
     <style>
         .orders-page { min-height: 100vh; padding: 55px 0 80px; background: #f7f9fc; }
         .orders-container { width: min(1100px, 90%); margin: auto; }
@@ -28,20 +28,31 @@
     <main class="orders-page"><div class="orders-container"><div class="orders-heading"><h1>Mis pedidos</h1><p>Consulta el estado y los detalles de tus compras.</p></div><div id="ordersContainer"></div></div></main>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script>
-        const pedidos = JSON.parse(localStorage.getItem("cliniboxPedidos") || "[]");
+        const statusLabels = { recibido: "Recibido por farmacia", preparando: "Preparando tu pedido", listo: "Listo para recoger", enviado: "Enviado", en_transito: "En tránsito", entregado: "Entregado", verificado: "Entrega confirmada", cancelado: "Cancelado" };
+        const escapeHtml = value => String(value ?? "").replace(/[&<>"']/g, char => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[char]));
+        const money = value => new Intl.NumberFormat("es-MX", { style: "currency", currency: "MXN" }).format(Number(value) || 0);
         const contenedor = document.getElementById("ordersContainer");
-        if (!pedidos.length) {
-            contenedor.innerHTML = '<div class="orders-empty"><i data-lucide="package-open" style="width:60px;height:60px"></i><h2>Todavía no tienes pedidos</h2><p>Cuando realices una compra, aparecerá aquí.</p><a href="/CLINIBOX/public/tienda">Ir a la tienda</a></div>';
-        } else {
-            pedidos.forEach(pedido => {
-                const productos = (pedido.productos || []).map(producto => `<div class="order-product"><span>${producto.nombre} × ${producto.cantidad}</span><strong>$${(Number(producto.precio) * Number(producto.cantidad)).toFixed(2)}</strong></div>`).join("");
-                const card = document.createElement("article");
-                card.className = "order-card";
-                card.innerHTML = `<div class="order-header"><div><strong>${pedido.id || "Pedido"}</strong><br><small>${pedido.fecha || ""}</small></div><span class="order-status">${pedido.estado || "En proceso"}</span></div>${productos}<div class="order-total">Total: $${Number(pedido.total || 0).toFixed(2)}</div>`;
-                contenedor.appendChild(card);
-            });
-        }
-        lucide.createIcons();
+        const folio = new URLSearchParams(location.search).get("folio");
+        let refs = [];
+        try { refs = JSON.parse(localStorage.getItem("cliniboxOrderRefs") || "[]"); } catch (_) {}
+        if (folio) refs = refs.filter(ref => ref.id === folio);
+        const empty = '<div class="orders-empty"><i data-lucide="package-open" style="width:60px;height:60px"></i><h2>Todavía no tienes pedidos</h2><p>Al confirmar una compra, podrás revisar aquí su preparación, envío y entrega.</p><a href="/CLINIBOX/public/tienda">Ir a la tienda</a></div>';
+        if (!refs.length) contenedor.innerHTML = empty;
+        else Promise.all(refs.map(async ref => {
+            const response = await fetch(`/CLINIBOX/public/api/farmacia?resource=tracking&id=${encodeURIComponent(ref.id)}&token=${encodeURIComponent(ref.token)}`);
+            const data = await response.json();
+            if (!response.ok) throw new Error(data.error || "No se pudo consultar el pedido.");
+            return data.order;
+        })).then(orders => {
+            contenedor.innerHTML = orders.map(order => {
+                const lines = (order.items || []).map(item => `<div class="order-product"><span>${escapeHtml(item.name)} × ${Number(item.quantity)}</span><strong>${money(item.total)}</strong></div>`).join("");
+                const tracking = order.delivery_type === "recoger" ? "Recoge tu pedido en la farmacia." : `${order.carrier ? escapeHtml(order.carrier) : "Envío por asignar"}${order.tracking_number ? ` · Guía ${escapeHtml(order.tracking_number)}` : ""}`;
+                const history = (order.history || []).map(step => `<span class="order-timeline-step"><i></i><span><strong>${escapeHtml(statusLabels[step.status] || step.status)}</strong><small>${new Date(step.at).toLocaleString("es-MX")}${step.note ? ` · ${escapeHtml(step.note)}` : ""}</small></span></span>`).join("");
+                return `<article class="order-card"><div class="order-header"><div><strong>${escapeHtml(order.id)}</strong><br><small>${new Date(order.created_at).toLocaleString("es-MX")}</small></div><span class="order-status">${escapeHtml(statusLabels[order.status] || order.status)}</span></div>${lines}<div class="order-delivery"><strong>${order.delivery_type === "recoger" ? "Recolección" : "Entrega"}</strong><span>${escapeHtml(order.destination || "Mostrador de farmacia")}</span><small>${tracking}</small></div><div class="order-timeline">${history}</div><div class="order-total">Total: ${money(order.total)}</div></article>`;
+            }).join("");
+            if (typeof lucide !== "undefined") lucide.createIcons();
+        }).catch(error => { contenedor.innerHTML = `<div class="orders-empty"><h2>No se pudo cargar el seguimiento</h2><p>${escapeHtml(error.message)}</p><a href="/CLINIBOX/public/tienda">Volver a la tienda</a></div>`; });
+        if (typeof lucide !== "undefined") lucide.createIcons();
     </script>
 </body>
 </html>

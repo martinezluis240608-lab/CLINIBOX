@@ -4,7 +4,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>CliniBox | Producto</title>
-	<link rel="stylesheet" href="/CLINIBOX/public/assets/css/tienda.css?v=20260928.2">
+	<link rel="stylesheet" href="/CLINIBOX/public/assets/css/tienda.css?v=20261112.1">
 	<style>
 		.product-page { min-height: calc(100vh - 100px); padding: 38px 24px 70px; }
 		.product-container { width: min(1200px, 100%); margin: 0 auto; }
@@ -60,7 +60,7 @@
 	</main>
 
 	<script src="https://unpkg.com/lucide@latest"></script>
-	<script src="/CLINIBOX/public/assets/js/carrito.js?v=20260928.2"></script>
+	<script src="/CLINIBOX/public/assets/js/carrito.js?v=20261112.1"></script>
 	<script>
 		const productos = {
 			1: { id: 1, nombre: "Paracetamol 500 mg", categoria: "Medicamentos", precio: 89, imagen: "💊", descripcion: "Analgésico de uso común para el cuidado diario.", caracteristicas: { Presentación: "Caja", Contenido: "20 tabletas", Marca: "CliniBox" } },
@@ -94,17 +94,19 @@
 			imagen: params.get("imagen") || productoBase?.imagen || "💊",
 			descripcion: params.get("descripcion") || productoBase?.descripcion || "",
 			oldPrice: Number(params.get("oldPrice") || productoBase?.precio || 0),
+			barcode: params.get("codigoBarras") || window.cliniboxCart.barcodeFor({ name: params.get("nombre") || productoBase?.nombre || "Producto", category: params.get("categoria") || productoBase?.categoria || "" }),
 			caracteristicas: productoBase?.caracteristicas || {
 				Categoría: params.get("categoria") || ""
 			}
 		} : productoBase;
+		if (producto) producto.barcode = producto.barcode || window.cliniboxCart.barcodeFor(producto);
 		const contenedor = document.getElementById("productDetail");
 
 		if (!producto) {
 			contenedor.innerHTML = '<div class="product-not-found"><h2>Producto no encontrado</h2><a href="/CLINIBOX/public/tienda">Volver a la tienda</a></div>';
 		} else {
 			const caracteristicas = Object.entries(producto.caracteristicas || {}).map(([nombre, valor]) => `<div class="product-feature"><span>${nombre}</span><strong>${valor}</strong></div>`).join("");
-			contenedor.innerHTML = `<div class="product-image"><span>${producto.imagen}</span></div><div class="product-information"><small>${producto.categoria}</small><h1>${producto.nombre}</h1><div class="product-price">$${producto.precio.toFixed(2)}</div><p class="product-description">${producto.descripcion}</p><div class="product-features"><h3>Características</h3>${caracteristicas}</div><div class="product-option"><label for="cantidadProducto">Cantidad</label><input id="cantidadProducto" type="number" min="1" value="1"></div><button class="product-add" id="btnAgregarProducto">AGREGAR AL CARRITO</button></div>`;
+			contenedor.innerHTML = `<div class="product-image"><span>${producto.imagen}</span></div><div class="product-information"><small>${producto.categoria}</small><h1>${producto.nombre}</h1><div class="product-price">$${producto.precio.toFixed(2)}</div><p class="product-description">${producto.descripcion}</p><div class="product-features"><h3>Características</h3>${caracteristicas}<div class="product-feature"><span>Código de barras</span><strong>${producto.barcode}</strong></div></div><div class="product-option"><label for="cantidadProducto">Cantidad</label><input id="cantidadProducto" type="number" min="1" value="1"></div><button class="product-add" id="btnAgregarProducto">AGREGAR AL CARRITO</button></div>`;
 			document.getElementById("btnAgregarProducto").addEventListener("click", () => {
 				const cantidad = Math.max(1, Number(document.getElementById("cantidadProducto").value) || 1);
 				agregarProductoAlCarrito({ ...producto, cantidad });

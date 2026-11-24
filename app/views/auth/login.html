@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Iniciar Sesión | CliniBox</title>
-<link rel="stylesheet" href="/CLINIBOX/public/assets/css/login_medico.css?v=20261108">
-<link rel="stylesheet" href="../../public/assets/css/login_medico.css?v=20261108">
+<link rel="stylesheet" href="/CLINIBOX/public/assets/css/login_medico.css?v=20261113.1">
+<link rel="stylesheet" href="../../public/assets/css/login_medico.css?v=20261113.1">
 </head>
 <body class="auth-page">
 
@@ -47,24 +47,11 @@
                 <h2 id="formTitle">Iniciar sesión</h2>
                 <p id="formSubtitle">Ingresa con tu correo y contraseña</p>
             </div>
-
-            <!-- SELECTOR DE ROL -->
-            <div class="role-switch" role="tablist">
-                <button type="button" class="role-btn active" data-role="paciente" onclick="setRole('paciente', this)">
-                    🧑‍🦱 Paciente
-                </button>
-                <button type="button" class="role-btn" data-role="medico" onclick="setRole('medico', this)">
-                    🩺 Médico
-                </button>
-            </div>
-
-            <!-- FORMULARIO DE LOGIN -->
-            <form id="loginForm" method="POST" action="/CLINIBOX/public/login" onsubmit="handleLogin(event)" novalidate>
-                <input type="hidden" name="role" id="hiddenRole" value="paciente">
-
-                <div class="form-group">
+<!-- FORMULARIO DE LOGIN -->
+            <form id="loginForm" method="POST" action="/CLINIBOX/public/login">
+<div class="form-group">
                     <label for="email">Correo electrónico</label>
-                    <input type="email" id="email" name="email" class="form-control" placeholder="paciente@demo.com" required autocomplete="email">
+                    <input type="email" id="email" name="email" class="form-control" placeholder="tucorreo@clinibox.com" required autocomplete="email">
                 </div>
 
                 <div class="form-group">
@@ -164,75 +151,15 @@
 <div class="toast" id="toast"></div>
 
 <script>
-    let currentRole = 'paciente';
-
-    function setRole(role, btn) {
-        currentRole = role;
-        document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        document.getElementById('hiddenRole').value = role;
-
-        const title = document.getElementById('formTitle');
-        const subtitle = document.getElementById('formSubtitle');
-        const emailInput = document.getElementById('email');
-
-        if (role === 'medico') {
-            title.textContent = 'Acceso Médico';
-            subtitle.textContent = 'Ingresa con tus credenciales clínicas';
-            emailInput.placeholder = 'medico@demo.com';
-        } else {
-            title.textContent = 'Acceso Paciente';
-            subtitle.textContent = 'Ingresa con tu correo y contraseña';
-            emailInput.placeholder = 'paciente@demo.com';
-        }
-    }
-
     function togglePassword() {
         const input = document.getElementById('password');
         input.type = input.type === 'password' ? 'text' : 'password';
     }
 
-    function handleLogin(e) {
-        e.preventDefault();
-        const email = document.getElementById('email').value.trim();
-        const pass  = document.getElementById('password').value.trim();
-
-        if (!email || !pass) {
-            showToast('Completa todos los campos', 'error');
-            return;
-        }
-
-        const users = {
-            'paciente@demo.com': { pass: '123456', role: 'paciente', redirect: '/CLINIBOX/public/citas' },
-            'medico@demo.com':   { pass: '123456', role: 'medico',   redirect: '/CLINIBOX/public/medico/consultas' },
-            'paciente@clinibox.test': { pass: '123456', role: 'paciente', redirect: '/CLINIBOX/public/citas' },
-            'medico@clinibox.test':   { pass: '123456', role: 'medico',   redirect: '/CLINIBOX/public/medico/consultas' }
-        };
-
-        const user = users[email];
-
-        if (!user || user.pass !== pass) {
-            // Intentar envío POST por formulario normal hacia backend MVC si existe
-            document.getElementById('loginForm').submit();
-            return;
-        }
-
-        if (user.role !== currentRole) {
-            showToast(`Esta cuenta es de tipo "${user.role}". Cambia la pestaña.`, 'error');
-            return;
-        }
-
-        localStorage.setItem('clinibox_session', JSON.stringify({
-            email, role: user.role, ts: Date.now()
-        }));
-
-        showToast('¡Bienvenido! Redirigiendo...', 'success');
-
-        setTimeout(() => {
-            window.location.href = user.redirect;
-        }, 800);
+    const loginError = new URLSearchParams(window.location.search).get('error');
+    if (loginError === '1') {
+        showToast('No se pudo iniciar sesión. Revisa tus datos o intenta más tarde.', 'error');
     }
-
     function openForgot(e) {
         e.preventDefault();
         document.getElementById('forgotModal').classList.add('active');
@@ -282,3 +209,4 @@
 
 </body>
 </html>
+

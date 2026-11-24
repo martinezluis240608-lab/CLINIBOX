@@ -12,6 +12,7 @@ const products = [
 
     {
         id: 1,
+        barcode: "2000000000015",
         name: "Paracetamol 500 mg",
         category: "Medicamentos",
         price: 45,
@@ -24,6 +25,7 @@ const products = [
 
     {
         id: 2,
+        barcode: "2000000000022",
         name: "Vitamina C 1000 mg",
         category: "Vitaminas y suplementos",
         price: 120,
@@ -36,6 +38,7 @@ const products = [
 
     {
         id: 3,
+        barcode: "2000000000039",
         name: "Termómetro digital",
         category: "Equipo médico",
         price: 85,
@@ -48,6 +51,7 @@ const products = [
 
     {
         id: 4,
+        barcode: "2000000000046",
         name: "Gasas estériles",
         category: "Primeros auxilios",
         price: 60,
@@ -60,6 +64,7 @@ const products = [
 
     {
         id: 5,
+        barcode: "2000000000053",
         name: "Gel antibacterial",
         category: "Higiene personal",
         price: 55,
@@ -72,6 +77,7 @@ const products = [
 
     {
         id: 6,
+        barcode: "2000000000060",
         name: "Protector solar FPS 50",
         category: "Cuidado de la piel",
         price: 189,
@@ -84,6 +90,7 @@ const products = [
 
     {
         id: 7,
+        barcode: "2000000000077",
         name: "Ibuprofeno 400 mg",
         category: "Medicamentos",
         price: 75,
@@ -95,6 +102,7 @@ const products = [
 
     {
         id: 8,
+        barcode: "2000000000084",
         name: "Multivitamínico",
         category: "Vitaminas y suplementos",
         price: 210,
@@ -106,6 +114,7 @@ const products = [
 
     {
         id: 9,
+        barcode: "2000000000091",
         name: "Tensiómetro digital",
         category: "Equipo médico",
         price: 549,
@@ -117,6 +126,7 @@ const products = [
 
     {
         id: 10,
+        barcode: "2000000000107",
         name: "Oxímetro de pulso",
         category: "Equipo médico",
         price: 329,
@@ -128,6 +138,7 @@ const products = [
 
     {
         id: 11,
+        barcode: "2000000000114",
         name: "Kit de curación",
         category: "Primeros auxilios",
         price: 149,
@@ -139,6 +150,7 @@ const products = [
 
     {
         id: 12,
+        barcode: "2000000000121",
         name: "Crema hidratante",
         category: "Cuidado de la piel",
         price: 135,
@@ -308,6 +320,7 @@ function addToCart(product) {
         price: product.price,
         oldPrice: product.oldPrice || product.price,
         emoji: product.emoji,
+        barcode: product.barcode,
         quantity: 1
     });
 
@@ -432,6 +445,8 @@ function renderOffers() {
                     ${product.name}
 
                 </h3>
+
+                <small class="product-barcode-meta">Código: ${product.barcode}</small>
 
 
                 <p class="offer-description">
@@ -616,6 +631,7 @@ function getProductDetailUrl(product) {
         precio: String(product.price),
         oldPrice: String(product.oldPrice || product.price),
         imagen: product.emoji || "💊",
+        codigoBarras: product.barcode,
         descripcion: getProductDescription(product)
     });
 
@@ -805,6 +821,8 @@ function renderProducts() {
                         ${product.name}
 
                     </div>
+
+                    <small class="product-barcode-meta">Código: ${product.barcode}</small>
 
 
                     <div class="popular-product-detail">

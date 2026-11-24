@@ -466,3 +466,22 @@ img { display: block; max-width: 100%; }
     .btn-back span { display: none; }
     .btn-back { padding: 8px 10px; }
 }
+
+/* Tarjetas de médicos con imagen frontal y ficha al reverso */
+.slider-viewport{overflow:visible}
+.slider-track{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;transform:none!important;will-change:auto}
+.doctor-slide{min-width:0;padding:0;perspective:1100px}
+.doctor-card{position:relative;display:block;width:100%;height:360px;max-width:none;padding:22px;overflow:hidden;border-radius:18px;transform-style:preserve-3d;transition:box-shadow .3s ease,transform .3s ease}
+.doctor-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-hover)}
+.doctor-avatar-wrap{position:absolute;inset:0;z-index:2;justify-content:center;gap:12px;background:#fff;backface-visibility:hidden;transition:transform .65s cubic-bezier(.2,.75,.25,1),opacity .25s}
+.doctor-photo{width:190px;height:190px;border-radius:50%;border:5px solid var(--primary-light)}
+.doctor-card::after{content:attr(data-name);position:absolute;z-index:3;left:15px;right:15px;bottom:34px;text-align:center;color:var(--text-dark);font-size:1.08rem;font-weight:800;transition:opacity .2s}
+.doctor-info{position:absolute;inset:0;z-index:1;display:flex;flex-direction:column;justify-content:center;padding:26px;background:linear-gradient(145deg,#fff,#eff8ff);text-align:center;backface-visibility:hidden;transform:rotateY(180deg);transition:transform .65s cubic-bezier(.2,.75,.25,1)}
+.doctor-bio{margin-bottom:16px;font-size:.85rem}
+.doctor-card:hover .doctor-avatar-wrap,.doctor-card:focus-within .doctor-avatar-wrap{transform:rotateY(-180deg);opacity:0}
+.doctor-card:hover .doctor-info,.doctor-card:focus-within .doctor-info{transform:rotateY(0)}
+.doctor-card:hover::after,.doctor-card:focus-within::after{opacity:0}
+.slider-controls{display:none}
+@media(max-width:900px){.slider-track{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:580px){.slider-track{grid-template-columns:1fr}.doctor-card{height:340px}}
+@media(prefers-reduced-motion:reduce){.doctor-avatar-wrap,.doctor-info{transition:none}}

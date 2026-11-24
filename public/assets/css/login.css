@@ -346,7 +346,7 @@ body {
 .quick-access {
     position: relative;
     z-index: 9;
-    width: min(960px, calc(100% - 64px));
+    width: min(920px, calc(100% - 64px));
     margin: 0 auto 30px;
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -634,4 +634,5 @@ body {
         transition-duration: .01ms;
     }
 }
+
 

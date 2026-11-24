@@ -14,5 +14,7 @@ return [
         'medico' => 'Medico',
         'paciente' => 'Paciente',
         'admin' => 'Administrador',
+        'farmacia' => 'Farmacia',
     ],
 ];
+

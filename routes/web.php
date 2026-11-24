@@ -1,6 +1,7 @@
 <?php
 
 use App\Controllers\AdminController;
+use App\Controllers\FarmaciaController;
 use App\Controllers\AuthController;
 use App\Controllers\DashboardController;
 use App\Controllers\HomeController;
@@ -32,6 +33,11 @@ return function (Router $router): void {
 
     // Presentaciones públicas de médicos
     $router->get('/medicos', [HomeController::class, 'medicos']);
+
+    // Punto de venta y API de farmacia
+    $router->get('/farmacia', [FarmaciaController::class, 'index']);
+    $router->get('/api/farmacia', [FarmaciaController::class, 'api']);
+    $router->post('/api/farmacia', [FarmaciaController::class, 'api']);
 
     // Médico
     $router->get('/medico', [MedicoController::class, 'perfil']);

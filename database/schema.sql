@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS usuarios (
     nombre VARCHAR(120) NOT NULL,
     email VARCHAR(160) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
-    rol ENUM('admin', 'medico', 'paciente') NOT NULL,
+    rol ENUM('admin', 'medico', 'paciente', 'farmacia') NOT NULL,
     estado ENUM('activo', 'inactivo') NOT NULL DEFAULT 'activo',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
@@ -126,3 +126,4 @@ CREATE TABLE IF NOT EXISTS bitacora_medicamentos (
     CONSTRAINT fk_bitacora_paciente FOREIGN KEY (paciente_id) REFERENCES pacientes(id),
     CONSTRAINT fk_bitacora_receta FOREIGN KEY (receta_id) REFERENCES recetas(id)
 );
+

@@ -166,6 +166,7 @@ function getCategoryProductDetailUrl(producto) {
         precio: String(producto.precio),
         oldPrice: String(producto.anterior || producto.precio),
         imagen: producto.imagen || "💊",
+        codigoBarras: window.cliniboxCart.barcodeFor({ name: producto.nombre, category: producto.categoryName || categoria.nombre }),
         descripcion: getCategoryProductDescription(producto)
     });
 
@@ -911,6 +912,8 @@ function renderProductos() {
                         ${producto.nombre}
                     </h3>
 
+                    <small class="product-barcode-meta">Código: ${window.cliniboxCart.barcodeFor({ name: producto.nombre, category: producto.categoryName || categoria.nombre })}</small>
+
                     <p class="category-product-description">
                         ${getCategoryProductDescription(producto)}
                     </p>
@@ -1082,6 +1085,7 @@ function agregarCarrito(producto) {
         price: producto.precio,
         oldPrice: producto.anterior || producto.precio,
         emoji: producto.imagen,
+        barcode: window.cliniboxCart.barcodeFor({ name: producto.nombre, category: producto.categoryName || categoria.nombre }),
         quantity: 1
     });
 

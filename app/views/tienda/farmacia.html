@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Punto de venta | CliniBox</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/CLINIBOX/public/assets/css/farmacia.css?v=20261112.1">
+</head>
+<body>
+<!-- Contenedor de la aplicación: menú lateral y área principal del punto de venta. -->
+<div class="pos-shell">
+    <aside class="pos-sidebar">
+        <a class="pos-brand" href="/CLINIBOX/"><span class="pos-brand-mark">C</span><span><strong>CliniBox</strong><small>Farmacia · Caja</small></span></a>
+        <div class="sidebar-label">OPERACIÓN</div>
+        <button class="side-link active" data-view="caja"><span>▦</span>Caja de venta</button>
+        <button class="side-link" data-view="inventario"><span>▤</span>Inventario <b id="lowStockBadge" class="nav-badge">0</b></button>
+        <button class="side-link" data-view="pedidos"><span>▣</span>Pedidos en línea <b id="ordersBadge" class="nav-badge">0</b></button>
+        <button class="side-link" data-view="ventas"><span>◷</span>Ventas</button>
+        <div class="sidebar-bottom"><span class="online-dot"></span>Almacén compartido de CliniBox</div>
+    </aside>
+
+    <main class="pos-main">
+        <header class="pos-topbar">
+            <div><span class="eyebrow">FARMACIA FÍSICA</span><h1 id="pageTitle">Caja de venta</h1></div>
+            <div class="topbar-actions"><span class="staff-chip"><span class="staff-avatar">F</span><span><strong id="cashierName">Farmacia</strong><small>Personal de caja</small></span></span><a class="store-link" href="/CLINIBOX/public/tienda" target="_blank" rel="noopener">Abrir tienda ↗</a><form class="logout-form" method="post" action="/CLINIBOX/public/logout"><button class="logout-button" type="submit">Salir</button></form></div>
+        </header>
+
+        <div id="notice" class="notice" role="status" aria-live="polite"></div>
+
+        <!-- Caja: lector, catálogo, carrito, total y método de pago. -->
+<section class="pos-view active" id="view-caja">
+            <div class="stats-row">
+                <article class="mini-stat"><span>Productos en catálogo</span><strong id="statProducts">0</strong><small>con código de barras</small></article>
+                <article class="mini-stat"><span>Unidades disponibles</span><strong id="statUnits">0</strong><small>existencias actuales</small></article>
+                <article class="mini-stat"><span>Pedidos por atender</span><strong id="statPending">0</strong><small>compras en línea</small></article>
+                <article class="mini-stat"><span>Ventas de hoy</span><strong id="statToday">$0.00</strong><small id="statSalesCount">0 tickets</small></article>
+            </div>
+
+            <div class="sales-layout">
+                <section class="panel products-panel">
+                    <div class="panel-heading"><div><h2>Escanea o busca productos</h2><p>El lector USB funciona al escribir el código y terminar con Enter.</p></div><span class="scanner-pill"><span class="online-dot"></span>Lector listo</span></div>
+                    <label class="scan-box" for="barcodeInput"><span class="scan-icon">▥</span><input id="barcodeInput" type="text" autocomplete="off" placeholder="Escanea el código de barras aquí…" autofocus><button id="scanButton" type="button">Agregar</button></label>
+                    <div class="search-row"><input id="productSearch" type="search" placeholder="Buscar por nombre, categoría o código"><span id="productCountLabel">0 productos</span></div>
+                    <div id="productGrid" class="product-grid"></div>
+                </section>
+
+                <aside class="panel ticket-panel">
+                    <div class="ticket-heading"><div><span class="eyebrow">VENTA ACTUAL</span><h2>Ticket</h2></div><button id="clearCart" class="text-button" type="button">Vaciar</button></div>
+                    <div id="saleItems" class="sale-items"><div class="empty-state"><span>▤</span><strong>Escanea el primer producto</strong><small>Aparecerá aquí junto con el total.</small></div></div>
+                    <div class="ticket-summary"><div><span>Subtotal</span><strong id="saleSubtotal">$0.00</strong></div><div class="ticket-total"><span>Total a cobrar</span><strong id="saleTotal">$0.00</strong></div></div>
+                    <label class="field-label" for="paymentMethod">Forma de pago</label><select id="paymentMethod"><option value="efectivo">Efectivo</option><option value="tarjeta">Tarjeta (registro de caja)</option><option value="transferencia">Transferencia</option></select>
+                    <button id="chargeButton" type="button" class="primary-button" disabled>Cobrar <span id="chargeTotal">$0.00</span></button>
+                    <p class="fine-print">El sistema registra el método de pago; no procesa cargos bancarios.</p>
+                </aside>
+            </div>
+        </section>
+
+        <!-- Inventario: edición de precios, stock y códigos de barras. -->
+<section class="pos-view" id="view-inventario">
+            <div class="section-title-row"><div><span class="eyebrow">CONTROL DE EXISTENCIAS</span><h2>Inventario y códigos de barras</h2><p>Actualiza el precio, las existencias y el nivel mínimo de cada producto.</p></div><button class="primary-button compact-button" id="newProductButton" type="button">＋ Nuevo producto</button></div>
+            <div class="inventory-toolbar"><input id="inventorySearch" type="search" placeholder="Buscar producto o escanear su código"><select id="stockFilter"><option value="todos">Todos los productos</option><option value="bajo">Existencias bajas</option><option value="agotado">Agotados</option></select><span id="inventoryCount" class="muted-label"></span></div>
+            <div class="panel table-panel"><div class="table-scroll"><table><thead><tr><th>PRODUCTO</th><th>CÓDIGO DE BARRAS</th><th>PRECIO</th><th>STOCK</th><th>MÍNIMO</th><th>ACTUALIZAR</th></tr></thead><tbody id="inventoryRows"></tbody></table></div></div>
+        </section>
+
+        <!-- Pedidos: preparación, envío y confirmación de entrega. -->
+<section class="pos-view" id="view-pedidos">
+            <div class="section-title-row"><div><span class="eyebrow">VENTA EN LÍNEA</span><h2>Pedidos y entregas</h2><p>Prepara compras, registra la guía y confirma la entrega en destino.</p></div><button class="secondary-button" id="refreshOrders" type="button">↻ Actualizar</button></div>
+            <div class="order-filter-row"><select id="orderFilter"><option value="pendientes">Pendientes de atención</option><option value="todos">Todos los pedidos</option><option value="envio">Envío a domicilio</option><option value="recoger">Recoger en farmacia</option></select><span id="ordersCount" class="muted-label"></span></div>
+            <div id="ordersList" class="orders-list"></div>
+        </section>
+
+        <!-- Ventas: historial de tickets registrados. -->
+<section class="pos-view" id="view-ventas">
+            <div class="section-title-row"><div><span class="eyebrow">REGISTRO DE CAJA</span><h2>Ventas recientes</h2><p>Consulta los últimos tickets generados en esta farmacia.</p></div><button class="secondary-button" id="refreshSales" type="button">↻ Actualizar</button></div>
+            <div class="panel table-panel"><div class="table-scroll"><table><thead><tr><th>FOLIO</th><th>FECHA Y HORA</th><th>PRODUCTOS</th><th>PAGO</th><th>TOTAL</th></tr></thead><tbody id="salesRows"></tbody></table></div></div>
+        </section>
+    </main>
+</div>
+
+<dialog id="productDialog" class="product-dialog"><form id="productForm" method="dialog"><div class="dialog-heading"><div><span class="eyebrow">CATÁLOGO</span><h2 id="productDialogTitle">Nuevo producto</h2></div><button type="button" class="icon-close" data-close-product aria-label="Cerrar">×</button></div><input type="hidden" id="editProductId"><label>Nombre del producto<input id="productName" required maxlength="140" placeholder="Ej. Paracetamol 500 mg"></label><div class="form-grid"><label>Categoría<input id="productCategory" maxlength="80" value="Medicamentos"></label><label>Código de barras<input id="productBarcode" maxlength="32" placeholder="Escanea o deja vacío para generar"></label><label>Precio de venta<input id="productPrice" required type="number" min="0" step="0.01"></label><label>Existencias iniciales<input id="productStock" required type="number" min="0" step="1" value="0"></label><label>Alerta cuando haya<input id="productMinStock" type="number" min="0" step="1" value="5"></label></div><p class="dialog-hint">Los códigos EAN internos comienzan con 200 y son para uso de esta farmacia.</p><div class="dialog-actions"><button type="button" class="secondary-button" data-close-product>Cancelar</button><button class="primary-button" type="submit">Guardar producto</button></div></form></dialog>
+
+<dialog id="receiptDialog" class="receipt-dialog"><div id="receiptContent"></div><div class="dialog-actions"><button class="secondary-button" type="button" data-close-receipt>Cerrar</button><button class="primary-button" type="button" id="printReceipt">Imprimir ticket</button></div></dialog>
+<script src="/CLINIBOX/public/assets/js/farmacia.js?v=20261112.1" defer></script>
+</body>
+</html>
+
+

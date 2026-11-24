@@ -70,6 +70,7 @@ function agregarProductoAlCarrito(producto) {
         1,
         Number(producto.quantity || producto.cantidad || 1)
     );
+    const codigoBarras = producto.barcode || generarCodigoBarras(producto);
 
     const existente = carrito.find(item =>
         String(item.id || "") === id
@@ -87,6 +88,7 @@ function agregarProductoAlCarrito(producto) {
         existente.price = Number(producto.price || producto.precio || existente.price || 0);
         existente.oldPrice = Number(producto.oldPrice || existente.oldPrice || existente.price);
         existente.emoji = producto.emoji || producto.imagen || existente.emoji || "💊";
+        existente.barcode = codigoBarras;
         existente.quantity = Number(existente.quantity || existente.cantidad || 0) + cantidad;
         delete existente.cantidad;
 
@@ -99,6 +101,7 @@ function agregarProductoAlCarrito(producto) {
             price: Number(producto.price || producto.precio || 0),
             oldPrice: Number(producto.oldPrice || producto.precio || producto.price || 0),
             emoji: producto.emoji || producto.imagen || "💊",
+            barcode: codigoBarras,
             quantity: cantidad
         });
 
@@ -110,9 +113,39 @@ function agregarProductoAlCarrito(producto) {
 
 }
 
+function generarCodigoBarras(producto = {}) {
+    const normalizar = value => String(value || "")
+        .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+    const key = `${normalizar(producto.category || producto.categoria)}|${normalizar(producto.name || producto.nombre)}`;
+    const seedCodes = {
+        "paracetamol-500-mg": "2000000000015",
+        "vitamina-c-1000-mg": "2000000000022",
+        "termometro-digital": "2000000000039",
+        "gasas-esteriles": "2000000000046",
+        "gel-antibacterial": "2000000000053",
+        "protector-solar-fps-50": "2000000000060",
+        "ibuprofeno-400-mg": "2000000000077",
+        "multivitaminico": "2000000000084",
+        "tensiometro-digital": "2000000000091",
+        "oximetro-de-pulso": "2000000000107",
+        "kit-de-curacion": "2000000000114",
+        "crema-hidratante": "2000000000121"
+    };
+    const nameKey = key.split("|").pop();
+    if (seedCodes[nameKey]) return seedCodes[nameKey];
+    let hash = 0;
+    for (let index = 0; index < key.length; index++) hash = (Math.imul(hash, 31) + key.charCodeAt(index)) >>> 0;
+    const base = `200${String(hash % 1000000000).padStart(9, "0")}`;
+    let sum = 0;
+    for (let index = 0; index < 12; index++) sum += Number(base[index]) * (index % 2 === 0 ? 1 : 3);
+    return `${base}${(10 - sum % 10) % 10}`;
+}
+
 window.cliniboxCart = Object.freeze({
     add: agregarProductoAlCarrito,
-    all: obtenerCarrito
+    all: obtenerCarrito,
+    barcodeFor: generarCodigoBarras
 });
 
 
@@ -765,16 +798,103 @@ function continuarCompra() {
     }
 
 
-    /*
-       NO tocamos login todavía.
-       La siguiente etapa puede conectar
-       este botón con el proceso de compra.
-    */
+    abrirFormularioPedido();
 
-    alert(
-        "Tu carrito está listo para continuar con la compra."
-    );
+}
 
+function abrirFormularioPedido() {
+    let modal = document.getElementById("onlineOrderModal");
+    if (!modal) {
+        modal = document.createElement("dialog");
+        modal.id = "onlineOrderModal";
+        modal.className = "online-order-dialog";
+        modal.innerHTML = `
+            <form id="onlineOrderForm">
+                <button type="button" class="online-order-close" aria-label="Cerrar">×</button>
+                <span class="online-order-kicker">COMPRA EN LÍNEA</span>
+                <h2>Datos de entrega</h2>
+                <p>Farmacia recibirá tu pedido y lo actualizará durante la preparación y el envío.</p>
+                <label>Nombre completo<input name="customer_name" required maxlength="120" autocomplete="name"></label>
+                <label>Correo para seguimiento<input name="customer_email" type="email" required maxlength="160" autocomplete="email"></label>
+                <label>Teléfono<input name="customer_phone" type="tel" maxlength="40" autocomplete="tel"></label>
+                <label>Cómo recibirás el pedido<select name="delivery_type"><option value="envio">Envío a domicilio</option><option value="recoger">Recoger en farmacia</option></select></label>
+                <label class="destination-label">Dirección de entrega<textarea name="destination" maxlength="300" rows="2" placeholder="Calle, número, colonia, municipio y referencias"></textarea></label>
+                <small class="online-order-shipping">El envío cuesta $90; es gratis en compras de $500 o más. Recoger en farmacia no tiene costo.</small>
+                <div class="online-order-error" role="alert"></div>
+                <button class="online-order-submit" type="submit">Confirmar pedido</button>
+            </form>`;
+        document.body.appendChild(modal);
+        modal.querySelector(".online-order-close").addEventListener("click", () => modal.close());
+        modal.querySelector('[name="delivery_type"]').addEventListener("change", () => {
+            const pickup = modal.querySelector('[name="delivery_type"]').value === "recoger";
+            modal.querySelector(".destination-label").hidden = pickup;
+            modal.querySelector('[name="destination"]').required = !pickup;
+        });
+        modal.querySelector("form").addEventListener("submit", crearPedidoEnLinea);
+    }
+
+    const form = modal.querySelector("form");
+    form.reset();
+    try {
+        const session = JSON.parse(localStorage.getItem("clinibox_session") || "null");
+        if (session?.email) form.elements.customer_email.value = session.email;
+    } catch (_) {}
+    modal.querySelector(".online-order-error").textContent = "";
+    modal.showModal();
+}
+
+async function crearPedidoEnLinea(event) {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const modal = form.closest("dialog");
+    const button = form.querySelector(".online-order-submit");
+    const error = form.querySelector(".online-order-error");
+    const data = new FormData(form);
+    const deliveryType = String(data.get("delivery_type"));
+    const carrito = obtenerCarrito();
+    button.disabled = true;
+    button.textContent = "Confirmando…";
+    error.textContent = "";
+
+    try {
+        const response = await fetch("/CLINIBOX/public/api/farmacia", {
+            method: "POST",
+            credentials: "same-origin",
+            headers: { "Content-Type": "application/json", "Accept": "application/json" },
+            body: JSON.stringify({
+                action: "online_order",
+                customer_name: data.get("customer_name"),
+                customer_email: data.get("customer_email"),
+                customer_phone: data.get("customer_phone"),
+                delivery_type: deliveryType,
+                destination: deliveryType === "recoger" ? "" : data.get("destination"),
+                items: carrito.map(item => ({
+                    barcode: item.barcode || window.cliniboxCart.barcodeFor(item),
+                    name: item.name || item.nombre,
+                    category: item.category || item.categoria,
+                    price: item.price || item.precio,
+                    emoji: item.emoji || item.imagen,
+                    quantity: item.quantity || item.cantidad || 1
+                }))
+            })
+        });
+        const result = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error(result.error || "No se pudo registrar el pedido.");
+
+        let refs = [];
+        try { refs = JSON.parse(localStorage.getItem("cliniboxOrderRefs") || "[]"); } catch (_) {}
+        refs.unshift({ id: result.order.id, token: result.tracking_token, email: result.order.customer_email });
+        localStorage.setItem("cliniboxOrderRefs", JSON.stringify(refs.slice(0, 25)));
+        localStorage.setItem("clinibox_customer_email", result.order.customer_email);
+        guardarCarrito([]);
+        modal.close();
+        window.location.href = "/CLINIBOX/public/pedidos?folio=" + encodeURIComponent(result.order.id);
+    } catch (requestError) {
+        error.textContent = requestError.message;
+    } finally {
+        button.disabled = false;
+        button.textContent = "Confirmar pedido";
+    }
 }
 
 
