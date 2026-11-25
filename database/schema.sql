@@ -127,3 +127,27 @@ CREATE TABLE IF NOT EXISTS bitacora_medicamentos (
     CONSTRAINT fk_bitacora_receta FOREIGN KEY (receta_id) REFERENCES recetas(id)
 );
 
+CREATE TABLE IF NOT EXISTS productos (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    sku VARCHAR(60) NOT NULL UNIQUE,
+    nombre VARCHAR(160) NOT NULL,
+    categoria VARCHAR(120) NOT NULL,
+    descripcion TEXT,
+    precio DECIMAL(12, 2) UNSIGNED NOT NULL,
+    stock INT UNSIGNED NOT NULL DEFAULT 0,
+    stock_minimo INT UNSIGNED NOT NULL DEFAULT 0,
+    activo TINYINT(1) NOT NULL DEFAULT 1
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS movimientos_inventario (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    producto_id INT UNSIGNED NOT NULL,
+    usuario_id INT UNSIGNED NOT NULL,
+    tipo ENUM('entrada', 'salida', 'ajuste') NOT NULL,
+    cantidad BIGINT NOT NULL,
+    motivo VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_movimiento_producto FOREIGN KEY (producto_id) REFERENCES productos(id),
+    CONSTRAINT fk_movimiento_usuario FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+) ENGINE=InnoDB;
+

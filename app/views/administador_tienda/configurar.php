@@ -1,17 +1,9 @@
 <!doctype html>
 <html lang="es">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <base href="/CLINIBOX/CLINIBOX/public/">
-    <title>Configuración inicial | CliniBox</title>
-    <link rel="stylesheet" href="assets/css/app.css">
-    <link rel="stylesheet" href="assets/css/administador_tienda.css?v=20261124.1">
-    <script src="assets/js/administador_tienda.js?v=20261123.2" defer></script>
-</head>
+<?php $pageTitle = 'Configuración inicial'; require __DIR__ . '/head.php'; ?>
 <body class="admin-setup-page" data-admin-page="setup">
 <main class="admin-setup-card">
-    <a class="admin-setup-brand" href="./"><span class="brand-mark">C</span><strong>CliniBox</strong></a>
+    <a class="admin-setup-brand" href="./"><?php require __DIR__ . '/logo.php'; ?><strong>CliniBox</strong></a>
     <p class="eyebrow">Configuración inicial</p>
     <h1>Crear la cuenta administradora</h1>
     <p>Este formulario solo está disponible mientras no exista un administrador activo.</p>

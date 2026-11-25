@@ -1,15 +1,5 @@
 (() => {
     const page = document.body.dataset.adminPage;
-    const localStorePages = {
-        summary: 'home',
-        products: 'products',
-        inventory: 'inventory',
-    };
-    if (localStorePages[page]) {
-        window.location.replace(new URL(`admin/tienda.html#${localStorePages[page]}`, document.baseURI).href);
-        return;
-    }
-
     const apiUrl = (resource, params = {}) => {
         const url = new URL(`admin/api/${resource}`, document.baseURI);
         for (const [key, value] of Object.entries(params)) {

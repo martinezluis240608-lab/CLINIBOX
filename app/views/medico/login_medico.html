@@ -1,12 +1,75 @@
 <!doctype html>
 <html lang="es">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="refresh" content="0; url=/CLINIBOX/public/login">
-    <title>Iniciar Sesión | CliniBox</title>
-    <script>window.location.replace('/CLINIBOX/public/login');</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Acceso | CliniBox</title>
+<link rel="stylesheet" href="/CLINIBOX/public/assets/css/login_medico.css?v=20261123.1">
+    <link rel="stylesheet" href="/CLINIBOX/public/assets/css/clinibox.css?v=5">
+    <script src="/CLINIBOX/public/assets/js/page-size.js?v=1" defer></script>
 </head>
-<body>
-    <p>Redirigiendo al inicio de sesión unificado de CliniBox... <a href="/CLINIBOX/public/login">Haz clic aquí si no eres redirigido</a>.</p>
+<body class="auth-page">
+<main class="auth-shell" id="authShell">
+    <section class="form-panel login-panel" aria-label="Iniciar sesión">
+        <a class="brand" href="/CLINIBOX/index.html" aria-label="CliniBox, inicio">
+            <span class="brand-icon">♡</span><span><strong>CliniBox</strong><small>Tu salud, nuestra prioridad</small></span>
+        </a>
+        <form class="auth-form" method="POST" action="/CLINIBOX/public/login">
+            <h1>LOGIN</h1>
+            <p class="form-intro">Ingresa con tu correo y contraseña</p>
+            <p id="loginError" class="register-notice" role="alert">No se pudo iniciar sesión. Revisa tu correo y contraseña o intenta de nuevo más tarde.</p>
+            <label for="loginEmail">Correo electrónico</label>
+            <input id="loginEmail" name="email" type="email" autocomplete="username" placeholder="tucorreo@clinica.com" required>
+            <label for="loginPassword">Contraseña</label>
+            <div class="password-field"><input id="loginPassword" name="password" type="password" autocomplete="current-password" placeholder="••••••••" required><button type="button" class="toggle-password" data-target="loginPassword" aria-label="Mostrar contraseña">◉</button></div>
+            <a class="forgot-link" href="/CLINIBOX/public/login">¿Olvidaste tu contraseña?</a>
+            <button class="submit-button" type="submit">Iniciar sesión</button>
+            <p class="mobile-switch">¿No tienes una cuenta? <button type="button" data-show-register>Registrar</button></p>
+        </form>
+    </section>
+
+    <section class="form-panel register-panel" aria-label="Registro">
+        <a class="brand" href="/CLINIBOX/index.html" aria-label="CliniBox, inicio">
+            <span class="brand-icon">♡</span><span><strong>CliniBox</strong><small>Tu salud, nuestra prioridad</small></span>
+        </a>
+        <form class="auth-form register-form" id="registerForm">
+            <h1>REGISTRAR</h1>
+            <p class="form-intro">Crea una cuenta para acceder a CliniBox</p>
+            <label for="registerName">Nombre completo</label>
+            <input id="registerName" name="nombre" type="text" autocomplete="name" placeholder="Tu nombre" required>
+            <label for="registerEmail">Correo electrónico</label>
+            <input id="registerEmail" name="email" type="email" autocomplete="email" placeholder="tucorreo@clinica.com" required>
+            <label for="registerPassword">Contraseña</label>
+            <div class="password-field"><input id="registerPassword" name="password" type="password" autocomplete="new-password" placeholder="Mínimo 6 caracteres" minlength="6" required><button type="button" class="toggle-password" data-target="registerPassword" aria-label="Mostrar contraseña">◉</button></div>
+            <button class="submit-button" type="submit">Crear cuenta</button>
+            <p class="mobile-switch">¿Ya tienes una cuenta? <button type="button" data-show-login>Login</button></p>
+            <p class="register-notice" id="registerNotice" role="status">El acceso y los roles se validan desde las cuentas registradas en la base de datos. Solicita el alta de tu cuenta al administrador.</p>
+        </form>
+    </section>
+
+    <div class="blue-pane" aria-live="polite">
+        <a class="pane-brand" href="/CLINIBOX/index.html"><span class="brand-icon">♡</span><span><strong>CliniBox</strong><small>Tu salud, nuestra prioridad</small></span></a>
+        <div class="pane-copy pane-login-copy"><h2>Hola, bienvenido a CliniBox</h2><p>¿No tienes una cuenta?</p><button type="button" class="outline-button" data-show-register>Registrar</button></div>
+        <div class="pane-copy pane-register-copy"><h2>¡Bienvenido de nuevo!</h2><p>¿Ya tienes una cuenta?</p><button type="button" class="outline-button" data-show-login>Login</button></div>
+    </div>
+</main>
+<script>
+(() => {
+    const shell = document.getElementById('authShell');
+    if (new URLSearchParams(window.location.search).get('error') === '1') {
+        document.getElementById('loginError').classList.add('visible');
+    }
+    document.querySelectorAll('[data-show-register]').forEach(button => button.addEventListener('click', () => shell.classList.add('show-register')));
+    document.querySelectorAll('[data-show-login]').forEach(button => button.addEventListener('click', () => shell.classList.remove('show-register')));
+    document.querySelectorAll('.toggle-password').forEach(button => button.addEventListener('click', () => {
+        const input = document.getElementById(button.dataset.target);
+        input.type = input.type === 'password' ? 'text' : 'password';
+    }));
+    document.getElementById('registerForm').addEventListener('submit', event => {
+        event.preventDefault();
+        document.getElementById('registerNotice').classList.add('visible');
+    });
+})();
+</script>
 </body>
 </html>

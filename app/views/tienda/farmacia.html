@@ -7,12 +7,16 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/CLINIBOX/public/assets/css/farmacia.css?v=20261112.1">
+<link rel="stylesheet" href="/CLINIBOX/public/assets/css/profile-menu.css?v=3">
+<script src="/CLINIBOX/public/assets/js/profile-menu.js?v=2" defer></script>
+    <link rel="stylesheet" href="/CLINIBOX/public/assets/css/clinibox.css?v=5">
+    <script src="/CLINIBOX/public/assets/js/page-size.js?v=1" defer></script>
 </head>
 <body>
 <!-- Contenedor de la aplicación: menú lateral y área principal del punto de venta. -->
 <div class="pos-shell">
     <aside class="pos-sidebar">
-        <a class="pos-brand" href="/CLINIBOX/"><span class="pos-brand-mark">C</span><span><strong>CliniBox</strong><small>Farmacia · Caja</small></span></a>
+        <clinibox-profile-menu data-label="Farmacia · Caja"></clinibox-profile-menu>
         <div class="sidebar-label">OPERACIÓN</div>
         <button class="side-link active" data-view="caja"><span>▦</span>Caja de venta</button>
         <button class="side-link" data-view="inventario"><span>▤</span>Inventario <b id="lowStockBadge" class="nav-badge">0</b></button>
@@ -24,7 +28,7 @@
     <main class="pos-main">
         <header class="pos-topbar">
             <div><span class="eyebrow">FARMACIA FÍSICA</span><h1 id="pageTitle">Caja de venta</h1></div>
-            <div class="topbar-actions"><span class="staff-chip"><span class="staff-avatar">F</span><span><strong id="cashierName">Farmacia</strong><small>Personal de caja</small></span></span><a class="store-link" href="/CLINIBOX/public/tienda" target="_blank" rel="noopener">Abrir tienda ↗</a><form class="logout-form" method="post" action="/CLINIBOX/public/logout"><button class="logout-button" type="submit">Salir</button></form></div>
+            <div class="topbar-actions"><span class="staff-chip"><span class="staff-avatar" id="cashierInitial" aria-hidden="true">F</span><span><strong id="cashierName">Farmacia</strong><small id="cashierRole">Personal de caja</small></span></span><a class="store-link" href="/CLINIBOX/public/tienda" target="_blank" rel="noopener">Abrir tienda ↗</a><form class="logout-form" method="post" action="/CLINIBOX/public/logout"><button class="logout-button" type="submit">Salir</button></form></div>
         </header>
 
         <div id="notice" class="notice" role="status" aria-live="polite"></div>
@@ -82,7 +86,7 @@
 <dialog id="productDialog" class="product-dialog"><form id="productForm" method="dialog"><div class="dialog-heading"><div><span class="eyebrow">CATÁLOGO</span><h2 id="productDialogTitle">Nuevo producto</h2></div><button type="button" class="icon-close" data-close-product aria-label="Cerrar">×</button></div><input type="hidden" id="editProductId"><label>Nombre del producto<input id="productName" required maxlength="140" placeholder="Ej. Paracetamol 500 mg"></label><div class="form-grid"><label>Categoría<input id="productCategory" maxlength="80" value="Medicamentos"></label><label>Código de barras<input id="productBarcode" maxlength="32" placeholder="Escanea o deja vacío para generar"></label><label>Precio de venta<input id="productPrice" required type="number" min="0" step="0.01"></label><label>Existencias iniciales<input id="productStock" required type="number" min="0" step="1" value="0"></label><label>Alerta cuando haya<input id="productMinStock" type="number" min="0" step="1" value="5"></label></div><p class="dialog-hint">Los códigos EAN internos comienzan con 200 y son para uso de esta farmacia.</p><div class="dialog-actions"><button type="button" class="secondary-button" data-close-product>Cancelar</button><button class="primary-button" type="submit">Guardar producto</button></div></form></dialog>
 
 <dialog id="receiptDialog" class="receipt-dialog"><div id="receiptContent"></div><div class="dialog-actions"><button class="secondary-button" type="button" data-close-receipt>Cerrar</button><button class="primary-button" type="button" id="printReceipt">Imprimir ticket</button></div></dialog>
-<script src="/CLINIBOX/public/assets/js/farmacia.js?v=20261112.1" defer></script>
+<script src="/CLINIBOX/public/assets/js/farmacia.js?v=20261124.2" defer></script>
 </body>
 </html>
 

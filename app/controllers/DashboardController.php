@@ -16,6 +16,10 @@ class DashboardController extends Controller
             $this->redirect('/paciente/inicio');
         }
 
+        if ($role === 'farmacia') {
+            $this->redirect('/farmacia');
+        }
+
         $this->view('dashboard/index', [
             'title' => 'Panel principal',
             'modules' => $this->modulesFor($role),
@@ -32,16 +36,6 @@ class DashboardController extends Controller
                 ['title' => 'Expedientes', 'description' => 'Historia clinica organizada por paciente.', 'url' => '/medico/expedientes'],
                 ['title' => 'Agenda', 'description' => 'Horarios, citas y disponibilidad del medico.', 'url' => '/medico/agenda'],
                 ['title' => 'Mensajes', 'description' => 'Consultas rapidas con pacientes por mensaje.', 'url' => '/medico/mensajes'],
-            ];
-        }
-
-        if ($role === 'paciente') {
-            return [
-                ['title' => 'Mis consultas', 'description' => 'Citas agendadas, pendientes e historial.', 'url' => '/paciente/consultas'],
-                ['title' => 'Medicamentos', 'description' => 'Bitacora diaria para controlar tratamientos.', 'url' => '/paciente/medicamentos'],
-                ['title' => 'Mensajes', 'description' => 'Consulta rapida con el medico asignado.', 'url' => '/paciente/mensajes'],
-                ['title' => 'Recetas', 'description' => 'Historial de recetas medicas recibidas.', 'url' => '/paciente/recetas'],
-                ['title' => 'Perfil', 'description' => 'Datos personales y contacto.', 'url' => '/paciente/perfil'],
             ];
         }
 

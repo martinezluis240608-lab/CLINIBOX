@@ -8,82 +8,50 @@ class MedicoController extends Controller
 {
     public function pacientes(): void
     {
-        $patients = [
-            ['name' => 'Carlos Mendoza', 'age' => 42, 'condition' => 'Hipertension', 'last_visit' => '2026-09-01', 'status' => 'En seguimiento'],
-            ['name' => 'Lucia Torres', 'age' => 31, 'condition' => 'Migraña cronica', 'last_visit' => '2026-08-27', 'status' => 'Estable'],
-            ['name' => 'Miguel Cruz', 'age' => 57, 'condition' => 'Diabetes tipo 2', 'last_visit' => '2026-08-20', 'status' => 'Control mensual'],
-        ];
+        $this->requireRole(['medico']);
 
-        $this->view('medico/pacientes', ['title' => 'Gestion de pacientes', 'patients' => $patients]);
+        $this->view('medico/pacientes');
     }
 
     public function consultas(): void
     {
-        $appointments = [
-            ['time' => '09:00', 'patient' => 'Carlos Mendoza', 'type' => 'Seguimiento', 'mode' => 'Presencial'],
-            ['time' => '11:30', 'patient' => 'Lucia Torres', 'type' => 'Primera valoracion', 'mode' => 'Virtual'],
-            ['time' => '14:00', 'patient' => 'Miguel Cruz', 'type' => 'Revision de estudios', 'mode' => 'Presencial'],
-        ];
+        $this->requireRole(['medico']);
 
-        $this->view('medico/consultas', ['title' => 'Gestion de consultas', 'appointments' => $appointments]);
+        $this->view('medico/consultas');
     }
 
     public function recetas(): void
     {
-        $prescriptions = [
-            ['patient' => 'Carlos Mendoza', 'medicine' => 'Losartan 50 mg', 'dose' => '1 tableta cada 24 h', 'date' => '2026-09-01'],
-            ['patient' => 'Lucia Torres', 'medicine' => 'Sumatriptan 50 mg', 'dose' => 'Segun crisis', 'date' => '2026-08-27'],
-            ['patient' => 'Miguel Cruz', 'medicine' => 'Metformina 850 mg', 'dose' => '1 tableta cada 12 h', 'date' => '2026-08-20'],
-        ];
+        $this->requireRole(['medico']);
 
-        $this->view('medico/recetas', ['title' => 'Gestion de recetas', 'prescriptions' => $prescriptions]);
+        $this->view('medico/recetas');
     }
 
     public function expedientes(): void
     {
-        $records = [
-            ['patient' => 'Carlos Mendoza', 'summary' => 'Presion arterial con mejor control. Se ajusta seguimiento.', 'updated' => '2026-09-01'],
-            ['patient' => 'Lucia Torres', 'summary' => 'Disminucion de episodios de migraña con tratamiento preventivo.', 'updated' => '2026-08-27'],
-            ['patient' => 'Miguel Cruz', 'summary' => 'Glucosa en rango aceptable; continuar plan alimenticio.', 'updated' => '2026-08-20'],
-        ];
+        $this->requireRole(['medico']);
 
-        $this->view('medico/expedientes', ['title' => 'Expedientes clinicos', 'records' => $records]);
+        $this->view('medico/expedientes');
     }
 
     public function agenda(): void
     {
-        $schedule = [
-            ['day' => 'Lunes', 'hours' => '08:00 - 14:00', 'status' => 'Disponible'],
-            ['day' => 'Martes', 'hours' => '10:00 - 18:00', 'status' => 'Disponible'],
-            ['day' => 'Miercoles', 'hours' => '08:00 - 12:00', 'status' => 'Alta demanda'],
-            ['day' => 'Viernes', 'hours' => '09:00 - 15:00', 'status' => 'Disponible'],
-        ];
+        $this->requireRole(['medico']);
 
-        $this->view('medico/agenda', ['title' => 'Agenda medica', 'schedule' => $schedule]);
+        $this->view('medico/agenda');
     }
 
     public function mensajes(): void
     {
-        $messages = [
-            ['patient' => 'Carlos Mendoza', 'message' => 'Doctora, puedo tomar el medicamento despues de comer?', 'time' => '08:45'],
-            ['patient' => 'Lucia Torres', 'message' => 'Hoy tuve dolor leve, desea que adelante mi consulta?', 'time' => '10:12'],
-            ['patient' => 'Miguel Cruz', 'message' => 'Ya subi mis resultados para revision.', 'time' => '13:20'],
-        ];
+        $this->requireRole(['medico']);
 
-        $this->view('medico/mensajes', ['title' => 'Consultas virtuales', 'messages' => $messages]);
+        $this->view('medico/mensajes');
     }
 
     public function perfil(): void
     {
-        $profile = [
-            'name' => 'Dra. Sofia Ramirez',
-            'specialty' => 'Medicina interna',
-            'license' => 'CED-CLB-2026',
-            'email' => 'medico@clinibox.test',
-            'phone' => '+52 55 0000 0000',
-        ];
+        $this->requireRole(['medico']);
 
-        $this->view('medico/perfil', ['title' => 'Perfil del medico', 'profile' => $profile]);
+        $this->view('medico/perfil');
     }
 }
-

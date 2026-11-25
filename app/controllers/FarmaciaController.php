@@ -113,6 +113,14 @@ class FarmaciaController extends Controller
             return;
         }
 
+        if ($resource === 'staff') {
+            $this->json([
+                'name' => trim((string) (\auth_user()['name'] ?? '')) ?: 'Farmacia',
+                'role' => \auth_role(),
+            ]);
+            return;
+        }
+
         $data = $this->readData();
         if ($resource === 'orders') {
             $orders = array_map([$this, 'publicOrder'], array_reverse($data['orders']));

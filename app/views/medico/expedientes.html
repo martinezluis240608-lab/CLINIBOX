@@ -5,34 +5,17 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Expedientes Clínicos | CliniBox</title>
 <link rel="stylesheet" href="/CLINIBOX/public/assets/css/expedientes.css">
-<link rel="stylesheet" href="../../../public/assets/css/expedientes.css">
 
+<link rel="stylesheet" href="/CLINIBOX/public/assets/css/profile-menu.css?v=3">
+<script src="/CLINIBOX/public/assets/js/profile-menu.js?v=2" defer></script>
+    <link rel="stylesheet" href="/CLINIBOX/public/assets/css/clinibox.css?v=5">
+    <script src="/CLINIBOX/public/assets/js/page-size.js?v=1" defer></script>
 </head>
 <body>
 <div class="app-shell">
     <!-- BARRA LATERAL -->
     <nav class="sidebar">
-        <div class="brand-wrapper">
-    <div class="brand" id="brandMenuToggle" onclick="toggleBrandMenu(event)">
-        <div class="brand-mark">C</div>
-        <div><strong>CliniBox</strong><small>Panel médico</small></div>
-        <svg class="brand-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
-    </div>
-    <div class="brand-dropdown" id="brandDropdown">
-        <div class="dropdown-header">
-            <strong>Mi cuenta</strong>
-        </div>
-        <a href="/CLINIBOX/" class="dropdown-item">
-            <span>🏠</span> Ir al Inicio
-        </a>
-        <a href="/CLINIBOX/public/medico/perfil" class="dropdown-item">
-            <span>👤</span> Perfil
-        </a>
-        <a href="#" onclick="cerrarSesion(event)" class="dropdown-item danger">
-            <span>🚪</span> Cerrar sesión
-        </a>
-    </div>
-</div>
+        <clinibox-profile-menu data-label="Panel médico" data-profile="medico/perfil"></clinibox-profile-menu>
         <div class="nav-list">
             <a href="/CLINIBOX/public/medico/pacientes">Pacientes</a>
             <a href="/CLINIBOX/public/medico/agenda">Agenda</a>
@@ -617,50 +600,13 @@
         renderTimeline();
     });
 
-    function cerrarSesion(event) {
-        event.preventDefault();
-        document.getElementById('logoutModal').classList.add('active');
-    }
 
     // MENU DE LA C
-function toggleBrandMenu(e){
-    e.stopPropagation();
-    document.getElementById('brandDropdown').parentElement.classList.toggle('open');
-}
-// Cerrar si das clic afuera
-document.addEventListener('click', () => {
-    const wrapper = document.querySelector('.brand-wrapper');
-    if(wrapper) wrapper.classList.remove('open');
-});
 
-    function cerrarModalSesion() {
-        document.getElementById('logoutModal').classList.remove('active');
-    }
 
-    function confirmarCerrarSesion() {
-        window.location.href = "/CLINIBOX/";
-    }
 </script>
 <!-- MODAL CERRAR SESIÓN -->
-<div class="modal-overlay" id="logoutModal">
-    <div class="modal-card logout-modal">
-        <div class="modal-header">
-            <h3>Cerrar sesión</h3>
-            <button class="close-btn" onclick="cerrarModalSesion()">&times;</button>
-        </div>
 
-        <div class="modal-body logout-body">
-            <div class="logout-icon">✓</div>
-            <p>¿Desea cerrar sesión?</p>
-            <span>Se cerrará su sesión y regresará a la página principal.</span>
-        </div>
-
-        <div class="modal-footer">
-            <button type="button" class="btn-secondary" onclick="cerrarModalSesion()">Cancelar</button>
-            <button type="button" class="btn-primary" onclick="confirmarCerrarSesion()">Cerrar sesión</button>
-        </div>
-    </div>
-</div>
 
 </body>
 </html>
