@@ -6,6 +6,8 @@
 <title>Iniciar Sesión | CliniBox</title>
 <link rel="stylesheet" href="/CLINIBOX/public/assets/css/login_medico.css?v=20261113.1">
 <link rel="stylesheet" href="../../public/assets/css/login_medico.css?v=20261113.1">
+    <link rel="stylesheet" href="/CLINIBOX/public/assets/css/clinibox.css?v=5">
+    <script src="/CLINIBOX/public/assets/js/page-size.js?v=1" defer></script>
 </head>
 <body class="auth-page">
 

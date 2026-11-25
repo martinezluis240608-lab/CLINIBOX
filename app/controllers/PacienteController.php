@@ -10,12 +10,12 @@ class PacienteController extends Controller
     {
         $this->requireRole(['paciente']);
 
-        $this->view('paciente/inicio', ['title' => 'Inicio del Paciente']);
+        $this->view('paciente/inicio');
     }
 
     public function agendarCita(): void
     {
-        $this->view('paciente/agendarCita', ['title' => 'Agendar Cita']);
+        $this->view('paciente/agendarCita');
     }
 
     public function sesionCita(): void
@@ -27,7 +27,7 @@ class PacienteController extends Controller
 
     public function recorrido(): void
     {
-        $this->view('paciente/recorrido', ['title' => 'Recorrido virtual']);
+        $this->view('paciente/recorrido');
     }
 
     public function consultas(): void
@@ -46,54 +46,27 @@ class PacienteController extends Controller
     {
         $this->requireRole(['paciente']);
 
-        $logs = [
-            ['medicine' => 'Losartan 50 mg', 'schedule' => '08:00', 'taken' => 'Si', 'notes' => 'Tomado con desayuno'],
-            ['medicine' => 'Vitamina D', 'schedule' => '14:00', 'taken' => 'Pendiente', 'notes' => 'Recordatorio activo'],
-            ['medicine' => 'Atorvastatina 20 mg', 'schedule' => '21:00', 'taken' => 'Pendiente', 'notes' => 'Tomar antes de dormir'],
-        ];
-
-        $this->view('paciente/medicamentos', ['title' => 'Bitacora de medicamentos', 'logs' => $logs]);
+        $this->view('paciente/medicamentos');
     }
 
     public function mensajes(): void
     {
         $this->requireRole(['paciente']);
 
-        $thread = [
-            ['from' => 'Paciente', 'message' => 'Doctora, puedo tomar el medicamento despues de comer?', 'time' => '08:45'],
-            ['from' => 'Medico', 'message' => 'Si, puedes tomarlo despues del desayuno. Evita suspenderlo.', 'time' => '08:58'],
-            ['from' => 'Paciente', 'message' => 'Gracias, lo registro en mi bitacora.', 'time' => '09:02'],
-        ];
-
-        $this->view('paciente/mensajes', ['title' => 'Consulta rapida', 'thread' => $thread]);
+        $this->view('paciente/mensajes');
     }
 
     public function recetas(): void
     {
         $this->requireRole(['paciente']);
 
-        $prescriptions = [
-            ['date' => '2026-09-01', 'doctor' => 'Dra. Sofia Ramirez', 'medicine' => 'Losartan 50 mg', 'indications' => '1 tableta cada 24 h por 30 dias'],
-            ['date' => '2026-08-12', 'doctor' => 'Dra. Sofia Ramirez', 'medicine' => 'Atorvastatina 20 mg', 'indications' => '1 tableta por la noche'],
-        ];
-
-        $this->view('paciente/recetas', ['title' => 'Historial de recetas', 'prescriptions' => $prescriptions]);
+        $this->view('paciente/recetas');
     }
 
     public function perfil(): void
     {
         $this->requireRole(['paciente']);
 
-        $profile = [
-            'name' => 'Carlos Mendoza',
-            'email' => 'paciente@clinibox.test',
-            'phone' => '+52 55 1111 1111',
-            'birthdate' => '1984-03-12',
-            'blood_type' => 'O+',
-            'doctor' => 'Dra. Sofia Ramirez',
-        ];
-
-        $this->view('paciente/perfil', ['title' => 'Mi perfil', 'profile' => $profile]);
+        $this->view('paciente/perfil');
     }
 }
-

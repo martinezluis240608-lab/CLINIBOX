@@ -403,7 +403,7 @@
             <div class="admin-local-nav-group">
                 <span class="admin-local-nav-caption">${caption}</span>
                 ${items.map(([page, label]) => page === 'catalog'
-                    ? `<a href="/CLINIBOX/CLINIBOX/app/views/tienda/tienda.html" target="_blank" rel="noopener"><span class="admin-local-icon">${navIcons[page]}</span><span>${label}</span></a>`
+                    ? `<a href="../tienda" target="_blank" rel="noopener"><span class="admin-local-icon">${navIcons[page]}</span><span>${label}</span></a>`
                     : `<a class="${page === activePage ? 'active' : ''}" href="#${page}" ${page === activePage ? 'aria-current="page"' : ''}><span class="admin-local-icon">${navIcons[page]}</span><span>${label}</span><span class="admin-nav-indicator"></span></a>`
                 ).join('')}
             </div>
@@ -1188,7 +1188,7 @@
             <section class="admin-panel"><div class="admin-panel-heading"><div><span class="admin-section-kicker">CONTACTO</span><h2 data-whatsapp-store>Canal de la tienda</h2><p data-whatsapp-status>Consultando preferencias...</p></div></div>
                 <div class="admin-panel-heading"><div><strong data-whatsapp-phone>Sin configurar</strong><p data-whatsapp-message></p></div><a class="admin-button" data-whatsapp-link hidden target="_blank" rel="noopener">Abrir WhatsApp</a></div>
                 <div class="admin-panel-heading"><p>Este enlace usa wa.me. No envía mensajes automáticos ni conecta una API.</p><a class="admin-button admin-button-light" href="#settings">Configurar canal</a></div></section>
-            <section class="admin-panel">            <div class="admin-panel-heading"><div><span class="admin-section-kicker">CATÁLOGO</span><h2>Catálogo en línea</h2><p>Comparte la tienda pública con tus clientes.</p></div><a class="admin-button" target="_blank" rel="noopener" href="/CLINIBOX/CLINIBOX/app/views/tienda/tienda.html">Abrir catálogo</a></div></section>`;
+            <section class="admin-panel">            <div class="admin-panel-heading"><div><span class="admin-section-kicker">CATÁLOGO</span><h2>Catálogo en línea</h2><p>Comparte la tienda pública con tus clientes.</p></div><a class="admin-button" target="_blank" rel="noopener" href="../tienda">Abrir catálogo</a></div></section>`;
         const settings = await readSettings();
         const phone = String(settings.whatsapp_telefono || '').replace(/\D/g, '');
         root.querySelector('[data-whatsapp-store]').textContent = settings.nombre_tienda;

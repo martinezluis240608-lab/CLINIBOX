@@ -53,9 +53,16 @@ async function refreshSales() {
     renderStats();
 }
 
+async function refreshStaff() {
+    const staff = await api("staff");
+    $("#cashierName").textContent = staff.name;
+    $("#cashierInitial").textContent = Array.from(staff.name)[0].toLocaleUpperCase("es");
+    $("#cashierRole").textContent = staff.role === "admin" ? "Administrador" : "Personal de caja";
+}
+
 async function refreshAll() {
     try {
-        await Promise.all([refreshProducts(), refreshOrders(), refreshSales()]);
+        await Promise.all([refreshStaff(), refreshProducts(), refreshOrders(), refreshSales()]);
     } catch (error) {
         showNotice(error.message, "error");
     }
@@ -334,11 +341,6 @@ $("#refreshSales").addEventListener("click", refreshSales);
 $("#printReceipt").addEventListener("click", () => window.print());
 document.querySelectorAll("[data-close-receipt]").forEach(button => button.addEventListener("click", () => $("#receiptDialog").close()));
 $("#productBarcode").addEventListener("keydown", event => { if (event.key === "Enter") event.preventDefault(); });
-
-try {
-    const session = JSON.parse(localStorage.getItem("clinibox_session") || "null");
-    if (session?.role === "admin") $("#cashierName").textContent = session.email || "Farmacia";
-} catch (_) {}
 
 renderTicket();
 refreshAll();

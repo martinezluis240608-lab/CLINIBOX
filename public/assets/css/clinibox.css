@@ -1,0 +1,348 @@
+:root {
+    --cb-font: system-ui, -apple-system, "Segoe UI", sans-serif;
+    --cb-canvas: #f4f7f7;
+    --cb-background: linear-gradient(rgb(244 247 247 / 83%), rgb(244 247 247 / 88%)), url("../img/fondo-clinica.png");
+    --cb-paper: #fff;
+    --cb-ink: #173342;
+    --cb-muted: #496474;
+    --cb-line: #d5e1e4;
+    --cb-blue: #278ab8;
+    --cb-primary: #1b749d;
+    --cb-primary-hover: #155b82;
+    --cb-accent: #e2f1f9;
+    --cb-nav: #123340;
+    --cb-radius: 12px;
+    --cb-shadow: 0 2px 8px rgb(23 51 66 / 7%);
+
+    --primary: var(--cb-primary);
+    --primary-hover: var(--cb-primary-hover);
+    --primary-light: var(--cb-accent);
+    --bg-page: var(--cb-canvas);
+    --bg-card: var(--cb-paper);
+    --bg-surface: var(--cb-paper);
+    --border-light: var(--cb-line);
+    --border-glass: var(--cb-line);
+    --text-main: var(--cb-ink);
+    --text-muted: var(--cb-muted);
+    --admin-canvas: var(--cb-canvas);
+    --admin-primary: var(--cb-primary);
+    --admin-primary-dark: var(--cb-primary-hover);
+    --admin-ink: var(--cb-ink);
+    --admin-muted: var(--cb-muted);
+    --admin-line: var(--cb-line);
+    --admin-shadow: var(--cb-shadow);
+    --admin-radius: var(--cb-radius);
+}
+
+html body,
+html body:is(.auth-page, .patient-dashboard-page, .patient-page, .admin-setup-page, .admin-body, .tour-page) {
+    min-height: 100vh;
+    background-color: var(--cb-canvas);
+    background-image: var(--cb-background);
+    background-position: center top;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    color: var(--cb-ink);
+    font-family: var(--cb-font);
+}
+
+html body :is(button, input, select, textarea) { font-family: inherit; }
+html body :focus-visible { outline: 2px solid var(--cb-primary); outline-offset: 3px; }
+
+body.auth-page, body:has(.shop-header, .store-header) {
+    --blue: var(--cb-primary);
+    --blue-dark: var(--cb-primary-hover);
+    --blue-pale: var(--cb-accent);
+    --line: var(--cb-line);
+    --text: var(--cb-ink);
+    --text-soft: var(--cb-muted);
+    --glass: var(--cb-paper);
+    --glass-strong: var(--cb-paper);
+    --border: var(--cb-line);
+    --shadow-soft: var(--cb-shadow);
+}
+
+[data-store-admin-app] {
+    --admin-canvas: var(--cb-canvas);
+    --admin-primary: var(--cb-primary);
+    --admin-primary-dark: var(--cb-primary-hover);
+    --admin-ink: var(--cb-ink);
+    --admin-muted: var(--cb-muted);
+    --admin-line: var(--cb-line);
+    --admin-shadow: var(--cb-shadow);
+}
+
+.pos-shell {
+    --bg: var(--cb-canvas);
+    --ink: var(--cb-ink);
+    --muted: var(--cb-muted);
+    --line: var(--cb-line);
+    --nav: var(--cb-nav);
+    --blue: var(--cb-primary);
+    --blue-dark: var(--cb-primary-hover);
+    --cyan: var(--cb-accent);
+    --shadow: var(--cb-shadow);
+}
+
+body :is(.shop-header, .store-header, .patient-sidebar, .app-shell > .sidebar, .admin-sidebar, .pos-sidebar),
+body[data-store-admin-app] .admin-sidebar {
+    background: var(--cb-paper);
+    border-color: var(--cb-line);
+    box-shadow: none;
+}
+
+body .admin-sidebar, body .pos-sidebar,
+body[data-store-admin-app] .admin-sidebar {
+    color: var(--cb-ink);
+}
+
+body :is(.admin-sidebar, .pos-sidebar) :is(.admin-nav a, .side-link, .admin-profile-copy strong, .admin-logout) {
+    color: var(--cb-ink);
+}
+
+body[data-store-admin-app] .admin-sidebar :is(.admin-nav a, .admin-profile-copy strong) {
+    color: var(--cb-ink);
+}
+
+body :is(.admin-sidebar, .pos-sidebar) :is(.admin-nav-caption, .admin-nav-group-label, .admin-local-nav-caption, .admin-profile-copy small, .sidebar-label, .sidebar-bottom) {
+    color: var(--cb-muted);
+}
+
+body :is(.admin-sidebar, .pos-sidebar) :is(.admin-profile, .sidebar-bottom) { border-color: var(--cb-line); }
+body .admin-sidebar .admin-logout:hover { background: var(--cb-accent); color: var(--cb-primary-hover); }
+
+body :is(.admin-sidebar, .pos-sidebar, .patient-sidebar, .app-shell > .sidebar) :is(.admin-nav a, .side-link, .nav-list a):is(:hover, .active),
+body[data-store-admin-app] .admin-sidebar .admin-nav a:is(:hover, .active) {
+    background: var(--cb-accent);
+    color: var(--cb-primary-hover);
+    box-shadow: none;
+}
+
+.shop-background, .shop-background-overlay { display: none; }
+
+/* La tienda usa las mismas superficies y estados de navegación de los portales. */
+body .shop-header { background: transparent; }
+body :is(.shop-header-inner, .shop-sidebar, .offer-card, .popular-product) {
+    border: 1px solid var(--cb-line);
+    border-radius: var(--cb-radius);
+    background: var(--cb-paper);
+    box-shadow: var(--cb-shadow);
+    backdrop-filter: none;
+}
+
+body .shop-header-inner { min-height: 64px; height: auto; padding-block: 10px; }
+body .shop-category {
+    min-height: 46px;
+    border-radius: 8px;
+    color: var(--cb-ink);
+    font-size: .95rem;
+    line-height: 1.35;
+}
+
+body .shop-category:is(:hover, .active) {
+    background: var(--cb-accent);
+    color: var(--cb-primary-hover);
+    box-shadow: none;
+}
+
+body :is(.shop-circle-button, .search-toggle, .arrow-button, .see-all-button, .shipping-box) {
+    border-color: var(--cb-line);
+    border-radius: 8px;
+    background: var(--cb-paper);
+    color: var(--cb-primary-hover);
+    box-shadow: none;
+}
+
+body :is(.shop-circle-button, .search-toggle, .arrow-button, .see-all-button):hover {
+    background: var(--cb-accent);
+    color: var(--cb-primary-hover);
+}
+
+body :is(.shop-logo-icon, .basket-number) { background: var(--cb-blue); }
+body :is(.panel-title-icon, .offer-tag, .quick-filter.active, .recipe-add, .recipe-check) {
+    border-color: var(--cb-line);
+    background: var(--cb-accent);
+    color: var(--cb-primary-hover);
+}
+body .recipe-check svg { color: inherit; }
+
+body .offer-card::before { content: none; }
+body :is(.offer-card.highlight, .offer-card:hover, .popular-product:hover) {
+    border-color: var(--cb-blue);
+    background: var(--cb-paper);
+    box-shadow: var(--cb-shadow);
+}
+body :is(.shop-logo, .shop-logo-text, .shop-logo-text span, .offer-name, .popular-product-name, .basket-product-info strong) {
+    color: var(--cb-ink);
+}
+body :is(.offer-cart, .popular-add, .basket-button) {
+    background: var(--cb-primary);
+    color: var(--cb-paper);
+    box-shadow: none;
+}
+body :is(.offer-cart, .popular-add, .basket-button):hover {
+    background: var(--cb-primary-hover);
+    color: var(--cb-paper);
+}
+
+body :is(.orders-page, .help-page) { background: transparent; }
+body .welcome-hero-banner {
+    border: 1px solid var(--cb-line);
+    border-radius: var(--cb-radius);
+    background: var(--cb-accent);
+    color: var(--cb-ink);
+    box-shadow: none;
+}
+body .welcome-hero-banner::before { background: none; }
+body .welcome-hero-copy p { color: var(--cb-muted); }
+body .welcome-status-pill { border-color: var(--cb-line); background: var(--cb-paper); }
+body .help-hero { background: var(--cb-accent); }
+body.tour-page .tour-shell { background: transparent; }
+body.tour-page .tour-topbar { background: var(--cb-paper); }
+
+body :is(.admin-field, .form-group, .auth-form .password-field) :is(input:not([type="checkbox"]):not([type="radio"]), select, textarea) {
+    border-color: var(--cb-line);
+    color: var(--cb-ink);
+}
+
+body :is(.admin-page-description, .panel-heading p, .section-title-row p, .doctor-bio, .form-intro) {
+    color: var(--cb-muted);
+}
+
+body :is(.glass-panel, .admin-panel, .admin-stat-card, .pos-main .panel, .mini-stat, .order-card, .help-category, .profile-hero-card, .empty-state, .shop-panel, .right-panel) {
+    border-color: var(--cb-line);
+    border-radius: var(--cb-radius);
+    background: var(--cb-paper);
+    box-shadow: var(--cb-shadow);
+    backdrop-filter: none;
+}
+
+body :is(.btn-primary, .primary-button, .admin-button:not(.admin-button-light), .submit-button, .btn-agendar, .orders-empty a, .checkout-button, .btn-accent) {
+    border-color: var(--cb-primary);
+    border-radius: 8px;
+    background: var(--cb-primary);
+    color: var(--cb-paper);
+    box-shadow: none;
+}
+
+body :is(.btn-primary, .primary-button, .admin-button:not(.admin-button-light), .submit-button, .btn-agendar, .orders-empty a, .checkout-button, .btn-accent):hover {
+    background: var(--cb-primary-hover);
+    color: var(--cb-paper);
+}
+
+body .form-panel { background: var(--cb-paper); }
+body .blue-pane, body .auth-shell.show-register .blue-pane {
+    border-radius: var(--cb-radius);
+    background: var(--cb-nav);
+}
+body .blue-pane::before, body .blue-pane::after { content: none; }
+body .auth-shell { border-radius: var(--cb-radius); box-shadow: var(--cb-shadow); }
+body :is(.brand strong, .pane-brand strong) { font-family: var(--cb-font); }
+
+body .doctor-card {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    height: auto;
+    min-height: 100%;
+    border: 1px solid var(--cb-line);
+    border-radius: var(--cb-radius);
+    box-shadow: var(--cb-shadow);
+    transform: none;
+}
+body .doctor-card::after { content: none; }
+body .doctor-card :is(.doctor-avatar-wrap, .doctor-info),
+body .doctor-card:is(:hover, :focus-within) :is(.doctor-avatar-wrap, .doctor-info) {
+    position: static;
+    transform: none;
+    opacity: 1;
+    padding: 0;
+    background: transparent;
+}
+body .doctor-avatar-wrap { flex-direction: row; justify-content: space-between; }
+body .doctor-info { flex: 1; justify-content: start; text-align: start; }
+body .doctor-info .btn-agendar { align-self: start; margin-top: auto; }
+.doctor-initials {
+    display: grid;
+    width: 42px;
+    height: 42px;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--cb-accent);
+    color: var(--cb-primary-hover);
+    font-weight: 700;
+}
+
+.page-size-control {
+    position: fixed;
+    right: max(16px, env(safe-area-inset-right));
+    bottom: max(16px, env(safe-area-inset-bottom));
+    z-index: 220;
+    font: 600 14px/1.3 var(--cb-font);
+}
+
+.page-size-control summary {
+    display: grid;
+    width: 48px;
+    height: 48px;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--cb-primary);
+    color: var(--cb-paper);
+    box-shadow: 0 4px 12px rgb(23 51 66 / 22%);
+    cursor: pointer;
+    list-style: none;
+}
+
+.page-size-control summary::-webkit-details-marker { display: none; }
+.page-size-control summary:hover { background: var(--cb-primary-hover); }
+.page-size-control summary svg { width: 24px; height: 24px; }
+.page-size-panel {
+    position: absolute;
+    right: 0;
+    bottom: calc(100% + 10px);
+    display: grid;
+    gap: 8px;
+    width: 190px;
+    padding: 10px;
+    border: 1px solid var(--cb-line);
+    border-radius: var(--cb-radius);
+    background: var(--cb-paper);
+    box-shadow: var(--cb-shadow);
+}
+
+.page-size-panel button {
+    display: flex;
+    min-height: 44px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 8px 10px;
+    border: 1px solid var(--cb-line);
+    border-radius: 8px;
+    background: var(--cb-accent);
+    color: var(--cb-ink);
+    font: inherit;
+    cursor: pointer;
+}
+
+.page-size-panel button:hover { border-color: var(--cb-primary); }
+.page-size-panel button:disabled { opacity: .55; cursor: default; }
+.page-size-panel button span {
+    display: grid;
+    width: 23px;
+    height: 23px;
+    place-items: center;
+    border-radius: 6px;
+    background: var(--cb-primary);
+    color: var(--cb-paper);
+    font-size: 17px;
+}
+.page-size-panel output { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+
+@media (max-width: 760px) {
+    html body, html body:is(.auth-page, .patient-dashboard-page, .patient-page, .admin-setup-page, .admin-body, .tour-page) {
+        background-attachment: scroll;
+    }
+}

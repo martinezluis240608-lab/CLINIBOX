@@ -48,6 +48,7 @@ return function (Router $router): void {
 
     // Punto de venta y API de farmacia
     $router->get('/farmacia', [FarmaciaController::class, 'index']);
+    $router->get('/farmacia.html', [FarmaciaController::class, 'index']);
     $router->get('/api/farmacia', [FarmaciaController::class, 'api']);
     $router->post('/api/farmacia', [FarmaciaController::class, 'api']);
 

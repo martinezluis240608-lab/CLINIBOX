@@ -5,26 +5,17 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Agendar Cita | CliniBox</title>
   <link rel="stylesheet" href="/CLINIBOX/public/assets/css/patient-dashboard.css?v=guest-1">
-  <link rel="stylesheet" href="../../../public/assets/css/patient-dashboard.css?v=guest-1">
+<link rel="stylesheet" href="/CLINIBOX/public/assets/css/profile-menu.css?v=3">
+<script src="/CLINIBOX/public/assets/js/profile-menu.js?v=2" defer></script>
+    <link rel="stylesheet" href="/CLINIBOX/public/assets/css/clinibox.css?v=5">
+    <script src="/CLINIBOX/public/assets/js/page-size.js?v=1" defer></script>
 </head>
 <body class="patient-dashboard-page">
 
 <div class="app-shell patient-shell">
   <!-- Barra lateral simplificada (5 opciones) -->
   <aside class="patient-sidebar">
-    <details class="patient-account-menu">
-      <summary class="patient-brand" aria-label="CliniBox, Portal del paciente, Mi cuenta">
-        <span class="patient-brand-mark" aria-hidden="true">C</span>
-        <span class="patient-brand-text"><strong>CliniBox</strong><small>Portal del paciente</small></span>
-        <span class="patient-account-chevron" aria-hidden="true"></span>
-      </summary>
-      <div class="patient-account nav-list" aria-labelledby="patientAccountTitle">
-        <p id="patientAccountTitle">Mi cuenta</p>
-        <a href="/CLINIBOX/">Ir al Inicio</a>
-        <a href="/CLINIBOX/public/paciente/perfil">Mi Perfil</a>
-        <a class="logout" href="/CLINIBOX/public/login" onclick="handlePatientLogout(event)">Cerrar sesión</a>
-      </div>
-    </details>
+    <clinibox-profile-menu data-label="Portal del paciente" data-profile="paciente/perfil"<?= auth_user() ? '' : ' data-guest' ?>></clinibox-profile-menu>
     <nav aria-label="Navegación del paciente">
       <div class="nav-list">
         <a href="/CLINIBOX/public/paciente/inicio">Resumen del paciente</a>
@@ -115,22 +106,6 @@
 </div>
 
 <script>
-  function handlePatientLogout(e) {
-    if (e) e.preventDefault();
-    if (confirm('¿Deseas cerrar tu sesión del portal de paciente?')) {
-      try {
-        sessionStorage.clear();
-        localStorage.removeItem('clinibox_user');
-        localStorage.removeItem('patient_session');
-        localStorage.removeItem('clinibox_session');
-      } catch (err) {}
-      const form = document.createElement('form');
-      form.method = 'POST';
-      form.action = '/CLINIBOX/public/logout';
-      document.body.appendChild(form);
-      form.submit();
-    }
-  }
 </script>
 <script src="/CLINIBOX/public/assets/js/appointment-booking.js?v=guest-1"></script>
 </body>

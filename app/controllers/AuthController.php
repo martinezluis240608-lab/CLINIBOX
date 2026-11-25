@@ -14,7 +14,7 @@ class AuthController extends Controller
             $this->redirect($this->destinationFor((string) \auth_role()));
         }
 
-        $this->view('auth/login', [
+        $this->view('medico/login_medico', [
             'title' => 'Iniciar sesión',
             'csrfToken' => $this->csrfToken(),
             'error' => \flash('error'),
@@ -153,4 +153,3 @@ class AuthController extends Controller
         $this->redirect('/login?error=1');
     }
 }
-
