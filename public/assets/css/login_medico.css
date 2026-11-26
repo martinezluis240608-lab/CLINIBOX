@@ -38,6 +38,11 @@ body.auth-page{min-height:100vh;display:grid;place-items:center;padding:28px;bac
 .show-register .login-panel{grid-column:2}
 @media(max-width:720px){.show-register .register-panel,.show-register .login-panel{grid-column:1}}
 
+.auth-form .account-type-select{width:100%;height:47px;margin:0 0 18px;padding:0 14px;border:1px solid var(--line);border-radius:8px;background:#f9fcff;color:var(--ink);font:inherit;font-size:14px}
+.auth-form .account-type-select:focus{border-color:var(--blue);outline:none;box-shadow:0 0 0 3px rgba(39,141,209,.14)}
+.register-form{max-height:calc(100vh - 72px);overflow-y:auto;padding:8px 6px;scrollbar-color:var(--line) transparent;scrollbar-width:thin}
+#doctorFields[hidden]{display:none}
+
 
 /* Fondo clínico suave en el área blanca, con velo para conservar legibilidad. */
 .form-panel{background-image:linear-gradient(rgba(255,255,255,.86),rgba(255,255,255,.86)),url('img/fondo-clinica.png');background-size:cover;background-position:center;background-repeat:no-repeat}

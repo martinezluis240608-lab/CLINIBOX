@@ -119,16 +119,21 @@
             <h3>Registro temporal de paciente</h3>
             <button class="close-btn" onclick="closeRegister()">&times;</button>
         </div>
-        <form method="post" action="/CLINIBOX/public/registro-demo">
+        <form method="post" action="/CLINIBOX/public/registro">
             <div class="modal-body">
-                <p>El registro de demostración dura hasta que cierres sesión. Para volver a entrar, puedes usar paciente@demo.com con la contraseña 123456.</p>
+                <p>Tu cuenta quedará guardada como paciente en la base de datos de CliniBox.</p>
+                <input type="hidden" name="csrf_token" value="<?= e($_SESSION['csrf_token'] ?? '') ?>">
                 <div class="form-group">
                     <label for="regName">Nombre completo *</label>
-                    <input type="text" id="regName" name="name" class="form-control" maxlength="120" required>
+                    <input type="text" id="regName" name="nombre" class="form-control" maxlength="120" required>
                 </div>
                 <div class="form-group">
                     <label for="regEmail">Correo electrónico *</label>
                     <input type="email" id="regEmail" name="email" class="form-control" maxlength="160" required>
+                </div>
+                <div class="form-group">
+                    <label for="regPassword">Contraseña *</label>
+                    <input type="password" id="regPassword" name="password" class="form-control" minlength="6" maxlength="200" autocomplete="new-password" required>
                 </div>
             </div>
             <div class="modal-footer">

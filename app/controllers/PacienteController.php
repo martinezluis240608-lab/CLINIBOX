@@ -10,7 +10,7 @@ class PacienteController extends Controller
     {
         $this->requireRole(['paciente']);
 
-        $this->view('paciente/inicio');
+        $this->view('paciente/inicio', $this->patientViewData());
     }
 
     public function agendarCita(): void
@@ -53,7 +53,7 @@ class PacienteController extends Controller
     {
         $this->requireRole(['paciente']);
 
-        $this->view('paciente/mensajes');
+        $this->view('paciente/mensajes', $this->patientViewData());
     }
 
     public function recetas(): void
@@ -67,6 +67,16 @@ class PacienteController extends Controller
     {
         $this->requireRole(['paciente']);
 
-        $this->view('paciente/perfil');
+        $this->view('paciente/perfil', $this->patientViewData());
+    }
+
+    private function patientViewData(): array
+    {
+        $user = \auth_user() ?? [];
+
+        return [
+            'patientName' => $user['name'] ?? $user['email'] ?? 'Paciente',
+            'patientEmail' => $user['email'] ?? '',
+        ];
     }
 }

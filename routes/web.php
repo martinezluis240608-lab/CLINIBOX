@@ -39,7 +39,7 @@ return function (Router $router): void {
     $router->get('/medico/login_medico.html', [AuthController::class, 'login']);
     $router->get('/auth/login.html', [AuthController::class, 'login']);
     $router->post('/login', [AuthController::class, 'attempt']);
-    $router->post('/registro-demo', [AuthController::class, 'registerDemo']);
+    $router->post('/registro', [AuthController::class, 'registerPatient']);
     $router->post('/logout', [AuthController::class, 'logout']);
 
     // Presentaciones públicas de médicos

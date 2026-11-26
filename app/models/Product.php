@@ -55,10 +55,10 @@ class Product extends Model
     {
         $statement = $this->db->prepare(
             'SELECT m.tipo, m.cantidad, m.motivo, m.created_at, p.nombre AS producto,
-                    u.nombre AS usuario
+                    COALESCE(u.nombre, \'Pedido en línea\') AS usuario
              FROM movimientos_inventario m
              INNER JOIN productos p ON p.id = m.producto_id
-             INNER JOIN usuarios u ON u.id = m.usuario_id
+             LEFT JOIN usuarios u ON u.id = m.usuario_id
              ORDER BY m.id DESC LIMIT :limit'
         );
         $statement->bindValue('limit', $limit, \PDO::PARAM_INT);
@@ -108,6 +108,10 @@ class Product extends Model
             ]);
 
             $productId = (int) $this->db->lastInsertId();
+
+            $barcode = $this->generateBarcode($productId);
+            $barcodeStatement = $this->db->prepare('UPDATE productos SET codigo_barras = :barcode WHERE id = :id');
+            $barcodeStatement->execute(['barcode' => $barcode, 'id' => $productId]);
 
             if ($initialStock > 0) {
                 $this->recordMovement($productId, $initialStock, 'entrada', 'Stock inicial', $userId);
@@ -173,5 +177,24 @@ class Product extends Model
             'cantidad' => $quantity,
             'motivo' => $reason,
         ]);
+    }
+
+    private function generateBarcode(int $id): string
+    {
+        for ($candidate = $id; $candidate < $id + 1000; $candidate++) {
+            $base = '200' . str_pad((string) $candidate, 9, '0', STR_PAD_LEFT);
+            $sum = 0;
+            for ($index = 0; $index < 12; $index++) {
+                $sum += (int) $base[$index] * ($index % 2 === 0 ? 1 : 3);
+            }
+            $barcode = $base . ((10 - $sum % 10) % 10);
+            $statement = $this->db->prepare('SELECT 1 FROM productos WHERE codigo_barras = :barcode LIMIT 1');
+            $statement->execute(['barcode' => $barcode]);
+            if ($statement->fetchColumn() === false) {
+                return $barcode;
+            }
+        }
+
+        throw new DomainException('No se pudo generar un código de barras único para el producto.');
     }
 }

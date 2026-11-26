@@ -26,11 +26,13 @@ class Database
         );
 
         try {
-            self::$connection = new PDO($dsn, $config['user'], $config['password'], [
+            $connection = new PDO($dsn, $config['user'], $config['password'], [
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
                 PDO::ATTR_EMULATE_PREPARES => false,
             ]);
+            $connection->exec("SET time_zone = '+00:00'");
+            self::$connection = $connection;
         } catch (PDOException $exception) {
             throw new PDOException('No se pudo conectar a la base de datos de CliniBox.', (int) $exception->getCode(), $exception);
         }

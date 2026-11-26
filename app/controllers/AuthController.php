@@ -75,23 +75,73 @@ class AuthController extends Controller
         ]);
     }
 
-    public function registerDemo(): void
+    public function registerPatient(): void
     {
-        if (!\config('demo_auth')) {
-            $this->redirect('/login?error=registro');
-        }
         if (\auth_user()) {
             $this->redirect($this->destinationFor((string) \auth_role()));
         }
 
-        $name = $_POST['name'] ?? '';
-        $email = $_POST['email'] ?? '';
-        if (!is_string($name) || trim($name) === '' || strlen($name) > 120
-            || !is_string($email) || strlen($email) > 160 || !filter_var(trim($email), FILTER_VALIDATE_EMAIL)) {
-            $this->redirect('/login?registro=1&error=registro');
+        try {
+            $this->verifyCsrfToken();
+        } catch (\RuntimeException $exception) {
+            \set_flash('error', 'El formulario venció. Intenta registrarte otra vez.');
+            $this->redirect('/login?registro=1');
         }
 
-        $this->startSession(['id' => null, 'name' => trim($name), 'email' => trim($email), 'role' => 'paciente']);
+        $name = $_POST['nombre'] ?? '';
+        $email = $_POST['email'] ?? '';
+        $password = $_POST['password'] ?? '';
+        $accountType = $_POST['tipo_cuenta'] ?? 'paciente';
+        $license = $_POST['cedula_profesional'] ?? '';
+        $specialty = $_POST['especialidad'] ?? '';
+        $phone = $_POST['telefono'] ?? '';
+        $name = is_string($name) ? trim(strip_tags($name)) : '';
+        $email = is_string($email) ? strtolower(trim($email)) : '';
+        $accountType = is_string($accountType) ? strtolower(trim($accountType)) : '';
+        $license = is_string($license) ? trim(strip_tags($license)) : '';
+        $specialty = is_string($specialty) ? trim(strip_tags($specialty)) : '';
+        $phone = is_string($phone) ? trim(strip_tags($phone)) : '';
+
+        if (
+            $name === '' || mb_strlen($name, 'UTF-8') > 120 ||
+            !filter_var($email, FILTER_VALIDATE_EMAIL) || strlen($email) > 160 ||
+            !is_string($password) || strlen($password) < 6 || strlen($password) > 200 ||
+            !in_array($accountType, ['paciente', 'medico'], true) ||
+            ($accountType === 'medico' && (
+                $license === '' || mb_strlen($license, 'UTF-8') > 40 ||
+                $specialty === '' || mb_strlen($specialty, 'UTF-8') > 120 ||
+                mb_strlen($phone, 'UTF-8') > 30
+            ))
+        ) {
+            \set_flash('error', 'Revisa tus datos. La contraseña debe tener al menos 6 caracteres y los médicos deben indicar cédula y especialidad.');
+            $this->redirect('/login?registro=1');
+        }
+
+        try {
+            $users = new User();
+            $userId = $accountType === 'medico'
+                ? $users->createDoctorAccount($name, $email, $password, $license, $specialty, $phone)
+                : $users->createPatientAccount($name, $email, $password);
+        } catch (PDOException $exception) {
+            if ($exception->getCode() === '23000') {
+                $message = $accountType === 'medico'
+                    ? 'El correo o la cédula profesional ya están registrados.'
+                    : 'Ya existe una cuenta registrada con ese correo.';
+                \set_flash('error', $message);
+                $this->redirect('/login?registro=1');
+            }
+
+            error_log('CliniBox patient registration DB: ' . $exception->getMessage());
+            \set_flash('error', 'No se pudo guardar la cuenta. Revisa que MySQL esté iniciado y vuelve a intentarlo.');
+            $this->redirect('/login?registro=1');
+        }
+
+        $this->startSession([
+            'id' => $userId,
+            'name' => $name,
+            'email' => $email,
+            'role' => $accountType,
+        ]);
     }
 
     private function startSession(array $user): void

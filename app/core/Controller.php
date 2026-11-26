@@ -21,7 +21,23 @@ abstract class Controller
             return;
         }
 
-        readfile($viewPath);
+        $template = file_get_contents($viewPath);
+        if ($data) {
+            $template = preg_replace_callback(
+                '/\{\{([a-zA-Z][a-zA-Z0-9_]*)\}\}/',
+                static function (array $match) use ($data): string {
+                    $value = $data[$match[1]] ?? $match[0];
+                    if (!is_scalar($value)) {
+                        return $match[0];
+                    }
+
+                    return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
+                },
+                $template
+            );
+        }
+
+        echo $template;
     }
 
     protected function redirect(string $path): void
