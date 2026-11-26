@@ -56,7 +56,7 @@
                 </div>
                 <div class="summary-info">
                     <span>Citas para hoy</span>
-                    <strong id="kpiToday">2 consultas</strong>
+                    <strong id="kpiToday">0 consultas</strong>
                 </div>
             </div>
 
@@ -68,7 +68,7 @@
                 </div>
                 <div class="summary-info">
                     <span>Atendidas este mes</span>
-                    <strong id="kpiDone">18 completadas</strong>
+                    <strong id="kpiDone">0 completadas</strong>
                 </div>
             </div>
 
@@ -81,7 +81,7 @@
                 </div>
                 <div class="summary-info">
                     <span>Próxima cita</span>
-                    <strong>Carlos Mendoza (10:00 AM)</strong>
+                    <strong id="nextConsultation">Sin citas</strong>
                 </div>
             </div>
         </div>
@@ -138,7 +138,7 @@
             <div class="modal-body">
                 <div class="form-group">
                     <label for="cPatient">Nombre del Paciente *</label>
-                    <input type="text" id="cPatient" class="form-control" placeholder="Ej. Carlos Mendoza" required>
+                    <select id="cPatient" class="form-control" required><option value="">Selecciona un paciente registrado</option></select>
                 </div>
 
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
@@ -210,273 +210,49 @@
 <!-- ==========================================================
      LÓGICA JAVASCRIPT: CRUD + PERSISTENCIA LOCAL
 ========================================================== -->
+<script src="/CLINIBOX/public/assets/js/clinic-api.js?v=1"></script>
 <script>
-    const defaultConsultations = [
-        {
-            id: 1,
-            patient: "Carlos Mendoza",
-            exp: "EXP-084",
-            date: "2026-09-12",
-            time: "10:00",
-            reason: "Consulta general y seguimiento de tratamiento",
-            type: "Presencial",
-            status: "Programada",
-            notes: "Paciente en tratamiento antihipertensivo continuo (Losartán). Refiere buena adherencia.",
-            vitals: { bp: "120/80", hr: "72 bpm", temp: "36.5°C", weight: "74 kg" }
-        },
-        {
-            id: 2,
-            patient: "Mariana Morales Rivas",
-            exp: "EXP-085",
-            date: "2026-09-08",
-            time: "09:00",
-            reason: "Revisión preventiva semestral y control de glucosa",
-            type: "Presencial",
-            status: "En atención",
-            notes: "Estudios de laboratorio en rango óptimo. Se ajusta plan nutricional.",
-            vitals: { bp: "115/75", hr: "68 bpm", temp: "36.4°C", weight: "62 kg" }
-        },
-        {
-            id: 3,
-            patient: "Roberto Sánchez Gómez",
-            exp: "EXP-086",
-            date: "2026-09-07",
-            time: "11:30",
-            reason: "Tratamiento por cuadro de lumbalgia aguda",
-            type: "Virtual",
-            status: "Completada",
-            notes: "Mejoría clínica notable con tratamiento analgésico. Se indican ejercicios lumbares suaves.",
-            vitals: { bp: "125/82", hr: "76 bpm", temp: "36.6°C", weight: "81 kg" }
-        }
-    ];
-
-    let consultations = JSON.parse(localStorage.getItem('clinibox_consultas')) || defaultConsultations;
-
-    function saveStorage() {
-        localStorage.setItem('clinibox_consultas', JSON.stringify(consultations));
-    }
-
-    let activeTab = 'todas';
-
-    function renderConsultations(filtered = null) {
-        const tbody = document.getElementById('consultationsBody');
-        tbody.innerHTML = '';
-
-        let list = filtered;
-        if (!list) {
-            if (activeTab === 'todas') {
-                list = consultations;
-            } else {
-                list = consultations.filter(c => c.status === activeTab);
-            }
-        }
-
-        // Actualizar KPIs
-        const doneCount = consultations.filter(c => c.status === 'Completada').length;
-        document.getElementById('kpiDone').textContent = `${doneCount} completada${doneCount === 1 ? '' : 's'}`;
-
-        if (list.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-muted); padding: 30px;">No hay consultas para mostrar en esta categoría.</td></tr>`;
-            return;
-        }
-
-        list.forEach(c => {
-            let pillClass = 'programada';
-            if (c.status === 'En atención') pillClass = 'en-atencion';
-            else if (c.status === 'Completada') pillClass = 'completada';
-            else if (c.status === 'Cancelada') pillClass = 'cancelada';
-
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td>
-                    <div class="patient-col">
-                        <strong>${c.patient}</strong>
-                        <span>#${c.exp || 'EXP-000'}</span>
-                    </div>
-                </td>
-                <td><strong>${formatDate(c.date)}</strong> &bull; ${c.time || '10:00'}</td>
-                <td>${c.reason}</td>
-                <td><span style="font-size: 0.82rem; color: var(--primary); font-weight: 600;">${c.type}</span></td>
-                <td>
-                    <span class="pill ${pillClass}">${c.status}</span>
-                </td>
-                <td style="text-align: right;">
-                    <div class="actions-group">
-                        <button class="btn-act btn-act-view" onclick="viewDetails(${c.id})">👁️ Ficha</button>
-                        <button class="btn-act btn-act-edit" onclick="openEditModal(${c.id})">✏️ Editar</button>
-                        <button class="btn-act btn-act-del" onclick="deleteConsultation(${c.id})">🗑️</button>
-                    </div>
-                </td>
-            `;
-            tbody.appendChild(tr);
-        });
-    }
-
-    function formatDate(str) {
-        if (!str) return '-';
-        const parts = str.split('-');
-        if (parts.length === 3) return `${parts[2]}/${parts[1]}/${parts[0]}`;
-        return str;
-    }
-
-    function filterByTab(status, btn) {
-        activeTab = status;
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        renderConsultations();
-    }
-
-    function filterConsultations() {
-        const q = document.getElementById('searchBox').value.toLowerCase();
-        const filtered = consultations.filter(c => 
-            c.patient.toLowerCase().includes(q) ||
-            c.reason.toLowerCase().includes(q)
-        );
-        renderConsultations(filtered);
-    }
-
-    function openNewModal() {
-        document.getElementById('consultationForm').reset();
-        document.getElementById('cId').value = '';
-        document.getElementById('cDate').value = new Date().toISOString().split('T')[0];
-        document.getElementById('modalTitle').textContent = 'Nueva Consulta Médica';
-        document.getElementById('consultationModal').classList.add('active');
-    }
-
-    function openEditModal(id) {
-        const c = consultations.find(item => item.id === id);
-        if (!c) return;
-
-        document.getElementById('cId').value = c.id;
-        document.getElementById('cPatient').value = c.patient;
-        document.getElementById('cDate').value = c.date;
-        document.getElementById('cTime').value = c.time || '10:00';
-        document.getElementById('cType').value = c.type;
-        document.getElementById('cStatus').value = c.status;
-        document.getElementById('cReason').value = c.reason;
-        document.getElementById('cNotes').value = c.notes || '';
-
-        document.getElementById('modalTitle').textContent = 'Modificar Consulta';
-        document.getElementById('consultationModal').classList.add('active');
-    }
-
-    function closeModal() {
-        document.getElementById('consultationModal').classList.remove('active');
-    }
-
-    function saveConsultation(e) {
-        e.preventDefault();
-
-        const id = document.getElementById('cId').value;
-        const patient = document.getElementById('cPatient').value.trim();
-        const date = document.getElementById('cDate').value;
-        const time = document.getElementById('cTime').value;
-        const type = document.getElementById('cType').value;
-        const status = document.getElementById('cStatus').value;
-        const reason = document.getElementById('cReason').value.trim();
-        const notes = document.getElementById('cNotes').value.trim();
-
-        if (id) {
-            const index = consultations.findIndex(c => c.id == id);
-            if (index !== -1) {
-                consultations[index].patient = patient;
-                consultations[index].date = date;
-                consultations[index].time = time;
-                consultations[index].type = type;
-                consultations[index].status = status;
-                consultations[index].reason = reason;
-                consultations[index].notes = notes;
-            }
-        } else {
-            const newId = Date.now();
-            consultations.unshift({
-                id: newId,
-                patient: patient,
-                exp: `EXP-${Math.floor(100 + Math.random() * 899)}`,
-                date: date,
-                time: time,
-                type: type,
-                status: status,
-                reason: reason,
-                notes: notes || 'Sin notas adicionales.',
-                vitals: { bp: "120/80", hr: "70 bpm", temp: "36.5°C", weight: "70 kg" }
-            });
-        }
-
-        saveStorage();
-        renderConsultations();
-        closeModal();
-    }
-
-    function deleteConsultation(id) {
-        const c = consultations.find(item => item.id === id);
-        if (!c) return;
-        if (confirm(`¿Deseas eliminar la consulta de "${c.patient}"?`)) {
-            consultations = consultations.filter(item => item.id !== id);
-            saveStorage();
-            renderConsultations();
-        }
-    }
-
-    function viewDetails(id) {
-        const c = consultations.find(item => item.id === id);
-        if (!c) return;
-
-        const vit = c.vitals || { bp: "120/80", hr: "72 bpm", temp: "36.5°C", weight: "74 kg" };
-
-        const content = document.getElementById('viewModalContent');
-        content.innerHTML = `
-            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 12px;">
-                <div>
-                    <h4 style="margin: 0 0 2px; font-size: 1.2rem; color: var(--text-dark);">${c.patient}</h4>
-                    <span style="font-size: 0.8rem; color: var(--primary); font-weight: 700;">#${c.exp || 'EXP-084'}</span>
-                </div>
-                <div style="text-align: right;">
-                    <span class="pill programada">${c.status}</span>
-                    <div style="font-size: 0.82rem; color: var(--text-muted); margin-top: 4px;">${formatDate(c.date)} &bull; ${c.time || '10:00'}</div>
-                </div>
-            </div>
-
-            <div style="margin-top: 14px;">
-                <strong style="font-size: 0.82rem; color: var(--text-muted); text-transform: uppercase;">Signos Vitales Registrados:</strong>
-                <div class="vitals-grid">
-                    <div class="vital-box"><span>Presión</span><strong>${vit.bp}</strong></div>
-                    <div class="vital-box"><span>Frecuencia</span><strong>${vit.hr}</strong></div>
-                    <div class="vital-box"><span>Temperatura</span><strong>${vit.temp}</strong></div>
-                    <div class="vital-box"><span>Peso</span><strong>${vit.weight}</strong></div>
-                </div>
-            </div>
-
-            <div style="margin-top: 10px;">
-                <strong style="font-size: 0.82rem; color: var(--text-muted); text-transform: uppercase;">Diagnóstico / Motivo:</strong>
-                <p style="margin: 4px 0 12px; font-size: 0.95rem; color: var(--text-dark); font-weight: 500;">${c.reason}</p>
-            </div>
-
-            <div style="background: #f8fafc; border: 1px solid var(--border); border-radius: 8px; padding: 14px;">
-                <strong style="font-size: 0.82rem; color: var(--text-muted); text-transform: uppercase; display: block; margin-bottom: 4px;">Nota Clínica Médica:</strong>
-                <p style="margin: 0; font-size: 0.9rem; color: var(--text-dark); line-height: 1.5;">${c.notes || 'Paciente asiste a consulta de valoración. Evolución clínica favorable.'}</p>
-            </div>
-        `;
-        document.getElementById('viewModal').classList.add('active');
-    }
-
-    function closeViewModal() {
-        document.getElementById('viewModal').classList.remove('active');
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-        renderConsultations();
-    });
-
-
-    // MENU DE LA C
+let consultations = [];
+let clinicPatients = [];
+let activeTab = 'todas';
+const escapeClinical = value => String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+function formatClinicalDate(value) { if (!value) return '—'; const [y,m,d] = String(value).slice(0,10).split('-'); return y && m && d ? `${d}/${m}/${y}` : value; }
+function fillPatientOptions() { const select=document.getElementById('cPatient'); select.innerHTML='<option value="">Selecciona un paciente registrado</option>'+clinicPatients.map(p=>`<option value="${Number(p.id)}">${escapeClinical(p.name)} · ${escapeClinical(p.exp)}</option>`).join(''); }
+function renderConsultations() {
+  const term=document.getElementById('searchBox').value.trim().toLocaleLowerCase('es-MX');
+  let rows=consultations.filter(c=>activeTab==='todas'||c.status===activeTab);
+  rows=rows.filter(c=>`${c.patient} ${c.reason} ${c.exp}`.toLocaleLowerCase('es-MX').includes(term));
+  document.getElementById('consultationsBody').innerHTML=rows.map(c=>`<tr>
+    <td><strong>${escapeClinical(c.patient)}</strong><br><small>#${escapeClinical(c.exp)}</small></td>
+    <td>${formatClinicalDate(c.date)} · ${escapeClinical(c.time)}</td><td>${escapeClinical(c.reason)}</td>
+    <td>${escapeClinical(c.type)}</td><td><span class="pill">${escapeClinical(c.status)}</span></td>
+    <td style="text-align:right"><button class="btn-action btn-view" onclick="viewDetails(${Number(c.id)})">Ver</button> <button class="btn-action btn-edit" onclick="openEditModal(${Number(c.id)})">Editar</button></td>
+  </tr>`).join('')||'<tr><td colspan="6" style="text-align:center;padding:30px">No hay consultas registradas para mostrar.</td></tr>';
+  const today=new Date().toISOString().slice(0,10); const month=today.slice(0,7);
+  document.getElementById('kpiToday').textContent=`${consultations.filter(c=>c.date===today).length} consultas`;
+  document.getElementById('kpiDone').textContent=`${consultations.filter(c=>c.status==='Completada'&&String(c.date).startsWith(month)).length} completadas`;
+  const next=consultations.filter(c=>c.date>=today&&!['Cancelada','Completada'].includes(c.status)).sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time))[0];
+  document.getElementById('nextConsultation').textContent=next?`${next.patient} (${next.time})`:'Sin citas';
+}
+function filterConsultations(){ renderConsultations(); }
+function filterByTab(status, button){ activeTab=status; document.querySelectorAll('.tab-btn').forEach(item=>item.classList.remove('active')); button.classList.add('active'); renderConsultations(); }
+function openNewModal(){ const form=document.getElementById('consultationForm'); form.reset(); document.getElementById('cId').value=''; document.getElementById('cDate').value=new Date().toISOString().slice(0,10); document.getElementById('modalTitle').textContent='Nueva Consulta Médica'; document.getElementById('consultationModal').classList.add('active'); }
+function openEditModal(id){ const c=consultations.find(item=>Number(item.id)===Number(id)); if(!c)return; document.getElementById('cId').value=c.id; document.getElementById('cPatient').value=c.paciente_id; document.getElementById('cDate').value=c.date; document.getElementById('cTime').value=c.time; document.getElementById('cType').value=c.type; document.getElementById('cStatus').value=c.status; document.getElementById('cReason').value=c.reason; document.getElementById('cNotes').value=c.notas||''; document.getElementById('modalTitle').textContent='Actualizar Consulta Médica'; document.getElementById('consultationModal').classList.add('active'); }
+function closeModal(){ document.getElementById('consultationModal').classList.remove('active'); }
+async function saveConsultation(event){
+  event.preventDefault(); const id=document.getElementById('cId').value; const reason=document.getElementById('cReason').value.trim();
+  const payload={action:id?'consultation_update':'consultation',id:Number(id)||undefined,patient_id:Number(document.getElementById('cPatient').value),date:document.getElementById('cDate').value,time:document.getElementById('cTime').value,type:document.getElementById('cType').value,status:document.getElementById('cStatus').value,reason,diagnosis:reason,notes:document.getElementById('cNotes').value.trim()};
+  try{await clinicApi('',payload); await loadConsultations(); closeModal();}catch(error){alert(error.message);}
+}
+async function deleteConsultation(id){ const c=consultations.find(item=>Number(item.id)===Number(id)); if(!c||!confirm(`¿Cancelar la consulta de ${c.patient}?`))return; try{await clinicApi('',{action:'consultation_update',id:Number(id),patient_id:Number(c.paciente_id),date:c.date,time:c.time,type:c.type,status:'Cancelada',reason:c.reason,diagnosis:c.diagnosis||'',notes:c.notas||''}); await loadConsultations();}catch(error){alert(error.message);} }
+function viewDetails(id){ const c=consultations.find(item=>Number(item.id)===Number(id)); if(!c)return; document.getElementById('viewModalContent').innerHTML=`<h4>${escapeClinical(c.patient)}</h4><p>Expediente: ${escapeClinical(c.exp)}</p><p>Fecha y hora: ${formatClinicalDate(c.date)} · ${escapeClinical(c.time)}</p><p>Estado: ${escapeClinical(c.status)}</p><p>Motivo: ${escapeClinical(c.reason)}</p><p>Diagnóstico: ${escapeClinical(c.diagnosis||'Sin diagnóstico capturado')}</p><p>Nota clínica: ${escapeClinical(c.notas||'Sin notas capturadas')}</p>`; document.getElementById('viewModal').classList.add('active'); }
+function closeViewModal(){ document.getElementById('viewModal').classList.remove('active'); }
+async function loadConsultations(){ const data=await clinicApi('consultations'); consultations=data.consultations||[]; renderConsultations(); }
+(async function initConsultations(){ try{const data=await clinicApi('patients');clinicPatients=data.patients||[];fillPatientOptions();await loadConsultations();}catch(error){document.getElementById('consultationsBody').innerHTML=`<tr><td colspan="6" style="text-align:center;padding:30px">${escapeClinical(error.message)}</td></tr>`;} })();
 </script>
 <!-- MODAL CERRAR SESIÓN -->
 
 
-<script>
 
-
-</script>
 </body>
 </html>

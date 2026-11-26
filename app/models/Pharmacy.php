@@ -21,7 +21,7 @@ class Pharmacy
     {
         $statement = $this->db->query(
             'SELECT id, codigo_barras AS barcode, nombre AS name, categoria AS category,
-                    precio AS price, stock, stock_minimo AS min_stock, emoji
+                    descripcion AS description, precio AS price, stock, stock_minimo AS min_stock, emoji
              FROM productos WHERE activo = 1 ORDER BY nombre'
         );
 
@@ -143,6 +143,7 @@ class Pharmacy
     {
         $name = $this->clean($input['name'] ?? '', 160);
         $category = $this->clean($input['category'] ?? 'Medicamentos', 120) ?: 'Medicamentos';
+        $description = $this->clean($input['description'] ?? '', 5000);
         $barcode = preg_replace('/\s+/', '', (string) ($input['barcode'] ?? ''));
         $price = round((float) ($input['price'] ?? 0), 2);
         $stock = filter_var($input['stock'] ?? 0, FILTER_VALIDATE_INT);
@@ -177,13 +178,14 @@ class Pharmacy
 
                 $update = $this->db->prepare(
                     'UPDATE productos SET codigo_barras = :barcode, nombre = :name, categoria = :category,
-                         emoji = :emoji, precio = :price, stock = :stock, stock_minimo = :min_stock
+                         descripcion = :description, emoji = :emoji, precio = :price, stock = :stock, stock_minimo = :min_stock
                      WHERE id = :id'
                 );
                 $update->execute([
                     'barcode' => $barcode !== '' ? $barcode : null,
                     'name' => $name,
                     'category' => $category,
+                    'description' => $description !== '' ? $description : null,
                     'emoji' => $emoji,
                     'price' => $price,
                     'stock' => $stock,
@@ -200,13 +202,14 @@ class Pharmacy
                     return ['status' => 409, 'data' => ['error' => 'Ese código de barras ya está asignado a otro producto.']];
                 }
                 $insert = $this->db->prepare(
-                    'INSERT INTO productos (sku, codigo_barras, nombre, categoria, emoji, precio, stock, stock_minimo, activo)
-                     VALUES (NULL, :barcode, :name, :category, :emoji, :price, :stock, :min_stock, 1)'
+                    'INSERT INTO productos (sku, codigo_barras, nombre, categoria, descripcion, emoji, precio, stock, stock_minimo, activo)
+                     VALUES (NULL, :barcode, :name, :category, :description, :emoji, :price, :stock, :min_stock, 1)'
                 );
                 $insert->execute([
                     'barcode' => $barcode !== '' ? $barcode : null,
                     'name' => $name,
                     'category' => $category,
+                    'description' => $description !== '' ? $description : null,
                     'emoji' => $emoji,
                     'price' => $price,
                     'stock' => $stock,
@@ -637,6 +640,7 @@ class Pharmacy
         $row['stock'] = (int) $row['stock'];
         $row['min_stock'] = (int) $row['min_stock'];
         $row['emoji'] = $row['emoji'] ?: '💊';
+        $row['description'] = (string) ($row['description'] ?? '');
 
         return $row;
     }
@@ -645,7 +649,7 @@ class Pharmacy
     {
         $statement = $this->db->prepare(
             'SELECT id, sku, codigo_barras AS barcode, nombre AS name, categoria AS category,
-                    precio AS price, stock, stock_minimo AS min_stock, emoji
+                    descripcion AS description, precio AS price, stock, stock_minimo AS min_stock, emoji
              FROM productos WHERE id = :id LIMIT 1'
         );
         $statement->execute(['id' => $id]);

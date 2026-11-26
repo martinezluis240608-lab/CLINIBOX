@@ -57,6 +57,7 @@ CREATE TABLE IF NOT EXISTS `pacientes` (
   `alergias` TEXT NULL,
   `contacto_emergencia_nombre` VARCHAR(120) NULL,
   `contacto_emergencia_telefono` VARCHAR(30) NULL,
+  `contacto_emergencia_parentesco` VARCHAR(80) NULL,
   `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
@@ -156,6 +157,7 @@ CREATE TABLE IF NOT EXISTS `recetas` (
   `paciente_id` BIGINT UNSIGNED NOT NULL,
   `medico_id` BIGINT UNSIGNED NOT NULL,
   `consulta_id` BIGINT UNSIGNED NULL,
+  `diagnostico` VARCHAR(255) NULL,
   `fecha_emision` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `indicaciones` TEXT NULL,
   `estado` ENUM('activa','completada','cancelada') NOT NULL DEFAULT 'activa',
@@ -478,19 +480,3 @@ CREATE TABLE IF NOT EXISTS `gastos` (
     ON UPDATE CASCADE ON DELETE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Catálogo inicial utilizado por el punto de venta y la tienda en línea.
-INSERT IGNORE INTO `productos`
-  (`sku`,`codigo_barras`,`nombre`,`categoria`,`emoji`,`precio`,`stock`,`stock_minimo`,`activo`)
-VALUES
-  ('FAR-000001','2000000000015','Paracetamol 500 mg','Medicamentos','💊',45.00,0,5,1),
-  ('FAR-000002','2000000000022','Vitamina C 1000 mg','Vitaminas y suplementos','🍊',120.00,0,5,1),
-  ('FAR-000003','2000000000039','Termómetro digital','Equipo médico','🌡️',85.00,0,5,1),
-  ('FAR-000004','2000000000046','Gasas estériles','Primeros auxilios','▤',60.00,0,5,1),
-  ('FAR-000005','2000000000053','Gel antibacterial','Higiene personal','🧴',55.00,0,5,1),
-  ('FAR-000006','2000000000060','Protector solar FPS 50','Cuidado de la piel','☀️',189.00,0,5,1),
-  ('FAR-000007','2000000000077','Ibuprofeno 400 mg','Medicamentos','💊',75.00,0,5,1),
-  ('FAR-000008','2000000000084','Multivitamínico','Vitaminas y suplementos','💙',210.00,0,5,1),
-  ('FAR-000009','2000000000091','Tensiómetro digital','Equipo médico','🩺',549.00,0,5,1),
-  ('FAR-000010','2000000000107','Oxímetro de pulso','Equipo médico','🫀',329.00,0,5,1),
-  ('FAR-000011','2000000000114','Kit de curación','Primeros auxilios','🩹',149.00,0,5,1),
-  ('FAR-000012','2000000000121','Crema hidratante','Cuidado de la piel','🧴',135.00,0,5,1);

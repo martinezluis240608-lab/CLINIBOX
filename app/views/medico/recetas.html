@@ -108,7 +108,7 @@
                 <div style="display: grid; grid-template-columns: 1.4fr 1fr; gap: 14px;">
                     <div class="form-group">
                         <label for="rxPatient">Paciente *</label>
-                        <input type="text" id="rxPatient" class="form-control" placeholder="Ej. Carlos Mendoza" required>
+                        <select id="rxPatient" class="form-control" required><option value="">Selecciona un paciente registrado</option></select>
                     </div>
                     <div class="form-group">
                         <label for="rxDate">Fecha de Emisión *</label>
@@ -126,14 +126,7 @@
                     <textarea id="rxMeds" class="form-control" rows="3" placeholder="Ej. 1. Paracetamol 500 mg: 1 tableta cada 8 horas por 5 días.&#10;2. Naproxeno 550 mg: 1 tableta cada 12 horas por 3 días." required></textarea>
                 </div>
 
-                <div class="form-group">
-                    <label for="rxStatus">Estado del Tratamiento</label>
-                    <select id="rxStatus" class="form-control">
-                        <option value="Activa">Activa</option>
-                        <option value="Control crónico">Control crónico</option>
-                        <option value="Finalizada">Finalizada</option>
-                    </select>
-                </div>
+                
 
                 <div class="form-group">
                     <label for="rxNotes">Indicaciones y Recomendaciones Generales</label>
@@ -161,21 +154,21 @@
             <div class="prescription-sheet" id="printArea">
                 <div class="rx-header">
                     <div class="rx-doc">
-                        <h3>Dra. Sofía Ramírez</h3>
-                        <p>Medicina General &bull; Cédula Profesional: 9482710-SSA</p>
+                        <h3 id="rxDoctorName">Médico</h3>
+                        <p id="rxDoctorMeta"></p>
                         <p>Atención Clínica CliniBox</p>
                     </div>
                     <div class="rx-clinic">
                         <strong>CliniBox Healthcare</strong><br>
-                        Av. Central Médica #405<br>
-                        Tel: (55) 5555-0100
+                        
+                        
                     </div>
                 </div>
 
                 <div class="rx-info">
-                    <div><strong>Paciente:</strong> <span id="vPatient">Carlos Mendoza</span></div>
-                    <div><strong>Fecha:</strong> <span id="vDate">08/09/2026</span></div>
-                    <div><strong>Folio:</strong> <span id="vFolio">#REC-2026-089</span></div>
+                    <div><strong>Paciente:</strong> <span id="vPatient"></span></div>
+                    <div><strong>Fecha:</strong> <span id="vDate"></span></div>
+                    <div><strong>Folio:</strong> <span id="vFolio"></span></div>
                 </div>
 
                 <div style="font-family: system-ui; font-size: 0.85rem; margin-bottom: 12px; color: #475569;">
@@ -195,7 +188,7 @@
                         * Receta médica válida por 30 días a partir de su emisión.
                     </div>
                     <div class="rx-sign">
-                        <strong>Dra. Sofía Ramírez</strong><br>
+                        <strong id="rxDoctorFooter">Médico</strong><br>
                         Firma y Sello Médico
                     </div>
                 </div>
@@ -216,217 +209,23 @@
 </div>
 
 <!-- ==========================================================
-     LÓGICA JAVASCRIPT: CRUD COMPLETO + LOCALSTORAGE
+     RECETAS CLÍNICAS REGISTRADAS EN BASE DE DATOS
 ========================================================== -->
-<script>
-    // 1. Datos iniciales precargados
-    const defaultPrescriptions = [
-        {
-            id: 1,
-            folio: "REC-2026-089",
-            patient: "Carlos Mendoza",
-            date: "2026-09-07",
-            diagnosis: "Faringoamigdalitis aguda y dolor muscular",
-            meds: "1. Paracetamol 500 mg — 1 tableta cada 8 horas por 5 días.\n2. Naproxeno Sódico 550 mg — 1 tableta cada 12 horas por 3 días (después de alimentos).",
-            status: "Activa",
-            notes: "Mantener hidratación oral adecuada (2 litros al día). Reposo relativo por 48 horas."
-        },
-        {
-            id: 2,
-            folio: "REC-2026-074",
-            patient: "Carlos Mendoza",
-            date: "2026-09-01",
-            diagnosis: "Gastritis y protección gástrica",
-            meds: "1. Omeprazol 20 mg — 1 cápsula cada 24 horas en ayunas durante 30 días.",
-            status: "Finalizada",
-            notes: "Evitar alimentos irritantes, picantes o bebidas carbonatadas."
-        },
-        {
-            id: 3,
-            folio: "REC-2026-065",
-            patient: "Carlos Mendoza",
-            date: "2026-08-15",
-            diagnosis: "Control de presión arterial",
-            meds: "1. Losartán 50 mg — 1 tableta cada 12 horas (08:00 AM y 08:00 PM con alimentos).",
-            status: "Control crónico",
-            notes: "Monitoreo semanal de presión arterial y registro en bitácora."
-        }
-    ];
-
-    let prescriptions = JSON.parse(localStorage.getItem('clinibox_prescriptions')) || defaultPrescriptions;
-
-    function saveToStorage() {
-        localStorage.setItem('clinibox_prescriptions', JSON.stringify(prescriptions));
-    }
-
-    // 2. Renderizar tabla de recetas
-    function renderPrescriptions(filtered = prescriptions) {
-        const tbody = document.getElementById('rxTableBody');
-        tbody.innerHTML = '';
-
-        document.getElementById('rxCountBadge').textContent = `${filtered.length} receta${filtered.length === 1 ? '' : 's'}`;
-
-        if (filtered.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-muted); padding: 28px;">No se encontraron recetas en el historial.</td></tr>`;
-            return;
-        }
-
-        filtered.forEach(rx => {
-            let pillClass = 'active-pill';
-            if (rx.status === 'Control crónico') pillClass = 'chronic-pill';
-            if (rx.status === 'Finalizada') pillClass = 'ended-pill';
-
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td><strong>#${rx.folio}</strong></td>
-                <td><strong>${rx.patient}</strong></td>
-                <td>${formatDate(rx.date)}</td>
-                <td style="max-width: 280px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${rx.meds}">
-                    ${rx.meds.replace(/\n/g, ', ')}
-                </td>
-                <td><span class="pill ${pillClass}">${rx.status}</span></td>
-                <td style="text-align: right;">
-                    <div class="actions-group" style="justify-content: flex-end;">
-                        <button class="btn-action btn-view" onclick="viewPrescription(${rx.id})">👁️ Ver / Imprimir</button>
-                        <button class="btn-action btn-edit" onclick="openEditModal(${rx.id})">✏️ Editar</button>
-                        <button class="btn-action btn-delete" onclick="deletePrescription(${rx.id})">🗑️ Eliminar</button>
-                    </div>
-                </td>
-            `;
-            tbody.appendChild(tr);
-        });
-    }
-
-    function formatDate(strDate) {
-        if (!strDate) return '-';
-        const parts = strDate.split('-');
-        if (parts.length === 3) return `${parts[2]}/${parts[1]}/${parts[0]}`;
-        return strDate;
-    }
-
-    // 3. Abrir modal para agregar
-    function openAddModal() {
-        document.getElementById('rxForm').reset();
-        document.getElementById('rxId').value = '';
-        document.getElementById('modalTitle').textContent = 'Emitir Nueva Receta';
-        document.getElementById('rxDate').value = new Date().toISOString().split('T')[0];
-        document.getElementById('rxModal').classList.add('active');
-    }
-
-    // 4. Abrir modal para editar
-    function openEditModal(id) {
-        const rx = prescriptions.find(item => item.id === id);
-        if (!rx) return;
-
-        document.getElementById('rxId').value = rx.id;
-        document.getElementById('rxPatient').value = rx.patient;
-        document.getElementById('rxDate').value = rx.date;
-        document.getElementById('rxDiagnosis').value = rx.diagnosis;
-        document.getElementById('rxMeds').value = rx.meds;
-        document.getElementById('rxStatus').value = rx.status;
-        document.getElementById('rxNotes').value = rx.notes || '';
-
-        document.getElementById('modalTitle').textContent = `Editar Receta #${rx.folio}`;
-        document.getElementById('rxModal').classList.add('active');
-    }
-
-    function closeModal() {
-        document.getElementById('rxModal').classList.remove('active');
-    }
-
-    // 5. Guardar (Crear o Actualizar)
-    function savePrescription(e) {
-        e.preventDefault();
-
-        const id = document.getElementById('rxId').value;
-        const patient = document.getElementById('rxPatient').value.trim();
-        const date = document.getElementById('rxDate').value;
-        const diag = document.getElementById('rxDiagnosis').value.trim();
-        const meds = document.getElementById('rxMeds').value.trim();
-        const status = document.getElementById('rxStatus').value;
-        const notes = document.getElementById('rxNotes').value.trim();
-
-        if (id) {
-            // Actualizar existente
-            const index = prescriptions.findIndex(item => item.id == id);
-            if (index !== -1) {
-                prescriptions[index].patient = patient;
-                prescriptions[index].date = date;
-                prescriptions[index].diagnosis = diag;
-                prescriptions[index].meds = meds;
-                prescriptions[index].status = status;
-                prescriptions[index].notes = notes;
-            }
-        } else {
-            // Crear nueva receta
-            const newId = Date.now();
-            const folioNum = Math.floor(100 + Math.random() * 899);
-            prescriptions.unshift({
-                id: newId,
-                folio: `REC-2026-${folioNum}`,
-                patient: patient,
-                date: date,
-                diagnosis: diag,
-                meds: meds,
-                status: status,
-                notes: notes || 'Sin notas complementarias'
-            });
-        }
-
-        saveToStorage();
-        renderPrescriptions();
-        closeModal();
-    }
-
-    // 6. Eliminar receta
-    function deletePrescription(id) {
-        const rx = prescriptions.find(item => item.id === id);
-        if (!rx) return;
-
-        if (confirm(`¿Estás seguro de que deseas eliminar la receta #${rx.folio} para ${rx.patient}? Esta acción no se puede deshacer.`)) {
-            prescriptions = prescriptions.filter(item => item.id !== id);
-            saveToStorage();
-            renderPrescriptions();
-        }
-    }
-
-    // 7. Ver e Imprimir la receta oficial
-    function viewPrescription(id) {
-        const rx = prescriptions.find(item => item.id === id);
-        if (!rx) return;
-
-        document.getElementById('vPatient').textContent = rx.patient;
-        document.getElementById('vDate').textContent = formatDate(rx.date);
-        document.getElementById('vFolio').textContent = `#${rx.folio}`;
-        document.getElementById('vDiagnosis').textContent = rx.diagnosis;
-        document.getElementById('vNotes').textContent = rx.notes || 'Ninguna especificada.';
-
-        const medsContainer = document.getElementById('vMeds');
-        medsContainer.innerHTML = rx.meds.split('\n').map(line => `<div style="margin-bottom: 6px;">${line}</div>`).join('');
-
-        document.getElementById('viewModal').classList.add('active');
-    }
-
-    function closeViewModal() {
-        document.getElementById('viewModal').classList.remove('active');
-    }
-
-    // 8. Filtrar en tiempo real con el buscador
-    function filterPrescriptions() {
-        const q = document.getElementById('searchRx').value.toLowerCase();
-        const filtered = prescriptions.filter(rx => 
-            rx.patient.toLowerCase().includes(q) || 
-            rx.folio.toLowerCase().includes(q) || 
-            rx.meds.toLowerCase().includes(q)
-        );
-        renderPrescriptions(filtered);
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-        renderPrescriptions();
-    });
-
-}
+<script src="/CLINIBOX/public/assets/js/clinic-api.js?v=1"></script><script>
+let prescriptions=[];let rxPatients=[];let rxDoctor={};
+const escRx=value=>String(value??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+const formatRxDate=value=>{const [y,m,d]=String(value||'').slice(0,10).split('-');return y?`${d}/${m}/${y}`:'—';};
+function statusRx(value){return ({activa:'Activa',completada:'Finalizada',cancelada:'Cancelada'})[value]||value;}
+function parsePrescription(row){const raw=String(row.medications||'');const split=raw.split(/\n\nIndicaciones:\s*/);return {...row,meds:split[0],notes:split.slice(1).join('\n\nIndicaciones: ')};}
+function renderPrescriptions(){const query=document.getElementById('searchRx').value.trim().toLocaleLowerCase('es-MX');const rows=prescriptions.filter(rx=>`${rx.patient} ${rx.folio} ${rx.meds} ${rx.diagnosis}`.toLocaleLowerCase('es-MX').includes(query));document.getElementById('rxCountBadge').textContent=`${rows.length} receta${rows.length===1?'':'s'}`;document.getElementById('rxTableBody').innerHTML=rows.map(rx=>`<tr><td><strong>#${escRx(rx.folio)}</strong></td><td>${escRx(rx.patient)}</td><td>${formatRxDate(rx.date)}</td><td style="max-width:280px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="${escRx(rx.meds)}">${escRx(rx.meds)}</td><td>${escRx(statusRx(rx.status))}</td><td style="text-align:right"><button class="btn-action btn-view" onclick="viewPrescription(${Number(rx.id)})">Ver / Imprimir</button></td></tr>`).join('')||'<tr><td colspan="6" style="text-align:center;padding:28px">No hay recetas registradas.</td></tr>';}
+function filterPrescriptions(){renderPrescriptions();}
+function openAddModal(){document.getElementById('rxForm').reset();document.getElementById('rxId').value='';document.getElementById('rxDate').value=new Date().toISOString().slice(0,10);document.getElementById('rxModal').classList.add('active');}
+function closeModal(){document.getElementById('rxModal').classList.remove('active');}
+async function savePrescription(event){event.preventDefault();const payload={action:'prescription',patient_id:Number(document.getElementById('rxPatient').value),diagnosis:document.getElementById('rxDiagnosis').value.trim(),medications:document.getElementById('rxMeds').value.trim(),notes:document.getElementById('rxNotes').value.trim(),status:'activa'};try{await clinicApi('',payload);await loadPrescriptions();closeModal();}catch(error){alert(error.message);}}
+function viewPrescription(id){const rx=prescriptions.find(item=>Number(item.id)===Number(id));if(!rx)return;document.getElementById('vPatient').textContent=rx.patient;document.getElementById('vDate').textContent=formatRxDate(rx.date);document.getElementById('vFolio').textContent=`#${rx.folio}`;document.getElementById('vDiagnosis').textContent=rx.diagnosis||'—';document.getElementById('vNotes').textContent=rx.notes||'—';const meds=document.getElementById('vMeds');meds.replaceChildren(...rx.meds.split('\n').filter(Boolean).map(line=>{const row=document.createElement('div');row.textContent=line;return row;}));document.getElementById('viewModal').classList.add('active');}
+function closeViewModal(){document.getElementById('viewModal').classList.remove('active');}
+async function loadPrescriptions(){const data=await clinicApi('prescriptions');prescriptions=(data.prescriptions||[]).map(parsePrescription);renderPrescriptions();}
+(async()=>{try{const [patients,profile]=await Promise.all([clinicApi('patients'),clinicApi('profile')]);rxPatients=patients.patients||[];document.getElementById('rxPatient').innerHTML='<option value="">Selecciona un paciente</option>'+rxPatients.map(p=>`<option value="${Number(p.id)}">${escRx(p.name)} · ${escRx(p.exp)}</option>`).join('');rxDoctor=profile.profile||{};document.getElementById('rxDoctorName').textContent=rxDoctor.name||'Médico';document.getElementById('rxDoctorFooter').textContent=rxDoctor.name||'Médico';document.getElementById('rxDoctorMeta').textContent=[rxDoctor.specialty,rxDoctor.license?`Cédula profesional: ${rxDoctor.license}`:''].filter(Boolean).join(' · ');await loadPrescriptions();}catch(error){document.getElementById('rxTableBody').innerHTML=`<tr><td colspan="6">${escRx(error.message)}</td></tr>`;}})();
 </script>
 <!-- MODAL CERRAR SESIÓN -->
 

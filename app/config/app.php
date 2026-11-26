@@ -2,7 +2,6 @@
 
 return [
     'name' => 'CliniBox',
-    'demo_auth' => getenv('CLINIBOX_DEMO_AUTH') === '1',
     'database' => [
         'host' => getenv('CLINIBOX_DB_HOST') ?: '127.0.0.1',
         'port' => getenv('CLINIBOX_DB_PORT') ?: '3306',

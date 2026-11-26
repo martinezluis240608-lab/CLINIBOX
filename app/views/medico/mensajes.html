@@ -50,8 +50,8 @@
             <div class="chat-window">
                 <div class="chat-header">
                     <div class="chat-patient-meta">
-                        <h4 id="activeChatName">Carlos Mendoza</h4>
-                        <span id="activeChatStatus">En línea &bull; Exp. #EXP-084</span>
+                        <h4 id="activeChatName">Selecciona un paciente</h4>
+                        <span id="activeChatStatus"></span>
                     </div>
                     <a href="expedientes.html" style="font-size: 0.85rem; color: var(--primary); text-decoration: none; font-weight: 600;">
                         Ver Expediente &rarr;
@@ -63,17 +63,9 @@
                     <!-- Burbujas inyectadas con JavaScript -->
                 </div>
 
-                <!-- PLANTILLAS DE RESPUESTAS MÉDICAS RÁPIDAS -->
-                <div class="quick-replies">
-                    <button class="quick-chip" onclick="useQuickReply('Sí, tómalo con abundante agua después de tus alimentos.')">💧 Tomar con alimentos</button>
-                    <button class="quick-chip" onclick="useQuickReply('Tómalo preferentemente en ayunas, 30 minutos antes del desayuno.')">🍳 Tomar en ayunas</button>
-                    <button class="quick-chip" onclick="useQuickReply('Si las molestias persisten más de 24 horas, agenda una consulta presencial.')">📅 Revisión presencial</button>
-                    <button class="quick-chip" onclick="useQuickReply('Continúa con la dosis indicada en tu receta.')">💊 Mantener dosis</button>
-                </div>
-
                 <!-- FORMULARIO DE ENVÍO -->
                 <form class="chat-input-bar" onsubmit="sendMessage(event)">
-                    <input type="text" id="messageInput" class="chat-input" placeholder="Escribe tu respuesta a Carlos Mendoza..." autocomplete="off" required>
+                    <input type="text" id="messageInput" class="chat-input" placeholder="Escribe un mensaje…" autocomplete="off" required>
                     <button type="submit" class="btn-send">
                         <span>Enviar</span>
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -90,153 +82,16 @@
 <!-- ==========================================================
      LÓGICA JAVASCRIPT: BANDEJA INTERACTIVA Y CHAT
 ========================================================== -->
-<script>
-    const defaultConversations = [
-        {
-            id: 1,
-            patient: "Carlos Mendoza",
-            exp: "EXP-084",
-            unread: true,
-            messages: [
-                { sender: "doctor", text: "Buenos días Carlos, ¿cómo te has sentido con el nuevo tratamiento?", time: "09:12 AM" },
-                { sender: "patient", text: "¿Puedo tomar el medicamento después de comer?", time: "Hace 10 min" }
-            ]
-        },
-        {
-            id: 2,
-            patient: "Mariana Morales Rivas",
-            exp: "EXP-085",
-            unread: false,
-            messages: [
-                { sender: "patient", text: "Doctora, ya me realicé la química sanguínea de control. En cuanto tenga los resultados se los comparto.", time: "Ayer" },
-                { sender: "doctor", text: "Perfecto Mariana, quedo atenta para revisar tus parámetros de glucosa.", time: "Ayer" }
-            ]
-        },
-        {
-            id: 3,
-            patient: "Roberto Sánchez Gómez",
-            exp: "EXP-086",
-            unread: false,
-            messages: [
-                { sender: "patient", text: "Muchas gracias doctora, el dolor lumbar ha disminuido bastante con el calor local.", time: "Hace 2 días" },
-                { sender: "doctor", text: "Excelente noticia Roberto, no olvides evitar levantar peso excesivo.", time: "Hace 2 días" }
-            ]
-        }
-    ];
-
-    let chatsData = JSON.parse(localStorage.getItem('clinibox_chats')) || defaultConversations;
-    let activeChatId = 1;
-
-    function saveStorage() {
-        localStorage.setItem('clinibox_chats', JSON.stringify(chatsData));
-    }
-
-    function renderInbox(filtered = null) {
-        const container = document.getElementById('conversationsContainer');
-        container.innerHTML = '';
-
-        const list = filtered || chatsData;
-
-        list.forEach(c => {
-            const lastMsg = c.messages[c.messages.length - 1];
-            const initials = c.patient.split(' ').map(n => n[0]).slice(0, 2).join('');
-
-            const item = document.createElement('div');
-            item.className = `conv-item ${c.id === activeChatId ? 'active' : ''}`;
-            item.onclick = () => selectChat(c.id);
-
-            item.innerHTML = `
-                <div class="patient-avatar">${initials}</div>
-                <div class="conv-info">
-                    <div class="conv-top">
-                        <strong>${c.patient}</strong>
-                        <span>${lastMsg ? lastMsg.time : ''}</span>
-                    </div>
-                    <p class="conv-preview">${lastMsg ? (lastMsg.sender === 'doctor' ? 'Tú: ' : '') + lastMsg.text : 'Sin mensajes'}</p>
-                </div>
-                ${c.unread ? '<div class="unread-dot"></div>' : ''}
-            `;
-            container.appendChild(item);
-        });
-    }
-
-    function renderActiveMessages() {
-        const activeChat = chatsData.find(c => c.id === activeChatId);
-        if (!activeChat) return;
-
-        document.getElementById('activeChatName').textContent = activeChat.patient;
-        document.getElementById('activeChatStatus').textContent = `En línea • Exp. #${activeChat.exp}`;
-        document.getElementById('messageInput').placeholder = `Escribe tu respuesta a ${activeChat.patient}...`;
-
-        const area = document.getElementById('messagesArea');
-        area.innerHTML = '';
-
-        activeChat.messages.forEach(m => {
-            const bubble = document.createElement('div');
-            bubble.className = `message-bubble ${m.sender}`;
-            bubble.innerHTML = `
-                ${m.text}
-                <span class="message-time">${m.time}</span>
-            `;
-            area.appendChild(bubble);
-        });
-
-        // Desplazar al final de la conversación
-        area.scrollTop = area.scrollHeight;
-    }
-
-    function selectChat(id) {
-        activeChatId = id;
-        const chat = chatsData.find(c => c.id === id);
-        if (chat) chat.unread = false;
-
-        saveStorage();
-        renderInbox();
-        renderActiveMessages();
-    }
-
-    function sendMessage(e) {
-        e.preventDefault();
-        const input = document.getElementById('messageInput');
-        const text = input.value.trim();
-        if (!text) return;
-
-        const chat = chatsData.find(c => c.id === activeChatId);
-        if (!chat) return;
-
-        const now = new Date();
-        const hours = now.getHours();
-        const mins = now.getMinutes().toString().padStart(2, '0');
-        const timeStr = `${hours % 12 || 12}:${mins} ${hours >= 12 ? 'PM' : 'AM'}`;
-
-        chat.messages.push({
-            sender: "doctor",
-            text: text,
-            time: timeStr
-        });
-
-        input.value = '';
-        saveStorage();
-        renderInbox();
-        renderActiveMessages();
-    }
-
-    function useQuickReply(text) {
-        document.getElementById('messageInput').value = text;
-        document.getElementById('messageInput').focus();
-    }
-
-    function filterInbox() {
-        const q = document.getElementById('searchInbox').value.toLowerCase();
-        const filtered = chatsData.filter(c => c.patient.toLowerCase().includes(q));
-        renderInbox(filtered);
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-        renderInbox();
-        renderActiveMessages();
-    });
-
+<script src="/CLINIBOX/public/assets/js/clinic-api.js?v=1"></script><script>
+let chatPatients=[];let chatMessages=[];let activePatientId=0;
+const escChat=value=>String(value??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+function messagesFor(patientId){return chatMessages.filter(message=>Number(message.patientId)===Number(patientId));}
+function renderInbox(){const query=document.getElementById('searchInbox').value.trim().toLocaleLowerCase('es-MX');const rows=chatPatients.filter(patient=>`${patient.name} ${patient.exp}`.toLocaleLowerCase('es-MX').includes(query));const container=document.getElementById('conversationsContainer');container.innerHTML=rows.map(patient=>{const last=messagesFor(patient.id).at(-1);return `<button type="button" class="conv-item ${Number(patient.id)===Number(activePatientId)?'active':''}" onclick="selectChat(${Number(patient.id)})"><span class="patient-avatar">${escChat(patient.name.split(' ').map(part=>part[0]).slice(0,2).join(''))}</span><span class="conv-info"><span class="conv-top"><strong>${escChat(patient.name)}</strong></span><span class="conv-preview">${last?escChat(last.text):'Sin mensajes'}</span></span></button>`;}).join('')||'<p style="padding:18px">No hay pacientes con citas registradas.</p>';}
+function renderActiveMessages(){const patient=chatPatients.find(row=>Number(row.id)===Number(activePatientId));const area=document.getElementById('messagesArea');area.innerHTML='';document.getElementById('activeChatName').textContent=patient?.name||'Selecciona un paciente';document.getElementById('activeChatStatus').textContent=patient?`Expediente #${patient.exp}`:'';document.getElementById('messageInput').disabled=!patient;document.getElementById('messageInput').placeholder=patient?`Escribe a ${patient.name}…`:'Selecciona un paciente';if(!patient){area.textContent='Selecciona un paciente para ver los mensajes.';return;}const rows=messagesFor(patient.id);if(!rows.length){area.textContent='Todavía no hay mensajes en esta conversación.';return;}rows.forEach(message=>{const bubble=document.createElement('div');bubble.className=`message-bubble ${message.sender==='doctor'?'doctor':'patient'}`;const text=document.createElement('span');text.textContent=message.text;const time=document.createElement('span');time.className='message-time';time.textContent=new Date(message.sentAt).toLocaleString('es-MX');bubble.append(text,time);area.appendChild(bubble);});area.scrollTop=area.scrollHeight;}
+function selectChat(id){activePatientId=Number(id);renderInbox();renderActiveMessages();}
+function filterInbox(){renderInbox();}
+async function sendMessage(event){event.preventDefault();const input=document.getElementById('messageInput');const text=input.value.trim();if(!activePatientId||!text)return;try{await clinicApi('',{action:'message',patient_id:activePatientId,text});input.value='';const data=await clinicApi('messages');chatMessages=data.messages||[];renderInbox();renderActiveMessages();}catch(error){alert(error.message);}}
+(async()=>{try{const [patients,appointments,messages]=await Promise.all([clinicApi('patients'),clinicApi('appointments'),clinicApi('messages')]);const booked=new Set((appointments.appointments||[]).map(row=>Number(row.paciente_id)));chatPatients=(patients.patients||[]).filter(patient=>booked.has(Number(patient.id)));chatMessages=messages.messages||[];if(chatPatients.length)activePatientId=Number(chatPatients[0].id);renderInbox();renderActiveMessages();}catch(error){document.getElementById('conversationsContainer').textContent=error.message;}})();
 </script>
 <!-- MODAL CERRAR SESIÓN -->
 

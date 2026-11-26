@@ -1,94 +1,10 @@
-<!doctype html>
-<html lang="es">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Mensajes con Médico | CliniBox Paciente</title>
-  <link rel="stylesheet" href="/CLINIBOX/public/assets/css/patient-dashboard.css?v=patient-layout-4">
-<link rel="stylesheet" href="/CLINIBOX/public/assets/css/profile-menu.css?v=3">
-<script src="/CLINIBOX/public/assets/js/profile-menu.js?v=2" defer></script>
-    <link rel="stylesheet" href="/CLINIBOX/public/assets/css/clinibox.css?v=5">
-    <script src="/CLINIBOX/public/assets/js/page-size.js?v=1" defer></script>
-</head>
-<body class="patient-dashboard-page">
-<div class="app-shell patient-shell">
-  <aside class="patient-sidebar">
-    <clinibox-profile-menu data-label="Portal del paciente" data-profile="paciente/perfil"></clinibox-profile-menu>
-    <nav aria-label="Navegación del paciente">
-      <div class="nav-list">
-        <a href="/CLINIBOX/public/paciente/inicio">Resumen del paciente</a>
-        <a href="/CLINIBOX/public/citas">Agendar cita</a>
-        <a href="/CLINIBOX/public/paciente/consultas">Citas agendadas</a>
-        <a href="/CLINIBOX/public/paciente/medicamentos">Farmacia</a>
-        <a href="/CLINIBOX/public/paciente/recetas">Recetas</a>
-        <a href="/CLINIBOX/public/paciente/mensajes" class="active" aria-current="page">Mensajes</a>
-      </div>
-    </nav>
-  </aside>
-
-  <main class="patient-main">
-    <header class="patient-topbar">
-      <h1 class="topbar-section-title">Consulta Rápida con Médico</h1>
-    </header>
-
-    <div class="glass-panel chat-unified-container">
-      <div class="chat-doctor-header">
-        <div class="doctor-chat-avatar">👩‍⚕️</div>
-        <div>
-          <h3 style="font-size: 1.05rem; font-weight:800; color:var(--text-main);">Dra. Sofía Ramírez</h3>
-          <p style="font-size: 0.8rem; color: var(--accent); font-weight:700;">En línea • Medicina Preventiva CliniBox</p>
-        </div>
-      </div>
-
-      <div class="chat-conversation-area" id="chatArea">
-        <div class="chat-bubble doctor">
-          <p>Hola {{patientName}}, ¿cómo has respondido al tratamiento con amoxicilina que iniciaste?</p>
-          <span class="chat-time">09:12 AM • Dra. Sofía</span>
-        </div>
-
-        <div class="chat-bubble patient">
-          <p>Buenos días doctora, mucho mejor. La fiebre ya bajó por completo y el dolor de garganta es casi nulo.</p>
-          <span class="chat-time">09:15 AM • Tú</span>
-        </div>
-
-        <div class="chat-bubble doctor">
-          <p>Excelente noticia {{patientName}}. Recuerda completar rigurosamente los 7 días de amoxicilina aunque ya te sientas al 100%.</p>
-          <span class="chat-time">09:18 AM • Dra. Sofía</span>
-        </div>
-      </div>
-
-      <p>Conversación de demostración. Los mensajes de prueba se muestran solo en esta pantalla.</p>
-      <form class="chat-input-bar" onsubmit="enviarMensaje(event)">
-        <input type="text" id="inputChat" placeholder="Escribe tu consulta médica..." required autocomplete="off">
-        <button type="submit" class="btn btn-primary">
-          <span>Probar mensaje</span>
-        </button>
-      </form>
-    </div>
-  </main>
-</div>
-<script>
-  function enviarMensaje(e) {
-    e.preventDefault();
-    const input = document.getElementById('inputChat');
-    const txt = input.value.trim();
-    if (!txt) return;
-
-    const area = document.getElementById('chatArea');
-    const msg = document.createElement('div');
-    msg.className = 'chat-bubble patient';
-    const body = document.createElement('p');
-    body.textContent = txt;
-    const time = document.createElement('span');
-    time.className = 'chat-time';
-    time.textContent = 'Ahora • Tú';
-    msg.append(body, time);
-    area.appendChild(msg);
-    input.value = '';
-    area.scrollTop = area.scrollHeight;
-
-  }
-
-</script>
-</body>
-</html>
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Mensajes | CliniBox</title><link rel="stylesheet" href="/CLINIBOX/public/assets/css/patient-dashboard.css"><link rel="stylesheet" href="/CLINIBOX/public/assets/css/profile-menu.css?v=3"><link rel="stylesheet" href="/CLINIBOX/public/assets/css/clinibox.css?v=5"><script src="/CLINIBOX/public/assets/js/profile-menu.js?v=2" defer></script></head>
+<body class="patient-dashboard-page"><div class="app-shell patient-shell"><aside class="patient-sidebar"><clinibox-profile-menu data-label="Portal del paciente" data-profile="paciente/perfil"></clinibox-profile-menu><nav aria-label="Navegación del paciente"><div class="nav-list"><a href="/CLINIBOX/public/paciente/inicio">Resumen del paciente</a><a href="/CLINIBOX/public/citas">Agendar cita</a><a href="/CLINIBOX/public/paciente/consultas">Citas agendadas</a><a href="/CLINIBOX/public/paciente/medicamentos">Farmacia</a><a href="/CLINIBOX/public/paciente/recetas">Recetas</a><a href="/CLINIBOX/public/paciente/mensajes" class="active" aria-current="page">Mensajes</a></div></nav></aside>
+<main class="patient-main"><header class="patient-topbar"><h1 class="topbar-section-title">Mensajes con mi médico</h1></header><section class="glass-panel chat-unified-container"><div class="chat-doctor-header"><div class="doctor-chat-avatar">✉</div><div><label for="doctorSelect">Médico</label><select id="doctorSelect"><option value="">Cargando…</option></select><p id="doctorSpecialty"></p></div></div><div class="chat-conversation-area" id="chatArea" aria-live="polite">Selecciona un médico.</div><form class="chat-input-bar" id="messageForm"><input type="text" id="messageInput" placeholder="Escribe tu mensaje…" required autocomplete="off" disabled><button type="submit" class="btn btn-primary" id="sendButton" disabled>Enviar</button></form></section></main></div>
+<script src="/CLINIBOX/public/assets/js/clinic-api.js?v=1"></script><script>
+let conversations=[];let messages=[];const doctorSelect=document.getElementById('doctorSelect');const area=document.getElementById('chatArea');
+function renderMessages(){const doctorId=Number(doctorSelect.value);const doctor=conversations.find(item=>Number(item.id)===doctorId);document.getElementById('doctorSpecialty').textContent=doctor?.specialty||'';const input=document.getElementById('messageInput');const button=document.getElementById('sendButton');input.disabled=!doctor;button.disabled=!doctor;if(!doctor){area.textContent='No hay un médico disponible. Solicita una cita para iniciar una conversación.';return;}const rows=messages.filter(message=>Number(message.doctorId)===doctorId);area.replaceChildren();if(!rows.length){area.textContent='Todavía no hay mensajes con este médico.';return;}rows.forEach(message=>{const bubble=document.createElement('div');bubble.className=`chat-bubble ${message.sender==='patient'?'patient':'doctor'}`;const text=document.createElement('p');text.textContent=message.text;const time=document.createElement('span');time.className='chat-time';time.textContent=new Date(message.sentAt).toLocaleString('es-MX');bubble.append(text,time);area.appendChild(bubble);});area.scrollTop=area.scrollHeight;}
+document.getElementById('messageForm').addEventListener('submit',async event=>{event.preventDefault();const doctorId=Number(doctorSelect.value);const text=document.getElementById('messageInput').value.trim();if(!doctorId||!text)return;try{await clinicApi('',{action:'message',doctor_id:doctorId,text});document.getElementById('messageInput').value='';const data=await clinicApi('messages');messages=data.messages||[];renderMessages();}catch(error){alert(error.message);}});
+doctorSelect.addEventListener('change',renderMessages);
+(async()=>{try{const [appointments,data]=await Promise.all([clinicApi('appointments'),clinicApi('messages')]);const map=new Map();(appointments.appointments||[]).forEach(a=>map.set(Number(a.doctorId),{id:Number(a.doctorId),name:a.doctor,specialty:a.specialty||''}));conversations=[...map.values()];messages=data.messages||[];doctorSelect.innerHTML='<option value="">Selecciona un médico</option>'+conversations.map(d=>`<option value="${d.id}">${d.name}</option>`).join('');if(conversations.length)doctorSelect.value=String(conversations[0].id);renderMessages();}catch(error){area.textContent=error.message;doctorSelect.innerHTML='<option value="">No disponible</option>';}})();
+</script></body></html>

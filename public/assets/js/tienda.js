@@ -8,162 +8,26 @@
    PRODUCTOS
 ========================================================= */
 
-const products = [
+let products = [];
 
-    {
-        id: 1,
-        barcode: "2000000000015",
-        name: "Paracetamol 500 mg",
-        category: "Medicamentos",
-        price: 45,
-        oldPrice: 60,
-        emoji: "💊",
-        discount: 25,
-        badge: "Oferta",
-        popular: true
-    },
-
-    {
-        id: 2,
-        barcode: "2000000000022",
-        name: "Vitamina C 1000 mg",
-        category: "Vitaminas y suplementos",
-        price: 120,
-        oldPrice: 150,
-        emoji: "🍊",
-        discount: 20,
-        badge: "Top",
-        popular: true
-    },
-
-    {
-        id: 3,
-        barcode: "2000000000039",
-        name: "Termómetro digital",
-        category: "Equipo médico",
-        price: 85,
-        oldPrice: 110,
-        emoji: "🌡️",
-        discount: 23,
-        badge: "Nuevo",
-        popular: true
-    },
-
-    {
-        id: 4,
-        barcode: "2000000000046",
-        name: "Gasas estériles",
-        category: "Primeros auxilios",
-        price: 60,
-        oldPrice: 75,
-        emoji: "▤",
-        discount: 20,
-        badge: "Oferta",
-        popular: true
-    },
-
-    {
-        id: 5,
-        barcode: "2000000000053",
-        name: "Gel antibacterial",
-        category: "Higiene personal",
-        price: 55,
-        oldPrice: 70,
-        emoji: "🧴",
-        discount: 21,
-        badge: "Oferta",
-        popular: true
-    },
-
-    {
-        id: 6,
-        barcode: "2000000000060",
-        name: "Protector solar FPS 50",
-        category: "Cuidado de la piel",
-        price: 189,
-        oldPrice: 230,
-        emoji: "☀️",
-        discount: 18,
-        badge: "Oferta",
-        popular: true
-    },
-
-    {
-        id: 7,
-        barcode: "2000000000077",
-        name: "Ibuprofeno 400 mg",
-        category: "Medicamentos",
-        price: 75,
-        oldPrice: 95,
-        emoji: "💊",
-        discount: 21,
-        badge: "Oferta"
-    },
-
-    {
-        id: 8,
-        barcode: "2000000000084",
-        name: "Multivitamínico",
-        category: "Vitaminas y suplementos",
-        price: 210,
-        oldPrice: 260,
-        emoji: "💙",
-        discount: 19,
-        badge: "Oferta"
-    },
-
-    {
-        id: 9,
-        barcode: "2000000000091",
-        name: "Tensiómetro digital",
-        category: "Equipo médico",
-        price: 549,
-        oldPrice: 699,
-        emoji: "🩺",
-        discount: 21,
-        badge: "Oferta"
-    },
-
-    {
-        id: 10,
-        barcode: "2000000000107",
-        name: "Oxímetro de pulso",
-        category: "Equipo médico",
-        price: 329,
-        oldPrice: 399,
-        emoji: "🫀",
-        discount: 18,
-        badge: "Oferta"
-    },
-
-    {
-        id: 11,
-        barcode: "2000000000114",
-        name: "Kit de curación",
-        category: "Primeros auxilios",
-        price: 149,
-        oldPrice: 190,
-        emoji: "🩹",
-        discount: 22,
-        badge: "Oferta"
-    },
-
-    {
-        id: 12,
-        barcode: "2000000000121",
-        name: "Crema hidratante",
-        category: "Cuidado de la piel",
-        price: 135,
-        oldPrice: 170,
-        emoji: "🧴",
-        discount: 21,
-        badge: "Oferta"
+async function loadProductCatalog() {
+    try {
+        const response = await fetch('/CLINIBOX/public/api/farmacia?resource=products', { credentials: 'same-origin', cache: 'no-store' });
+        if (!response.ok) throw new Error('No se pudo cargar el catálogo.');
+        const data = await response.json();
+        products = (data.products || []).filter(product => Number(product.stock) > 0).map(product => ({
+            ...product, oldPrice: Number(product.price), discount: 0, badge: '', popular: true
+        }));
+        const availableBarcodes = new Set(products.map(product => String(product.barcode || '')).filter(Boolean));
+        cart = cart.filter(item => availableBarcodes.has(String(item.barcode || '')));
+        saveCart();
+    } catch (error) {
+        products = [];
     }
-
-];
-
-
-
+    renderOffers();
+    renderProducts();
+    if (typeof lucide !== 'undefined' && lucide.createIcons) lucide.createIcons();
+}
 /* =========================================================
    ELEMENTOS
 ========================================================= */
@@ -391,6 +255,10 @@ function renderOffers() {
 
 
     offersGrid.innerHTML = "";
+    if (!offers.length) {
+        offersGrid.innerHTML = `<div class="empty-state">No hay ofertas registradas.</div>`;
+        return;
+    }
 
 
     offers.forEach(
@@ -573,52 +441,7 @@ function renderOffers() {
 ========================================================= */
 
 function getProductDescription(product) {
-
-    if (
-        product.name.includes(
-            "Paracetamol"
-        )
-    ) {
-
-        return "20 tabletas";
-
-    }
-
-
-    if (
-        product.name.includes(
-            "Vitamina"
-        )
-    ) {
-
-        return "60 cápsulas";
-
-    }
-
-
-    if (
-        product.name.includes(
-            "Termómetro"
-        )
-    ) {
-
-        return "Precisión y rapidez";
-
-    }
-
-
-    if (
-        product.name.includes(
-            "Gasas"
-        )
-    ) {
-
-        return "10 x 10 cm | 10 piezas";
-
-    }
-
-
-    return product.category;
+    return product.description || product.category || 'Descripción no registrada.';
 
 }
 
@@ -1486,9 +1309,7 @@ window.addEventListener("clinibox:cart-updated", () => {
     renderCart();
 });
 
-renderOffers();
-
-renderProducts();
+loadProductCatalog();
 
 renderCart();
 

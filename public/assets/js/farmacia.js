@@ -197,6 +197,7 @@ function openProductDialog(product = null) {
     $("#productDialogTitle").textContent = product ? "Editar producto" : "Nuevo producto";
     $("#productName").value = product?.name || "";
     $("#productCategory").value = product?.category || "Medicamentos";
+    $("#productDescription").value = product?.description || "";
     $("#productBarcode").value = product?.barcode || "";
     $("#productPrice").value = product?.price ?? "";
     $("#productStock").value = product?.stock ?? 0;
@@ -214,6 +215,7 @@ async function saveProduct(event) {
             id: $("#editProductId").value || 0,
             name: $("#productName").value,
             category: $("#productCategory").value,
+            description: $("#productDescription").value,
             barcode: $("#productBarcode").value,
             price: $("#productPrice").value,
             stock: $("#productStock").value,
@@ -231,7 +233,7 @@ async function saveInventoryRow(id) {
     const product = productById(id);
     if (!row || !product) return;
     try {
-        const data = await api(null, { action: "save_product", id, name: product.name, category: product.category, barcode: product.barcode, price: $(".price-input", row).value, stock: $(".stock-input", row).value, min_stock: $(".min-input", row).value, emoji: product.emoji });
+        const data = await api(null, { action: "save_product", id, name: product.name, category: product.category, description: product.description || "", barcode: product.barcode, price: $(".price-input", row).value, stock: $(".stock-input", row).value, min_stock: $(".min-input", row).value, emoji: product.emoji });
         await refreshProducts();
         showNotice(`Inventario actualizado para ${data.product.name}.`);
     } catch (error) { showNotice(error.message, "error"); }

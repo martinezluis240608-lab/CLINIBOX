@@ -15,6 +15,7 @@ class PacienteController extends Controller
 
     public function agendarCita(): void
     {
+        $this->requireRole(['paciente']);
         $this->view('paciente/agendarCita');
     }
 
@@ -27,19 +28,14 @@ class PacienteController extends Controller
 
     public function recorrido(): void
     {
-        $this->view('paciente/recorrido');
+        $this->requireRole(['paciente']);
+        $this->redirect('/paciente/inicio');
     }
 
     public function consultas(): void
     {
         $this->requireRole(['paciente']);
-
-        $appointments = [
-            ['date' => '2026-09-10', 'time' => '09:00', 'doctor' => 'Dra. Sofia Ramirez', 'reason' => 'Seguimiento hipertension', 'status' => 'Confirmada'],
-            ['date' => '2026-08-12', 'time' => '10:30', 'doctor' => 'Dra. Sofia Ramirez', 'reason' => 'Revision general', 'status' => 'Finalizada'],
-        ];
-
-        $this->view('paciente/consultas', ['title' => 'Mis consultas', 'appointments' => $appointments]);
+        $this->view('paciente/consultas', ['title' => 'Mis consultas']);
     }
 
     public function medicamentos(): void

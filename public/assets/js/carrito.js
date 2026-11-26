@@ -120,22 +120,6 @@ function generarCodigoBarras(producto = {}) {
         .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
         .toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
     const key = `${normalizar(producto.category || producto.categoria)}|${normalizar(producto.name || producto.nombre)}`;
-    const seedCodes = {
-        "paracetamol-500-mg": "2000000000015",
-        "vitamina-c-1000-mg": "2000000000022",
-        "termometro-digital": "2000000000039",
-        "gasas-esteriles": "2000000000046",
-        "gel-antibacterial": "2000000000053",
-        "protector-solar-fps-50": "2000000000060",
-        "ibuprofeno-400-mg": "2000000000077",
-        "multivitaminico": "2000000000084",
-        "tensiometro-digital": "2000000000091",
-        "oximetro-de-pulso": "2000000000107",
-        "kit-de-curacion": "2000000000114",
-        "crema-hidratante": "2000000000121"
-    };
-    const nameKey = key.split("|").pop();
-    if (seedCodes[nameKey]) return seedCodes[nameKey];
     let hash = 0;
     for (let index = 0; index < key.length; index++) hash = (Math.imul(hash, 31) + key.charCodeAt(index)) >>> 0;
     const base = `200${String(hash % 1000000000).padStart(9, "0")}`;

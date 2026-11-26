@@ -3,6 +3,7 @@
 use App\Controllers\AdminController;
 use App\Controllers\FarmaciaController;
 use App\Controllers\AuthController;
+use App\Controllers\ClinicController;
 use App\Controllers\DashboardController;
 use App\Controllers\HomeController;
 use App\Controllers\MedicoController;
@@ -47,6 +48,8 @@ return function (Router $router): void {
     $router->get('/medicos.html', [HomeController::class, 'medicos']);
 
     // Punto de venta y API de farmacia
+    $router->get('/api/clinica', [ClinicController::class, 'api']);
+    $router->post('/api/clinica', [ClinicController::class, 'api']);
     $router->get('/farmacia', [FarmaciaController::class, 'index']);
     $router->get('/farmacia.html', [FarmaciaController::class, 'index']);
     $router->get('/api/farmacia', [FarmaciaController::class, 'api']);

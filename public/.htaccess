@@ -1,9 +1,5 @@
 RewriteEngine On
 
-<If "%{REMOTE_ADDR} == '127.0.0.1' || %{REMOTE_ADDR} == '::1'">
-    SetEnv CLINIBOX_DEMO_AUTH 1
-</If>
-
 # La ruta MVC /admin coincide con la carpeta fisica public/admin.
 RewriteRule ^admin/?$ index.php [QSA,L]
 

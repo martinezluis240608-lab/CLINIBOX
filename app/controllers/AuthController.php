@@ -35,18 +35,6 @@ class AuthController extends Controller
             $this->fail('Escribe tu correo y contraseña.');
         }
 
-        if (\config('demo_auth') && filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $accounts = [
-                'paciente' => ['id' => 1, 'name' => 'Carlos Mendoza'],
-                'medico' => ['id' => 2, 'name' => 'Dra. Sofia Ramirez'],
-            ];
-            [$role, $domain] = explode('@', $email, 2);
-            if (isset($accounts[$role]) && in_array($domain, ['demo.com', 'clinibox.test'], true)
-                && hash_equals('123456', $password)) {
-                $this->startSession($accounts[$role] + ['email' => $email, 'role' => $role]);
-            }
-        }
-
         try {
             $user = (new User())->findByEmail($email);
         } catch (PDOException $exception) {
